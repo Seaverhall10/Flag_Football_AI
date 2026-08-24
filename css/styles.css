@@ -895,3 +895,168 @@ body.sunlight-mode .btn-grid { gap: 12px; }
   .sim-key { gap: 7px 10px; font-size: .68rem; }
   .assignment-task { font-size: .72rem; }
 }
+
+/* ==========================================================================
+   DRILLS & PRACTICE COMMAND CENTER STYLES
+   ========================================================================== */
+
+.rep-stepper-grid {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(0, 1fr));
+  gap: 4px;
+}
+
+@media (max-width: 768px) {
+  .rep-stepper-grid {
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 6px;
+  }
+}
+
+@media (max-width: 450px) {
+  .rep-stepper-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 5px;
+  }
+}
+
+.rep-pill-btn {
+  background: var(--navy);
+  border: 2px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 2px;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+
+.rep-pill-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+}
+
+.rep-pill-btn.active {
+  background: #1e293b;
+  box-shadow: 0 0 0 3px var(--gold-bright), 0 4px 12px rgba(245, 158, 11, 0.4);
+  transform: scale(1.06);
+}
+
+.rep-pill-btn.completed {
+  background: rgba(22, 163, 74, 0.18);
+  border-color: #16a34a !important;
+}
+
+.rep-pill-btn .rep-num {
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.rep-pill-btn .rep-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.drill-hud-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .drill-hud-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.active-rep-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.station-card {
+  background: #ffffff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.station-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.station-card.active-station {
+  border-color: var(--gold);
+  background: linear-gradient(180deg, #fffbeb 0%, #ffffff 100%);
+  box-shadow: 0 0 0 2px var(--gold), var(--shadow-md);
+}
+
+.station-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.station-badge {
+  background: var(--navy);
+  color: #f1f5f9;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.station-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+
+.station-text {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin: 0 0 10px;
+  line-height: 1.4;
+}
+
+.station-tag {
+  font-size: 0.72rem;
+  font-weight: 750;
+  color: #1e40af;
+  background: #eff6ff;
+  padding: 3px 7px;
+  border-radius: 4px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.jump-btn {
+  padding: 3px 8px !important;
+  font-size: 0.72rem !important;
+}

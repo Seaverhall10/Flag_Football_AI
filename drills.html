@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Drills & Practice Plans — Cy-Fair K/1 Lions</title>
-  <meta name="description" content="60-minute practice plan, 5v4 scripted drill, and 30-second play clock with Screen WakeLock for Cy-Fair K/1 Lions.">
+  <title>Drill Tempo & Practice Command Center — Cy-Fair K/1 Lions</title>
+  <meta name="description" content="Interactive 18-rep 5v4 drill play clock, 60-minute practice plan, visual drill station diagrams, and equipment tracker with Screen WakeLock.">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -38,207 +38,351 @@
   </header>
 
   <main id="main" class="wrap">
+    <!-- Hero Banner -->
     <section class="banner no-print">
-      <div class="eyebrow">⏱️ Field Timers & Pacing Tools</div>
-      <h2>Drills & Practice Plans</h2>
-      <p>High tempo, tight structure, consistent cues. Uses <strong>Screen WakeLock</strong> so your phone display stays awake and bright on the field without timing out.</p>
+      <div class="eyebrow">⏱️ Practice Tempo & Drill Command Center</div>
+      <h2>Field Drill & Practice Hub</h2>
+      <p>High tempo, tight structure, universal cues. Powered by <strong>Screen WakeLock</strong> so your phone display stays awake and bright on the field.</p>
+      
+      <div class="chip-row" style="margin-top:12px">
+        <span class="chip" style="background:#16a34a;color:#fff;border-color:#15803d">⚡ Screen Kept Awake</span>
+        <span class="chip">⏱️ 30s Next-Ball Play Clock</span>
+        <span class="chip">📋 18-Rep Scripted Drill</span>
+        <span class="chip">⏳ 60-Min Practice Plan</span>
+      </div>
     </section>
 
-    <!-- 1. 30-Second 5v4 Drill Play Clock -->
+    <!-- MODULE 1: 18-REP 5v4 DRILL PLAY CLOCK & STEPPER -->
+    <section class="panel" id="drill-commander-card">
+      <div class="panel-header">
+        <div>
+          <h2>1. 18-Rep 5v4 Scripted Drill Commander</h2>
+          <span class="tiny">30-Second Next-Ball Tempo · Snap to Whistle</span>
+        </div>
+        <div class="no-print" style="display:flex;gap:8px">
+          <button class="btn btn-secondary" id="btn-drill-fullscreen" style="font-size:0.8rem">⛶ Fullscreen Clock</button>
+        </div>
+      </div>
+
+      <!-- 18-Rep Interactive Stepper Pills -->
+      <div style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:0.8rem;font-weight:800;text-transform:uppercase;color:var(--muted);letter-spacing:0.08em">18-Rep Progress Stepper (Tap any rep to jump):</span>
+          <span id="play-clock-rep-badge" style="background:var(--navy);color:var(--gold-bright);padding:3px 10px;border-radius:999px;font-size:0.8rem;font-weight:800">REP 1 OF 18</span>
+        </div>
+        <div class="rep-stepper-grid" id="rep-stepper-container">
+          <!-- Rendered dynamically by js/timers.js -->
+        </div>
+      </div>
+
+      <!-- Active Rep Tactical HUD & 30s Clock -->
+      <div class="drill-hud-grid">
+        <!-- Left: Active Rep Play Card -->
+        <div class="active-rep-card" id="active-rep-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <span class="eyebrow" style="margin-bottom:4px">Active Called Play</span>
+              <h3 id="active-rep-play-title" style="margin:0;font-size:1.4rem;font-weight:800;color:var(--ink)">Inside Right <small style="color:#94a3b8">(Red Diamond)</small></h3>
+            </div>
+            <span class="landmark-pill" id="active-rep-hole-badge" style="font-size:0.95rem;padding:4px 10px;border:1.5px solid #dc2626">Hole: C-RG A-Gap</span>
+          </div>
+
+          <div class="cue-box" style="margin-top:14px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px">
+            <p id="active-rep-cue-text" style="margin:0;font-size:0.95rem;line-height:1.45;color:var(--ink)">
+              <strong>Coaching Key:</strong> Center drive block left · Lead attack A-gap · Runner follow & plant on cone.
+            </p>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
+            <span style="font-size:0.75rem;font-weight:750;background:var(--gold-bg);color:var(--gold-text);padding:3px 8px;border-radius:4px">5 Offense vs 4 Defense</span>
+            <span style="font-size:0.75rem;font-weight:750;background:#eff6ff;color:#1e40af;padding:3px 8px;border-radius:4px">Shotgun ~3 yds</span>
+            <span style="font-size:0.75rem;font-weight:750;background:#f0fdf4;color:#166534;padding:3px 8px;border-radius:4px">Next Ball in Coach Hand</span>
+          </div>
+        </div>
+
+        <!-- Right: 30-Second Play Clock Widget -->
+        <div class="timer-widget" style="margin:0;display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <div class="timer-label">30-Second Play Clock</div>
+            <div class="timer-display" id="play-clock-display">30s</div>
+            
+            <!-- Sweeping Progress Bar -->
+            <div style="width:100%;height:8px;background:#334155;border-radius:999px;overflow:hidden;margin:10px 0">
+              <div id="play-clock-progress-bar" style="width:0%;height:100%;background:var(--gold-bright);transition:width 0.25s linear"></div>
+            </div>
+          </div>
+
+          <div class="timer-controls" style="margin-top:12px">
+            <button class="btn btn-secondary" id="btn-playclock-prev" title="Previous Rep">⏮ Prev</button>
+            <button class="btn btn-primary" id="btn-playclock-start" style="min-width:90px">▶ Start</button>
+            <button class="btn btn-secondary" id="btn-playclock-pause">⏸ Pause</button>
+            <button class="btn btn-primary" id="btn-playclock-next" style="background:#16a34a;color:#fff;font-weight:800">Next Rep ⏭</button>
+            <button class="btn btn-danger" id="btn-playclock-reset">↺</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 2: 60-MINUTE PRACTICE TIMELINE & INTERACTIVE STATIONS -->
     <section class="panel">
       <div class="panel-header">
         <div>
-          <h2>1. 5v4 Drill & 30-Second Play Clock</h2>
-          <span class="tiny">18 Reps Total · ⚡ Screen Kept Awake</span>
+          <h2>2. 60-Minute Practice Plan Timeline</h2>
+          <span class="tiny">7 Structured Training Stations</span>
         </div>
         <div class="no-print">
-          <button class="btn btn-secondary" id="btn-drill-fullscreen" style="font-size:0.8rem">⛶ Fullscreen Display</button>
+          <button class="btn btn-primary" onclick="window.print()">Print Practice Sheet</button>
         </div>
       </div>
 
-      <div class="timer-widget" id="play-clock-widget">
-        <div class="timer-label" id="play-clock-rep">Rep 1 of 18</div>
-        <div class="timer-display" id="play-clock-display">30s</div>
-        <div class="live-call-sub" id="play-clock-info" style="margin-bottom:14px">
-          <strong>Inside Right</strong> · Red Diamond · <span class="landmark-pill">C-RG</span><br>
-          <small>Focus: Snap + hole</small>
+      <!-- Practice Master Stopwatch Card -->
+      <div class="timer-widget" style="margin-bottom:20px;background:linear-gradient(135deg, #0b192c 0%, #1e293b 100%);border-color:#334155">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div class="timer-label" style="color:#94a3b8">PRACTICE STOPWATCH (60 MIN TOTAL)</div>
+          <span id="practice-active-station-badge" style="background:var(--gold-bright);color:#0b192c;padding:3px 10px;border-radius:999px;font-size:0.8rem;font-weight:900">
+            STATION 1: ARRIVAL & SETUP (0–8M)
+          </span>
         </div>
+
+        <div class="timer-display" id="practice-stopwatch-display" style="color:#ffffff;font-size:clamp(3rem, 8vw, 4.5rem)">00:00</div>
         
+        <!-- Practice Progress Bar -->
+        <div style="width:100%;height:10px;background:#334155;border-radius:999px;overflow:hidden;margin:12px 0">
+          <div id="practice-overall-progress-bar" style="width:0%;height:100%;background:#10b981;transition:width 0.3s ease"></div>
+        </div>
+
+        <p id="practice-station-desc" style="margin:6px 0 14px;color:#cbd5e1;font-size:0.95rem">
+          Belt clips tight, 6 landmark cones set, footballs prepped.
+        </p>
+
         <div class="timer-controls">
-          <button class="btn btn-secondary" id="btn-drill-prev">⏮ Prev</button>
-          <button class="btn btn-primary" id="btn-drill-start">▶ Start Clock</button>
-          <button class="btn btn-secondary" id="btn-drill-pause">⏸ Pause</button>
-          <button class="btn btn-primary" id="btn-drill-next" style="background:#16a34a;color:#fff">Next Rep ⏭</button>
-          <button class="btn btn-danger" id="btn-drill-reset">↺ Reset</button>
+          <button class="btn btn-primary" id="btn-stopwatch-start" style="min-width:110px">▶ Start Practice</button>
+          <button class="btn btn-secondary" id="btn-stopwatch-pause">⏸ Pause</button>
+          <button class="btn btn-danger" id="btn-stopwatch-reset">↺ Reset</button>
         </div>
       </div>
 
-      <div style="overflow-x:auto;margin-top:14px">
-        <table>
-          <thead>
-            <tr>
-              <th>Reps</th>
-              <th>Play Call & Symbol</th>
-              <th>Landmark Hole</th>
-              <th>Coaching Check</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="run-red">
-              <td><strong>1 – 3</strong></td>
-              <td>Inside Right · Red Diamond</td>
-              <td><span class="landmark-pill">C-RG</span></td>
-              <td>Clean 3-yd snap + attack A-gap hole</td>
-            </tr>
-            <tr class="run-blue">
-              <td><strong>4 – 6</strong></td>
-              <td>Inside Left · Blue Circle</td>
-              <td><span class="landmark-pill">C-LG</span></td>
-              <td>Snap exchange + runner plant at cone</td>
-            </tr>
-            <tr class="run-gold">
-              <td><strong>7 – 9</strong></td>
-              <td>Off-Tackle Right · Gold Star</td>
-              <td><span class="landmark-pill">RG-RT</span></td>
-              <td>Lead attacks hole, seals LB; runner north</td>
-            </tr>
-            <tr class="run-green">
-              <td><strong>10 – 12</strong></td>
-              <td>Off-Tackle Left · Green Triangle</td>
-              <td><span class="landmark-pill">LG-LT</span></td>
-              <td>Lead fits B-gap; runner outside foot plant</td>
-            </tr>
-            <tr class="run-orange">
-              <td><strong>13 – 15</strong></td>
-              <td>Wide Right · Orange Square</td>
-              <td><span class="landmark-pill">RT outside hip</span></td>
-              <td>Perimeter seal; CB nothing outside</td>
-            </tr>
-            <tr class="run-purple">
-              <td><strong>16 – 18</strong></td>
-              <td>Wide Left · Purple Hexagon</td>
-              <td><span class="landmark-pill">LT outside hip</span></td>
-              <td>Perimeter seal; CB contain inside</td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- 7 Station Cards Grid -->
+      <div class="stations-grid">
+        <!-- Station 1 -->
+        <div class="station-card active-station" id="station-card-1">
+          <div class="station-header">
+            <span class="station-badge">0–8 min</span>
+            <button class="btn btn-secondary jump-btn" onclick="practiceTimerInstance?.jumpToStation(1)">Jump ⏱️</button>
+          </div>
+          <h3 class="station-title">Station 1: Arrival & Equipment Setup</h3>
+          <p class="station-text">Check player belt clips and flag tightness. Place 6 landmark cones at exact hole locations. No player names on boards.</p>
+          <div class="station-tag">Focus: Safety & Equipment Check</div>
+        </div>
+
+        <!-- Station 2 -->
+        <div class="station-card" id="station-card-2">
+          <div class="station-header">
+            <span class="station-badge">8–15 min</span>
+            <button class="btn btn-secondary jump-btn" onclick="practiceTimerInstance?.jumpToStation(2)">Jump ⏱️</button>
+          </div>
+          <h3 class="station-title">Station 2: Warm Movement & Fit-Up</h3>
+          <p class="station-text">Line up in 3-point stance. Call out cues: <em>Find jersey. Head out. Hands inside.</em> Agility cone weave with 2-hand flag pulls.</p>
+          <div class="station-tag">Focus: Stance, Hands & Flag Pull</div>
+        </div>
+
+        <!-- Station 3 -->
+        <div class="station-card" id="station-card-3">
+          <div class="station-header">
+            <span class="station-badge">15–25 min</span>
+            <button class="btn btn-secondary jump-btn" onclick="practiceTimerInstance?.jumpToStation(3)">Jump ⏱️</button>
+          </div>
+          <h3 class="station-title">Station 3: Shotgun Snap Station</h3>
+          <p class="station-text">Centers and Runners in pairs at 3-yard depth. Direct snap into chest. 10 clean reps per designated runner.</p>
+          <div class="station-tag">Focus: Direct Snap & Two-Hand Catch</div>
+        </div>
+
+        <!-- Station 4 -->
+        <div class="station-card" id="station-card-4">
+          <div class="station-header">
+            <span class="station-badge" style="background:var(--gold-bright);color:#0b192c">25–40 min</span>
+            <button class="btn btn-secondary jump-btn" onclick="practiceTimerInstance?.jumpToStation(4)">Jump ⏱️</button>
+          </div>
+          <h3 class="station-title">Station 4: 18-Rep 5v4 Tempo Drill</h3>
+          <p class="station-text">30-second next-ball pace. 5 offensive players vs 4 look defenders. Coach feeds ball instantly at whistle. Snap + assignment + landmark.</p>
+          <div class="station-tag">Focus: Fast Huddle & 30s Tempo</div>
+        </div>
+
+        <!-- Station 5 -->
+        <div class="station-card" id="station-card-5">
+          <div class="station-header">
+            <span class="station-badge">40–52 min</span>
+            <button class="btn btn-secondary jump-btn" onclick="practiceTimerInstance?.jumpToStation(5)">Jump ⏱️</button>
+          </div>
+          <h3 class="station-title">Station 5: Six-Run Landmark Cycle</h3>
+          <p class="station-text">Full 8v8 execution cycling through all 6 runs. Lead blocker attacks called hole first, seals Linebacker. Runner follows lead and cuts north.</p>
+          <div class="station-tag">Focus: 8-Man Linemen Blocking Angles</div>
+        </div>
+
+        <!-- Station 6 -->
+        <div class="station-card" id="station-card-6">
+          <div class="station-header">
+            <span class="station-badge">52–58 min</span>
+            <button class="btn btn-secondary jump-btn" onclick="practiceTimerInstance?.jumpToStation(6)">Jump ⏱️</button>
+          </div>
+          <h3 class="station-title">Station 6: Defensive Front & CB Contain</h3>
+          <p class="station-text">Front 3: <em>Stay home, then flag</em> (no overpursuing). Cornerbacks: <em>Nothing outside</em> (force runner inside to pursuit).</p>
+          <div class="station-tag">Focus: Containment & Gap Discipline</div>
+        </div>
+
+        <!-- Station 7 -->
+        <div class="station-card" id="station-card-7">
+          <div class="station-header">
+            <span class="station-badge">58–60 min</span>
+            <button class="btn btn-secondary jump-btn" onclick="practiceTimerInstance?.jumpToStation(7)">Jump ⏱️</button>
+          </div>
+          <h3 class="station-title">Station 7: Team Huddle & 5-of-6 Tracker</h3>
+          <p class="station-text">Water break, team cheer (<em>1-2-3 LIONS!</em>), and record clean reps in Notes tracker to certify Stop Rule completion.</p>
+          <div class="station-tag">Focus: Culture & Stop Rule Certification</div>
+        </div>
       </div>
     </section>
 
-    <!-- 2. 60-Minute Practice Plan & Timer -->
+    <!-- MODULE 3: VISUAL FIELD SETUP DIAGRAMS -->
     <section class="panel">
       <div class="panel-header">
-        <h2>2. 60-Minute Practice Plan</h2>
-        <a href="stations.html" class="tiny" style="font-weight:700">Print Station Posters →</a>
+        <h2>3. Visual Drill Field Setups</h2>
+        <span class="tiny">Cones & Player Layouts</span>
       </div>
 
-      <div class="timer-widget">
-        <div class="timer-label">Practice Stopwatch (60 Min)</div>
-        <div class="timer-display" id="practice-timer-display">00:00</div>
-        <div class="live-call-sub" id="practice-station-info" style="margin-bottom:8px">
-          <strong>Ready to start:</strong> 0–8m Arrival & Setup
-        </div>
-        <div class="timer-controls">
-          <button class="btn btn-primary" id="btn-practice-start">▶ Start Practice</button>
-          <button class="btn btn-secondary" id="btn-practice-pause">⏸ Pause</button>
-          <button class="btn btn-danger" id="btn-practice-reset">↺ Reset</button>
-        </div>
-      </div>
+      <div class="grid-2">
+        <!-- 5v4 Drill Field Graphic -->
+        <div style="background:#144a29;border:2px solid #0f172a;border-radius:10px;padding:16px;color:#fff">
+          <h3 style="color:var(--gold-bright);margin:0 0 8px">5v4 Scripted Drill Setup</h3>
+          <p style="font-size:0.85rem;color:#cbd5e1;margin-bottom:12px">5 Offense (C, G, G, Lead, Runner) vs 4 Look Defenders (Front 3 + CB) + 6 landmark hole cones.</p>
+          
+          <svg viewBox="0 0 400 240" style="width:100%;height:auto;background:rgba(0,0,0,0.25);border-radius:8px">
+            <!-- Yardlines -->
+            <line x1="20" y1="100" x2="380" y2="100" stroke="#f59e0b" stroke-width="2.5" /> <!-- LOS -->
+            <text x="28" y="94" fill="#f59e0b" font-size="9" font-weight="800">LOS</text>
+            
+            <!-- 4 Defense (DL, MLB, DL, CB at y=60-80) -->
+            <circle cx="160" cy="65" r="10" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5" />
+            <text x="160" y="68" fill="#fff" font-size="8" font-weight="800" text-anchor="middle">DL</text>
 
-      <div class="station-item">
-        <div class="station-time">0–8m</div>
-        <div class="station-desc">
-          <strong>Station 1: Arrival & Equipment Setup</strong>
-          <p class="tiny">Check belt clips. Cones on all 6 landmark holes. No player names on boards.</p>
-        </div>
-        <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(0)">Jump</button>
-      </div>
+            <circle cx="200" cy="50" r="10" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5" />
+            <text x="200" y="53" fill="#fff" font-size="8" font-weight="800" text-anchor="middle">MLB</text>
 
-      <div class="station-item">
-        <div class="station-time">8–15m</div>
-        <div class="station-desc">
-          <strong>Station 2: Warm Movement & Fit-Up</strong>
-          <p class="tiny">Cues: <em>Find jersey. Head out. Hands inside.</em> Light tag drills, agility weave.</p>
-        </div>
-        <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(8)">Jump</button>
-      </div>
+            <circle cx="240" cy="65" r="10" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5" />
+            <text x="240" y="68" fill="#fff" font-size="8" font-weight="800" text-anchor="middle">DL</text>
 
-      <div class="station-item">
-        <div class="station-time">15–25m</div>
-        <div class="station-desc">
-          <strong>Station 3: Shotgun Snap Station</strong>
-          <p class="tiny">Shotgun ~3 yards direct to designated runner. Two-hand catch into chest.</p>
-        </div>
-        <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(15)">Jump</button>
-      </div>
+            <circle cx="320" cy="55" r="10" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" />
+            <text x="320" y="58" fill="#f59e0b" font-size="8" font-weight="800" text-anchor="middle">CB</text>
 
-      <div class="station-item">
-        <div class="station-time">25–40m</div>
-        <div class="station-desc">
-          <strong>Station 4: 5v4 Scripted Drill (18 Reps)</strong>
-          <p class="tiny">30-sec next-ball tempo. 5 offense vs 4 look defense. Snap + assignment + landmark.</p>
-        </div>
-        <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(25)">Jump</button>
-      </div>
+            <!-- Landmark Cones at y=105 -->
+            <polygon points="100,100 105,110 95,110" fill="#9333ea" />
+            <polygon points="140,100 145,110 135,110" fill="#16a34a" />
+            <polygon points="180,100 185,110 175,110" fill="#2563eb" />
+            <polygon points="220,100 225,110 215,110" fill="#dc2626" />
+            <polygon points="260,100 265,110 255,110" fill="#d97706" />
+            <polygon points="300,100 305,110 295,110" fill="#ea580c" />
 
-      <div class="station-item">
-        <div class="station-time">40–52m</div>
-        <div class="station-desc">
-          <strong>Station 5: Six-Run Cycle</strong>
-          <p class="tiny">One color at a time. Cones are the hole landmarks. Lead blocks hole first, LB.</p>
-        </div>
-        <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(40)">Jump</button>
-      </div>
+            <!-- 5 Offense (G, C, G at y=125, Lead at y=165, Runner at y=210) -->
+            <circle cx="160" cy="125" r="11" fill="#0b192c" stroke="#f59e0b" stroke-width="1.5" />
+            <text x="160" y="128" fill="#fff" font-size="8" font-weight="800" text-anchor="middle">LG</text>
 
-      <div class="station-item">
-        <div class="station-time">52–58m</div>
-        <div class="station-desc">
-          <strong>Station 6: Front 3 & CB Defense</strong>
-          <p class="tiny">Front stay home, then flag. Cornerbacks keep outside arm free, force runner inside.</p>
-        </div>
-        <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(52)">Jump</button>
-      </div>
+            <circle cx="200" cy="125" r="12" fill="#0b192c" stroke="#f59e0b" stroke-width="2" />
+            <text x="200" y="129" fill="#f59e0b" font-size="9" font-weight="900" text-anchor="middle">C</text>
 
-      <div class="station-item">
-        <div class="station-time">58–60m</div>
-        <div class="station-desc">
-          <strong>Station 7: Close & Team Review</strong>
-          <p class="tiny">Hydration, repeat 5 cues together, record clean reps on tracker clipboard.</p>
+            <circle cx="240" cy="125" r="11" fill="#0b192c" stroke="#f59e0b" stroke-width="1.5" />
+            <text x="240" y="128" fill="#fff" font-size="8" font-weight="800" text-anchor="middle">RG</text>
+
+            <circle cx="200" cy="165" r="11" fill="#f59e0b" stroke="#0b192c" stroke-width="1.5" />
+            <text x="200" y="168" fill="#0b192c" font-size="8" font-weight="900" text-anchor="middle">L</text>
+
+            <circle cx="200" cy="210" r="13" fill="#dc2626" stroke="#fff" stroke-width="1.5" />
+            <text x="200" y="214" fill="#fff" font-size="9" font-weight="900" text-anchor="middle">R</text>
+
+            <!-- Next Ball Feed Coach -->
+            <rect x="20" y="145" width="44" height="20" rx="4" fill="#334155" stroke="#fff" />
+            <text x="42" y="158" fill="#fff" font-size="7.5" font-weight="800" text-anchor="middle">COACH 🏈</text>
+          </svg>
         </div>
-        <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(58)">Jump</button>
+
+        <!-- Snap Station Field Graphic -->
+        <div style="background:#144a29;border:2px solid #0f172a;border-radius:10px;padding:16px;color:#fff">
+          <h3 style="color:var(--gold-bright);margin:0 0 8px">Shotgun Snap Station Setup</h3>
+          <p style="font-size:0.85rem;color:#cbd5e1;margin-bottom:12px">Pairs of Centers & Designated Runners spaced 5 yards apart across the line at 3-yard shotgun depth.</p>
+
+          <svg viewBox="0 0 400 240" style="width:100%;height:auto;background:rgba(0,0,0,0.25);border-radius:8px">
+            <!-- Line of Scrimmage -->
+            <line x1="20" y1="70" x2="380" y2="70" stroke="#f59e0b" stroke-width="2" />
+            <text x="28" y="64" fill="#f59e0b" font-size="9" font-weight="800">SNAP LINE</text>
+
+            <!-- 3 Pairs (Center at y=70, Runner at y=160 ~3 yds depth) -->
+            <!-- Pair 1 -->
+            <circle cx="90" cy="70" r="12" fill="#0b192c" stroke="#f59e0b" stroke-width="2" />
+            <text x="90" y="74" fill="#f59e0b" font-size="9" font-weight="800" text-anchor="middle">C 1</text>
+            <path d="M 90,85 L 90,145" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,3" />
+            <circle cx="90" cy="160" r="13" fill="#dc2626" stroke="#fff" stroke-width="1.5" />
+            <text x="90" y="164" fill="#fff" font-size="9" font-weight="800" text-anchor="middle">R 1</text>
+
+            <!-- Pair 2 -->
+            <circle cx="200" cy="70" r="12" fill="#0b192c" stroke="#f59e0b" stroke-width="2" />
+            <text x="200" y="74" fill="#f59e0b" font-size="9" font-weight="800" text-anchor="middle">C 2</text>
+            <path d="M 200,85 L 200,145" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,3" />
+            <circle cx="200" cy="160" r="13" fill="#2563eb" stroke="#fff" stroke-width="1.5" />
+            <text x="200" y="164" fill="#fff" font-size="9" font-weight="800" text-anchor="middle">R 2</text>
+
+            <!-- Pair 3 -->
+            <circle cx="310" cy="70" r="12" fill="#0b192c" stroke="#f59e0b" stroke-width="2" />
+            <text x="310" y="74" fill="#f59e0b" font-size="9" font-weight="800" text-anchor="middle">C 3</text>
+            <path d="M 310,85 L 310,145" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,3" />
+            <circle cx="310" cy="160" r="13" fill="#d97706" stroke="#fff" stroke-width="1.5" />
+            <text x="310" y="164" fill="#fff" font-size="9" font-weight="800" text-anchor="middle">R 3</text>
+
+            <text x="200" y="215" fill="#cbd5e1" font-size="9" font-weight="700" text-anchor="middle">3 Yards Distance · 2-Hand Chest Catch</text>
+          </svg>
+        </div>
       </div>
     </section>
 
-    <!-- 3. Cart & Equipment Checklist -->
+    <!-- MODULE 4: COACH EQUIPMENT & CART PACKING TRACKER -->
     <section class="panel">
       <div class="panel-header">
-        <h2>Coach Cart Checklist</h2>
-        <span class="tiny">Auto-saved in browser</span>
+        <div>
+          <h2>4. Coach Cart & Equipment Checklist</h2>
+          <span class="tiny">Auto-saved in browser</span>
+        </div>
+        <span id="cart-progress-label" style="background:var(--gold-bg);color:var(--gold-text);font-weight:800;font-size:0.85rem;padding:3px 10px;border-radius:999px">
+          0/6 Packed (0%)
+        </span>
       </div>
+
+      <!-- Checklist Progress Bar -->
+      <div style="width:100%;height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:14px">
+        <div id="cart-progress-bar" style="width:0%;height:100%;background:#10b981;transition:width 0.25s ease"></div>
+      </div>
+
       <ul class="checklist">
         <li class="checklist-item">
           <input type="checkbox" id="cart-1">
-          <label for="cart-1"><strong>Football Bag:</strong> Youth size footballs + extra balls for 30s next-ball</label>
+          <label for="cart-1"><strong>Footballs & Ball Bag:</strong> 4+ youth size footballs for continuous 30-sec next-ball drill</label>
         </li>
         <li class="checklist-item">
           <input type="checkbox" id="cart-2">
-          <label for="cart-2"><strong>Flags & Belts:</strong> Tested clips, clean velcro, extra belts</label>
+          <label for="cart-2"><strong>Flags & Belts (16 Sets):</strong> Tested clips, clean velcro, extra belts for quick replacements</label>
         </li>
         <li class="checklist-item">
           <input type="checkbox" id="cart-3">
-          <label for="cart-3"><strong>Cones (6 Colors):</strong> Holes C-RG, C-LG, RG-RT, LG-LT, RT outside, LT outside</label>
+          <label for="cart-3"><strong>Landmark Cones (6 Colors):</strong> Red Diamond, Blue Circle, Gold Star, Green Triangle, Orange Square, Purple Hexagon</label>
         </li>
         <li class="checklist-item">
           <input type="checkbox" id="cart-4">
-          <label for="cart-4"><strong>Pinnies / Vests:</strong> For 4-player look defense</label>
+          <label for="cart-4"><strong>Defensive Pinnies (4 Vests):</strong> For the 4-player defensive look team</label>
         </li>
         <li class="checklist-item">
           <input type="checkbox" id="cart-5">
-          <label for="cart-5"><strong>First Aid & Water:</strong> Ice packs, band-aids, cooler</label>
+          <label for="cart-5"><strong>First Aid Kit & Ice Packs:</strong> Band-aids, athletic tape, cold packs, hydration cooler</label>
         </li>
         <li class="checklist-item">
           <input type="checkbox" id="cart-6">
-          <label for="cart-6"><strong>Coach Sideline Pack:</strong> Laminated cards, whistle, tracker clipboard</label>
+          <label for="cart-6"><strong>Coach Sideline Clipboard:</strong> Laminated 5v4 script, whistle, and clean-rep 5-of-6 tracker</label>
         </li>
       </ul>
     </section>
@@ -246,7 +390,7 @@
 
   <footer class="foot">
     <div class="foot-inner">
-      <div>Cy-Fair K/1 Lions · Drills & Practice Plans</div>
+      <div>Cy-Fair K/1 Lions · Drill Tempo & Practice Command Center</div>
       <div><a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></div>
     </div>
   </footer>
