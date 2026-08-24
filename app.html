@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Command center — K/1 Lions</title>
+<meta name="description" content="Cy-Fair K/1 Lions flag football — 8-on-8 CFSA, ages 5–6. Coach sideline pages.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="mast">
+  <div class="mast-inner">
+    <div class="mark" aria-hidden="true">K1</div>
+    <div>
+      <h1>Cy-Fair K/1 Lions</h1>
+      <p>8-on-8 CFSA · ages 5–6 · flag · shotgun ~3 yd</p>
+    </div>
+    
+  <nav class="nav" aria-label="Coach pages">
+    <a href="index.html">Home</a>
+    <a href="app.html">Command</a>
+    <a href="playbook.html">Playbook</a>
+    <a href="practice.html">Practice</a>
+    <a href="drill.html">Drill</a>
+    <a href="runner.html">Runner</a>
+    <a class="ghost" href="sideline.html">Print</a>
+  </nav>
+
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section class="banner">
+    <h2>Command center</h2>
+    <p>Tap a run. Kids still hear the same three words for the ball: Follow. Plant. Go.</p>
+  </section>
+  <div class="live" id="call" aria-live="polite">Call a run</div>
+  <div class="cue-strip">
+    <span>OL · jersey · head out · hands inside</span>
+    <span>Lead · hole first · LB</span>
+    <span>Runner · Follow. Plant. Go.</span>
+    <span>Front · stay home, then flag</span>
+    <span>CB · nothing outside</span>
+  </div>
+  <div class="btn-grid"><button class="play-btn red" type="button" data-call="Inside Right · Red Diamond · C-RG">
+      <svg class="sym" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,2 22,12 12,22 2,12" fill="#c0392b"/></svg><br>Inside Right<small>Red Diamond · C-RG</small>
+    </button>
+<button class="play-btn blue" type="button" data-call="Inside Left · Blue Circle · C-LG">
+      <svg class="sym" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#1f6aa5"/></svg><br>Inside Left<small>Blue Circle · C-LG</small>
+    </button>
+<button class="play-btn gold-run" type="button" data-call="Off-Tackle Right · Gold Star · RG-RT">
+      <svg class="sym" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,2 15,9 22,9 16.5,14 18.5,22 12,17.5 5.5,22 7.5,14 2,9 9,9" fill="#c9a227"/></svg><br>Off-Tackle Right<small>Gold Star · RG-RT</small>
+    </button>
+<button class="play-btn green" type="button" data-call="Off-Tackle Left · Green Triangle · LG-LT">
+      <svg class="sym" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,3 22,21 2,21" fill="#2d7a3e"/></svg><br>Off-Tackle Left<small>Green Triangle · LG-LT</small>
+    </button>
+<button class="play-btn orange" type="button" data-call="Wide Right · Orange Square · RT outside hip">
+      <svg class="sym" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" fill="#d35400"/></svg><br>Wide Right<small>Orange Square · RT outside hip</small>
+    </button>
+<button class="play-btn purple" type="button" data-call="Wide Left · Purple Hexagon · LT outside hip">
+      <svg class="sym" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="#6b3fa0"/></svg><br>Wide Left<small>Purple Hexagon · LT outside hip</small>
+    </button></div>
+  <section class="panel" style="margin-top:18px">
+    <h2>Print from here</h2>
+    <div class="links">
+      <a href="sideline.html">Sideline card</a>
+      <a href="wristbands.html">Wristbands</a>
+      <a href="flashcards.html">Flashcards</a>
+      <a href="tracker.html">Tracker</a>
+      <a href="stations.html">Stations</a>
+      <a href="parent.html">Parent sheet</a>
+      <a href="runner-guide.html">Runner guide</a>
+    </div>
+  </section>
+</main>
+<script>
+document.querySelectorAll(".play-btn").forEach(function(b){
+  b.addEventListener("click", function(){
+    document.getElementById("call").textContent = b.getAttribute("data-call");
+  });
+});
+</script>
+
+<footer class="foot">
+  Cy-Fair K/1 Lions · no player names on these pages · six locked runs ·
+  <a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a>
+</footer>
+</body>
+</html>
