@@ -55,6 +55,25 @@ const drills = read("drills.html");
 const halfDrill = read("js/half-drill.js");
 const authority = read("PROJECT_AUTHORITY.md");
 const styles = read("css/styles.css");
+const appShell = read("js/app.js");
+const home = read("index.html");
+const notes = read("notes.html");
+const rosterPage = read("roster.html");
+
+pass("shared mobile shell has four primary destinations",
+  ["index.html", "playbook.html", "drills.html", "app.html"].every((href) => appShell.includes(`href: "${href}"`)) &&
+  (appShell.match(/label:\s*"(?:Home|Plays|Drill|Coach)"/g) || []).length === 4);
+pass("shared shell injects one mobile tab bar", /className\s*=\s*["']tabbar no-print["']/.test(appShell));
+pass("mobile tab bar uses four equal columns", /\.tabbar\s*\{[^}]*grid-template-columns:\s*repeat\(4/i.test(styles));
+pass("mobile top app bar exists", /className\s*=\s*["']mobile-appbar no-print["']/.test(appShell));
+pass("home leads with drill and play choices", /Run the blocking drill/i.test(home) && /Watch a play/i.test(home));
+pass("home no longer duplicates all six play calls", !/class=["'][^"']*run-tile/i.test(home));
+pass("playbook uses horizontal phone play picker", /\.playbook-page\s+\.play-picker\s+\.btn-grid[\s\S]*?overflow-x:\s*auto/i.test(styles));
+pass("playbook secondary teaching is collapsible", (playbook.match(/<details\s+class=["'][^"']*playbook-more/g) || []).length >= 3);
+pass("playbook coach controls are secondary", /<details\s+class=["'][^"']*playbook-coach-controls/i.test(playbook));
+pass("notes does not duplicate the sideline play caller", !/class=["'][^"']*play-btn/i.test(notes) && !/id=["']call["']/.test(notes));
+pass("notes separates secondary tools", (notes.match(/<details\s+class=["'][^"']*coach-more/g) || []).length === 3);
+pass("roster views collapse independently on phones", (rosterPage.match(/<details\s+class=["'][^"']*mobile-collapse/g) || []).length === 3 && /querySelectorAll\(["']\.mobile-collapse["']\)/.test(appShell));
 
 const runKeys = [...playbook.matchAll(/data-run-key=["']([^"']+)["']/g)].map((match) => match[1]);
 pass("exactly six unique play selectors", runKeys.length === 6 && new Set(runKeys).size === 6, runKeys.join(", "));

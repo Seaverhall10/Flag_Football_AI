@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Roster & Depth Chart — Cy-Fair K/1 Lions</title>
   <meta name="description" content="Cy-Fair K/1 Lions Flag Football team roster, 8-on-8 depth chart, and fair-play quarter rotation tracker.">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=mobile-app-20260824">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -36,11 +36,10 @@
   </header>
 
   <main id="main" class="wrap">
-    <section class="banner no-print">
-      <div class="eyebrow">👥 Player Assignments & Fair Play Engine</div>
-      <h2>Team Roster & 8-on-8 Depth Chart</h2>
-      <p>Manage player jersey numbers, 8-on-8 offensive/defensive starter roles, and quarter rotations to guarantee <strong>100% fair play compliance (2+ quarters per child)</strong>.</p>
-      <p class="tiny"><strong>Privacy:</strong> This public app stores edits only in this browser. Use jersey numbers or anonymous labels—never full child names, contact details, medical information, or attendance notes.</p>
+    <section class="mobile-page-title">
+      <p class="eyebrow">Coach tools</p>
+      <h1>Roster</h1>
+      <p>Open the view you need. Keep public entries anonymous.</p>
     </section>
 
     <!-- Printable Header -->
@@ -50,7 +49,9 @@
     </div>
 
     <!-- Depth Chart View -->
-    <section class="panel">
+    <details class="coach-more mobile-collapse" open>
+      <summary>Depth chart</summary>
+      <section class="panel">
       <div class="panel-header">
         <h2>8-on-8 Depth Chart</h2>
         <div class="no-print">
@@ -60,10 +61,13 @@
       <div id="depth-chart-grid">
         <!-- Rendered by js/roster.js -->
       </div>
-    </section>
+      </section>
+    </details>
 
     <!-- Fair-Play Quarter Rotation Planner -->
-    <section class="panel">
+    <details class="coach-more mobile-collapse" open>
+      <summary>Quarter rotations</summary>
+      <section class="panel">
       <div class="panel-header">
         <div>
           <h2>Quarter-by-Quarter Rotation Matrix</h2>
@@ -91,10 +95,13 @@
           </tbody>
         </table>
       </div>
-    </section>
+      </section>
+    </details>
 
     <!-- Full Player Roster & Carries Counter -->
-    <section class="panel">
+    <details class="coach-more mobile-collapse" open>
+      <summary>Players and carries</summary>
+      <section class="panel">
       <div class="panel-header">
         <h2>Player Roster & Season Carries</h2>
         <div class="no-print" style="display:flex;gap:8px">
@@ -120,7 +127,8 @@
           </tbody>
         </table>
       </div>
-    </section>
+      </section>
+    </details>
 
     <!-- CFSA Fair Play Rules -->
     <div class="stop-banner">
@@ -136,6 +144,6 @@
   </footer>
 
   <script src="js/roster.js?v=jarvis-20260824"></script>
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=mobile-app-20260824"></script>
 </body>
 </html>

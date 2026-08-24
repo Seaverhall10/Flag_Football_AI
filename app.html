@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sideline Command Center — Cy-Fair K/1 Lions</title>
   <meta name="description" content="High visibility live playcaller and sideline command center for Cy-Fair K/1 Lions flag football.">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=mobile-app-20260824">
 </head>
-<body>
+<body class="coach-page">
   <a class="skip-link" href="#main">Skip to content</a>
   
   <header class="mast">
@@ -37,9 +37,10 @@
   </header>
 
   <main id="main" class="wrap">
-    <section class="banner">
-      <h2>Sideline Command Center</h2>
-      <p>Tap a run to call the play. High visibility in direct sunlight. Kids hear three words: <strong>Follow. Plant. Go.</strong></p>
+    <section class="mobile-page-title">
+      <p class="eyebrow">Sideline</p>
+      <h1>Coach</h1>
+      <p>Call the play, then get back to the kids.</p>
     </section>
 
     <!-- Active Call Display -->
@@ -110,35 +111,37 @@
 
     <!-- Quick Sideline Tools -->
 
-    <section class="panel no-print" style="margin-top:20px">
-      <div class="panel-header"><h2>Team Backup</h2></div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
-        <button type="button" class="btn btn-primary" id="btn-export-backup">Export Team Backup</button>
-        <label class="btn btn-secondary" style="cursor:pointer">Import Team Backup
-          <input type="file" id="input-import-backup" accept="application/json,.json" style="display:none">
-        </label>
-      </div>
-    </section>
+    <details class="coach-more no-print">
+      <summary>Team backup</summary>
+      <section class="panel">
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          <button type="button" class="btn btn-primary" id="btn-export-backup">Export Team Backup</button>
+          <label class="btn btn-secondary" style="cursor:pointer">Import Team Backup
+            <input type="file" id="input-import-backup" accept="application/json,.json" style="display:none">
+          </label>
+        </div>
+      </section>
+    </details>
 
     <section class="panel" style="margin-top:20px">
       <div class="panel-header">
-        <h2>Quick Navigation</h2>
+        <h2>More coach tools</h2>
       </div>
       <div class="links-grid">
         <a href="drills.html" class="link-card">
-          <span>⏱️ Drills & 30s Clock</span>
+          <span>Blocking drill</span>
           <span>→</span>
         </a>
         <a href="notes.html" class="link-card">
-          <span>📊 Clean-Rep Tracker</span>
+          <span>Coach notes</span>
           <span>→</span>
         </a>
         <a href="roster.html" class="link-card">
-          <span>👥 Team Depth Chart</span>
+          <span>Roster and depth chart</span>
           <span>→</span>
         </a>
         <a href="sideline.html" class="link-card">
-          <span>📄 Sideline Printable</span>
+          <span>Printable sideline card</span>
           <span>Print</span>
         </a>
       </div>
@@ -154,7 +157,7 @@
 
   <script src="js/backup.js"></script>
   <script src="js/timers.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=mobile-app-20260824"></script>
   <script>
     (function () {
       const KEY = "lions_sunlight_mode";
