@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Interactive Playbook — Cy-Fair K/1 Lions</title>
-  <meta name="description" content="Interactive 8-on-8 visual flag football playbook for Cy-Fair K/1 Lions with animated route simulation and defense modes.">
-  <link rel="stylesheet" href="css/styles.css?v=jarvis-20260824">
+  <meta name="description" content="Seven-beat QB direct-snap playbook with wide and tight wing-back spacing for the Cy-Fair K/1 Lions.">
+  <link rel="stylesheet" href="css/styles.css?v=qb-wings-20260824">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -37,9 +37,9 @@
 
   <main id="main" class="wrap">
     <section class="banner">
-      <div class="eyebrow">📖 Seven-Beat Full-Team Teacher</div>
-      <h2>See Every Kid's Job</h2>
-      <p>Pick one of the six runs. Watch all 8 offensive players and all 8 look-team defenders move in true slow motion, then tap a position to isolate that child's job.</p>
+      <div class="eyebrow">📖 QB Direct Snap · Two Wing Backs</div>
+      <h2>Give Every Kid Room to See the Play</h2>
+      <p>The QB catches every direct snap and runs. WING-L and WING-R can line up spread wide or tight beside the QB. The taller field keeps every block, route, and lane separated.</p>
     </section>
 
     <!-- Run Selector Buttons -->
@@ -54,7 +54,7 @@
             <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 22,12 12,22 2,12" fill="#dc2626"/></svg>
             Inside Right
           </div>
-          <small>Red Diamond · C-RG A-Gap</small>
+          <small>QB Keeper · C-RG A-Gap</small>
         </button>
 
         <button class="play-btn run-blue" type="button" data-run-key="inside-left" data-name="Inside Left" data-symbol="Blue Circle" data-hole="C-LG" data-color="#2563eb">
@@ -62,7 +62,7 @@
             <svg class="sym" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#2563eb"/></svg>
             Inside Left
           </div>
-          <small>Blue Circle · C-LG A-Gap</small>
+          <small>QB Keeper · C-LG A-Gap</small>
         </button>
 
         <button class="play-btn run-gold" type="button" data-run-key="off-tackle-right" data-name="Off-Tackle Right" data-symbol="Gold Star" data-hole="RG-RT" data-color="#d97706">
@@ -70,7 +70,7 @@
             <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16.5,14 18.5,22 12,17.5 5.5,22 7.5,14 2,9 9,9" fill="#d97706"/></svg>
             Off-Tackle R
           </div>
-          <small>Gold Star · RG-RT B-Gap</small>
+          <small>QB Keeper · RG-RT B-Gap</small>
         </button>
 
         <button class="play-btn run-green" type="button" data-run-key="off-tackle-left" data-name="Off-Tackle Left" data-symbol="Green Triangle" data-hole="LG-LT" data-color="#16a34a">
@@ -78,7 +78,7 @@
             <svg class="sym" viewBox="0 0 24 24"><polygon points="12,3 22,21 2,21" fill="#16a34a"/></svg>
             Off-Tackle L
           </div>
-          <small>Green Triangle · LG-LT B-Gap</small>
+          <small>QB Keeper · LG-LT B-Gap</small>
         </button>
 
         <button class="play-btn run-orange" type="button" data-run-key="wide-right" data-name="Wide Right" data-symbol="Orange Square" data-hole="RT outside hip" data-color="#ea580c">
@@ -86,7 +86,7 @@
             <svg class="sym" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" fill="#ea580c"/></svg>
             Wide Right
           </div>
-          <small>Orange Square · RT Outside</small>
+          <small>QB Keeper · RT Outside</small>
         </button>
 
         <button class="play-btn run-purple" type="button" data-run-key="wide-left" data-name="Wide Left" data-symbol="Purple Hexagon" data-hole="LT outside hip" data-color="#9333ea">
@@ -94,29 +94,45 @@
             <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="#9333ea"/></svg>
             Wide Left
           </div>
-          <small>Purple Hexagon · LT Outside</small>
+          <small>QB Keeper · LT Outside</small>
         </button>
       </div>
+    </section>
+
+    <section class="panel formation-picker">
+      <div class="panel-header">
+        <h2>2. Choose Wing Spacing</h2>
+        <span class="tiny">Same play · different starting space</span>
+      </div>
+      <div class="formation-buttons" role="group" aria-label="Wing-back spacing">
+        <button type="button" class="formation-button is-active" data-sim-formation="wide" aria-pressed="true">
+          <strong>SPREAD WINGS</strong><span>WING-L ← QB → WING-R</span>
+        </button>
+        <button type="button" class="formation-button" data-sim-formation="tight" aria-pressed="false">
+          <strong>TIGHT WINGS</strong><span>WING-L · QB · WING-R</span>
+        </button>
+      </div>
+      <p id="sim-formation-explain" class="formation-explain">Wings split wide so every child can see the QB, lane, and leverage.</p>
     </section>
 
     <!-- Governed seven-beat full-team simulator -->
     <section class="panel play-teacher">
       <div class="panel-header">
         <div>
-          <div class="tiny">2. Watch Everybody</div>
-          <h2 id="sim-play-name">Inside Right</h2>
+          <div class="tiny">3. Watch Everybody</div>
+          <h2 id="sim-play-name">QB Inside Right</h2>
         </div>
         <span class="play-call-badge" id="sim-play-badge">Red Diamond · C–RG</span>
       </div>
       <div class="sim-key" aria-label="Route colors">
-        <span><i class="key-runner"></i>Runner</span>
-        <span><i class="key-lead"></i>Lead</span>
-        <span><i class="key-fake"></i>Fake</span>
+        <span><i class="key-runner"></i>QB Run</span>
+        <span><i class="key-lead"></i>Lead Wing</span>
+        <span><i class="key-fake"></i>Backside Wing</span>
         <span><i class="key-block"></i>Block</span>
       </div>
-      <p id="sim-beat" class="timer-label sim-beat">PRE-SNAP · 1 OF 7</p>
+      <p id="sim-beat" class="timer-label sim-beat">LINE UP · 1 OF 7</p>
       <div id="sim-root" class="sim-root"></div>
-      <p id="sim-cue" class="sim-cue" aria-live="polite">Find your position. Follow only your arrow.</p>
+      <p id="sim-cue" class="sim-cue" aria-live="polite">QB behind Center. WING-L and WING-R use the selected spacing.</p>
       <div class="sim-controls">
         <button type="button" class="btn btn-primary sim-big" id="sim-play">PLAY SLOW</button>
         <button type="button" class="btn btn-secondary sim-big" id="sim-back">BACK</button>
@@ -139,7 +155,7 @@
     <!-- Position assignments -->
     <section class="panel">
       <div class="panel-header">
-        <h2>3. Find Your Job</h2>
+        <h2>4. Find Your Job</h2>
         <span class="tiny">Tap a card to highlight that player</span>
       </div>
       <div id="sim-assignments" class="assignment-board"></div>
@@ -152,8 +168,8 @@
       </div>
       <div class="cue-grid">
         <div class="cue"><strong>OL</strong>Find your jersey. Head out. Hands inside.</div>
-        <div class="cue"><strong>Lead</strong>Hole first. LB.</div>
-        <div class="cue"><strong>Runner</strong>Follow. Plant. Go.</div>
+        <div class="cue"><strong>QB</strong>See it. Catch it. Tuck it. Run.</div>
+        <div class="cue"><strong>Wings</strong>Lead side first. Backside sells fake.</div>
         <div class="cue"><strong>Front</strong>Stay home, then flag.</div>
         <div class="cue"><strong>CB</strong>Nothing outside. Force in.</div>
       </div>
@@ -167,7 +183,7 @@
     </div>
   </footer>
 
-  <script src="js/sim.js?v=jarvis-20260824"></script>
+  <script src="js/sim.js?v=qb-wings-20260824"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

@@ -6,16 +6,16 @@
 const ROSTER_STORAGE_KEY = "lions_team_roster_data";
 
 const DEFAULT_ROSTER = [
-  { id: 1, number: "2", name: "Player #2", offensePos: "Runner", defensePos: "Cornerback", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense", carries: 4 },
-  { id: 2, number: "7", name: "Player #7", offensePos: "Lead Blocker", defensePos: "Front Mid (MLB)", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense", carries: 2 },
+  { id: 1, number: "2", name: "Player #2", offensePos: "Quarterback", defensePos: "Cornerback", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense", carries: 4 },
+  { id: 2, number: "7", name: "Player #7", offensePos: "Right Wing", defensePos: "Front Mid (MLB)", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense", carries: 2 },
   { id: 3, number: "10", name: "Player #10", offensePos: "Center", defensePos: "Front Left", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense", carries: 0 },
   { id: 4, number: "12", name: "Player #12", offensePos: "Left Guard", defensePos: "Front Right", q1: "Offense", q2: "Bench", q3: "Defense", q4: "Offense", carries: 1 },
   { id: 5, number: "15", name: "Player #15", offensePos: "Right Guard", defensePos: "Cornerback", q1: "Offense", q2: "Defense", q3: "Bench", q4: "Offense", carries: 1 },
   { id: 6, number: "21", name: "Player #21", offensePos: "Left Tackle", defensePos: "Front Mid", q1: "Offense", q2: "Offense", q3: "Defense", q4: "Defense", carries: 0 },
   { id: 7, number: "24", name: "Player #24", offensePos: "Right Tackle", defensePos: "Front Left", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Bench", carries: 1 },
-  { id: 8, number: "33", name: "Player #33", offensePos: "Extra Back (RB3)", defensePos: "Safety", q1: "Offense", q2: "Offense", q3: "Defense", q4: "Defense", carries: 2 },
-  { id: 9, number: "44", name: "Player #44", offensePos: "Runner (2nd)", defensePos: "Cornerback", q1: "Bench", q2: "Offense", q3: "Defense", q4: "Offense", carries: 3 },
-  { id: 10, number: "55", name: "Player #55", offensePos: "Lead (2nd)", defensePos: "Front Right", q1: "Defense", q2: "Offense", q3: "Offense", q4: "Defense", carries: 1 },
+  { id: 8, number: "33", name: "Player #33", offensePos: "Left Wing", defensePos: "Safety", q1: "Offense", q2: "Offense", q3: "Defense", q4: "Defense", carries: 2 },
+  { id: 9, number: "44", name: "Player #44", offensePos: "Quarterback (2nd)", defensePos: "Cornerback", q1: "Bench", q2: "Offense", q3: "Defense", q4: "Offense", carries: 3 },
+  { id: 10, number: "55", name: "Player #55", offensePos: "Wing Back (2nd)", defensePos: "Front Right", q1: "Defense", q2: "Offense", q3: "Offense", q4: "Defense", carries: 1 },
   { id: 11, number: "88", name: "Player #88", offensePos: "Guard (2nd)", defensePos: "Front Left", q1: "Defense", q2: "Bench", q3: "Offense", q4: "Defense", carries: 0 }
 ];
 
@@ -110,16 +110,16 @@ class RosterManager {
         </td>
         <td>
           <select class="editable-cell" onchange="rosterManager.updatePlayer(${p.id}, 'offensePos', this.value)">
-            <option value="Runner" ${p.offensePos === 'Runner' ? 'selected' : ''}>Designated Runner</option>
-            <option value="Lead Blocker" ${p.offensePos === 'Lead Blocker' ? 'selected' : ''}>Lead Blocker</option>
+            <option value="Quarterback" ${p.offensePos === 'Quarterback' ? 'selected' : ''}>Quarterback / Runner (QB)</option>
+            <option value="Left Wing" ${p.offensePos === 'Left Wing' ? 'selected' : ''}>Left Wing (WING-L)</option>
+            <option value="Right Wing" ${p.offensePos === 'Right Wing' ? 'selected' : ''}>Right Wing (WING-R)</option>
             <option value="Center" ${p.offensePos === 'Center' ? 'selected' : ''}>Center (C)</option>
             <option value="Left Guard" ${p.offensePos === 'Left Guard' ? 'selected' : ''}>Left Guard (LG)</option>
             <option value="Right Guard" ${p.offensePos === 'Right Guard' ? 'selected' : ''}>Right Guard (RG)</option>
             <option value="Left Tackle" ${p.offensePos === 'Left Tackle' ? 'selected' : ''}>Left Tackle (LT)</option>
             <option value="Right Tackle" ${p.offensePos === 'Right Tackle' ? 'selected' : ''}>Right Tackle (RT)</option>
-            <option value="Extra Back (RB3)" ${p.offensePos === 'Extra Back (RB3)' ? 'selected' : ''}>Extra Back / Fake (RB3)</option>
-            <option value="Runner (2nd)" ${p.offensePos === 'Runner (2nd)' ? 'selected' : ''}>Runner (2nd String)</option>
-            <option value="Lead (2nd)" ${p.offensePos === 'Lead (2nd)' ? 'selected' : ''}>Lead (2nd String)</option>
+            <option value="Quarterback (2nd)" ${p.offensePos === 'Quarterback (2nd)' ? 'selected' : ''}>Quarterback (2nd String)</option>
+            <option value="Wing Back (2nd)" ${p.offensePos === 'Wing Back (2nd)' ? 'selected' : ''}>Wing Back (2nd String)</option>
             <option value="Guard (2nd)" ${p.offensePos === 'Guard (2nd)' ? 'selected' : ''}>Guard (2nd String)</option>
           </select>
         </td>
@@ -205,14 +205,14 @@ class RosterManager {
           <table style="font-size:0.88rem">
             <thead><tr><th>Position</th><th>Active Starters & Rotation</th></tr></thead>
             <tbody>
-              <tr><td><strong>Designated Runner (R)</strong></td><td><strong style="color:var(--red)">${findPos("Runner")}</strong></td></tr>
-              <tr><td><strong>Lead Blocker (L)</strong></td><td><strong style="color:var(--gold)">${findPos("Lead")}</strong></td></tr>
+              <tr><td><strong>Quarterback / Runner (QB)</strong></td><td><strong style="color:var(--red)">${findPos("Quarterback")}</strong></td></tr>
+              <tr><td><strong>Left Wing (WING-L)</strong></td><td><strong style="color:var(--gold)">${findPos("Left Wing")}</strong></td></tr>
+              <tr><td><strong>Right Wing (WING-R)</strong></td><td><strong style="color:var(--gold)">${findPos("Right Wing")}</strong></td></tr>
               <tr><td><strong>Center (C)</strong></td><td>${findPos("Center")}</td></tr>
               <tr><td><strong>Left Guard (LG)</strong></td><td>${findPos("Left Guard")}</td></tr>
               <tr><td><strong>Right Guard (RG)</strong></td><td>${findPos("Right Guard")}</td></tr>
               <tr><td><strong>Left Tackle (LT)</strong></td><td>${findPos("Left Tackle")}</td></tr>
               <tr><td><strong>Right Tackle (RT)</strong></td><td>${findPos("Right Tackle")}</td></tr>
-              <tr><td><strong>Extra Back / Fake (RB3)</strong></td><td>${findPos("Extra Back")}</td></tr>
             </tbody>
           </table>
         </div>

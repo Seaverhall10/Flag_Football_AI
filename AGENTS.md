@@ -23,12 +23,15 @@ If two instructions conflict, stop that part of the work and surface the conflic
 
 ## Protected product decisions
 
-- One formation, six runs, five linemen, and three backs.
+- Six QB keeper runs with five linemen, one QB, WING-L, and WING-R.
+- QB catches the direct snap and runs on the current six-play installation.
+- Wing backs must support both spread and tight pre-snap spacing without changing their names or responsibilities.
 - No split wide receiver in the current base offense. The pass is parked.
 - Every playbook view must show all eight offensive players and all eight look-team defenders.
 - Every lineman must have a named defender or help responsibility.
-- Runner, lead, and fake routes must remain visually distinct.
+- QB run, lead-wing, backside-wing, and block paths must remain visually distinct.
 - The playbook must support true slow motion, Back, Next Beat, Reset, speed choice, and scrubbing.
+- The only public drill is the 5-on-4 half-offense versus half-defense drill defined in `PROJECT_AUTHORITY.md`. Do not restore old drill grids or station collections.
 - Schedule remains hidden from visible navigation until the owner explicitly restores it.
 
 ## Child privacy

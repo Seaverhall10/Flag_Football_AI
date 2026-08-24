@@ -1,104 +1,74 @@
-﻿# 🏈 Cy-Fair K/1 Lions — Flag Football AI
+# Cy-Fair K/1 Lions — Flag Football AI
 
-> **Live Coach Web Application:** [https://seaverhall10.github.io/Flag_Football_AI/](https://seaverhall10.github.io/Flag_Football_AI/)  
-> **GitHub Repository:** [https://github.com/Seaverhall10/Flag_Football_AI](https://github.com/Seaverhall10/Flag_Football_AI)  
-> **Canonical Local Workspace:** `C:\Users\User\Documents\Flag_Football_AI`
+> **Live app:** https://seaverhall10.github.io/Flag_Football_AI/
+>
+> **Repository:** https://github.com/Seaverhall10/Flag_Football_AI
+>
+> **Canonical local workspace:** `C:\Users\User\Documents\Flag_Football_AI`
 
-A modern, responsive, mobile-first coaching and sideline web application for the **Cy-Fair K/1 Lions** (CFSA 8-on-8 flag football, ages 5–6). Designed for high contrast and readability on outdoor mobile devices in bright sunlight.
+A mobile-first visual coaching app for the Cy-Fair K/1 Lions (8-on-8 flag football, ages 5–6).
 
----
+## Current teaching system
 
-## 🌟 Interactive Features
+### QB + Wings playbook
 
-- **📖 Full-Team Slow-Motion Playbook (`playbook.html`):** Seven teaching beats show all eight offensive players and all eight look-team defenders. Every lineman has a named block/help job, while Runner, Lead, and Fake routes remain visually distinct.
-- **⏱️ 5v4 Drill with 30-Second Play Clock (`drill.html`):** 18-rep scripted practice drill with a built-in Web Audio play clock, audio beeps, visual warning pulses, and rep counter.
-- **📋 60-Minute Practice Plan (`practice.html`):** Paced station-by-station schedule with interactive practice stopwatch and persistent gear cart checklist.
-- **⚡ Sideline Command Center (`app.html`):** Rapid play-calling interface with large touch targets, color-coded callouts, and audio cadence tones.
-- **📊 Clean-Rep Stop Rule Tracker (`tracker.html`):** Digital tap-to-score matrix for tracking clean reps across practices, calculating progress towards the 5-of-6 stop rule target with browser `localStorage` auto-saving.
-- **🛡️ Jarvis-Governed Collaboration:** Football authority, child privacy, agent roles, release gates, and public verification are kept in the repository so every AI works from the same system.
-- **🖨️ Printable Resource Suite:** Print-optimized, laminated-card-ready sheets:
-  - [Sideline Card](sideline.html)
-  - [Wristband Inserts](wristbands.html)
-  - [Play & Cue Flashcards](flashcards.html)
-  - [Station Posters](stations.html)
-  - [Parent Handout](parent.html)
-  - [Runner Guide](runner-guide.html)
+The six current calls are QB keepers. The QB catches the direct snap and runs. WING-L and WING-R can use either spread or tight spacing; the play-side Wing leads and the backside Wing sells the fake.
 
----
+| Call | Landmark | QB job |
+| --- | --- | --- |
+| QB Inside Right | C–RG | Catch, follow Lead Wing, plant once, north |
+| QB Inside Left | C–LG | Catch, follow Lead Wing, plant once, north |
+| QB Off-Tackle Right | RG–RT | Press alley, one cut, north |
+| QB Off-Tackle Left | LG–LT | Press alley, one cut, north |
+| QB Wide Right | Outside RT | Reach landmark, turn north |
+| QB Wide Left | Outside LT | Reach landmark, turn north |
 
-## 🏈 The Six Locked Runs
+The playbook shows all eight offensive players and all eight look-team defenders through seven slow-motion teaching beats. Every lineman has a named target or help responsibility.
 
-All plays use a **direct snap to the designated runner** from shotgun depth (~3 yards). Landmarks are fixed cone locations.
+### The one drill
 
-| Run | Call Symbol | Landmark Hole | Key Assignment |
-|---|---|---|---|
-| **Inside Right** | Red Diamond | `C-RG` (A-Gap) | Lead hits A-gap first; Runner plants at cone and explodes north. |
-| **Inside Left** | Blue Circle | `C-LG` (A-Gap) | Lead hits A-gap first; Runner follows lead, plants at cone. |
-| **Off-Tackle Right** | Gold Star | `RG-RT` (B-Gap) | Lead blocks LB in alley; Runner plants outside foot and cuts up. |
-| **Off-Tackle Left** | Green Triangle | `LG-LT` (B-Gap) | Lead blocks LB in alley; Runner plants outside foot and cuts up. |
-| **Wide Right** | Orange Square | `RT outside hip` | Lead seals perimeter; Runner sweeps to outside cone, cuts north. |
-| **Wide Left** | Purple Hexagon | `LT outside hip` | Lead seals perimeter; Runner sweeps to outside cone, cuts north. |
+`drills.html` is the only public drill:
 
----
+- Offense: Center, Guard, Tackle, Runner, and Lead RB.
+- Defense: D-Lineman, Linebacker, Corner, plus either another D-Lineman or another Linebacker.
+- Coach choices: Inside/Outside, Left/Right, and Two-DL/Two-LB front.
+- Seven beats teach lineup, direct snap, first step, legal fit, lane, shed/flag, and finish.
+- Job cards explain blocking targets, defensive gap integrity, separation, pursuit, and contain.
 
-## 📣 Five Cues That Never Change
+Old drill grids and station-poster collections are intentionally removed.
 
-1. **OL (Line):** *Find your jersey. Head out. Hands inside.*
-2. **Lead Blocker:** *Hole first. Then Linebacker.*
-3. **Runner:** *Follow. Plant. Go.*
-4. **Front 3 Defense:** *Stay home, then flag.*
-5. **Cornerback (CB):** *Nothing outside. Force in.*
+## Protected cues
 
----
+1. **OL:** Find your jersey. Head out. Hands inside.
+2. **QB:** See it. Catch it. Tuck it. Run.
+3. **Wing/Lead RB:** Lane first. Then Linebacker.
+4. **Defense:** Protect lane. Separate. Find ball. Shed.
+5. **Corner:** Nothing outside. Force in.
 
-## 🛑 The Stop Rule
+## Governance
 
-> **No new offense is installed** until all six runs average **5-of-6 clean reps** (snap, assignments, landmark, legal contact) in two consecutive practice sessions.
+- `AGENTS.md` — rules for every human and AI contributor.
+- `PROJECT_AUTHORITY.md` — football, safety, privacy, formation, and drill truth.
+- `AI_CHANGE_PROTOCOL.md` — branch, review, testing, deployment, and rollback rules.
+- `PROJECT_STATUS.md` — verified state, unknowns, and next work.
+- `scripts/verify_project.mjs` — automated release gate.
 
----
-
-## 🛠️ Project Structure
+## Main files
 
 ```text
-Flag_Football_AI/
-├── .github/
-│   └── workflows/
-│       └── pages.yml        # GitHub Pages auto-deploy workflow
-├── css/
-│   └── styles.css           # Responsive outdoor theme & print styles
-├── js/
-│   ├── app.js               # Core app utilities & state persistence
-│   ├── sim.js               # Governed seven-beat, full-team play teacher
-│   ├── timers.js            # Web Audio chimes, 30s play clock & stopwatch
-│   └── tracker.js           # 5-of-6 clean rep matrix logic
-├── index.html               # Team Hub & Quick-Jump Dashboard
-├── app.html                 # Sideline Command Center
-├── playbook.html            # Interactive Playbook & Field Diagrams
-├── practice.html            # 60-Minute Practice Plan & Station Timers
-├── drill.html               # 5v4 Drill & 30s Play Clock
-├── runner.html              # Runner Looks & Cues
-├── tracker.html             # Clean-Rep Stop Rule Tracker
-├── schedule.html            # Dormant schedule tool (hidden from navigation)
-├── sideline.html            # Printable Sideline Card
-├── wristbands.html          # Printable Wristband Strips
-├── flashcards.html          # Printable Play & Cue Flashcards
-├── stations.html            # Printable Station Cards
-├── parent.html              # Parent Info Handout
-├── runner-guide.html        # Printable Runner Guide
-├── styles.css               # Root stylesheet alias
-├── .nojekyll                # GitHub Pages asset routing rule
-├── AGENTS.md                # Rules every AI and human contributor follows
-├── PROJECT_AUTHORITY.md     # Football, safety, privacy, and teaching truth
-├── AI_CHANGE_PROTOCOL.md    # Branch, review, deployment, and rollback rules
-├── PROJECT_STATUS.md        # Verified state, unknowns, and next work
-└── README.md                # Project documentation
+playbook.html              QB direct-snap playbook with spread/tight Wings
+drills.html                the single animated half-team drill
+js/sim.js                  seven-beat full-team play animation
+js/half-drill.js           seven-beat half-team drill animation
+css/styles.css             authoritative visual design
+roster.html + js/roster.js anonymous local-only roster tool
+app.html                   sideline call interface
 ```
 
----
+## Release check
 
-## 📱 Offline & Sunlight Optimization
+```powershell
+node scripts/verify_project.mjs
+```
 
-- **Zero Runtime Dependencies:** Pure vanilla HTML5, CSS3, and modern JS.
-- **Instant Load Time:** Loads in milliseconds even on spotty field cell connections.
-- **Local State Persistence:** Checked equipment lists, rep logs, and schedule edits persist in `localStorage`.
-- **Outdoor Contrast:** High-contrast Navy `#07172c`, Gold `#f5b800`, and vivid run colors with heavy borders.
+A release also requires real-browser checks on desktop and 390×844 phone, all play/drill choices, slow motion, assignments, page overflow, console errors, GitHub Pages deployment, and the cache-busted public pages.

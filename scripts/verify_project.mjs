@@ -52,6 +52,7 @@ const playbook = read("playbook.html");
 const sim = read("js/sim.js");
 const roster = read("js/roster.js");
 const drills = read("drills.html");
+const halfDrill = read("js/half-drill.js");
 const authority = read("PROJECT_AUTHORITY.md");
 
 const runKeys = [...playbook.matchAll(/data-run-key=["']([^"']+)["']/g)].map((match) => match[1]);
@@ -63,7 +64,7 @@ for (const id of ["sim-root", "sim-play", "sim-back", "sim-next", "sim-reset", "
   pass(`playbook control #${id}`, new RegExp(`id=["']${id}["']`).test(playbook));
 }
 
-for (const id of ["LT", "LG", "C", "RG", "RT", "RB1", "RB2", "RB3"]) {
+for (const id of ["LT", "LG", "C", "RG", "RT", "QB", "WBL", "WBR"]) {
   pass(`offense position ${id}`, new RegExp(`\\b${id}\\b`).test(sim));
 }
 for (const id of ["EL", "DTL", "DTR", "ER", "LBL", "LBR", "CBL", "CBR"]) {
@@ -71,6 +72,31 @@ for (const id of ["EL", "DTL", "DTR", "ER", "LBL", "LBR", "CBL", "CBR"]) {
 }
 
 pass("no split wide receiver in governed playbook", !/wide receiver|data-pos=["']WR["']/i.test(`${playbook}\n${sim}\n${roster}`));
+pass("no interchangeable RB1 RB2 RB3 model", !/\\bRB[123]\\b/.test(`${playbook}\n${sim}\n${authority}\n${roster}`));
+pass("all six current calls are QB runs", (sim.match(/name:\s*["']QB\s/g) || []).length === 6);
+pass("spread Wing formation control", /data-sim-formation=["']wide["']/.test(playbook));
+pass("tight Wing formation control", /data-sim-formation=["']tight["']/.test(playbook));
+pass("playbook uses tall teaching field", /const H\s*=\s*940/.test(sim));
+pass("authority locks direct snap to QB", /QB catches the direct snap and is the Runner/i.test(authority));
+pass("authority locks spread and tight Wings", /Spread Wings and Tight Wings/i.test(authority));
+
+const drillPages = [...html.keys()].filter((relative) => /^drills?\.html$/i.test(relative));
+pass("exactly one public drill page", drillPages.length === 1 && drillPages[0] === "drills.html", drillPages.join(", "));
+pass("legacy drill page removed", !fs.existsSync(path.join(root, "drill.html")));
+pass("legacy station drill page removed", !fs.existsSync(path.join(root, "stations.html")));
+pass("legacy multi-station practice page removed", !fs.existsSync(path.join(root, "practice.html")));
+pass("legacy grid drill code removed", !fs.existsSync(path.join(root, "js", "grid5v4.js")));
+pass("single drill loads governed half-team animation", /src=["']js\/half-drill\.js(?:\?[^"']*)?["']/i.test(drills));
+pass("single drill has inside and outside choices", /data-half-lane=["']inside["']/.test(drills) && /data-half-lane=["']outside["']/.test(drills));
+pass("single drill has left and right choices", /data-half-side=["']left["']/.test(drills) && /data-half-side=["']right["']/.test(drills));
+pass("single drill has two-DL and two-LB choices", /data-half-front=["']two-dl["']/.test(drills) && /data-half-front=["']two-lb["']/.test(drills));
+for (const id of ["C", "G", "T", "RUN", "LEAD", "DL", "LB", "CB", "FLEX"]) {
+  pass(`half-team drill position ${id}`, new RegExp(`\\b${id}\\b`).test(halfDrill));
+}
+for (const id of ["half-drill-root", "half-play", "half-back", "half-next", "half-reset", "half-slider", "half-offense-jobs", "half-defense-jobs"]) {
+  pass(`single drill control #${id}`, new RegExp(`id=["']${id}["']`).test(drills));
+}
+pass("authority locks one half-team drill", /The public teaching app has one drill: half offense versus half defense/i.test(authority));
 pass("no three-point stance instruction", !/3-point stance|three-point stance/i.test(`${drills}\n${playbook}\n${sim}`));
 pass("authority protects Center and A gaps", /No line defender is head-up on Center or in either A gap/i.test(authority));
 pass("authority protects child privacy", /Never commit child names/i.test(read("AGENTS.md")));
