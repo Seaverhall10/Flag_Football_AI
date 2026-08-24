@@ -87,8 +87,11 @@ The public teaching app has one drill: half offense versus half defense.
 - Defense: defensive lineman, linebacker, cornerback, and a fourth defender selectable as either another defensive lineman or another linebacker.
 - Coaches select Inside or Outside and Left or Right before the rep.
 - Every view names each offensive blocking target and each defender's lane-integrity job.
-- With two DL: Guard owns inside DL, Tackle owns outside DL/Edge, Lead RB owns LB, Center snaps then helps inside, Corner is unblocked.
-- With two LB: Guard owns DL, Tackle releases to inside LB, Lead RB owns outside/play-side LB, Center snaps then helps inside, Corner is unblocked.
+- With two DL: Guard owns inside DL, Tackle owns outside DL/Edge, Center snaps and takes one direct angle to the play-side LB, Lead RB escorts the called lane, and Corner is unblocked.
+- With two LB: Guard owns DL, Tackle helps on the outside half of that DL, Center snaps and takes one direct angle to the inside LB, Lead RB owns the outside/play-side LB, and Corner is unblocked.
+- The Center targets the Linebacker's original fit landmark, uses open hands inside the legal torso and short controlled steps, then stops balanced when the Linebacker separates. The animation must never retarget the Center to the moving Linebacker.
+- OFFENSE and DEFENSE views may change emphasis only. They may not change the assignment, beat, lane, or player coordinates.
+- Responsibility lines are short, solid, and direct: gold Runner, white Lead, cyan blocks, and red defense.
 - Defense learns alignment, leverage, controlled hands, separation from the block, shed direction, pursuit, and contain—not collision wins.
 - The drill must animate Line Up, Direct Snap, First Step, Fit, Lane, Shed/Flag, and Finish in true slow motion.
 

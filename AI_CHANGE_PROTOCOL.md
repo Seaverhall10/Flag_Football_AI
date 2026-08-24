@@ -9,19 +9,21 @@ This is the working agreement for Jarvis, Codex, Google Antigravity, Grok, Gemin
 - **Builder:** implements one bounded branch. A builder does not redefine the football system.
 - **Reviewer:** checks rules, privacy, child usability, source quality, and regressions without becoming a second writer.
 - **GitHub:** durable review and release record. A local preview or agent chat is not deployment.
+- **Council issue:** the single shared proposal and decision room defined by `COUNCIL_BOARD.md`.
 
 ## Required workflow
 
 1. **Inspect:** fetch `origin/main`; inspect branch, status, recent commits, live page, and active project lane.
-2. **Declare:** state exact files, protected decisions, tests, and rollback commit before editing.
-3. **Branch:** use `agent/<name>-<task>` or `codex/<task>`. Never write directly to `main`.
-4. **Build narrowly:** preserve unrelated changes. New features must not replace verified teaching paths without an explicit migration decision.
-5. **Run the repository gate:** `node scripts/verify_project.mjs`.
-6. **Browser QA:** exercise every affected control on desktop and mobile; inspect visuals and console output.
-7. **Review:** compare the diff with `PROJECT_AUTHORITY.md`, this protocol, and the owner's newest instruction.
-8. **Release:** merge only after gates pass. GitHub Pages deploys only from `main`.
-9. **Public verification:** reload the public URL with a cache-busting query, repeat the critical checks, and record the deployed commit.
-10. **Handoff:** update `PROJECT_STATUS.md` with Verified, Inference, Unknown, and Next sections.
+2. **Council:** post the evidence and proposal to the single GitHub council issue. Material visual changes require child-learning, football/safety, and website challenge.
+3. **Declare:** Jarvis records `ACCEPTED FOR BUILD`, exact files, protected decisions, tests, rollback commit, and one builder.
+4. **Branch:** use `agent/<name>-<task>` or `codex/<task>`. Never write directly to `main`.
+5. **Build narrowly:** preserve unrelated changes. New features must not replace verified teaching paths without an explicit migration decision.
+6. **Run the repository gate:** `node scripts/verify_project.mjs`.
+7. **Browser QA:** exercise every affected control on desktop and mobile; inspect visuals and console output.
+8. **Review:** compare the diff with the accepted council proposal, `PROJECT_AUTHORITY.md`, this protocol, and the owner's newest instruction.
+9. **Release:** merge only after gates pass. GitHub Pages deploys only from `main`.
+10. **Public verification:** reload the public URL with a cache-busting query, repeat the critical checks, and record the deployed commit on the council issue.
+11. **Handoff:** update `PROJECT_STATUS.md` and `COUNCIL_DECISIONS.md` with Verified, Inference, Unknown, and Next sections.
 
 ## Stop conditions
 
