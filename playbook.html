@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Playbook - LIONS K/1</title>
   <meta name="description" content="Six locked runs. Interactive 8-on-8 play simulator. 5 OL + RB1-3 vs 3 DL, 2 LB, 2 CB, 1 S.">
-  <link rel="stylesheet" href="css/styles.css?v=sim1">
+  <link rel="stylesheet" href="css/styles.css?v=sim2">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -47,6 +47,10 @@
     <section class="panel">
       <div class="panel-header">
         <h2>Play</h2>
+        <div class="look-toggle" role="group" aria-label="Look">
+          <button type="button" class="btn btn-secondary" data-look="5v4" aria-pressed="false">5v4 Practice</button>
+          <button type="button" class="btn btn-secondary is-active" data-look="8v8" aria-pressed="true">8v8 Game</button>
+        </div>
       </div>
       <div id="sim-root" class="sim-root"></div>
       <p id="sim-cue" class="sim-cue" aria-live="polite">Tap a kid. PLAY runs the snap.</p>
@@ -110,7 +114,7 @@
   </main>
 
   <footer class="foot"><div class="foot-inner"><div>Six locked runs. 5 OL + RB1-3 vs 3 DL, 2 LB, 2 CB, 1 S.</div></div></footer>
-  <script src="js/app.js?v=sim1"></script>
-  <script src="js/sim.js?v=sim1"></script>
+  <script src="js/app.js?v=sim2"></script>
+  <script src="js/sim.js?v=sim2"></script>
 </body>
 </html>

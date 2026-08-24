@@ -73,6 +73,50 @@ class SoundEffects {
 
 const sfx = new SoundEffects();
 
+function unlockWebAudio() {
+  sfx.init();
+  if (sfx.ctx && sfx.ctx.state === "suspended") {
+    sfx.ctx.resume();
+  }
+}
+
+let wakeLock = null;
+async function requestWakeLock() {
+  try {
+    if (navigator.wakeLock && navigator.wakeLock.request) {
+      wakeLock = await navigator.wakeLock.request("screen");
+      if (wakeLock) {
+        wakeLock.addEventListener("release", () => {});
+      }
+    }
+  } catch (e) {}
+}
+async function releaseWakeLock() {
+  try {
+    if (wakeLock) {
+      await wakeLock.release();
+      wakeLock = null;
+    }
+  } catch (e) {
+    wakeLock = null;
+  }
+}
+function anyTimerRunning() {
+  return !!(drillClockInstance && drillClockInstance.isRunning) ||
+    !!(practiceTimerInstance && practiceTimerInstance.isRunning);
+}
+function syncWakeLock() {
+  if (anyTimerRunning()) requestWakeLock();
+  else releaseWakeLock();
+}
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && anyTimerRunning()) {
+    requestWakeLock();
+  }
+});
+document.addEventListener("touchstart", unlockWebAudio, { passive: true });
+document.addEventListener("pointerdown", unlockWebAudio, { passive: true });
+
 /**
  * 30-Second 5v4 Drill Play Clock
  */
@@ -131,9 +175,11 @@ class DrillPlayClock {
   }
 
   start() {
+    unlockWebAudio();
     sfx.init();
     if (this.isRunning) return;
     this.isRunning = true;
+    syncWakeLock();
     sfx.playCadence();
 
     this.timer = setInterval(() => {
@@ -157,6 +203,7 @@ class DrillPlayClock {
     this.isRunning = false;
     clearInterval(this.timer);
     this.updateDisplay();
+    syncWakeLock();
   }
 
   reset() {
@@ -236,9 +283,11 @@ class PracticeTimer {
   }
 
   start() {
+    unlockWebAudio();
     sfx.init();
     if (this.isRunning) return;
     this.isRunning = true;
+    syncWakeLock();
     this.timer = setInterval(() => {
       this.elapsedSeconds++;
       
@@ -261,6 +310,7 @@ class PracticeTimer {
     this.isRunning = false;
     clearInterval(this.timer);
     this.updateDisplay();
+    syncWakeLock();
   }
 
   reset() {
@@ -289,6 +339,24 @@ function initTimers() {
     document.getElementById("btn-drill-reset")?.addEventListener("click", () => drillClockInstance.reset());
     document.getElementById("btn-drill-next")?.addEventListener("click", () => drillClockInstance.nextRep());
     document.getElementById("btn-drill-prev")?.addEventListener("click", () => drillClockInstance.prevRep());
+
+    const field = document.getElementById("field-mode");
+    const fieldDigits = document.getElementById("field-mode-digits");
+    const origUpdate = drillClockInstance.updateDisplay.bind(drillClockInstance);
+    drillClockInstance.updateDisplay = function () {
+      origUpdate();
+      if (fieldDigits && this.display) fieldDigits.textContent = this.display.textContent;
+    };
+    document.getElementById("btn-drill-field")?.addEventListener("click", () => {
+      if (!field) return;
+      field.classList.add("is-on");
+      field.setAttribute("aria-hidden", "false");
+      if (fieldDigits) fieldDigits.textContent = drillClockInstance.display.textContent;
+    });
+    field?.addEventListener("click", () => {
+      field.classList.remove("is-on");
+      field.setAttribute("aria-hidden", "true");
+    });
   }
 
   if (document.getElementById("practice-timer-display")) {

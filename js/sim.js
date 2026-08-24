@@ -10,12 +10,12 @@
   const NS = "http://www.w3.org/2000/svg";
 
   const RUNS = {
-    "inside-right": { name: "Inside Right", color: "#d32f2f", holeX: 438, side: "R", defaultRunner: "RB3" },
-    "inside-left": { name: "Inside Left", color: "#1976d2", holeX: 362, side: "L", defaultRunner: "RB1" },
-    "off-tackle-right": { name: "Off-Tackle Right", color: "#e6a100", holeX: 514, side: "R", defaultRunner: "RB3" },
-    "off-tackle-left": { name: "Off-Tackle Left", color: "#2e7d32", holeX: 286, side: "L", defaultRunner: "RB1" },
-    "wide-right": { name: "Wide Right", color: "#e65100", holeX: 592, side: "R", defaultRunner: "RB3" },
-    "wide-left": { name: "Wide Left", color: "#7b1fa2", holeX: 208, side: "L", defaultRunner: "RB1" }
+    "inside-right": { name: "Inside Right", color: "#d32f2f", holeX: 438, side: "R", defaultRunner: "RB3", hole: "C-RG" },
+    "inside-left": { name: "Inside Left", color: "#1976d2", holeX: 362, side: "L", defaultRunner: "RB1", hole: "C-LG" },
+    "off-tackle-right": { name: "Off-Tackle Right", color: "#e6a100", holeX: 514, side: "R", defaultRunner: "RB3", hole: "RG-RT" },
+    "off-tackle-left": { name: "Off-Tackle Left", color: "#2e7d32", holeX: 286, side: "L", defaultRunner: "RB1", hole: "LG-LT" },
+    "wide-right": { name: "Wide Right", color: "#e65100", holeX: 592, side: "R", defaultRunner: "RB3", hole: "RT hip" },
+    "wide-left": { name: "Wide Left", color: "#7b1fa2", holeX: 208, side: "L", defaultRunner: "RB1", hole: "LT hip" }
   };
 
   const HOME = [
@@ -55,10 +55,23 @@
     bounce: false,
     cutback: false,
     players: {},
-    trails: []
+    trails: [],
+    look: "8v8"
   };
 
-  let svg, cueEl, holeRing, ballG, trailG, reduced = false;
+  let svg, cueEl, holeRing, holeLbl, ballG, trailG, reduced = false;
+  let audioCtx = null;
+
+  const HIDE_5V4 = ["LB2", "LCB", "RCB", "S"];
+
+  function unlockAudio() {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      if (!audioCtx) audioCtx = new AC();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+    } catch (e) {}
+  }
 
   function prefersReduced() {
     return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -127,6 +140,7 @@
     drawTrails();
     placeBallAtC(false);
     updateHole();
+    applyLook();
     updateSelection();
   }
 
@@ -137,15 +151,33 @@
   function placeBallAtC(onRunner) {
     const { runner } = roles();
     const target = onRunner ? state.players[runner] : state.players.C;
-    ballG.setAttribute("transform", `translate(${target.x},${target.y - (onRunner ? 10 : 18)})`);
+    ballG.setAttribute("transform", `translate(${target.x + (onRunner ? 14 : 0)},${target.y - (onRunner ? 6 : 22)})`);
     ballG.style.opacity = "1";
   }
 
   function updateHole() {
     const h = hole();
+    const run = RUNS[state.runKey];
     holeRing.setAttribute("cx", h.x);
     holeRing.setAttribute("cy", h.y);
-    holeRing.setAttribute("stroke", RUNS[state.runKey].color);
+    holeRing.setAttribute("stroke", run.color);
+    if (holeLbl) {
+      holeLbl.setAttribute("x", h.x);
+      holeLbl.setAttribute("y", h.y - 16);
+      holeLbl.setAttribute("fill", run.color);
+      holeLbl.textContent = run.hole;
+    }
+  }
+
+  function applyLook() {
+    HOME.forEach((h) => {
+      const p = state.players[h.id];
+      if (!p) return;
+      const hide = state.look === "5v4" && HIDE_5V4.indexOf(h.id) !== -1;
+      p.g.setAttribute("display", hide ? "none" : "");
+      p.g.setAttribute("aria-hidden", hide ? "true" : "false");
+    });
+    if (svg) svg.setAttribute("aria-label", state.look === "5v4" ? "5 on 4 practice look" : "8 on 8 play field");
   }
 
   function updateSelection() {
@@ -246,24 +278,31 @@
     svg.appendChild(losLbl);
 
     holeRing = el("circle", {
-      r: "9", fill: "none", "stroke-width": "2.5", class: "sim-hole",
+      r: "14", fill: "none", "stroke-width": "3.4", class: "sim-hole",
       opacity: "0.95"
     });
     svg.appendChild(holeRing);
+    holeLbl = el("text", {
+      "font-size": "16", "font-weight": "900", "text-anchor": "middle",
+      "font-family": "system-ui,sans-serif", "paint-order": "stroke",
+      stroke: "#0d3b24", "stroke-width": "4", class: "sim-hole-label"
+    });
+    holeLbl.textContent = "C-RG";
+    svg.appendChild(holeLbl);
 
     trailG = el("g", { class: "sim-trails" });
     svg.appendChild(trailG);
 
     HOME.forEach((h) => {
       const g = el("g", { class: "sim-player", "data-id": h.id, style: "cursor:pointer" });
-      const hit = el("circle", { r: "24", fill: "transparent" });
+      const hit = el("circle", { r: "30", fill: "transparent" });
       const disc = el("circle", {
-        r: "16", fill: h.fill, stroke: h.stroke, "stroke-width": h.kind === "CB" ? "2.6" : "2.2",
+        r: "20", fill: h.fill, stroke: h.stroke, "stroke-width": h.kind === "CB" ? "3.2" : "2.8",
         filter: "url(#tokShadow)"
       });
-      const ring = el("circle", { r: "21", fill: "none", stroke: "#D4A017", "stroke-width": "2.4", opacity: "0" });
+      const ring = el("circle", { r: "26", fill: "none", stroke: "#D4A017", "stroke-width": "3", opacity: "0" });
       const lab = el("text", {
-        x: "0", y: "4.5", fill: "#fff", "font-size": h.kind === "RB" ? "9" : "10",
+        x: "0", y: "5.5", fill: "#fff", "font-size": h.kind === "RB" ? "11" : "12",
         "font-weight": "800", "text-anchor": "middle", "font-family": "system-ui,sans-serif",
         "pointer-events": "none"
       });
@@ -280,9 +319,9 @@
 
     ballG = el("g", { class: "sim-ball" });
     ballG.appendChild(el("ellipse", {
-      rx: "7", ry: "4.4", fill: "#f4f0ea", stroke: "#2a2218", "stroke-width": "1.1"
+      rx: "11", ry: "7", fill: "#f4f0ea", stroke: "#2a2218", "stroke-width": "1.4"
     }));
-    ballG.appendChild(el("line", { x1: "-4", y1: "0", x2: "4", y2: "0", stroke: "#8b1e1e", "stroke-width": "0.9" }));
+    ballG.appendChild(el("line", { x1: "-6", y1: "0", x2: "6", y2: "0", stroke: "#8b1e1e", "stroke-width": "1.2" }));
     svg.appendChild(ballG);
 
     return svg;
@@ -375,11 +414,11 @@
 
     if (t < 0.25) {
       const u = t / 0.25;
-      const bx = lerp(cHome.x, rp.x, ease(u));
-      const by = lerp(cHome.y - 18, rp.y - 10, ease(u));
+      const bx = lerp(cHome.x, rp.x + 14, ease(u));
+      const by = lerp(cHome.y - 22, rp.y - 6, ease(u));
       ballG.setAttribute("transform", `translate(${bx},${by})`);
     } else {
-      ballG.setAttribute("transform", `translate(${rp.x},${rp.y - 10})`);
+      ballG.setAttribute("transform", `translate(${rp.x + 14},${rp.y - 6})`);
     }
 
     // trails
@@ -393,7 +432,7 @@
     const leadP = state.players[lead];
     const leadH = HOME.find((x) => x.id === lead);
     const lbs = [state.players.LB1, state.players.LB2];
-    const nearestLbHome = HOME.filter((x) => x.kind === "LB").sort((a, b) => Math.abs(a.x - h.x) - Math.abs(b.x - h.x))[0];
+    const nearestLbHome = HOME.filter((x) => x.kind === "LB" && !(state.look === "5v4" && HIDE_5V4.indexOf(x.id) !== -1)).sort((a, b) => Math.abs(a.x - h.x) - Math.abs(b.x - h.x))[0];
     const leadTargetX = bounce ? h.x + flare * 0.4 : (cut ? h.x - flare * 0.2 : h.x);
     const uLead = seg(t, 0.2, 1.6);
     if (uLead < 0.55) {
@@ -428,6 +467,7 @@
 
     // LBs flow to hole then ball
     ["LB1", "LB2"].forEach((id) => {
+      if (state.look === "5v4" && HIDE_5V4.indexOf(id) !== -1) return;
       const p = state.players[id];
       const home = HOME.find((x) => x.id === id);
       const over = cut ? (run.side === "R" ? 36 : -36) : 0;
@@ -486,6 +526,7 @@
 
   function play() {
     if (state.playing) return;
+    unlockAudio();
     reduced = prefersReduced();
     snapCue();
     state.playing = true;
@@ -526,7 +567,8 @@
     snapCue();
     document.querySelectorAll(".play-btn").forEach((b) => {
       const on = b.getAttribute("data-run-key") === key;
-      b.style.outline = on ? `3px solid ${RUNS[key].color}` : "none";
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
     });
   }
 
@@ -566,10 +608,27 @@
     if (resetBtn) resetBtn.addEventListener("click", reset);
     if (bounceBtn) bounceBtn.addEventListener("click", bounce);
     if (cutBtn) cutBtn.addEventListener("click", cutback);
+    document.querySelectorAll("[data-look]").forEach((b) => {
+      b.addEventListener("click", () => setLook(b.getAttribute("data-look")));
+    });
+    ["touchstart", "pointerdown"].forEach((ev) => {
+      document.addEventListener(ev, unlockAudio, { passive: true });
+    });
+    setLook(state.look);
     setRun(state.runKey);
   }
 
-  window.LionsSim = { setRun, play, reset, bounce, cutback };
+  function setLook(mode) {
+    state.look = mode === "5v4" ? "5v4" : "8v8";
+    document.querySelectorAll("[data-look]").forEach((b) => {
+      const on = b.getAttribute("data-look") === state.look;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    applyLook();
+  }
+
+  window.LionsSim = { setRun, play, reset, bounce, cutback, setLook };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();

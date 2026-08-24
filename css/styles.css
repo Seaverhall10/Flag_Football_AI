@@ -669,3 +669,46 @@ th {
 @media (prefers-reduced-motion: reduce) {
   .sim-hole { animation: none; }
 }
+
+
+.look-toggle { display: flex; gap: 6px; flex-wrap: wrap; }
+.look-toggle .btn { min-height: 40px; font-size: 0.78rem; }
+.play-btn.is-active,
+.look-toggle .btn.is-active {
+  outline: 3px solid #D4A017;
+  outline-offset: 1px;
+  transform: scale(1.03);
+  z-index: 1;
+}
+#sim-play.btn-primary,
+.sim-big.btn-primary {
+  background: #FFD54A;
+  color: #071018;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 3px #D4A017, 0 8px 18px rgba(0,0,0,.35);
+  font-size: 1.2rem;
+  letter-spacing: 0.14em;
+  min-height: 56px;
+  font-weight: 900;
+}
+.field-mode {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  background: #05080d;
+  color: #FFD54A;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+.field-mode.is-on { display: flex; }
+.field-mode-digits {
+  font-size: clamp(7rem, 32vw, 18rem);
+  font-weight: 900;
+  font-family: ui-monospace, "Segoe UI", monospace;
+  line-height: 0.9;
+  text-shadow: 0 0 24px rgba(212,160,23,.45);
+}
+.field-mode-hint { color: #c5ccd6; font-weight: 700; margin-top: 16px; letter-spacing: 0.12em; }
