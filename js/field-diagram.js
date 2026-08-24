@@ -1,6 +1,6 @@
 ﻿/**
  * Cy-Fair K/1 Lions — Modern SVG Field Diagram
- * Renders 8-on-8 flag football formation with dynamic run path visualizer.
+ * Renders 8-on-8 flag football formation with dynamic run path visualizer and Lions midfield mark.
  */
 
 const FIELD_CONFIG = {
@@ -89,6 +89,11 @@ function renderFieldDiagram(containerId, activeRunKey = "inside-right") {
       <!-- Field Surface -->
       <rect x="8" y="8" width="784" height="444" rx="12" fill="#144a29" stroke="#0f172a" stroke-width="3" />
       
+      <!-- Lions Watermark at Midfield -->
+      <g opacity="0.08" transform="translate(340, 160) scale(3.2)">
+        <path d="M18 2 C13 2 9 5 8 10 C7 14 9 17 9 19 C7 19 5 21 5 24 C5 28 9 31 14 31 C15 31 16 33 18 33 C20 33 21 31 22 31 C27 31 31 28 31 24 C31 21 29 19 27 19 C27 17 29 14 28 10 C27 5 23 2 18 2 Z" fill="#ffffff" />
+      </g>
+
       <!-- Yardlines -->
       <line x1="16" y1="115" x2="784" y2="115" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="8,6" />
       <line x1="16" y1="195" x2="784" y2="195" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" />
@@ -146,7 +151,7 @@ function renderFieldDiagram(containerId, activeRunKey = "inside-right") {
         <path d="${run.runnerPath}" fill="none" stroke="${run.color}" stroke-width="5.5" stroke-linecap="round" marker-end="url(#arrow-${activeRunKey})" />
       </g>
 
-      <!-- Offense 8 Players -->
+      <!-- Offense 8 Players (Lions Squad) -->
       <g id="offense">
         <!-- Center (C) -->
         <circle cx="400" cy="300" r="17" fill="#0b192c" stroke="#f59e0b" stroke-width="2.5" />
