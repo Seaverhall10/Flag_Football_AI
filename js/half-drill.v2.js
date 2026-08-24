@@ -8,12 +8,12 @@
     { name: "DIRECT SNAP", cue: "Center snaps to Runner. Defense reads the ball without crossing early." },
     { name: "FIRST STEP", cue: "Guard: your DL. Center: A-gap, then climb to the backer." },
     { name: "FIT", cue: "G on the DL. C wraps inside to the backer. T on the edge." },
-    { name: "LANE", cue: "Lead RB enters first. Runner commits to the selected lane." },
+    { name: "LANE", cue: "If we go outside, the other back takes the Corner. Runner hits the lane." },
     { name: "SHED / FLAG", cue: "Defense finds the ball, sheds toward the lane, and closes under control." },
     { name: "FINISH", cue: "Runner goes north. Defense pursues inside-out; Corner keeps contain." }
   ];
   const state = {
-    lane: "inside", side: "right", front: "two-dl", decoy: true, t: 0, playing: false, speed: 10500,
+    lane: "inside", side: "right", front: "two-dl", decoy: false, carrier: "RB1", t: 0, playing: false, speed: 10500,
     startT: 0, startedAt: 0, raf: 0, selected: null, players: {},
     nudge: { RUN: { x: 0, y: 0 }, LEAD: { x: 0, y: 0 } },
     shown: null, dragging: null
@@ -37,17 +37,20 @@
   function gHipLabel() { return gHipKind() === "inside" ? "INSIDE HIP" : "OUTSIDE HIP"; }
   function playOut() { return state.side === "right" ? 1 : -1; }
   function hipDx(kind) { const outside = playOut() * HIP; return kind === "outside" ? outside : -outside; }
-  function hipOf(def, kind) { return { x: def.x + hipDx(kind), y: def.y + 8 }; }
+  function hipOf(def, kind) { return { x: def.x + hipDx(kind), y: def.y + 4 }; }
+  function runnerId() { return state.carrier === "RB2" ? "LEAD" : "RUN"; }
+  function leadId() { return state.carrier === "RB2" ? "RUN" : "LEAD"; }
+  function leadToCorner() { return state.lane === "outside" || state.decoy; }
 
   function labels() {
     return {
-      C: "CENTER", G: "GUARD", T: "TACKLE", RUN: "RUNNER", LEAD: "LEAD RB",
+      C: "CENTER", G: "GUARD", T: "TACKLE", RUN: "RB1", LEAD: "RB2",
       DL: "D-LINE", LB: state.front === "two-dl" ? "LINEBACKER" : "LB-IN", CB: "CORNER",
       FLEX: state.front === "two-dl" ? "EDGE / DL" : "LB-OUT"
     };
   }
   function tokenLabels() {
-    return { C: "C", G: "G", T: "T", RUN: "R", LEAD: "L", DL: "DL", LB: "LB", CB: "CB", FLEX: state.front === "two-dl" ? "E" : "O" };
+    return { C: "C", G: "G", T: "T", RUN: "1", LEAD: "2", DL: "DL", LB: "LB", CB: "CB", FLEX: state.front === "two-dl" ? "E" : "O" };
   }
   function rawHomes() {
     const ol = { C: { x: 310, y: 410 }, G: { x: 500, y: 410 }, T: { x: 700, y: 410 }, RUN: { x: 330, y: 710 }, LEAD: { x: 680, y: 610 } };
@@ -67,13 +70,20 @@
     const tHip = hipOf(h.FLEX, gHipKind());
     const cHip = hipOf(h.LB, "inside");
     const lanePt = { x: laneX(), y: LOS - 20 };
-    return {
+    const cbHip = hipOf(h.CB, "inside");
+    const run = runnerId(), lead = leadId();
+    const leadPoint = leadToCorner() ? cbHip : lanePt;
+    const leadTask = state.lane === "outside"
+      ? "You are the outside back. Kick the Corner. Inside hip. Seal him out."
+      : (state.decoy ? "Decoy wide. Hold the Corner." : "Lead through the hole. Center has the backer.");
+    const out = {
       C: { target: "LB", point: cHip, task: "Snap. Climb through the A-gap. Wrap inside the DL to the backer. Do not block Guard's man." },
       G: { target: "DL", point: gHip, task: `${gHipLabel()} of D-LINE. That is YOUR guy.` },
-      T: { target: "FLEX", point: tHip, task: `${gHipLabel()} of EDGE. Stay on him.` },
-      LEAD: { target: state.decoy ? "CB" : "LANE", point: state.decoy ? { x: h.CB.x, y: h.CB.y + 36 } : lanePt, task: state.decoy ? "Decoy wide. Hold the Corner." : "Lead through the hole. Center has the backer." },
-      RUN: { target: "LANE", point: { x: laneX(), y: LOS }, task: `Snap. ${laneName()} ${sideName()}. One cut. North.` }
+      T: { target: "FLEX", point: tHip, task: `${gHipLabel()} of EDGE. Stay on him.` }
     };
+    out[run] = { target: "LANE", point: { x: laneX(), y: LOS }, task: `You have the ball. ${laneName()} ${sideName()}. Follow. Plant. Go.` };
+    out[lead] = { target: leadToCorner() ? "CB" : "LANE", point: leadPoint, task: leadTask };
+    return out;
   }
   function defenseTasks() {
     return state.front === "two-dl"
@@ -81,25 +91,29 @@
           DL: `Anchor inside · separate from Guard · shed toward ${laneName()} lane`,
           FLEX: `Set the edge · outside arm free · squeeze without losing contain`,
           LB: `Stay square. Center is climbing to you. Shed, then the ball.`,
-          CB: `Unblocked contain · nothing outside · force Runner back to pursuit`
+          CB: state.lane === "outside"
+            ? `Fight the lead · keep outside leverage · nothing outside`
+            : `Unblocked contain · nothing outside · force Runner back to pursuit`
         }
       : {
           DL: `Anchor inside · separate from Guard · shed toward ${laneName()} lane`,
           LB: `Stay square. Center is climbing to you. Shed, then the ball.`,
-          FLEX: `Stay square outside · fit Lead RB · protect the selected lane`,
-          CB: `Unblocked contain · nothing outside · force Runner back to pursuit`
+          FLEX: `Stay square outside · fit the lead · protect the selected lane`,
+          CB: state.lane === "outside"
+            ? `Fight the lead · keep outside leverage · nothing outside`
+            : `Unblocked contain · nothing outside · force Runner back to pursuit`
         };
   }
   function offenseRole(id) {
-    if (id === "RUN") return "BALL";
-    if (id === "LEAD") return state.decoy ? "DECOY" : "LEAD";
+    if (id === runnerId()) return "BALL";
+    if (id === leadId()) return state.lane === "outside" ? "CB" : (state.decoy ? "DECOY" : "LEAD");
     if (id === "G") return gHipLabel();
     if (id === "C") return "CLIMB";
     return "BLOCK";
   }
   function tokenCaption(id) {
-    if (id === "RUN") return "BALL";
-    if (id === "LEAD") return state.decoy ? "DECOY" : "LEAD";
+    if (id === runnerId()) return "BALL";
+    if (id === leadId()) return state.lane === "outside" ? "CB" : (state.decoy ? "DECOY" : "LEAD");
     return "";
   }
 
@@ -133,30 +147,31 @@
   }
 
   function runnerPose(beat) {
-    const h = homes().RUN, x = laneX(), finishX = state.lane === "outside" ? x : lerp(x, 500, .12);
-    return [h, { x: h.x, y: h.y - 8 }, { x: lerp(h.x, x, .18), y: 685 }, { x: lerp(h.x, x, .48), y: 555 }, { x, y: 420 }, { x, y: 300 }, { x: finishX, y: 70 }][beat];
+    const h = homes()[runnerId()], x = laneX(), finishX = state.lane === "outside" ? x : lerp(x, 500, .12);
+    return [h, { x: h.x, y: h.y - 6 }, { x: lerp(h.x, x, .22), y: 620 }, { x: lerp(h.x, x, .52), y: 500 }, { x, y: 380 }, { x, y: 270 }, { x: finishX, y: 64 }][beat];
   }
   function leadPose(beat) {
-    const h = homes().LEAD, target = assignments().LEAD.point, x = laneX();
-    if (state.decoy) {
-      const cb = homes().CB;
-      const flare = { x: lerp(h.x, cb.x, .78), y: cb.y + 36 };
+    const h = homes()[leadId()], x = laneX();
+    if (leadToCorner()) {
+      const hip = hipOf(homes().CB, state.lane === "outside" ? "inside" : "outside");
+      const fit = state.lane === "outside" ? hip : { x: lerp(h.x, homes().CB.x, .78), y: homes().CB.y + 28 };
       return [
         h,
-        { x: lerp(h.x, flare.x, .1), y: h.y - 6 },
-        { x: lerp(h.x, flare.x, .38), y: 575 },
-        { x: lerp(h.x, flare.x, .62), y: 455 },
-        { x: lerp(h.x, flare.x, .86), y: 340 },
-        flare,
-        { x: lerp(flare.x, cb.x, .28), y: cb.y + 28 }
+        { x: lerp(h.x, fit.x, .08), y: h.y - 6 },
+        { x: lerp(h.x, fit.x, .32), y: lerp(h.y, fit.y, .28) },
+        { x: lerp(h.x, fit.x, .58), y: lerp(h.y, fit.y, .55) },
+        mix(h, fit, .86),
+        fit,
+        { x: fit.x, y: fit.y - 2 }
       ][beat];
     }
-    return [h, { x: h.x, y: h.y - 8 }, { x: lerp(h.x, x, .3), y: 610 }, { x: lerp(h.x, x, .68), y: 505 }, { x, y: 365 }, { x: target.x, y: target.y + 35 }, { x: target.x, y: target.y + 30 }][beat];
+    const target = { x: x, y: LOS - 18 };
+    return [h, { x: h.x, y: h.y - 6 }, { x: lerp(h.x, x, .3), y: 560 }, { x: lerp(h.x, x, .68), y: 460 }, { x, y: 340 }, { x: target.x, y: target.y + 20 }, { x: target.x, y: target.y + 16 }][beat];
   }
   function poseAtBeat(beat) {
     const h = homes(), out = basePoses();
-    out.RUN = runnerPose(beat);
-    out.LEAD = leadPose(beat);
+    out[runnerId()] = runnerPose(beat);
+    out[leadId()] = leadPose(beat);
     const x = laneX(), laneBias = state.side === "right" ? -24 : 24;
     if (beat >= 5) {
       const lbTarget = { x: x + laneBias, y: 275 };
@@ -197,18 +212,23 @@
   }
   function reactToBall(poses) {
     if (state.t < 1) return;
-    const ballX = poses.RUN.x;
-    const k = state.dragging === "RUN" ? 0.22 : 0.55;
+    const rid = runnerId();
+    const ballX = poses[rid].x;
+    const k = state.dragging === rid ? 0.22 : 0.55;
     const follow = clamp((state.t - 1) / 4.2, 0, 1);
-    const lbWant = { x: lerp(homes().LB.x, ballX + (state.side === "right" ? -24 : 24), follow), y: lerp(homes().LB.y, Math.min(poses.RUN.y - 50, 280), follow * 0.7) };
+    const lbWant = { x: lerp(homes().LB.x, ballX + (state.side === "right" ? -24 : 24), follow), y: lerp(homes().LB.y, Math.min(poses[rid].y - 50, 280), follow * 0.7) };
     poses.LB = mix(poses.LB, lbWant, k);
-    const margin = 72;
+    const margin = state.lane === "outside" ? 48 : 72;
     let wantCb = poses.CB.x;
-    if (state.side === "right") wantCb = Math.max(poses.CB.x, ballX + margin);
-    else wantCb = Math.min(poses.CB.x, ballX - margin);
-    poses.CB.x = lerp(poses.CB.x, wantCb, k);
+    if (state.lane === "outside" && state.t >= 2) {
+      /* stay and fight the lead; do not immediately chase outside */
+    } else {
+      if (state.side === "right") wantCb = Math.max(poses.CB.x, ballX + margin);
+      else wantCb = Math.min(poses.CB.x, ballX - margin);
+      poses.CB.x = lerp(poses.CB.x, wantCb, k);
+    }
     if (state.t < 5) {
-      const pin = state.dragging === "RUN" ? 0.35 : 0.2;
+      const pin = state.dragging === rid ? 0.35 : 0.2;
       poses.DL = mix(poses.DL, { x: homes().DL.x, y: homes().DL.y + 6 }, pin);
       poses.FLEX = mix(poses.FLEX, { x: homes().FLEX.x + playOut() * 8, y: homes().FLEX.y + 4 }, pin);
     }
@@ -231,7 +251,7 @@
     else poses.C.x = Math.max(poses.C.x, limit);
   }
   function separate(poses) {
-    const close = { "G|DL": 1, "DL|G": 1, "T|FLEX": 1, "FLEX|T": 1 };
+    const close = { "G|DL": 1, "DL|G": 1, "T|FLEX": 1, "FLEX|T": 1, "LEAD|CB": 1, "CB|LEAD": 1, "RUN|CB": 1, "CB|RUN": 1 };
     const ids = Object.keys(poses);
     for (let pass = 0; pass < 4; pass += 1) {
       for (let i = 0; i < ids.length; i += 1) {
@@ -264,7 +284,7 @@
   }
 
   function drawLane() {
-    const x = laneX(), start = homes().RUN;
+    const x = laneX(), start = homes()[runnerId()];
     lanePath.setAttribute("d", `M ${start.x},${start.y} C ${start.x},650 ${x},540 ${x},${LOS} L ${x},70`);
     lanePath.setAttribute("stroke", state.lane === "inside" ? "#f6c344" : "#fb923c");
     laneLabel.setAttribute("x", String(x));
@@ -305,22 +325,17 @@
       });
       blockLayer.appendChild(path);
     });
-    const decoyLead = state.decoy;
-    const leadD = decoyLead
-      ? (function () {
-          const cb = homes().CB;
-          const flare = { x: lerp(h.LEAD.x, cb.x, .78), y: cb.y + 36 };
-          return `M ${h.LEAD.x},${h.LEAD.y} Q ${flare.x},${(h.LEAD.y + flare.y) / 2} ${flare.x},${flare.y}`;
-        }())
-      : pathFor("LEAD");
+    const lid = leadId();
+    const toCb = leadToCorner();
+    const kick = state.lane === "outside";
     const leadPath = el("path", {
-      d: leadD, fill: "none",
-      stroke: decoyLead ? "#c084fc" : "#fff",
-      "stroke-width": decoyLead ? "2.8" : "3.2",
-      "stroke-dasharray": decoyLead ? "6 10" : "14 10",
+      d: pathFor(lid), fill: "none",
+      stroke: kick ? "#fff" : (state.decoy ? "#c084fc" : "#fff"),
+      "stroke-width": "3",
+      "stroke-dasharray": kick ? "0" : (state.decoy ? "6 8" : "10 8"),
       "stroke-linecap": "round",
-      "marker-end": decoyLead ? "url(#halfDecoyArrow)" : "url(#halfLeadArrow)",
-      "data-half-owner": "LEAD", "pointer-events": "none"
+      "marker-end": kick ? "url(#halfLeadArrow)" : (state.decoy ? "url(#halfDecoyArrow)" : "url(#halfLeadArrow)"),
+      "data-half-owner": lid, "pointer-events": "none"
     });
     blockLayer.appendChild(leadPath);
   }
@@ -330,7 +345,9 @@
   function drawHips(poses) {
     hipLayer.innerHTML = "";
     if (state.t < 2 || state.t > 5) return;
-    [["G", "DL", gHipKind()], ["T", "FLEX", gHipKind()], ["C", "LB", "inside"]].forEach(([ol, defId, kind]) => {
+    const marks = [["G", "DL", gHipKind()], ["T", "FLEX", gHipKind()], ["C", "LB", "inside"]];
+    if (state.lane === "outside") marks.push([leadId(), "CB", "inside"]);
+    marks.forEach(([ol, defId, kind]) => {
       const hip = hipOf(poses[defId], kind);
       const dir = hipDx(kind) >= 0 ? 1 : -1;
       const chev = el("path", {
@@ -502,7 +519,7 @@
       player.selected.setAttribute("opacity", state.selected === id ? "1" : "0");
     });
     drawHips(poses);
-    const center = poses.C, runner = poses.RUN, amount = clamp(state.t, 0, 1);
+    const center = poses.C, runner = poses[runnerId()], amount = clamp(state.t, 0, 1);
     const ballPos = state.t < 1
       ? mix({ x: center.x, y: center.y + 16 }, { x: runner.x + 12, y: runner.y - 4 }, ease(amount))
       : { x: runner.x + 12, y: runner.y - 4 };
@@ -516,7 +533,7 @@
   }
   function updateJobs() {
     const h = homes(), a = assignments(), d = defenseTasks();
-    document.getElementById("half-offense-jobs").innerHTML = OFFENSE.map((id) => `<button type="button" class="assignment-card role-${offenseRole(id).toLowerCase().replace(" ", "-")}" data-half-job="${id}"><span class="assignment-position">${h[id].label}</span><span class="assignment-role">${id === "RUN" ? "RUN THE LANE" : id === "LEAD" ? (state.decoy ? "DECOY WIDE" : "LEAD BLOCK") : id === "G" ? gHipLabel() : id === "C" ? "WRAP TO LB" : "BLOCK"}</span><span class="assignment-task">${a[id].task}</span></button>`).join("");
+    document.getElementById("half-offense-jobs").innerHTML = OFFENSE.map((id) => `<button type="button" class="assignment-card role-${offenseRole(id).toLowerCase().replace(" ", "-")}" data-half-job="${id}"><span class="assignment-position">${h[id].label}</span><span class="assignment-role">${id === runnerId() ? "HAS THE BALL" : id === leadId() ? (state.lane === "outside" ? "KICK THE CB" : (state.decoy ? "DECOY WIDE" : "LEAD THE HOLE")) : id === "G" ? gHipLabel() : id === "C" ? "WRAP TO LB" : "BLOCK"}</span><span class="assignment-task">${a[id].task}</span></button>`).join("");
     document.getElementById("half-defense-jobs").innerHTML = DEFENSE.map((id) => `<button type="button" class="assignment-card defense-job" data-half-job="${id}"><span class="assignment-position">${h[id].label}</span><span class="assignment-role">LANE INTEGRITY</span><span class="assignment-task">${d[id]}</span></button>`).join("");
     document.querySelectorAll("[data-half-job]").forEach((card) => card.addEventListener("click", function () { selectPlayer(card.getAttribute("data-half-job")); }));
   }
@@ -528,17 +545,20 @@
     if (state.selected) cueEl.textContent = `${homes()[id].label}: ${task}`;
   }
   function updateUi() {
-    [["half-lane", state.lane], ["half-side", state.side], ["half-front", state.front]].forEach(([group, value]) => document.querySelectorAll(`[data-${group}]`).forEach((button) => { const active = button.getAttribute(`data-${group}`) === value; button.classList.toggle("is-active", active); button.setAttribute("aria-pressed", String(active)); }));
+    [["half-lane", state.lane], ["half-side", state.side], ["half-front", state.front], ["half-carrier", state.carrier]].forEach(([group, value]) => document.querySelectorAll(`[data-${group}]`).forEach((button) => { const active = button.getAttribute(`data-${group}`) === value; button.classList.toggle("is-active", active); button.setAttribute("aria-pressed", String(active)); }));
     document.querySelectorAll("[data-half-decoy]").forEach((button) => {
       const on = button.getAttribute("data-half-decoy") === "on";
       const active = on === state.decoy;
       button.classList.toggle("is-active", active);
       button.setAttribute("aria-pressed", String(active));
     });
+    const decoyBox = document.getElementById("half-decoy-choice");
+    if (decoyBox) decoyBox.hidden = state.lane === "outside";
     const formation = state.front === "two-dl" ? "2 DL · 1 LB · 1 CB" : "1 DL · 2 LB · 1 CB";
-    document.getElementById("half-call").innerHTML = `<strong>${laneName()} ${sideName()}</strong><span>${formation}${state.decoy ? " · DECOY WIDE" : ""}</span>`;
-    document.getElementById("half-title").textContent = `${laneName()[0] + laneName().slice(1).toLowerCase()} ${sideName()[0] + sideName().slice(1).toLowerCase()} · ${frontName()}`;
-    document.getElementById("half-badge").textContent = `${laneName()} · ${sideName()}`;
+    const extra = state.lane === "outside" ? " · RB KICKS CB" : (state.decoy ? " · DECOY WIDE" : "");
+    document.getElementById("half-call").innerHTML = `<strong>${laneName()} ${sideName()} · ${state.carrier}</strong><span>${formation}${extra}</span>`;
+    document.getElementById("half-title").textContent = `${laneName()[0] + laneName().slice(1).toLowerCase()} ${sideName()[0] + sideName().slice(1).toLowerCase()} · ${state.carrier}`;
+    document.getElementById("half-badge").textContent = `${state.carrier} · ${laneName()} ${sideName()}`;
   }
   function renderChoice() {
     pause();
@@ -558,7 +578,7 @@
   function tick(now) { if (!state.playing) return; const remaining = 6 - state.startT, duration = state.speed * (remaining / 6), progress = duration <= 0 ? 1 : clamp((now - state.startedAt) / duration, 0, 1); setT(state.startT + remaining * progress); if (progress < 1 && state.playing) state.raf = requestAnimationFrame(tick); else { state.playing = false; setT(6); playButton.textContent = "PLAY AGAIN"; } }
   function play() { if (state.playing) { pause(); return; } if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setT(6); return; } if (state.t >= 5.99) setT(0); state.playing = true; state.startT = state.t; state.startedAt = performance.now(); playButton.textContent = "PAUSE"; state.raf = requestAnimationFrame(tick); }
   function setBeat(value) { pause(); setT(clamp(value, 0, 6)); }
-  function bindChoice(selector, key) { document.querySelectorAll(selector).forEach((button) => button.addEventListener("click", function () { state[key] = button.getAttribute(selector.slice(1, -1)); if (key === "lane") state.decoy = state.lane === "inside"; renderChoice(); })); }
+  function bindChoice(selector, key) { document.querySelectorAll(selector).forEach((button) => button.addEventListener("click", function () { state[key] = button.getAttribute(selector.slice(1, -1)); if (key === "lane" && state.lane === "outside") state.decoy = false; renderChoice(); })); }
 
   document.addEventListener("DOMContentLoaded", function () {
     const root = document.getElementById("half-drill-root");
@@ -572,6 +592,7 @@
     bindChoice("[data-half-lane]", "lane");
     bindChoice("[data-half-side]", "side");
     bindChoice("[data-half-front]", "front");
+    bindChoice("[data-half-carrier]", "carrier");
     document.querySelectorAll("[data-half-decoy]").forEach((button) => button.addEventListener("click", function () { state.decoy = button.getAttribute("data-half-decoy") === "on"; renderChoice(); }));
     playButton.addEventListener("click", play);
     document.getElementById("half-back").addEventListener("click", function () { setBeat(Math.round(state.t) - 1); });

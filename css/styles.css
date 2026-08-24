@@ -1196,3 +1196,6 @@ body.half-drill-page { padding-bottom: 16px; }
   .half-drill-page .sim-root.half-drill-root,
   .half-drill-page .half-team-svg { max-height: 42vh; }
 }
+
+.half-drill-page .decoy-row { grid-template-columns: minmax(0, 280px); margin: 0 0 6px; }
+.half-drill-page .decoy-row[hidden] { display: none; }
