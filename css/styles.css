@@ -788,3 +788,11 @@ body.sunlight-mode .play-btn.run-red { background: #ff1a1a; color: #fff; }
 body.sunlight-mode .play-btn.run-blue { background: #1a6aff; color: #fff; }
 body.sunlight-mode .play-btn.run-gold { background: #ffd000; color: #000; }
 body.sunlight-mode .btn-grid { gap: 12px; }
+
+
+.grid5-root { max-width: 920px; margin: 0 auto; }
+.grid5-svg { border-radius: 12px; background: #0d3b24; }
+.grid5-dots { display: flex; gap: 8px; justify-content: center; margin: 8px 0 4px; }
+.grid5-dots span { width: 10px; height: 10px; border-radius: 50%; background: #3a4d68; display: inline-block; }
+.grid5-dots span.is-on { background: #D4A017; }
+#grid5-slow { min-width: 140px; }

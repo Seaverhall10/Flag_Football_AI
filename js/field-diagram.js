@@ -59,10 +59,10 @@ const FIELD_CONFIG = {
 function token(x, y, label, kind) {
   const fill = kind === "off" ? "#0b192c" : "#1e293b";
   const stroke = kind === "cb" ? "#d4a017" : (kind === "off" ? "#d4a017" : "#94a3b8");
-  const tc = kind === "cb" || label === "C" ? "#d4a017" : "#fff";
+  const tc = kind === "cb" || label === "SNAP" ? "#d4a017" : "#fff";
   return `<g>
     <circle cx="${x}" cy="${y}" r="17" fill="${fill}" stroke="${stroke}" stroke-width="2.4"/>
-    <text x="${x}" y="${y + 5}" fill="${tc}" font-size="11" font-weight="800" text-anchor="middle" font-family="system-ui,Segoe UI,sans-serif">${label}</text>
+    <text x="${x}" y="${y + 5}" fill="${tc}" font-size="${label.length > 2 ? 8 : 11}" font-weight="800" text-anchor="middle" font-family="system-ui,Segoe UI,sans-serif">${label}</text>
   </g>`;
 }
 
@@ -99,7 +99,7 @@ function renderFieldDiagram(containerId, activeRunKey) {
     <line x1="20" y1="200" x2="780" y2="200" stroke="rgba(255,255,255,.2)" stroke-width="1.4"/>
     <line x1="20" y1="300" x2="780" y2="300" stroke="#d4a017" stroke-width="3.5"/>
     <line x1="20" y1="400" x2="780" y2="400" stroke="rgba(255,255,255,.18)" stroke-width="1.4"/>
-    <text x="28" y="294" fill="#d4a017" font-size="11" font-weight="800">LOS</text>
+    <text x="28" y="294" fill="#d4a017" font-size="${label.length > 2 ? 8 : 11}" font-weight="800">LOS</text>
     <text x="28" y="196" fill="rgba(255,255,255,.45)" font-size="10" font-weight="700">5</text>
     <text x="28" y="106" fill="rgba(255,255,255,.45)" font-size="10" font-weight="700">10</text>
 
@@ -124,11 +124,11 @@ function renderFieldDiagram(containerId, activeRunKey) {
     <path d="${run.runnerPath}" fill="none" stroke="${run.color}" stroke-width="5" stroke-linecap="round" marker-end="url(#arw-r)"/>
 
     <g id="offense" aria-label="5 OL RB1 RB2 RB3">
-      ${token(248, 312, "LT", "off")}
-      ${token(324, 312, "LG", "off")}
-      ${token(400, 312, "C", "off")}
-      ${token(476, 312, "RG", "off")}
-      ${token(552, 312, "RT", "off")}
+      ${token(248, 312, "LINE", "off")}
+      ${token(324, 312, "LINE", "off")}
+      ${token(400, 312, "SNAP", "off")}
+      ${token(476, 312, "LINE", "off")}
+      ${token(552, 312, "LINE", "off")}
       ${rbToken("RB1", 338, 412, run)}
       ${rbToken("RB2", 400, 368, run)}
       ${rbToken("RB3", 462, 412, run)}
@@ -137,7 +137,7 @@ function renderFieldDiagram(containerId, activeRunKey) {
     <g transform="translate(16,16)">
       <rect width="268" height="62" rx="8" fill="rgba(10,22,40,.92)"/>
       <text x="12" y="20" fill="${run.color}" font-size="13" font-weight="800">${run.name.toUpperCase()}</text>
-      <text x="12" y="38" fill="#e2e8f0" font-size="11">${run.colorName} · ${run.hole}</text>
+      <text x="12" y="38" fill="#e2e8f0" font-size="${label.length > 2 ? 8 : 11}">${run.colorName} · ${run.hole}</text>
       <text x="12" y="52" fill="#94a3b8" font-size="10">Snap ${run.runnerId} · Lead ${run.leadId} · Extra ${run.extraId}</text>
     </g>
     <text x="400" y="488" fill="rgba(255,255,255,.4)" font-size="10" text-anchor="middle">D: 3 DL · 2 LB · 2 CB · 1 S     O: 5 OL · RB1 RB2 RB3</text>

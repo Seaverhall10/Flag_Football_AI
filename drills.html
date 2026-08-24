@@ -5,12 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Drills — LIONS K/1</title>
   <meta name="description" content="5v4 drill clock and 60-minute practice plan.">
-  <link rel="stylesheet" href="css/styles.css?v=sim2">
+  <link rel="stylesheet" href="css/styles.css?v=grid5">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="mast"></header>
 <main id="main" class="wrap">
+
+
+    <section class="panel">
+      <div class="panel-header">
+        <h2>5v4 Grid</h2>
+        <span class="tiny">Beat pictures. Default paused.</span>
+      </div>
+      <div class="look-toggle" role="group" aria-label="Half">
+        <button type="button" class="btn btn-secondary is-active" data-grid-side="R" aria-pressed="true">Right</button>
+        <button type="button" class="btn btn-secondary" data-grid-side="L" aria-pressed="false">Left</button>
+      </div>
+      <div class="look-toggle" role="group" aria-label="Hole" style="margin-top:8px">
+        <button type="button" class="btn btn-secondary is-active" data-grid-hole="inside" aria-pressed="true">Inside</button>
+        <button type="button" class="btn btn-secondary" data-grid-hole="off" aria-pressed="false">Off-Tackle</button>
+        <button type="button" class="btn btn-secondary" data-grid-hole="wide" aria-pressed="false">Wide</button>
+      </div>
+      <p id="grid5-beat" class="timer-label" style="margin-top:10px">Beat 0 · PRE-SNAP</p>
+      <div id="grid5-root" class="sim-root grid5-root"></div>
+      <p id="grid5-cue" class="sim-cue" aria-live="polite">Find your jersey.</p>
+      <div class="sim-controls">
+        <button type="button" class="btn btn-secondary sim-big" id="grid5-back">BACK</button>
+        <button type="button" class="btn btn-primary sim-big" id="grid5-next">NEXT BEAT</button>
+        <button type="button" class="btn btn-danger sim-big" id="grid5-reset">RESET</button>
+      </div>
+      <div class="sim-controls">
+        <button type="button" class="btn btn-secondary sim-big" id="grid5-slow">HOLD SLOW</button>
+      </div>
+      <label class="tiny" style="display:block;margin:8px 0 4px">Scrub (0–6)
+        <input id="grid5-slider" type="range" min="0" max="6" value="0" step="1" style="width:100%">
+      </label>
+      <div class="grid5-dots" aria-hidden="true">
+        <span data-beat-dot="0"></span><span data-beat-dot="1"></span><span data-beat-dot="2"></span><span data-beat-dot="3"></span><span data-beat-dot="4"></span><span data-beat-dot="5"></span><span data-beat-dot="6"></span>
+      </div>
+      <p class="tiny">C G T + RB1 RB2 vs 2 DL, LB, CB. Drag the runner between beats. NEXT shows the next still picture.</p>
+    </section>
 
     <!-- 1. 30-Second 5v4 Drill Play Clock -->
     <section class="panel">
@@ -213,6 +248,7 @@
     <div class="field-mode-hint">TAP TO EXIT</div>
   </div>
 <footer class="foot"><div class="foot-inner"><div>18-rep 5v4. 30s clock.</div></div></footer>
+  <script src="js/grid5v4.js?v=grid5"></script>
   <script src="js/timers.js?v=sim2"></script>
 
   <script src="js/app.js"></script>

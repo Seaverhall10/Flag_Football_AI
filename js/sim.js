@@ -19,11 +19,11 @@
   };
 
   const HOME = [
-    { id: "LT", kind: "OL", label: "LT", x: 248, y: 312, fill: "#0A1628", stroke: "#D4A017" },
-    { id: "LG", kind: "OL", label: "LG", x: 324, y: 312, fill: "#0A1628", stroke: "#D4A017" },
-    { id: "C", kind: "OL", label: "C", x: 400, y: 312, fill: "#0A1628", stroke: "#D4A017" },
-    { id: "RG", kind: "OL", label: "RG", x: 476, y: 312, fill: "#0A1628", stroke: "#D4A017" },
-    { id: "RT", kind: "OL", label: "RT", x: 552, y: 312, fill: "#0A1628", stroke: "#D4A017" },
+    { id: "L1", kind: "OL", label: "LINE", x: 248, y: 312, fill: "#0A1628", stroke: "#D4A017" },
+    { id: "L2", kind: "OL", label: "LINE", x: 324, y: 312, fill: "#0A1628", stroke: "#D4A017" },
+    { id: "SNAP", kind: "OL", label: "SNAP", x: 400, y: 312, fill: "#0A1628", stroke: "#D4A017" },
+    { id: "L3", kind: "OL", label: "LINE", x: 476, y: 312, fill: "#0A1628", stroke: "#D4A017" },
+    { id: "L4", kind: "OL", label: "LINE", x: 552, y: 312, fill: "#0A1628", stroke: "#D4A017" },
     { id: "RB1", kind: "RB", label: "RB1", x: 338, y: 412, fill: "#0A1628", stroke: "#D4A017" },
     { id: "RB2", kind: "RB", label: "RB2", x: 400, y: 368, fill: "#0A1628", stroke: "#D4A017" },
     { id: "RB3", kind: "RB", label: "RB3", x: 462, y: 412, fill: "#0A1628", stroke: "#D4A017" },
@@ -38,11 +38,11 @@
   ];
 
   const OL_COVER = {
-    LT: "Cover the left DL.",
-    LG: "Cover left or mid DL.",
-    C: "Snap. Then the DL.",
-    RG: "Cover right or mid DL.",
-    RT: "Cover the right DL."
+    L1: "Find your jersey. Head out. Hands inside.",
+    L2: "Find your jersey. Head out. Hands inside.",
+    SNAP: "Clean snap, then line.",
+    L3: "Find your jersey. Head out. Hands inside.",
+    L4: "Find your jersey. Head out. Hands inside."
   };
 
   const state = {
@@ -150,7 +150,7 @@
 
   function placeBallAtC(onRunner) {
     const { runner } = roles();
-    const target = onRunner ? state.players[runner] : state.players.C;
+    const target = onRunner ? state.players[runner] : state.players.SNAP;
     ballG.setAttribute("transform", `translate(${target.x + (onRunner ? 14 : 0)},${target.y - (onRunner ? 6 : 22)})`);
     ballG.style.opacity = "1";
   }
@@ -207,7 +207,7 @@
       return;
     }
     if (p.kind === "OL") {
-      setCue(`Find your jersey. Head out. Hands inside. ${OL_COVER[id]}`);
+      setCue(id === "SNAP" ? "Clean snap, then line." : "Find your jersey. Head out. Hands inside.");
       return;
     }
     if (p.kind === "DL") { setCue("Stay home, then flag."); return; }
@@ -302,7 +302,7 @@
       });
       const ring = el("circle", { r: "26", fill: "none", stroke: "#D4A017", "stroke-width": "3", opacity: "0" });
       const lab = el("text", {
-        x: "0", y: "5.5", fill: "#fff", "font-size": h.kind === "RB" ? "11" : "12",
+        x: "0", y: "5.5", fill: "#fff", "font-size": h.label && h.label.length > 3 ? "9" : (h.kind === "RB" ? "11" : "12"),
         "font-weight": "800", "text-anchor": "middle", "font-family": "system-ui,sans-serif",
         "pointer-events": "none"
       });
@@ -348,8 +348,8 @@
     const rh = HOME.find((x) => x.id === runner);
 
     // Football 0-0.25 C hitch then to runner
-    const c = state.players.C;
-    const cHome = HOME.find((x) => x.id === "C");
+    const c = state.players.SNAP;
+    const cHome = HOME.find((x) => x.id === "SNAP");
     const hitch = Math.sin(Math.min(1, t / 0.25) * Math.PI) * 6;
     if (t < 0.25) {
       c.x = cHome.x;
@@ -357,9 +357,9 @@
     }
 
     // OL 0.15-1.2 one step to their DL
-    const olMap = { LT: "DL1", LG: "DL1", C: "DL2", RG: "DL3", RT: "DL3" };
-    ["LT", "LG", "C", "RG", "RT"].forEach((id) => {
-      if (id === "C" && t < 0.25) {
+    const olMap = { L1: "DL1", L2: "DL1", SNAP: "DL2", L3: "DL3", L4: "DL3" };
+    ["L1", "L2", "SNAP", "L3", "L4"].forEach((id) => {
+      if (id === "SNAP" && t < 0.25) {
         applyTransform(c);
         return;
       }

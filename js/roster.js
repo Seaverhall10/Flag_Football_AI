@@ -3,7 +3,7 @@
  * 8v8: 5 OL + RB1 RB2 RB3 vs 3 DL, 2 LB, 2 CB, 1 S.
  */
 
-const ROSTER_STORAGE_KEY = "lions_team_roster_data_v9_names";
+const ROSTER_STORAGE_KEY = "lions_team_roster_data_v10_simple";
 const CARRY_STORAGE_KEY = "lions_player_carries";
 const FIELD_STORAGE_KEY = "lions_minifield_spots";
 
@@ -11,25 +11,26 @@ const DEFAULT_ROSTER = [
   { id: 1,  number: "", name: "Keegan",   offensePos: "RB1",          defensePos: "CB", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
   { id: 2,  number: "", name: "Hunter",   offensePos: "RB2",          defensePos: "LB", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
   { id: 3,  number: "", name: "Bo",       offensePos: "RB3",          defensePos: "S",  q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
-  { id: 4,  number: "", name: "Liam",     offensePos: "Center",       defensePos: "DL", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
-  { id: 5,  number: "", name: "Case",     offensePos: "Left Guard",   defensePos: "DL", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
-  { id: 6,  number: "", name: "Big Wade", offensePos: "Right Guard",  defensePos: "DL", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
-  { id: 7,  number: "", name: "Lil Wade", offensePos: "Left Tackle",  defensePos: "LB", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
-  { id: 8,  number: "", name: "Carl",     offensePos: "Right Tackle", defensePos: "CB", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
+  { id: 4,  number: "", name: "Liam",     offensePos: "Snap",       defensePos: "DL", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
+  { id: 5,  number: "", name: "Case",     offensePos: "Line",   defensePos: "DL", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
+  { id: 6,  number: "", name: "Big Wade", offensePos: "Line",  defensePos: "DL", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
+  { id: 7,  number: "", name: "Lil Wade", offensePos: "Line",  defensePos: "LB", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
+  { id: 8,  number: "", name: "Carl",     offensePos: "Line", defensePos: "CB", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
   { id: 9,  number: "", name: "Walker",   offensePos: "RB1",          defensePos: "CB", q1: "Offense", q2: "Bench",    q3: "Defense", q4: "Offense" },
   { id: 10, number: "", name: "James",    offensePos: "RB2",          defensePos: "LB", q1: "Bench",   q2: "Offense", q3: "Offense", q4: "Defense" },
   { id: 11, number: "", name: "Wiley",    offensePos: "RB3",          defensePos: "S",  q1: "Offense", q2: "Defense", q3: "Bench",    q4: "Offense" },
-  { id: 12, number: "", name: "Wenton",   offensePos: "Center",       defensePos: "DL", q1: "Defense", q2: "Offense", q3: "Offense", q4: "Defense" },
-  { id: 13, number: "", name: "Luke",     offensePos: "Left Guard",   defensePos: "DL", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Bench" },
-  { id: 14, number: "", name: "Gentry",   offensePos: "Right Guard",  defensePos: "LB", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" }
+  { id: 12, number: "", name: "Wenton",   offensePos: "Snap",       defensePos: "DL", q1: "Defense", q2: "Offense", q3: "Offense", q4: "Defense" },
+  { id: 13, number: "", name: "Luke",     offensePos: "Line",   defensePos: "DL", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Bench" },
+  { id: 14, number: "", name: "Gentry",   offensePos: "Line",  defensePos: "LB", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
+  { id: 15, number: "", name: "Julian",   offensePos: "Line",  defensePos: "CB", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" }
 ];
 
 const OFFENSE_SPOTS = [
-  { key: "LT", label: "LT", match: "Left Tackle" },
-  { key: "LG", label: "LG", match: "Left Guard" },
-  { key: "C", label: "C", match: "Center" },
-  { key: "RG", label: "RG", match: "Right Guard" },
-  { key: "RT", label: "RT", match: "Right Tackle" },
+  { key: "SNAP", label: "SNAP", match: "Snap" },
+  { key: "L1", label: "LINE", match: "Line" },
+  { key: "L2", label: "LINE", match: "Line" },
+  { key: "L3", label: "LINE", match: "Line" },
+  { key: "L4", label: "LINE", match: "Line" },
   { key: "RB1", label: "RB1", match: "RB1" },
   { key: "RB2", label: "RB2", match: "RB2" },
   { key: "RB3", label: "RB3", match: "RB3" }
@@ -181,11 +182,8 @@ class RosterManager {
         <td>${jerseyLabel(p)}</td>
         <td>
           <select class="editable-cell" onchange="rosterManager.updatePlayer(${p.id}, 'offensePos', this.value)">
-            <option value="Center" ${p.offensePos === 'Center' ? 'selected' : ''}>Center (C)</option>
-            <option value="Left Guard" ${p.offensePos === 'Left Guard' ? 'selected' : ''}>Left Guard (LG)</option>
-            <option value="Right Guard" ${p.offensePos === 'Right Guard' ? 'selected' : ''}>Right Guard (RG)</option>
-            <option value="Left Tackle" ${p.offensePos === 'Left Tackle' ? 'selected' : ''}>Left Tackle (LT)</option>
-            <option value="Right Tackle" ${p.offensePos === 'Right Tackle' ? 'selected' : ''}>Right Tackle (RT)</option>
+            <option value="Snap" ${p.offensePos === 'Snap' ? 'selected' : ''}>Snap</option>
+            <option value="Line" ${p.offensePos === 'Line' ? 'selected' : ''}>Line</option>
             <option value="RB1" ${p.offensePos === 'RB1' ? 'selected' : ''}>RB1</option>
             <option value="RB2" ${p.offensePos === 'RB2' ? 'selected' : ''}>RB2</option>
             <option value="RB3" ${p.offensePos === 'RB3' ? 'selected' : ''}>RB3</option>
@@ -267,7 +265,7 @@ class RosterManager {
         <div class="mini-side">
           <div class="tiny" style="text-align:center;font-weight:800;margin-bottom:6px">OFFENSE</div>
           <div class="field-row">${o.RB1}${o.RB2}${o.RB3}</div>
-          <div class="field-row">${o.LT}${o.LG}${o.C}${o.RG}${o.RT}</div>
+          <div class="field-row">${o.L1}${o.L2}${o.SNAP}${o.L3}${o.L4}</div>
         </div>
         <div class="mini-los">LOS</div>
         <div class="mini-side">
@@ -298,15 +296,12 @@ class RosterManager {
     container.innerHTML = `
       <div class="grid-2">
         <div class="panel" style="border-left:6px solid #f5b800">
-          <h3 style="color:#07172c;margin-bottom:10px">OFFENSE 8 — 5 OL + RB1 RB2 RB3</h3>
+          <h3 style="color:#07172c;margin-bottom:10px">OFFENSE 8 — Snap / Line / RB1 RB2 RB3</h3>
           <table style="font-size:0.88rem">
             <thead><tr><th>Position</th><th>1st / 2nd String</th></tr></thead>
             <tbody>
-              <tr><td><strong>Center (C)</strong></td><td>${findPos("Center")}</td></tr>
-              <tr><td><strong>Left Guard (LG)</strong></td><td>${findPos("Left Guard")}</td></tr>
-              <tr><td><strong>Right Guard (RG)</strong></td><td>${findPos("Right Guard")}</td></tr>
-              <tr><td><strong>Left Tackle (LT)</strong></td><td>${findPos("Left Tackle")}</td></tr>
-              <tr><td><strong>Right Tackle (RT)</strong></td><td>${findPos("Right Tackle")}</td></tr>
+              <tr><td><strong>Snap</strong></td><td>${findPos("Snap")}</td></tr>
+              <tr><td><strong>Line</strong></td><td>${findPos("Line")}</td></tr>
               <tr><td><strong>RB1</strong></td><td>${findPos("RB1")}</td></tr>
               <tr><td><strong>RB2</strong></td><td>${findPos("RB2")}</td></tr>
               <tr><td><strong>RB3</strong></td><td>${findPos("RB3")}</td></tr>
