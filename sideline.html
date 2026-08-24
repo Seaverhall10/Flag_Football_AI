@@ -1,41 +1,101 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sideline card</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sideline Card — Cy-Fair K/1 Lions</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<a class="skip no-print" href="#main">Skip</a>
-<header class="mast no-print">
-  <div class="mast-inner">
-    <div class="mark">K1</div>
-    <div><h1>Cy-Fair K/1 Lions</h1><p>Printable</p></div>
-    <nav class="nav"><a href="index.html">Home</a><a href="app.html">Command</a></nav>
-  </div>
-</header>
+  <a class="skip-link no-print" href="#main">Skip</a>
+  
+  <header class="mast no-print">
+    <div class="mast-inner">
+      <a href="index.html" class="brand-group">
+        <div class="mark">K1</div>
+        <div class="brand-text">
+          <h1>Cy-Fair K/1 Lions</h1>
+          <p>Printable Sideline Card</p>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="app.html">Command</a>
+        <a href="playbook.html">Playbook</a>
+        <button class="btn btn-primary" onclick="window.print()">Print Card</button>
+      </nav>
+    </div>
+  </header>
 
-<main id="main" class="wrap">
-  <p class="print-title">Sideline card · K/1 Lions · 8-on-8 flag</p>
-  <p style="font-size:9pt">Shotgun ~3 yd. Direct snap to designated runner. Cue the unit, then the color.</p>
-  <div class="run-grid">
-    <article class="run red"><strong>Inside Right</strong><br>Red Diamond · C-RG</article>
-    <article class="run blue"><strong>Inside Left</strong><br>Blue Circle · C-LG</article>
-    <article class="run gold-run"><strong>Off-Tackle Right</strong><br>Gold Star · RG-RT</article>
-    <article class="run green"><strong>Off-Tackle Left</strong><br>Green Triangle · LG-LT</article>
-    <article class="run orange"><strong>Wide Right</strong><br>Orange Square · RT outside hip</article>
-    <article class="run purple"><strong>Wide Left</strong><br>Purple Hexagon · LT outside hip</article>
-  </div>
-  <section class="panel" style="margin-top:10px">
-    <h2>Cues</h2>
-    <p>OL Find your jersey. Head out. Hands inside. · Lead Hole first. LB. · Runner Follow. Plant. Go. · Front Stay home, then flag. · CB Nothing outside.</p>
-  </section>
-  <section class="panel stop">
-    <p><strong>Stop rule.</strong> No new offense until all six average 5-of-6 clean snap, assignments, landmark, legal contact in two practices.</p>
-  </section>
-</main>
+  <main id="main" class="wrap">
+    <div class="print-header">
+      <h1 class="print-title">Sideline Card · Cy-Fair K/1 Lions · 8-on-8 Flag</h1>
+      <p style="font-size:9.5pt;margin:4pt 0">Direct Snap to Runner (~3 Yd Shotgun). Call Unit Cue, then Color + Symbol.</p>
+    </div>
 
-<p class="no-print tiny wrap">Print this page. Colors may be on or off; symbols still read.</p>
-<footer class="foot">K/1 Lions print · no player names</footer>
-</body></html>
+    <!-- Six Runs Grid -->
+    <div class="run-grid" style="grid-template-columns:repeat(3, 1fr);gap:8px">
+      <article class="run-card run-red" style="padding:10px">
+        <strong style="font-size:1.05rem">Inside Right</strong><br>
+        <span class="landmark-pill" style="font-size:0.85rem">Red Diamond · C-RG</span><br>
+        <small>Lead: A-gap · Runner: Follow. Plant. Go.</small>
+      </article>
+
+      <article class="run-card run-blue" style="padding:10px">
+        <strong style="font-size:1.05rem">Inside Left</strong><br>
+        <span class="landmark-pill" style="font-size:0.85rem">Blue Circle · C-LG</span><br>
+        <small>Lead: A-gap · Runner: Follow. Plant. Go.</small>
+      </article>
+
+      <article class="run-card run-gold" style="padding:10px">
+        <strong style="font-size:1.05rem">Off-Tackle Right</strong><br>
+        <span class="landmark-pill" style="font-size:0.85rem">Gold Star · RG-RT</span><br>
+        <small>Lead: B-gap LB · Runner: Alley north</small>
+      </article>
+
+      <article class="run-card run-green" style="padding:10px">
+        <strong style="font-size:1.05rem">Off-Tackle Left</strong><br>
+        <span class="landmark-pill" style="font-size:0.85rem">Green Triangle · LG-LT</span><br>
+        <small>Lead: B-gap LB · Runner: Alley north</small>
+      </article>
+
+      <article class="run-card run-orange" style="padding:10px">
+        <strong style="font-size:1.05rem">Wide Right</strong><br>
+        <span class="landmark-pill" style="font-size:0.85rem">Orange Square · RT Outside</span><br>
+        <small>Lead: Seal edge · Runner: Sweep & cut</small>
+      </article>
+
+      <article class="run-card run-purple" style="padding:10px">
+        <strong style="font-size:1.05rem">Wide Left</strong><br>
+        <span class="landmark-pill" style="font-size:0.85rem">Purple Hexagon · LT Outside</span><br>
+        <small>Lead: Seal edge · Runner: Sweep & cut</small>
+      </article>
+    </div>
+
+    <!-- Five Cues Panel -->
+    <section class="panel" style="margin-top:12px;padding:12px">
+      <h2 style="font-size:1rem;margin-bottom:6px">Sideline Cues (All Players Know These)</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:6px;font-size:9pt">
+        <div><strong>OL:</strong> Jersey. Head out. Hands inside.</div>
+        <div><strong>Lead:</strong> Hole first. LB.</div>
+        <div><strong>Runner:</strong> Follow. Plant. Go.</div>
+        <div><strong>Front:</strong> Stay home, then flag.</div>
+        <div><strong>CB:</strong> Nothing outside. Contain in.</div>
+      </div>
+    </section>
+
+    <!-- Stop Rule -->
+    <div class="stop-banner" style="padding:8px 12px;font-size:9pt">
+      <strong>Stop Rule:</strong> No new offense until all six average 5-of-6 clean snap, assignments, landmark, legal contact across two practices.
+    </div>
+  </main>
+
+  <p class="no-print tiny wrap" style="text-align:center">Click Print Card above or press Ctrl+P. Designed to fit neatly on a 5.5" x 8.5" or 8.5" x 11" clipboard sheet.</p>
+  <footer class="foot no-print">
+    <div class="foot-inner">
+      <div>Cy-Fair K/1 Lions · Printable Sideline Card</div>
+    </div>
+  </footer>
+</body>
+</html>

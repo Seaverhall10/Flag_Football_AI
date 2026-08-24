@@ -1,33 +1,133 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wristbands</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wristband Inserts — Cy-Fair K/1 Lions</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<a class="skip no-print" href="#main">Skip</a>
-<header class="mast no-print">
-  <div class="mast-inner">
-    <div class="mark">K1</div>
-    <div><h1>Cy-Fair K/1 Lions</h1><p>Printable</p></div>
-    <nav class="nav"><a href="index.html">Home</a><a href="app.html">Command</a></nav>
-  </div>
-</header>
+  <a class="skip-link no-print" href="#main">Skip</a>
+  
+  <header class="mast no-print">
+    <div class="mast-inner">
+      <a href="index.html" class="brand-group">
+        <div class="mark">K1</div>
+        <div class="brand-text">
+          <h1>Cy-Fair K/1 Lions</h1>
+          <p>Printable Wristbands</p>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="app.html">Command</a>
+        <button class="btn btn-primary" onclick="window.print()">Print Wristbands</button>
+      </nav>
+    </div>
+  </header>
 
-<main id="main" class="wrap">
-  <p class="print-title">Wristband strips · cut, tape, cover</p>
-  <p style="font-size:9pt">OL jersey / head out / hands inside · Lead hole first LB · Front stay home then flag · CB nothing outside</p>
-  <div class="wb-row"><div class="wb red"><strong>Inside Right</strong><br>Red Diamond<br>C-RG<br>Follow. Plant. Go.</div>
-<div class="wb blue"><strong>Inside Left</strong><br>Blue Circle<br>C-LG<br>Follow. Plant. Go.</div>
-<div class="wb gold-run"><strong>Off-Tackle Right</strong><br>Gold Star<br>RG-RT<br>Follow. Plant. Go.</div>
-<div class="wb green"><strong>Off-Tackle Left</strong><br>Green Triangle<br>LG-LT<br>Follow. Plant. Go.</div>
-<div class="wb orange"><strong>Wide Right</strong><br>Orange Square<br>RT outside hip<br>Follow. Plant. Go.</div>
-<div class="wb purple"><strong>Wide Left</strong><br>Purple Hexagon<br>LT outside hip<br>Follow. Plant. Go.</div></div>
-  <p class="tiny">Print two copies. One for the caller, one spare in the cart.</p>
-</main>
+  <main id="main" class="wrap">
+    <div class="print-header">
+      <h1 class="print-title">Wristband Strips · Cut, Slide, & Cover</h1>
+      <p style="font-size:8.5pt;margin:2pt 0">OL: Jersey/Head out · Lead: Hole first LB · Runner: Follow. Plant. Go. · CB: Nothing outside</p>
+    </div>
 
-<p class="no-print tiny wrap">Print this page. Colors may be on or off; symbols still read.</p>
-<footer class="foot">K/1 Lions print · no player names</footer>
-</body></html>
+    <!-- Sheet 1 (Coach / QB Wristband) -->
+    <h3 class="no-print" style="margin-top:10px">Insert Set #1 (Standard Youth Coach/Player Size)</h3>
+    <div class="wb-row">
+      <div class="wb run-red">
+        <strong style="font-size:9.5pt">1 · Inside Right</strong><br>
+        <span style="font-size:8.5pt">Red Diamond</span><br>
+        <strong>C-RG</strong><br>
+        <small>Follow. Plant. Go.</small>
+      </div>
+
+      <div class="wb run-blue">
+        <strong style="font-size:9.5pt">2 · Inside Left</strong><br>
+        <span style="font-size:8.5pt">Blue Circle</span><br>
+        <strong>C-LG</strong><br>
+        <small>Follow. Plant. Go.</small>
+      </div>
+
+      <div class="wb run-gold">
+        <strong style="font-size:9.5pt">3 · Off-Tackle R</strong><br>
+        <span style="font-size:8.5pt">Gold Star</span><br>
+        <strong>RG-RT</strong><br>
+        <small>Follow. Plant. Go.</small>
+      </div>
+
+      <div class="wb run-green">
+        <strong style="font-size:9.5pt">4 · Off-Tackle L</strong><br>
+        <span style="font-size:8.5pt">Green Triangle</span><br>
+        <strong>LG-LT</strong><br>
+        <small>Follow. Plant. Go.</small>
+      </div>
+
+      <div class="wb run-orange">
+        <strong style="font-size:9.5pt">5 · Wide Right</strong><br>
+        <span style="font-size:8.5pt">Orange Square</span><br>
+        <strong>RT Outside</strong><br>
+        <small>Follow. Plant. Go.</small>
+      </div>
+
+      <div class="wb run-purple">
+        <strong style="font-size:9.5pt">6 · Wide Left</strong><br>
+        <span style="font-size:8.5pt">Purple Hexagon</span><br>
+        <strong>LT Outside</strong><br>
+        <small>Follow. Plant. Go.</small>
+      </div>
+    </div>
+
+    <hr style="border:0;border-top:1px dashed #999;margin:16px 0">
+
+    <!-- Sheet 2 (Backup / Assistant Coach Wristband) -->
+    <h3 class="no-print">Insert Set #2 (Cart Spare Copy)</h3>
+    <div class="wb-row">
+      <div class="wb run-red">
+        <strong style="font-size:9.5pt">1 · Inside Right</strong><br>
+        <span style="font-size:8.5pt">Red Diamond</span><br>
+        <strong>C-RG</strong><br>
+        <small>Follow. Plant. Go.</small>
+      </div>
+
+      <div class="wb run-blue">
+        <strong style="font-size:9.5pt">2 · Inside Left</strong><br>
+        <span style="font-size:8.5pt">Blue Circle</span><br>
+        <strong>C-LG</strong><br>
+        <small>Follow. Plant. Go.</small>
+      </div>
+
+      <div class="wb run-gold">
+        <strong style="font-size:9.5pt">3 · Off-Tackle R</strong><br>
+        <span style="font-size:8.5pt">Gold Star</span><br>
+        <strong>RG-RT</strong><br>
+        <small>Follow. Plant. Go.</small>
+      </div>
+
+      <div class="wb run-green">
+        <strong style="font-size:9.5pt">4 · Off-Tackle L</strong><br>
+        <span style="font-size:8.5pt">Green Triangle</span><br>
+        <strong>LG-LT</strong><br>
+        <small>Follow. Plant. Go.</small>
+      </div>
+
+      <div class="wb run-orange">
+        <strong style="font-size:9.5pt">5 · Wide Right</strong><br>
+        <span style="font-size:8.5pt">Orange Square</span><br>
+        <strong>RT Outside</strong><br>
+        <small>Follow. Plant. Go.</small>
+      </div>
+
+      <div class="wb run-purple">
+        <strong style="font-size:9.5pt">6 · Wide Left</strong><br>
+        <span style="font-size:8.5pt">Purple Hexagon</span><br>
+        <strong>LT Outside</strong><br>
+        <small>Follow. Plant. Go.</small>
+      </div>
+    </div>
+  </main>
+
+  <p class="no-print tiny wrap" style="text-align:center">Print on cardstock, cut along black borders, and insert into standard youth triple-window wristbands.</p>
+</body>
+</html>

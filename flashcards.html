@@ -1,37 +1,113 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flashcards</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Play & Cue Flashcards — Cy-Fair K/1 Lions</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<a class="skip no-print" href="#main">Skip</a>
-<header class="mast no-print">
-  <div class="mast-inner">
-    <div class="mark">K1</div>
-    <div><h1>Cy-Fair K/1 Lions</h1><p>Printable</p></div>
-    <nav class="nav"><a href="index.html">Home</a><a href="app.html">Command</a></nav>
-  </div>
-</header>
+  <a class="skip-link no-print" href="#main">Skip</a>
+  
+  <header class="mast no-print">
+    <div class="mast-inner">
+      <a href="index.html" class="brand-group">
+        <div class="mark">K1</div>
+        <div class="brand-text">
+          <h1>Cy-Fair K/1 Lions</h1>
+          <p>Printable Flashcards</p>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="app.html">Command</a>
+        <button class="btn btn-primary" onclick="window.print()">Print Flashcards</button>
+      </nav>
+    </div>
+  </header>
 
-<main id="main" class="wrap">
-  <p class="print-title">Flashcards · cut on the borders</p>
-  <div class="cards"><article class="card red"><strong>Inside Right</strong><br>Red Diamond<br>C-RG</article>
-<article class="card blue"><strong>Inside Left</strong><br>Blue Circle<br>C-LG</article>
-<article class="card gold-run"><strong>Off-Tackle Right</strong><br>Gold Star<br>RG-RT</article>
-<article class="card green"><strong>Off-Tackle Left</strong><br>Green Triangle<br>LG-LT</article>
-<article class="card orange"><strong>Wide Right</strong><br>Orange Square<br>RT outside hip</article>
-<article class="card purple"><strong>Wide Left</strong><br>Purple Hexagon<br>LT outside hip</article>
-<article class="card cue"><strong>OL</strong><br>Find your jersey.<br>Head out. Hands inside.</article>
-<article class="card cue"><strong>Lead</strong><br>Hole first.<br>Then LB.</article>
-<article class="card cue"><strong>Runner</strong><br>Follow. Plant. Go.<br>Every color.</article>
-<article class="card cue"><strong>Front</strong><br>Stay home,<br>then flag.</article>
-<article class="card cue"><strong>CB</strong><br>Nothing outside.<br>Force back in.</article>
-<article class="card cue"><strong>Snap</strong><br>Direct to runner.<br>Shotgun ~3 yards.</article></div>
-</main>
+  <main id="main" class="wrap">
+    <div class="print-header">
+      <h1 class="print-title">Play & Cue Flashcards · Cut on Solid Borders</h1>
+      <p style="font-size:9pt;margin:2pt 0">Use for station teaching, sideline memory checks, and home review.</p>
+    </div>
 
-<p class="no-print tiny wrap">Print this page. Colors may be on or off; symbols still read.</p>
-<footer class="foot">K/1 Lions print · no player names</footer>
-</body></html>
+    <div class="cards">
+      <article class="card run-red">
+        <strong style="font-size:1.1rem">Inside Right</strong><br>
+        <span>Red Diamond</span><br>
+        <span class="landmark-pill">Hole: C-RG</span><br>
+        <p style="font-size:9pt;margin-top:6px">Shotgun ~3 yd. Direct snap. Lead attacks A-gap. Runner plants & goes.</p>
+      </article>
+
+      <article class="card run-blue">
+        <strong style="font-size:1.1rem">Inside Left</strong><br>
+        <span>Blue Circle</span><br>
+        <span class="landmark-pill">Hole: C-LG</span><br>
+        <p style="font-size:9pt;margin-top:6px">Shotgun ~3 yd. Direct snap. Lead attacks A-gap. Runner follows lead.</p>
+      </article>
+
+      <article class="card run-gold">
+        <strong style="font-size:1.1rem">Off-Tackle Right</strong><br>
+        <span>Gold Star</span><br>
+        <span class="landmark-pill">Hole: RG-RT</span><br>
+        <p style="font-size:9pt;margin-top:6px">Alley run. Lead blocks LB. Runner cuts north through B-gap.</p>
+      </article>
+
+      <article class="card run-green">
+        <strong style="font-size:1.1rem">Off-Tackle Left</strong><br>
+        <span>Green Triangle</span><br>
+        <span class="landmark-pill">Hole: LG-LT</span><br>
+        <p style="font-size:9pt;margin-top:6px">Alley run. Lead blocks LB. Runner plants outside foot & cuts north.</p>
+      </article>
+
+      <article class="card run-orange">
+        <strong style="font-size:1.1rem">Wide Right</strong><br>
+        <span>Orange Square</span><br>
+        <span class="landmark-pill">Hole: RT Outside</span><br>
+        <p style="font-size:9pt;margin-top:6px">Perimeter sweep. Lead seals edge. Runner sweeps to outside cone.</p>
+      </article>
+
+      <article class="card run-purple">
+        <strong style="font-size:1.1rem">Wide Left</strong><br>
+        <span>Purple Hexagon</span><br>
+        <span class="landmark-pill">Hole: LT Outside</span><br>
+        <p style="font-size:9pt;margin-top:6px">Perimeter sweep. Lead seals edge. Runner sweeps and cuts up sideline.</p>
+      </article>
+
+      <article class="card cue">
+        <strong style="font-size:1.1rem">Offensive Line (OL)</strong><br>
+        <span style="font-size:1rem;font-weight:700">Find your jersey.<br>Head out.<br>Hands inside.</span>
+      </article>
+
+      <article class="card cue">
+        <strong style="font-size:1.1rem">Lead Blocker (L)</strong><br>
+        <span style="font-size:1rem;font-weight:700">Hole first.<br>Then Linebacker.</span>
+      </article>
+
+      <article class="card cue">
+        <strong style="font-size:1.1rem">Runner (R)</strong><br>
+        <span style="font-size:1rem;font-weight:700">Follow. Plant. Go.<br>Every color.</span>
+      </article>
+
+      <article class="card cue">
+        <strong style="font-size:1.1rem">Front 3 Defense</strong><br>
+        <span style="font-size:1rem;font-weight:700">Stay home,<br>then flag.</span>
+      </article>
+
+      <article class="card cue">
+        <strong style="font-size:1.1rem">Cornerback (CB)</strong><br>
+        <span style="font-size:1rem;font-weight:700">Nothing outside.<br>Force back in.</span>
+      </article>
+
+      <article class="card cue">
+        <strong style="font-size:1.1rem">Snap Mechanic</strong><br>
+        <span style="font-size:1rem;font-weight:700">Direct to runner.<br>Shotgun ~3 yards.<br>Firm two-hand grip.</span>
+      </article>
+    </div>
+  </main>
+
+  <p class="no-print tiny wrap" style="text-align:center">Print on letter cardstock. Cut into 12 individual coach & player pocket flashcards.</p>
+</body>
+</html>

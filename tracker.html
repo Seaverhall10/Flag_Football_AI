@@ -1,36 +1,95 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tracker</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clean-Rep Tracker — Cy-Fair K/1 Lions</title>
+  <meta name="description" content="Interactive 5-of-6 clean rep tracker for Cy-Fair K/1 Lions flag football stop rule.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<a class="skip no-print" href="#main">Skip</a>
-<header class="mast no-print">
-  <div class="mast-inner">
-    <div class="mark">K1</div>
-    <div><h1>Cy-Fair K/1 Lions</h1><p>Printable</p></div>
-    <nav class="nav"><a href="index.html">Home</a><a href="app.html">Command</a></nav>
-  </div>
-</header>
+  <a class="skip-link" href="#main">Skip to content</a>
+  
+  <header class="mast">
+    <div class="mast-inner">
+      <a href="index.html" class="brand-group">
+        <div class="mark" aria-hidden="true">K1</div>
+        <div class="brand-text">
+          <h1>Cy-Fair K/1 Lions</h1>
+          <p>8-on-8 CFSA · Ages 5–6 · Shotgun ~3 yd</p>
+        </div>
+      </a>
+      
+      <nav class="nav" aria-label="Coach navigation">
+        <a href="index.html">Home</a>
+        <a href="app.html">Command</a>
+        <a href="playbook.html">Playbook</a>
+        <a href="practice.html">Practice</a>
+        <a href="drill.html">Drill</a>
+        <a href="runner.html">Runner</a>
+        <a href="tracker.html" class="active">Tracker</a>
+        <a href="schedule.html">Schedule</a>
+        <a class="ghost" href="sideline.html">Print</a>
+      </nav>
+    </div>
+  </header>
 
-<main id="main" class="wrap">
-  <p class="print-title">Clean-rep tracker · 5-of-6 target</p>
-  <p style="font-size:9pt">Mark X for clean: snap, assignments, landmark, legal contact. Practice A / Practice B. Stop rule: all six average 5-of-6 in two practices before any new offense.</p>
-  <table>
-    <thead>
-      <tr><th>Run</th><th>Color</th><th>Hole</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Inside Right</td><td>Red Diamond</td><td>C-RG</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Inside Left</td><td>Blue Circle</td><td>C-LG</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Off-Tackle Right</td><td>Gold Star</td><td>RG-RT</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Off-Tackle Left</td><td>Green Triangle</td><td>LG-LT</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Wide Right</td><td>Orange Square</td><td>RT outside hip</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Wide Left</td><td>Purple Hexagon</td><td>LT outside hip</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-    </tbody>
-  </table>
-  <p style="margin-top:10px">Practice date: ________ &nbsp; Practice date: ________ &nbsp; Coach: ________</p>
-  <p>18-rep drill: 30s next-ball. Do not chase a pretty last rep.</p>
-</main>
+  <main id="main" class="wrap">
+    <section class="banner no-print">
+      <h2>Clean-Rep Tracker</h2>
+      <p>Tap rep numbers to cycle: <strong>Neutral → Clean (✓) → Miss (✗)</strong>. Data saves automatically in your browser.</p>
+    </section>
 
-<p class="no-print tiny wrap">Print this page. Colors may be on or off; symbols still read.</p>
-<footer class="foot">K/1 Lions print · no player names</footer>
-</body></html>
+    <!-- Printable Header (Only shows when printed) -->
+    <div class="print-header" style="display:none">
+      <h1 class="print-title">Cy-Fair K/1 Lions · Clean-Rep Tracker</h1>
+      <p>Target: 5-of-6 Clean Reps (Snap, Assignments, Landmark, Legal Contact) across 2 consecutive practices before installing new plays.</p>
+    </div>
+
+    <!-- Interactive Tracker Root -->
+    <section class="panel">
+      <div id="interactive-tracker-root">
+        <!-- Rendered by js/tracker.js -->
+      </div>
+    </section>
+
+    <!-- Evaluation Criteria Guide -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>What Constitutes a "Clean Rep"?</h2>
+      </div>
+      <div class="grid-2">
+        <div>
+          <h3>4-Point Clean Checklist</h3>
+          <ul class="checklist">
+            <li class="checklist-item"><strong>1. Snap:</strong> Crisp, direct shotgun snap ~3 yards into designated runner's chest.</li>
+            <li class="checklist-item"><strong>2. Assignment:</strong> OL finds jersey, head out, hands inside; Lead attacks hole first.</li>
+            <li class="checklist-item"><strong>3. Landmark:</strong> Runner follows lead, plants at designated cone, cuts north.</li>
+            <li class="checklist-item"><strong>4. Legal Contact:</strong> Hands inside, no holding, no flag guarding, no face contact.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Coaching Rule</h3>
+          <p>During the 18-rep drill, move at a <strong>30-second next-ball pace</strong>. Do not stop the session to chase a pretty rep — mark the tracker, cue the player with 3 words, and snap the next ball!</p>
+          <div class="cue-grid" style="margin-top:14px">
+            <div class="cue"><strong>OL</strong>Jersey · Head Out · Hands Inside</div>
+            <div class="cue"><strong>Lead</strong>Hole first · LB</div>
+            <div class="cue"><strong>Runner</strong>Follow. Plant. Go.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-inner">
+      <div>Cy-Fair K/1 Lions · Clean-Rep Tracker</div>
+      <div><a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></div>
+    </div>
+  </footer>
+
+  <script src="js/tracker.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

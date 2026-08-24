@@ -1,43 +1,91 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Parent sheet</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Parent Information Handout — Cy-Fair K/1 Lions</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<a class="skip no-print" href="#main">Skip</a>
-<header class="mast no-print">
-  <div class="mast-inner">
-    <div class="mark">K1</div>
-    <div><h1>Cy-Fair K/1 Lions</h1><p>Printable</p></div>
-    <nav class="nav"><a href="index.html">Home</a><a href="app.html">Command</a></nav>
-  </div>
-</header>
+  <a class="skip-link no-print" href="#main">Skip</a>
+  
+  <header class="mast no-print">
+    <div class="mast-inner">
+      <a href="index.html" class="brand-group">
+        <div class="mark">K1</div>
+        <div class="brand-text">
+          <h1>Cy-Fair K/1 Lions</h1>
+          <p>Parent Information</p>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="app.html">Command</a>
+        <button class="btn btn-primary" onclick="window.print()">Print Handout</button>
+      </nav>
+    </div>
+  </header>
 
-<main id="main" class="wrap">
-  <p class="print-title">Parent sheet · Cy-Fair K/1 Lions</p>
-  <section class="panel">
-    <p>Ages 5–6. 8-on-8 CFSA flag. Practice and game times come from the coach calendar (see the schedule block on the team page).</p>
-    <p><strong>What kids hear:</strong> Find your jersey. Head out. Hands inside. Hole first. Follow. Plant. Go. Stay home, then flag. Nothing outside.</p>
-    <p><strong>What we do not do:</strong> New plays. Player names on public pages. Live tackling.</p>
-    <p><strong>Gear:</strong> Cleats or turf shoes, water, flags if the club does not issue a spare.</p>
-    <p><strong>Sideline:</strong> Cheer the cues, not a new scheme. One adult voice on the field.</p>
-  </section>
-  <section class="panel">
-    <h2>The six colors (so home practice matches us)</h2>
-    <ul>
-      <li>Red diamond — inside right — C-RG</li>
-      <li>Blue circle — inside left — C-LG</li>
-      <li>Gold star — off-tackle right — RG-RT</li>
-      <li>Green triangle — off-tackle left — LG-LT</li>
-      <li>Orange square — wide right — RT outside hip</li>
-      <li>Purple hexagon — wide left — LT outside hip</li>
-    </ul>
-  </section>
-</main>
+  <main id="main" class="wrap">
+    <div class="print-header">
+      <h1 class="print-title">Parent Information Handout · Cy-Fair K/1 Lions</h1>
+      <p style="font-size:9.5pt;margin:2pt 0">CFSA 8-on-8 Flag Football · Ages 5–6 · Team Guide & Sideline Expectations</p>
+    </div>
 
-<p class="no-print tiny wrap">Print this page. Colors may be on or off; symbols still read.</p>
-<footer class="foot">K/1 Lions print · no player names</footer>
-</body></html>
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Welcome to the Lions!</h2>
+      </div>
+      <p>Our focus in the K/1 division is building <strong>confidence, fundamental athletic skills, discipline, and fun</strong>. We teach a simple, structured 6-run system with consistent cues so every child learns their assignment without confusion.</p>
+
+      <h3 style="margin-top:14px">What Kids Hear on the Field</h3>
+      <p>We use simple, consistent 3-word cues:</p>
+      <ul class="checklist">
+        <li class="checklist-item"><strong>Line (OL):</strong> <em>Find your jersey. Head out. Hands inside.</em></li>
+        <li class="checklist-item"><strong>Lead Blocker:</strong> <em>Hole first. Then Linebacker.</em></li>
+        <li class="checklist-item"><strong>Runner:</strong> <em>Follow. Plant. Go.</em></li>
+        <li class="checklist-item"><strong>Defense:</strong> <em>Stay home, then flag. Nothing outside.</em></li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Home Practice Color Language</h2>
+      </div>
+      <p>If you're practicing with your player in the backyard, you can use our 6 team colors:</p>
+      <div class="grid-2" style="font-size:9pt">
+        <div>
+          <p><strong style="color:#d32f2f">♦ Red Diamond:</strong> Inside Right (run to the right of Center)</p>
+          <p><strong style="color:#1976d2">● Blue Circle:</strong> Inside Left (run to the left of Center)</p>
+          <p><strong style="color:#e6a100">★ Gold Star:</strong> Off-Tackle Right (run between Guard & Tackle)</p>
+        </div>
+        <div>
+          <p><strong style="color:#2e7d32">▲ Green Triangle:</strong> Off-Tackle Left (run between Guard & Tackle)</p>
+          <p><strong style="color:#e65100">■ Orange Square:</strong> Wide Right (sweep outside to right sideline)</p>
+          <p><strong style="color:#7b1fa2">⬡ Purple Hexagon:</strong> Wide Left (sweep outside to left sideline)</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Sideline Culture & Parent Role</h2>
+      </div>
+      <ul class="checklist">
+        <li class="checklist-item"><strong>One Voice on the Field:</strong> Coaches call the cues from the sideline so players can focus without split instructions.</li>
+        <li class="checklist-item"><strong>Cheer the Effort:</strong> Cheer hustle, good flag pulls, and positive team spirit!</li>
+        <li class="checklist-item"><strong>Required Gear:</strong> Youth molded cleats (or sneakers), water bottle, mouthguard (recommended), and flag belt.</li>
+        <li class="checklist-item"><strong>Schedule & Updates:</strong> Access the team web app anytime: <a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <p class="no-print tiny wrap" style="text-align:center">Hand out to parents at orientation / first practice.</p>
+  <footer class="foot no-print">
+    <div class="foot-inner">
+      <div>Cy-Fair K/1 Lions · Parent Handout</div>
+    </div>
+  </footer>
+</body>
+</html>

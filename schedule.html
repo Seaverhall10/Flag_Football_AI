@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Season Schedule — Cy-Fair K/1 Lions</title>
+  <meta name="description" content="Cy-Fair K/1 Lions Flag Football practice and game schedule.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  
+  <header class="mast">
+    <div class="mast-inner">
+      <a href="index.html" class="brand-group">
+        <div class="mark" aria-hidden="true">K1</div>
+        <div class="brand-text">
+          <h1>Cy-Fair K/1 Lions</h1>
+          <p>8-on-8 CFSA · Ages 5–6 · Shotgun ~3 yd</p>
+        </div>
+      </a>
+      
+      <nav class="nav" aria-label="Coach navigation">
+        <a href="index.html">Home</a>
+        <a href="app.html">Command</a>
+        <a href="playbook.html">Playbook</a>
+        <a href="practice.html">Practice</a>
+        <a href="drill.html">Drill</a>
+        <a href="runner.html">Runner</a>
+        <a href="tracker.html">Tracker</a>
+        <a href="schedule.html" class="active">Schedule</a>
+        <a class="ghost" href="sideline.html">Print</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <section class="banner no-print">
+      <h2>Season Schedule & Event Hub</h2>
+      <p>Practices, scrimmages, and game days. Coaches can edit dates directly or print the season schedule card.</p>
+    </section>
+
+    <!-- Printable Header -->
+    <div class="print-header" style="display:none">
+      <h1 class="print-title">Cy-Fair K/1 Lions · Season Schedule</h1>
+      <p>8-on-8 Flag Football · CFSA · Ages 5–6</p>
+    </div>
+
+    <!-- Schedule Panel -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Lions Event Calendar</h2>
+        <div class="no-print">
+          <button class="btn btn-secondary" id="btn-add-event">+ Add Event</button>
+          <button class="btn btn-primary" onclick="window.print()">Print Schedule</button>
+        </div>
+      </div>
+
+      <div style="overflow-x:auto">
+        <table id="schedule-table">
+          <thead>
+            <tr>
+              <th>Event Type</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Location / Field</th>
+              <th>Opponent / Details</th>
+              <th class="no-print">Action</th>
+            </tr>
+          </thead>
+          <tbody id="schedule-body">
+            <!-- Populated dynamically or defaulted -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Add Event Modal / Form (Collapsible) -->
+    <section class="panel no-print" id="add-event-panel" style="display:none">
+      <div class="panel-header">
+        <h3>Add New Schedule Event</h3>
+      </div>
+      <form id="event-form" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px">
+        <div>
+          <label style="font-weight:700;font-size:0.85rem">Type</label>
+          <select id="evt-type" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px">
+            <option value="Practice">Practice (60 Min)</option>
+            <option value="Game">Game Day</option>
+            <option value="Scrimmage">Scrimmage</option>
+            <option value="Team Event">Team Event</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-weight:700;font-size:0.85rem">Date</label>
+          <input type="text" id="evt-date" placeholder="e.g. Tuesday, Sept 8" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px" required>
+        </div>
+        <div>
+          <label style="font-weight:700;font-size:0.85rem">Time</label>
+          <input type="text" id="evt-time" placeholder="e.g. 5:30 PM – 6:30 PM" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px" required>
+        </div>
+        <div>
+          <label style="font-weight:700;font-size:0.85rem">Location</label>
+          <input type="text" id="evt-loc" placeholder="e.g. CFSA Complex Field #4" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px" required>
+        </div>
+        <div>
+          <label style="font-weight:700;font-size:0.85rem">Notes / Opponent</label>
+          <input type="text" id="evt-notes" placeholder="e.g. vs Tigers (Navy Jersey)" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:4px">
+        </div>
+        <div style="grid-column:1/-1;display:flex;gap:10px;margin-top:8px">
+          <button type="submit" class="btn btn-primary">Save Event</button>
+          <button type="button" class="btn btn-secondary" id="btn-cancel-add">Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Game Day Sideline Guidelines -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Game Day Sideline Protocols</h2>
+      </div>
+      <div class="grid-2">
+        <div>
+          <h3>Pregame Routine (20 Mins Prior)</h3>
+          <ul class="checklist">
+            <li class="checklist-item"><strong>Flags Checked:</strong> Belts tightened, clips verified.</li>
+            <li class="checklist-item"><strong>Direct Snap Warmup:</strong> 10 crisp shotgun snaps to each runner.</li>
+            <li class="checklist-item"><strong>Review 5 Cues:</strong> Call response with entire unit.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Sideline Discipline</h3>
+          <ul class="checklist">
+            <li class="checklist-item"><strong>One Coach Calling:</strong> Clear, loud color + symbol calls.</li>
+            <li class="checklist-item"><strong>Cheer Cues:</strong> Encourage effort, landmark discipline, and teamwork.</li>
+            <li class="checklist-item"><strong>No Scheme Adjustments:</strong> Stick to the six locked runs.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-inner">
+      <div>Cy-Fair K/1 Lions · Season Schedule</div>
+      <div><a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></div>
+    </div>
+  </footer>
+
+  <script>
+    const DEFAULT_SCHEDULE = [
+      { type: "Practice", date: "Week 1 - Tue", time: "5:30 PM – 6:30 PM", loc: "CFSA Complex Field #2", notes: "Arrival & 5v4 Drill Intro" },
+      { type: "Practice", date: "Week 1 - Thu", time: "5:30 PM – 6:30 PM", loc: "CFSA Complex Field #2", notes: "6-Run Cycle & Tracker Session A" },
+      { type: "Game", date: "Week 1 - Sat", time: "9:00 AM", loc: "CFSA Main Complex Field #1", notes: "Season Opener (Arrive 8:40 AM)" },
+      { type: "Practice", date: "Week 2 - Tue", time: "5:30 PM – 6:30 PM", loc: "CFSA Complex Field #2", notes: "Snap station & Reps" },
+      { type: "Practice", date: "Week 2 - Thu", time: "5:30 PM – 6:30 PM", loc: "CFSA Complex Field #2", notes: "Tracker Session B (5-of-6 Target)" },
+      { type: "Game", date: "Week 2 - Sat", time: "10:15 AM", loc: "CFSA Main Complex Field #3", notes: "Game 2 (Gold Star / Green Triangle focus)" }
+    ];
+
+    function loadSchedule() {
+      const saved = localStorage.getItem("lions_season_schedule");
+      return saved ? JSON.parse(saved) : DEFAULT_SCHEDULE;
+    }
+
+    function saveSchedule(events) {
+      localStorage.setItem("lions_season_schedule", JSON.stringify(events));
+      renderSchedule();
+    }
+
+    function renderSchedule() {
+      const events = loadSchedule();
+      const tbody = document.getElementById("schedule-body");
+      if (!tbody) return;
+
+      tbody.innerHTML = events.map((evt, idx) => `
+        <tr>
+          <td><strong style="color:${evt.type === 'Game' ? '#d32f2f' : '#07172c'}">${evt.type}</strong></td>
+          <td>${evt.date}</td>
+          <td>${evt.time}</td>
+          <td>${evt.loc}</td>
+          <td>${evt.notes || '—'}</td>
+          <td class="no-print">
+            <button class="btn btn-danger" style="padding:4px 8px;font-size:0.75rem" onclick="deleteEvent(${idx})">✕</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function deleteEvent(idx) {
+      const events = loadSchedule();
+      events.splice(idx, 1);
+      saveSchedule(events);
+    }
+
+    document.getElementById("btn-add-event")?.addEventListener("click", () => {
+      const panel = document.getElementById("add-event-panel");
+      panel.style.display = panel.style.display === "none" ? "block" : "none";
+    });
+
+    document.getElementById("btn-cancel-add")?.addEventListener("click", () => {
+      document.getElementById("add-event-panel").style.display = "none";
+    });
+
+    document.getElementById("event-form")?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const events = loadSchedule();
+      events.push({
+        type: document.getElementById("evt-type").value,
+        date: document.getElementById("evt-date").value,
+        time: document.getElementById("evt-time").value,
+        loc: document.getElementById("evt-loc").value,
+        notes: document.getElementById("evt-notes").value
+      });
+      saveSchedule(events);
+      document.getElementById("event-form").reset();
+      document.getElementById("add-event-panel").style.display = "none";
+    });
+
+    document.addEventListener("DOMContentLoaded", renderSchedule);
+  </script>
+  <script src="js/app.js"></script>
+</body>
+</html>
