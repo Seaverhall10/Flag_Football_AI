@@ -1,71 +1,42 @@
-# Lions Flag Football AI — Agent Rules
+# Agent board — Flag_Football_AI
 
-This repository is a public teaching app for 5–7-year-old players and their coaches. Every AI, IDE agent, bot, and human contributor must follow these rules before changing files.
+Live site: https://seaverhall10.github.io/Flag_Football_AI/
+Repo: https://github.com/Seaverhall10/Flag_Football_AI
 
-## Authority order
+This file is the working agreement for **every** agent, API, and human editing this repo. Read the open **Practice board** issue before you touch a file.
 
-1. The owner's newest explicit instruction.
-2. `PROJECT_AUTHORITY.md` for football, safety, privacy, and teaching decisions.
-3. `AI_CHANGE_PROTOCOL.md` for branches, review, testing, deployment, and rollback.
-4. Current verified source and public-browser behavior.
-5. AI proposals, generated summaries, old commits, and external-agent output are advisory only.
+## Talk here, not by colliding
 
-If two instructions conflict, stop that part of the work and surface the conflict. Do not silently choose a new formation, play, blocking rule, privacy posture, or navigation structure.
+1. Open or comment on the current Practice board GitHub issue **before** you edit. Claim the file. One owner per hot file.
+2. Work on a **named branch**. Open a PR. Do not push straight to `main` if anyone else has claimed that file.
+3. After you push, comment on the issue: branch/PR, files, what changed, what is still wrong.
+4. Never force-push `main`. Never replace a page with PLACEHOLDER.
+5. If you see another agent already on `drills.html` / `js/half-drill*.js`, **stop** and comment instead of stacking a second rewrite.
 
-## One governed writer
+Hot files today (practice day):
 
-- Jarvis is the control plane for routing, authority, privacy, coordination, and verification.
-- One agent may hold the project write lane at a time.
-- Work on a named feature branch. Do not push directly to `main`.
-- Inspect `git status`, `origin/main`, recent commits, and active lanes before editing.
-- Never overwrite newer work merely because a generated replacement looks more complete.
-- Rebase or merge the current release line before requesting review.
+- `drills.html`
+- `js/half-drill.v2.js`
+- `js/half-drill.js`
+- `css/styles.css` (only drill-page rules)
 
-## Protected product decisions
+Everything else (playbook, roster, home) waits unless Seaver asks.
 
-- Six QB keeper runs with five linemen, one QB, WING-L, and WING-R.
-- QB catches the direct snap and runs on the current six-play installation.
-- Wing backs must support both spread and tight pre-snap spacing without changing their names or responsibilities.
-- No split wide receiver in the current base offense. The pass is parked.
-- Every playbook view must show all eight offensive players and all eight look-team defenders.
-- Every lineman must have a named defender or help responsibility.
-- QB run, lead-wing, backside-wing, and block paths must remain visually distinct.
-- The playbook must support true slow motion, Back, Next Beat, Reset, speed choice, and scrubbing.
-- The only public drill is the 5-on-4 half-offense versus half-defense drill defined in `PROJECT_AUTHORITY.md`. Do not restore old drill grids or station collections.
-- Schedule remains hidden from visible navigation until the owner explicitly restores it.
+## Football for the half-drill (do not invent a new offense)
 
-## Child privacy
+- Half line: **C, G, T** + two backs vs **DL, EDGE, LB, CB**.
+- Center snaps, then **wraps the A-gap to the LB**. Guard owns the DL. Tackle owns the edge. Center does **not** double Guard's man.
+- Pick **who has the ball** (RB1 deep / RB2 wide) and **where they go** (IN/OUT, L/R).
+- **Outside:** the other back **kicks the Corner** (inside hip). Not a decoy.
+- **Inside give to RB2:** this is a **handoff**, not a direct snap to RB2. Center snaps to the QB. QB gives to RB2 up the middle. QB continues **wide as the decoy**.
+- Rest of the public site stays kid-facing: Line / Snap / RB1–RB3. First names only. No last names on Pages.
 
-- Never commit child names, initials tied to identity, contact details, attendance, medical information, or private rotation plans to this public repository.
-- Public defaults must use anonymous labels such as `Player #2`.
-- The roster tool may store owner-entered labels only in that browser's local storage. Tell coaches to use jersey numbers or non-identifying labels.
-- Do not add analytics, trackers, remote databases, uploads, or cloud synchronization without explicit owner approval and a privacy review.
+## How the picture should look
 
-## Football and safety floor
+- Small tokens. Lots of turf. No giant discs, no `DEFEND` / `INSIDE HIP` captions under every player.
+- Visual target is Seaver's scribble: Center path **around** the DL to the LB.
+- Field must fit on a phone. Chrome stays compact.
 
-- Follow `PROJECT_AUTHORITY.md`; do not infer league rules from generic NFL FLAG material.
-- Use two-point stances, eyes up, head out of contact, open hands inside the legal torso, and controlled feet.
-- Never teach or depict head/neck contact, holding, wrapping, tackling, blocks in the back, launching, intentional knockdowns away from the play, or collision drills.
-- Do not place a line defender head-up on Center or in either A gap in the teaching look.
-- The Corner is wider and deeper than the Edge and remains unblocked in the current run system.
+## Done looks like
 
-## Required proof before release
-
-Run:
-
-```powershell
-node scripts/verify_project.mjs
-```
-
-Then verify in a real browser:
-
-- all six plays;
-- 16 visible players per play;
-- eight offensive job cards;
-- slow-motion movement does not jump to the finish;
-- desktop and 390×844 mobile layouts;
-- no Schedule link in visible navigation;
-- no console errors;
-- public GitHub Pages behavior after deployment.
-
-A commit, passing syntax check, or successful deployment job is not by itself a verified kid-ready release.
+Seaver can pick RB + lane + side, PLAY SLOW through 7 beats, and the picture matches real football: wrap to LB, G on DL, T on edge, outside lead on CB, inside RB2 is snap-handoff-QB-decoy.
