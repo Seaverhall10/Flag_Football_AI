@@ -12,6 +12,9 @@
 - Desktop and 390×844 phone layouts have no horizontal page overflow or console errors.
 - Schedule is absent from visible navigation.
 - `node scripts/verify_project.mjs` passes 224 of 224 local checks.
+- Pull requests #1 and #2 were merged after repository verification.
+- GitHub Pages deployment `32742549910` succeeded for release commit `795d195`.
+- The cache-busted public playbook was rechecked on desktop and 390×844 phone: six calls, 16 players, eight jobs, true slow motion, no horizontal overflow, and no browser errors.
 
 ## Inference
 
@@ -24,6 +27,6 @@
 
 ## Next
 
-1. Review and merge the governed feature branch through GitHub.
-2. Confirm the GitHub Pages workflow succeeds.
-3. Repeat the critical checks on the cache-busted public URL and record the deployed commit.
+1. Obtain the current-season Edge/DE alignment interpretation from the league or officials and record the evidence before changing that teaching look.
+2. Run a short field acceptance session with coaches and 5–7-year-old players; record only anonymous usability findings.
+3. Keep Schedule hidden until the owner explicitly restores it.
