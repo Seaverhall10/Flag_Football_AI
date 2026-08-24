@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Half-Team Blocking Drill — Cy-Fair K/1 Lions</title>
-  <meta name="description" content="The Lions' single animated drill: five-player half offense versus four-player half defense for inside and outside lane integrity.">
-  <link rel="stylesheet" href="css/styles.css?v=half-team-20260824">
+  <meta name="description" content="5 on 4 half-line blocking drill. Center wraps to the LB.">
+  <link rel="stylesheet" href="css/styles.css?v=tight">
 </head>
-<body>
+<body class="half-drill-page">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="mast">
     <div class="mast-inner">
@@ -15,81 +15,63 @@
         <div class="mark" aria-label="Cy-Fair Lions Crest">
           <svg class="lion-logo" viewBox="0 0 36 36" fill="#f59e0b" aria-hidden="true"><path d="M18 3 C13 3 9 6 8 11 C7 15 9 18 9 20 C7 20 5 22 5 25 C5 29 9 32 14 32 C15 32 16 34 18 34 C20 34 21 32 22 32 C27 32 31 29 31 25 C31 22 29 20 27 20 C27 18 29 15 28 11 C27 6 23 3 18 3 Z M13 15 C14.1 15 15 15.9 15 17 C15 18.1 14.1 19 13 19 C11.9 19 11 18.1 11 17 C11 15.9 11.9 15 13 15 Z M23 15 C24.1 15 25 15.9 25 17 C25 18.1 24.1 19 23 19 C21.9 19 21 18.1 21 17 C21 15.9 21.9 15 23 15 Z M18 26 C15.5 26 14 24.5 14 23.5 L22 23.5 C22 24.5 20.5 26 18 26 Z"/></svg>
         </div>
-        <div class="brand-text"><h1>Cy-Fair K/1 Lions</h1><p>8-on-8 CFSA Flag Football · One Pride</p></div>
+        <div class="brand-text"><h1>Cy-Fair K/1 Lions</h1><p>Half-team drill</p></div>
       </a>
       <nav class="nav" aria-label="Coach navigation">
-        <a href="playbook.html">📖 Playbook</a><a href="roster.html">👥 Roster</a><a href="drills.html" class="active">⏱️ Drill</a><a href="notes.html">📝 Notes</a><a class="ghost" href="app.html">⚡ Sideline</a><a class="ghost" href="sideline.html">🖨️ Print</a>
+        <a href="playbook.html">Playbook</a><a href="roster.html">Roster</a><a href="drills.html" class="active">Drill</a><a href="notes.html">Notes</a><a class="ghost" href="app.html">Sideline</a><a class="ghost" href="sideline.html">Print</a>
       </nav>
     </div>
   </header>
 
-  <main id="main" class="wrap">
-    <section class="banner half-drill-banner">
-      <div class="eyebrow">⏱️ The One Lions Drill</div>
-      <h2>Half Offense vs Half Defense</h2>
-      <p>Five offensive players solve four defenders. Choose the lane, side, and defensive front. Then watch every block, shed, and pursuit step in slow motion.</p>
-    </section>
-
-    <section class="panel half-drill-chooser">
-      <div class="panel-header"><h2>1. Build This Rep</h2><span class="tiny">Three choices · one clear picture</span></div>
-      <div class="drill-choice-grid">
-        <fieldset class="drill-choice"><legend>RUN LANE</legend><div class="look-toggle" role="group" aria-label="Run lane"><button class="btn btn-secondary is-active" type="button" data-half-lane="inside" aria-pressed="true">INSIDE</button><button class="btn btn-secondary" type="button" data-half-lane="outside" aria-pressed="false">OUTSIDE</button></div></fieldset>
-        <fieldset class="drill-choice"><legend>PLAY SIDE</legend><div class="look-toggle" role="group" aria-label="Play side"><button class="btn btn-secondary" type="button" data-half-side="left" aria-pressed="false">LEFT</button><button class="btn btn-secondary is-active" type="button" data-half-side="right" aria-pressed="true">RIGHT</button></div></fieldset>
-        <fieldset class="drill-choice"><legend>FOURTH DEFENDER</legend><div class="look-toggle" role="group" aria-label="Fourth defender"><button class="btn btn-secondary is-active" type="button" data-half-front="two-dl" aria-pressed="true">2nd D-LINEMAN</button><button class="btn btn-secondary" type="button" data-half-front="two-lb" aria-pressed="false">2nd LINEBACKER</button></div></fieldset>
-        <fieldset class="drill-choice"><legend>LEAD PATH</legend><div class="look-toggle" role="group" aria-label="Lead path"><button class="btn btn-secondary is-active" type="button" data-half-decoy="on" aria-pressed="true">DECOY WIDE</button><button class="btn btn-secondary" type="button" data-half-decoy="off" aria-pressed="false">LEAD THROUGH HOLE</button></div></fieldset>
-      </div>
-      <div id="half-call" class="half-call" aria-live="polite"><strong>INSIDE RIGHT</strong><span>2 DL · 1 LB · 1 CB</span></div>
-    </section>
-
+  <main id="main" class="wrap wrap-drill">
     <section class="panel play-teacher half-drill-teacher">
-      <div class="panel-header">
-        <div><div class="tiny">2. Watch All Nine Players</div><h2 id="half-title">Inside Right · Two-DL Front</h2></div>
+      <div class="drill-choice-grid">
+        <fieldset class="drill-choice"><legend>LANE</legend><div class="look-toggle" role="group" aria-label="Run lane"><button class="btn btn-secondary is-active" type="button" data-half-lane="inside" aria-pressed="true">IN</button><button class="btn btn-secondary" type="button" data-half-lane="outside" aria-pressed="false">OUT</button></div></fieldset>
+        <fieldset class="drill-choice"><legend>SIDE</legend><div class="look-toggle" role="group" aria-label="Play side"><button class="btn btn-secondary" type="button" data-half-side="left" aria-pressed="false">L</button><button class="btn btn-secondary is-active" type="button" data-half-side="right" aria-pressed="true">R</button></div></fieldset>
+        <fieldset class="drill-choice"><legend>4th D</legend><div class="look-toggle" role="group" aria-label="Fourth defender"><button class="btn btn-secondary is-active" type="button" data-half-front="two-dl" aria-pressed="true">2 DL</button><button class="btn btn-secondary" type="button" data-half-front="two-lb" aria-pressed="false">2 LB</button></div></fieldset>
+        <fieldset class="drill-choice"><legend>LEAD</legend><div class="look-toggle" role="group" aria-label="Lead path"><button class="btn btn-secondary is-active" type="button" data-half-decoy="on" aria-pressed="true">DECOY</button><button class="btn btn-secondary" type="button" data-half-decoy="off" aria-pressed="false">HOLE</button></div></fieldset>
+      </div>
+      <div class="half-call-row">
+        <div id="half-call" class="half-call" aria-live="polite"><strong>INSIDE RIGHT</strong><span>2 DL · 1 LB · 1 CB</span></div>
         <span class="play-call-badge" id="half-badge">INSIDE · RIGHT</span>
       </div>
-      <div class="sim-key" aria-label="Drill path colors"><span><i class="key-runner"></i>Runner</span><span><i class="key-lead"></i>Lead RB</span><span><i class="key-decoy"></i>Decoy</span><span><i class="key-hip"></i>Block hip</span><span><i class="key-block"></i>Block</span><span><i class="key-defense"></i>Defense</span></div>
       <p id="half-beat" class="timer-label sim-beat">LINE UP · 1 OF 7</p>
+      <h2 id="half-title" class="visually-hidden">Inside Right · Two-DL Front</h2>
       <div id="half-drill-root" class="sim-root half-drill-root"></div>
       <p id="half-cue" class="sim-cue" aria-live="polite">Count defenders from inside out. Point to your job before the snap.</p>
-      <div class="sim-controls"><button type="button" class="btn btn-primary sim-big" id="half-play">PLAY SLOW</button><button type="button" class="btn btn-secondary sim-big" id="half-back">BACK</button><button type="button" class="btn btn-secondary sim-big" id="half-next">NEXT BEAT</button><button type="button" class="btn btn-danger sim-big" id="half-reset">RESET</button></div>
-      <div class="look-toggle" role="group" aria-label="Drill speed"><button type="button" class="btn btn-secondary is-active" data-half-speed="slow" aria-pressed="true">Slow-Mo</button><button type="button" class="btn btn-secondary" data-half-speed="normal" aria-pressed="false">Normal</button><button type="button" class="btn btn-secondary" data-half-speed="fast" aria-pressed="false">Fast</button></div>
-      <label class="tiny sim-scrub">Scrub through the rep<input id="half-slider" type="range" min="0" max="6" value="0" step="0.02" aria-label="Scrub through drill"></label>
+      <div class="sim-controls"><button type="button" class="btn btn-primary sim-big" id="half-play">PLAY SLOW</button><button type="button" class="btn btn-secondary sim-big" id="half-back">BACK</button><button type="button" class="btn btn-secondary sim-big" id="half-next">NEXT</button><button type="button" class="btn btn-danger sim-big" id="half-reset">RESET</button></div>
+      <div class="look-toggle speed-row" role="group" aria-label="Drill speed"><button type="button" class="btn btn-secondary is-active" data-half-speed="slow" aria-pressed="true">Slow</button><button type="button" class="btn btn-secondary" data-half-speed="normal" aria-pressed="false">Norm</button><button type="button" class="btn btn-secondary" data-half-speed="fast" aria-pressed="false">Fast</button></div>
+      <label class="tiny sim-scrub">Scrub<input id="half-slider" type="range" min="0" max="6" value="0" step="0.02" aria-label="Scrub through drill"></label>
       <div class="grid5-dots" aria-hidden="true"><span data-half-dot="0" class="is-on"></span><span data-half-dot="1"></span><span data-half-dot="2"></span><span data-half-dot="3"></span><span data-half-dot="4"></span><span data-half-dot="5"></span><span data-half-dot="6"></span></div>
     </section>
 
-    <section class="panel">
-      <div class="panel-header"><h2>3. Who Blocks Whom?</h2><span class="tiny">Tap a card to isolate that matchup</span></div>
-      <div id="half-offense-jobs" class="assignment-board half-job-board"></div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-header"><h2>4. Defensive Integrity</h2><span class="tiny">Win the lane before chasing the ball</span></div>
-      <div id="half-defense-jobs" class="assignment-board half-defense-board"></div>
-    </section>
-
-    <section class="panel half-coach-guide">
-      <div class="panel-header"><h2>5. Coach the Rep</h2><span class="tiny">Explain it the same way every time</span></div>
-      <div class="half-guide-grid">
-        <article class="half-guide-card"><span class="guide-number">1</span><h3>Point Before the Snap</h3><p>Each blocker points to one defender. Each defender points to the lane or leverage they own. If two kids point to the same job, reset before contact.</p></article>
-        <article class="half-guide-card"><span class="guide-number">2</span><h3>Inside Run</h3><p>Runner presses between Center and Guard. Lead RB enters first. Defense squeezes the lane without abandoning outside leverage.</p></article>
-        <article class="half-guide-card"><span class="guide-number">3</span><h3>Outside Run</h3><p>Runner reaches the Tackle's outside hip before turning north. Corner stays outside; pursuit works inside-out.</p></article>
-        <article class="half-guide-card"><span class="guide-number">4</span><h3>Block and Shed Safely</h3><p>Two-point stance, eyes up, head out, open hands inside. Defender anchors, separates, finds the ball, and sheds toward the lane—never through a child's head or neck.</p></article>
+    <details class="half-more">
+      <summary>Who blocks whom</summary>
+      <div class="half-more-body">
+        <div id="half-offense-jobs" class="assignment-board half-job-board"></div>
       </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-header"><h2>6. Score the Play, Not the Child</h2></div>
-      <div class="checklist">
-        <div class="checklist-item"><strong>Clean snap:</strong> Center reaches the Runner's chest; Runner secures it before moving.</div>
-        <div class="checklist-item"><strong>Correct targets:</strong> All three blockers identify the right defender before the snap.</div>
-        <div class="checklist-item"><strong>Legal fit:</strong> Head out, hands inside, feet under control, no holding or takedown.</div>
-        <div class="checklist-item"><strong>Lane integrity:</strong> DL protects the assigned gap, LB stays square, CB keeps outside leverage.</div>
-        <div class="checklist-item"><strong>Finish:</strong> Offense reaches the lane; defense separates, pursues, and pulls the flag.</div>
+    </details>
+    <details class="half-more">
+      <summary>Defensive integrity</summary>
+      <div class="half-more-body">
+        <div id="half-defense-jobs" class="assignment-board half-defense-board"></div>
       </div>
-    </section>
+    </details>
+    <details class="half-more">
+      <summary>Coach the rep</summary>
+      <div class="half-more-body">
+        <div class="half-guide-grid">
+          <article class="half-guide-card"><span class="guide-number">1</span><h3>Point before the snap</h3><p>Each blocker points to one defender. Guard owns the DL. Center climbs to the LB. Tackle takes the edge.</p></article>
+          <article class="half-guide-card"><span class="guide-number">2</span><h3>Inside run</h3><p>Runner presses between Center and Guard. Lead enters first or decoys wide.</p></article>
+          <article class="half-guide-card"><span class="guide-number">3</span><h3>Outside run</h3><p>Runner reaches Tackle's outside hip before turning north. Corner stays outside.</p></article>
+          <article class="half-guide-card"><span class="guide-number">4</span><h3>Fit</h3><p>Head out, hands inside. Defender anchors, sheds to the lane, never through a child's head.</p></article>
+        </div>
+      </div>
+    </details>
   </main>
 
-  <footer class="foot"><div class="foot-inner"><div>Cy-Fair K/1 Lions · One Half-Team Drill</div><div><a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></div></div></footer>
-  <script src="js/half-drill.v2.js?v=climb"></script>
+  <footer class="foot"><div class="foot-inner"><div>Cy-Fair K/1 Lions</div><div><a href="https://seaverhall10.github.io/Flag_Football_AI/">Pages</a></div></div></footer>
+  <script src="js/half-drill.v2.js?v=tight"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

@@ -1121,3 +1121,78 @@ body.sunlight-mode .btn-grid { gap: 12px; }
   padding: 3px 8px !important;
   font-size: 0.72rem !important;
 }
+
+
+/* Half-drill compact board — tokens and chrome stay small */
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+body.half-drill-page { padding-bottom: 16px; }
+.half-drill-page .wrap-drill { max-width: 640px; padding: 8px 10px 20px; }
+.half-drill-page .mast-inner { padding: 6px 10px; gap: 8px; }
+.half-drill-page .brand-text h1 { font-size: 0.95rem; }
+.half-drill-page .brand-text p { font-size: 0.7rem; }
+.half-drill-page .nav a { padding: 6px 8px; font-size: 0.75rem; }
+.half-drill-page .panel { padding: 8px; margin: 0 0 8px; }
+.half-drill-page .drill-choice-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 0 0 6px; }
+.half-drill-page .drill-choice { padding: 4px 6px; }
+.half-drill-page .drill-choice legend { font-size: 0.62rem; letter-spacing: .06em; }
+.half-drill-page .drill-choice .btn { min-height: 30px; font-size: 0.68rem; padding: 3px 4px; }
+.half-drill-page .half-call-row { display: flex; align-items: center; gap: 8px; margin: 4px 0 6px; }
+.half-drill-page .half-call { flex: 1; margin: 0; padding: 6px 10px; }
+.half-drill-page .half-call strong { font-size: 0.9rem; }
+.half-drill-page .half-call span { font-size: 0.72rem; }
+.half-drill-page .sim-beat { margin: 0 0 4px; font-size: 0.75rem; }
+.half-drill-page .sim-root.half-drill-root {
+  max-width: 520px;
+  max-height: 48vh;
+  margin: 0 auto 6px;
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.half-drill-page .half-team-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 48vh;
+}
+.half-drill-page .sim-cue {
+  min-height: 0;
+  font-size: 0.82rem;
+  padding: 6px 8px;
+  margin: 6px 0;
+  font-weight: 700;
+}
+.half-drill-page .sim-controls { gap: 6px; margin: 4px 0; }
+.half-drill-page .sim-big { min-height: 38px; font-size: 0.78rem; letter-spacing: 0.04em; }
+.half-drill-page .sim-big.btn-primary,
+.half-drill-page #half-play.btn-primary {
+  min-height: 40px;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  box-shadow: 0 0 0 2px #D4A017;
+}
+.half-drill-page .speed-row { justify-content: center; margin: 4px 0; }
+.half-drill-page .speed-row .btn { min-height: 28px; font-size: 0.68rem; min-width: 64px; }
+.half-drill-page .sim-scrub { margin: 4px 0; font-size: 0.68rem; }
+.half-drill-page .grid5-dots { margin: 4px 0 0; }
+.half-drill-page .half-more {
+  margin: 6px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+.half-drill-page .half-more summary {
+  padding: 8px 12px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.half-drill-page .half-more-body { padding: 0 8px 10px; }
+.half-drill-page .assignment-card { min-height: 0; padding: 8px; }
+.half-drill-page .assignment-task { font-size: 0.72rem; margin-top: 6px; }
+.half-drill-page .foot-inner { font-size: 0.72rem; padding: 8px 10px; }
+@media (max-width: 700px) {
+  .half-drill-page .drill-choice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .half-drill-page .sim-root.half-drill-root,
+  .half-drill-page .half-team-svg { max-height: 42vh; }
+}
