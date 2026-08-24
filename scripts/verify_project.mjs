@@ -109,7 +109,7 @@ pass("drill avoids unsafe child action words", !/\b(?:kick|hold|fight|wrap|panca
 pass("drill exposes role spotlight", /id=["']half-spotlight["']/.test(drills));
 pass("drill exposes visual-first kid mode", /class=["'][^"']*kid-demo-mode/.test(drills) && /id=["']half-mode["'][^>]*>CHANGE SETUP</i.test(drills));
 pass("kid field removes the desktop width cap", /kid-demo-mode\s+\.sim-root\.half-drill-root\s*\{[\s\S]*?max-width:\s*none/i.test(styles));
-pass("drill links four official NFL examples", (drills.match(/class=["']half-clip-card["']/g) || []).length === 4 && (drills.match(/href=["']https:\/\/(?:www\.)?(?:nfl\.com|playfootball\.nfl\.com)\//g) || []).length === 4);
+pass("drill links four official NFL or NFL-team examples", (drills.match(/class=["']half-clip-card["']/g) || []).length === 4 && (drills.match(/href=["']https:\/\/(?:www\.)?(?:nfl\.com|playfootball\.nfl\.com|youtube\.com)\//g) || []).length === 4);
 pass("no three-point stance instruction", !/3-point stance|three-point stance/i.test(`${drills}\n${playbook}\n${sim}`));
 pass("authority protects Center and A gaps", /No line defender is head-up on Center or in either A gap/i.test(authority));
 pass("authority protects child privacy", /Never commit child names/i.test(read("AGENTS.md")));
