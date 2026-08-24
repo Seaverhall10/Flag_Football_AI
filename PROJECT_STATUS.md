@@ -20,13 +20,15 @@
 - All 16 teaching cases were tested: Inside/Outside × Left/Right × Two-DL/Two-LB × Offense/Defense view.
 - The drill shows five offensive jobs and four defensive-integrity jobs; tapping one isolates the matchup.
 - Teaching views change visual emphasis only; a browser check at the controlled-push beat confirmed all nine player coordinates remain identical when switching views.
-- All responsibility paths are solid and direct. The field stays edge-to-edge on phones and uses a centered 1080-pixel teaching width on larger screens, with no masthead or oversized page margins.
+- All responsibility paths are solid and direct. Phones use an edge-to-edge single column. Laptops and desktops use a 620-pixel field beside a compact teaching-control column so the complete rep and primary controls remain visible together.
+- Speed, scrubber, and beat dots are collapsed under Coach Controls. The four primary controls remain immediately visible.
 - The Center and Linebacker follow independent fixed waypoints. Browser checks confirmed Center/LB positions at all seven exact beats, including visible fit, short push, separation, and pursuit.
 - Four official NFL/NFL Play Football clips are linked below the drill: offensive contact, game blocking technique, defensive shedding, and a real run-lane example.
 - Both animations advance slowly to Direct Snap after 1.2 seconds rather than jumping to the finish.
-- Desktop and 390×844 phone layouts have no horizontal overflow or console errors.
+- Complete local user journeys passed at 390×844 phone, 768×1024 tablet, 1280×720 laptop, and 1440×900 desktop sizes with no horizontal overflow or console errors.
+- At every audited size, all nine players, the full field, cue, and Play/Back/Next/Reset were visible together. Defense view preserved coordinates; Next/Back/Reset landed on exact beats; player spotlight, Coach Controls, setup changes, and all four official clip links worked.
 - Legacy `drill.html`, `stations.html`, `practice.html`, and `js/grid5v4.js` are removed.
-- `node scripts/verify_project.mjs` passes 239 of 239 checks for the current release candidate.
+- `node scripts/verify_project.mjs` passes 240 of 240 checks for the current release candidate.
 - Pull request #4 merged as release commit `b3192ed`.
 - GitHub Pages deployment `32749342671` passed verification and deployment.
 - The cache-busted public playbook passed all 12 QB/Wing cases, with 16 players and eight jobs in every case.

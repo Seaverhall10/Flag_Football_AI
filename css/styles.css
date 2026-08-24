@@ -1354,3 +1354,150 @@ body.half-drill-page { padding-bottom: 16px; }
     border-radius: 10px;
   }
 }
+
+/* Full-page usability audit: keep the rep and its controls together. */
+.half-drill-page.kid-demo-mode .half-drill-teacher > .visually-hidden {
+  width: 1px;
+  max-width: 1px;
+}
+.half-drill-page.kid-demo-mode .half-drill-teacher > * {
+  max-width: 980px;
+}
+.half-drill-page.kid-demo-mode .half-call-row {
+  min-height: 44px;
+}
+.half-drill-page.kid-demo-mode .half-call {
+  padding: 5px 9px;
+}
+.half-drill-page.kid-demo-mode .half-call strong {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+.half-drill-page.kid-demo-mode .half-call span {
+  font-size: .76rem;
+}
+.half-drill-page.kid-demo-mode .half-mode {
+  min-height: 44px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-size: .72rem;
+}
+.half-drill-page.kid-demo-mode .half-view-toggle .btn {
+  min-height: 44px;
+  padding: 6px 10px;
+  font-size: .82rem;
+}
+.half-drill-page.kid-demo-mode .sim-beat {
+  min-height: 30px;
+  padding: 5px 10px;
+  font-size: .76rem;
+  line-height: 20px;
+}
+.half-stage {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+}
+.half-field-column,
+.half-control-column { min-width: 0; }
+.half-field-column .sim-key {
+  min-height: 20px;
+  margin: 0 0 3px;
+  font-size: .7rem;
+}
+.half-field-column .sim-key span { white-space: nowrap; }
+.half-control-column .sim-cue {
+  min-height: 0;
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  font-size: .94rem;
+  line-height: 1.35;
+}
+.half-control-column .half-spotlight {
+  grid-template-columns: 1fr;
+  min-height: 0;
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  gap: 3px;
+}
+.half-control-column .half-spotlight strong { font-size: .9rem; }
+.half-control-column .half-spotlight span { font-size: .82rem; }
+.half-control-column .sim-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 0 0 8px;
+}
+.half-drill-page.kid-demo-mode .half-control-column .sim-big,
+.half-drill-page.kid-demo-mode .half-control-column #half-play.btn-primary {
+  min-height: 44px;
+  padding: 7px 9px;
+  font-size: .82rem;
+}
+.half-coach-controls {
+  margin: 0;
+  border: 1px solid #38506f;
+  border-radius: 8px;
+  background: #101f35;
+}
+.half-coach-controls summary {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 7px 10px;
+  color: #cbd5e1;
+  font-size: .75rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  cursor: pointer;
+}
+.half-coach-controls[open] { padding-bottom: 7px; }
+.half-coach-controls .speed-row,
+.half-coach-controls .sim-scrub,
+.half-coach-controls .grid5-dots {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.half-drill-page.kid-demo-mode .half-real-clips {
+  width: calc(100% - 8px);
+  max-width: 980px;
+  margin: 8px auto 16px;
+}
+.half-drill-page.kid-demo-mode .half-real-clips summary {
+  min-height: 44px;
+  padding: 7px 11px;
+  font-size: .85rem;
+}
+
+@media (min-width: 960px) {
+  .half-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 620px) minmax(300px, 1fr);
+    align-items: start;
+    gap: 12px;
+  }
+  .half-drill-page.kid-demo-mode .half-stage .sim-root.half-drill-root {
+    width: 100%;
+    max-width: 620px;
+    margin: 0;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 959px) {
+  .half-stage { max-width: 720px; }
+  .half-drill-page.kid-demo-mode .half-stage .sim-root.half-drill-root {
+    width: 100%;
+    max-width: 620px;
+    margin: 0 auto 8px;
+  }
+  .half-control-column { max-width: 620px; margin: 0 auto; }
+}
+
+@media (max-width: 700px) {
+  .half-drill-page.kid-demo-mode .half-mode { min-height: 44px; }
+  .half-drill-page.kid-demo-mode .half-view-toggle .btn { min-height: 44px; }
+  .half-drill-page.kid-demo-mode .half-control-column .sim-big,
+  .half-drill-page.kid-demo-mode .half-control-column #half-play.btn-primary { min-height: 44px; }
+  .half-control-column .sim-cue { margin-top: 6px; font-size: .92rem; }
+  .half-coach-controls summary { min-height: 44px; }
+}

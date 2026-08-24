@@ -307,10 +307,13 @@
   function updateViewBox() {
     if (!svg) return;
     const phone = window.matchMedia && window.matchMedia("(max-width: 700px)").matches;
+    const losLabel = svg.querySelector(".half-los-label");
     if (phone) {
       svg.setAttribute("viewBox", state.side === "right" ? "200 20 780 780" : "20 20 780 780");
+      if (losLabel) losLabel.setAttribute("x", state.side === "right" ? "216" : "36");
     } else {
       svg.setAttribute("viewBox", state.side === "right" ? "80 20 900 780" : "20 20 900 780");
+      if (losLabel) losLabel.setAttribute("x", state.side === "right" ? "96" : "36");
     }
   }
   function buildField() {
@@ -342,6 +345,7 @@
     svg.appendChild(hashes);
     svg.appendChild(el("line", { x1: "30", y1: String(LOS), x2: "970", y2: String(LOS), stroke: "#f6c344", "stroke-width": "3" }));
     const los = el("text", {
+      class: "half-los-label",
       x: "44", y: String(LOS + 30), fill: "#f6c344", "font-size": "22", "font-weight": "900",
       "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "5", "letter-spacing": "0.14em"
     });
