@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Interactive Playbook — Cy-Fair K/1 Lions</title>
   <meta name="description" content="Interactive 8-on-8 visual flag football playbook for Cy-Fair K/1 Lions with animated route simulation and defense modes.">
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=governed2">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -26,7 +25,6 @@
       </a>
       
       <nav class="nav" aria-label="Coach navigation">
-        <a href="schedule.html">📅 Schedule</a>
         <a href="playbook.html" class="active">📖 Playbook</a>
         <a href="roster.html">👥 Roster</a>
         <a href="drills.html">⏱️ Drills</a>
@@ -39,9 +37,9 @@
 
   <main id="main" class="wrap">
     <section class="banner">
-      <div class="eyebrow">📖 Visual Formation & Route Simulator</div>
-      <h2>Interactive Playbook</h2>
-      <p>Six locked runs. Landmarks do not move. Select any run below to visualize the formation, animate the ball snap and runner path, and inspect position responsibilities.</p>
+      <div class="eyebrow">📖 Seven-Beat Full-Team Teacher</div>
+      <h2>See Every Kid's Job</h2>
+      <p>Pick one of the six runs. Watch all 8 offensive players and all 8 look-team defenders move in true slow motion, then tap a position to isolate that child's job.</p>
     </section>
 
     <!-- Run Selector Buttons -->
@@ -101,67 +99,50 @@
       </div>
     </section>
 
-    <!-- Field Diagram Container -->
-    <section class="panel">
+    <!-- Governed seven-beat full-team simulator -->
+    <section class="panel play-teacher">
       <div class="panel-header">
         <div>
-          <h2>Visual 8-on-8 Field Alignment</h2>
-          <span class="tiny">Tap any player token to inspect assignment cues</span>
+          <div class="tiny">2. Watch Everybody</div>
+          <h2 id="sim-play-name">Inside Right</h2>
         </div>
+        <span class="play-call-badge" id="sim-play-badge">Red Diamond · C–RG</span>
       </div>
-      
-      <div class="field-container" id="field-diagram-container">
-        <!-- Rendered dynamically by js/field-diagram.js -->
+      <div class="sim-key" aria-label="Route colors">
+        <span><i class="key-runner"></i>Runner</span>
+        <span><i class="key-lead"></i>Lead</span>
+        <span><i class="key-fake"></i>Fake</span>
+        <span><i class="key-block"></i>Block</span>
       </div>
-
-      <div class="stop-banner" style="margin-top:14px">
-        <strong>Execution Key: </strong>
-        <span id="run-detail-description">Direct snap to designated runner (~3 yards). Lead attacks the C-RG A-gap hole first and blocks linebacker. Runner follows, plants on cone, and drives north.</span>
+      <p id="sim-beat" class="timer-label sim-beat">PRE-SNAP · 1 OF 7</p>
+      <div id="sim-root" class="sim-root"></div>
+      <p id="sim-cue" class="sim-cue" aria-live="polite">Find your position. Follow only your arrow.</p>
+      <div class="sim-controls">
+        <button type="button" class="btn btn-primary sim-big" id="sim-play">PLAY SLOW</button>
+        <button type="button" class="btn btn-secondary sim-big" id="sim-back">BACK</button>
+        <button type="button" class="btn btn-secondary sim-big" id="sim-next">NEXT BEAT</button>
+        <button type="button" class="btn btn-danger sim-big" id="sim-reset">RESET</button>
+      </div>
+      <div class="look-toggle" role="group" aria-label="Speed">
+        <button type="button" class="btn btn-secondary is-active" data-sim-speed="slow" aria-pressed="true">Slow-Mo</button>
+        <button type="button" class="btn btn-secondary" data-sim-speed="normal" aria-pressed="false">Normal</button>
+        <button type="button" class="btn btn-secondary" data-sim-speed="fast" aria-pressed="false">Fast</button>
+      </div>
+      <label class="tiny sim-scrub">Scrub through the play
+        <input id="sim-slider" type="range" min="0" max="6" value="0" step="0.02" aria-label="Scrub through play">
+      </label>
+      <div class="grid5-dots" aria-hidden="true">
+        <span data-sim-dot="0" class="is-on"></span><span data-sim-dot="1"></span><span data-sim-dot="2"></span><span data-sim-dot="3"></span><span data-sim-dot="4"></span><span data-sim-dot="5"></span><span data-sim-dot="6"></span>
       </div>
     </section>
 
-    <!-- Position Assignment Breakdown -->
+    <!-- Position assignments -->
     <section class="panel">
       <div class="panel-header">
-        <h2>Position Assignment Matrix</h2>
+        <h2>3. Find Your Job</h2>
+        <span class="tiny">Tap a card to highlight that player</span>
       </div>
-      <div class="grid-2">
-        <div>
-          <h3>Offense (8 Players)</h3>
-          <ul class="checklist">
-            <li class="checklist-item"><strong>Center (C):</strong> Clean 3-yard snap direct to runner, then drive DL.</li>
-            <li class="checklist-item"><strong>Guards (LG / RG):</strong> Find jersey, head out, hands inside, maintain gap.</li>
-            <li class="checklist-item"><strong>Tackles (LT / RT):</strong> Seal edge, do not allow defenders inside.</li>
-            <li class="checklist-item"><strong>Wide Receiver (WR):</strong> Stalk block or clear out cornerback.</li>
-            <li class="checklist-item"><strong>Lead Blocker (L):</strong> Attack the called hole landmark FIRST, pick up LB.</li>
-            <li class="checklist-item"><strong>Designated Runner (R):</strong> Catch cleanly. <em>Follow. Plant. Go.</em></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3>Defense (Look Team / Opponent)</h3>
-          <ul class="checklist">
-            <li class="checklist-item"><strong>Front 3 / 4 (DL / LB):</strong> Stay home, fill gaps, then pull flag. No lunging.</li>
-            <li class="checklist-item"><strong>Cornerback (CB):</strong> Nothing outside. Keep outside arm free, force runner back inside.</li>
-            <li class="checklist-item"><strong>Safety (S):</strong> Deep contain, pursuit angle to the sideline.</li>
-          </ul>
-          
-          <h3 style="margin-top:18px">Landmark Cone Setup</h3>
-          <table>
-            <thead>
-              <tr><th>Hole</th><th>Cone Symbol</th><th>Landmark Location</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>C-RG</td><td>Red Diamond</td><td>Inside Right A-Gap</td></tr>
-              <tr><td>C-LG</td><td>Blue Circle</td><td>Inside Left A-Gap</td></tr>
-              <tr><td>RG-RT</td><td>Gold Star</td><td>Off-Tackle B-Gap Right</td></tr>
-              <tr><td>LG-LT</td><td>Green Triangle</td><td>Off-Tackle B-Gap Left</td></tr>
-              <tr><td>RT Outside</td><td>Orange Square</td><td>C-Gap Perimeter Right</td></tr>
-              <tr><td>LT Outside</td><td>Purple Hexagon</td><td>C-Gap Perimeter Left</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <div id="sim-assignments" class="assignment-board"></div>
     </section>
 
     <!-- Universal Cues -->
@@ -186,7 +167,7 @@
     </div>
   </footer>
 
-  <script src="js/field-diagram.js"></script>
+  <script src="js/sim.js?v=governed2"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

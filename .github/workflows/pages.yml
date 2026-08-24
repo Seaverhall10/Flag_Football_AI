@@ -1,6 +1,9 @@
 ﻿name: Deploy GitHub Pages
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -16,7 +19,17 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Verify football authority, privacy, assets, and JavaScript
+        run: node scripts/verify_project.mjs
+
   deploy:
+    if: github.event_name != 'pull_request'
+    needs: verify
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

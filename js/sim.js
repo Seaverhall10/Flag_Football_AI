@@ -38,25 +38,30 @@
     RB1: { x: 420, y: 535, label: "RB1", kind: "RB" },
     RB2: { x: 500, y: 475, label: "RB2", kind: "RB" },
     RB3: { x: 580, y: 535, label: "RB3", kind: "RB" },
-    LE:  { x: 290, y: 318, label: "E-L", kind: "DEF" },
-    DT:  { x: 500, y: 312, label: "DT", kind: "DEF" },
-    RE:  { x: 710, y: 318, label: "E-R", kind: "DEF" },
-    LBL: { x: 405, y: 230, label: "LB-L", kind: "DEF" },
-    LBR: { x: 595, y: 230, label: "LB-R", kind: "DEF" },
-    CBL: { x: 135, y: 300, label: "CB-L", kind: "DEF" },
-    CBR: { x: 865, y: 300, label: "CB-R", kind: "DEF" },
-    S:   { x: 500, y: 105, label: "S", kind: "DEF" }
+    EL:  { x: 205, y: 318, label: "EDGE-L", kind: "DEF" },
+    DTL: { x: 390, y: 318, label: "DT-L", kind: "DEF" },
+    DTR: { x: 610, y: 318, label: "DT-R", kind: "DEF" },
+    ER:  { x: 795, y: 318, label: "EDGE-R", kind: "DEF" },
+    LBL: { x: 420, y: 230, label: "LB-L", kind: "DEF" },
+    LBR: { x: 580, y: 230, label: "LB-R", kind: "DEF" },
+    CBL: { x: 100, y: 270, label: "CB-L", kind: "DEF" },
+    CBR: { x: 900, y: 270, label: "CB-R", kind: "DEF" }
   };
 
   const OFFENSE = ["LT", "LG", "C", "RG", "RT", "RB1", "RB2", "RB3"];
-  const DEFENSE = ["LE", "DT", "RE", "LBL", "LBR", "CBL", "CBR", "S"];
-  const LINE_TARGETS = {
-    LT: { id: "LE", x: 260, y: 338 },
-    LG: { id: "DT", x: 455, y: 338 },
-    C:  { id: "DT", x: 500, y: 344 },
-    RG: { id: "DT", x: 545, y: 338 },
-    RT: { id: "RE", x: 740, y: 338 }
-  };
+  const DEFENSE = ["EL", "DTL", "DTR", "ER", "LBL", "LBR", "CBL", "CBR"];
+
+  function lineTargets(run) {
+    return {
+      LT: { id: "EDGE-L", x: 235, y: 340 },
+      LG: { id: "DT-L", x: 370, y: 342 },
+      C: run.side === "R"
+        ? { id: "HELP RG", x: 565, y: 346 }
+        : { id: "HELP LG", x: 435, y: 346 },
+      RG: { id: "DT-R", x: 630, y: 342 },
+      RT: { id: "EDGE-R", x: 765, y: 340 }
+    };
+  }
 
   const state = {
     runKey: "inside-right",
@@ -107,11 +112,12 @@
 
   function lineCue(id, run) {
     const playSide = run.side === "R" ? ["RG", "RT"] : ["LG", "LT"];
-    if (id === "C") return "Clean snap → protect inside on DT";
-    if (id === (run.side === "R" ? "RT" : "LT")) return `Seal ${run.side === "R" ? "E-R" : "E-L"} · nothing crosses your face`;
-    if (id === (run.side === "R" ? "RG" : "LG")) return `Take DT's ${run.side === "R" ? "right" : "left"} hip`;
-    if (playSide.indexOf(id) === -1) return `Backside: stay home on ${LINE_TARGETS[id].id}`;
-    return `Find ${LINE_TARGETS[id].id} · head out · hands inside`;
+    const targets = lineTargets(run);
+    if (id === "C") return `Clean snap → protect inside → ${targets.C.id}`;
+    if (id === (run.side === "R" ? "RT" : "LT")) return `Seal ${run.side === "R" ? "EDGE-R" : "EDGE-L"} · nothing crosses your face`;
+    if (id === (run.side === "R" ? "RG" : "LG")) return `Take ${targets[id].id}'s play-side hip`;
+    if (playSide.indexOf(id) === -1) return `Backside: stay home on ${targets[id].id}`;
+    return `Find ${targets[id].id} · head out · hands inside`;
   }
 
   function roleFor(id, run) {
@@ -183,10 +189,11 @@
   function poseAtBeat(beat) {
     const run = currentRun();
     const p = basePoses();
+    const targets = lineTargets(run);
 
     ["LT", "LG", "C", "RG", "RT"].forEach((id) => {
       const amount = beat < 2 ? 0 : beat === 2 ? 0.45 : 1;
-      p[id] = mixPoint(HOME[id], LINE_TARGETS[id], amount);
+      p[id] = mixPoint(HOME[id], targets[id], amount);
       if (id === "C" && beat === 1) p[id].y += 9;
     });
 
@@ -206,13 +213,13 @@
       p[bsLb] = mixPoint(HOME[bsLb], { x: run.holeX - side * 85, y: 248 }, beat === 4 ? 0.18 : 0.38);
       p[psCb] = mixPoint(HOME[psCb], { x: clamp(runner.x + side * 75, 80, 920), y: Math.min(270, runner.y + 55) }, beat === 4 ? 0.22 : beat === 5 ? 0.5 : 0.78);
       p[bsCb] = mixPoint(HOME[bsCb], { x: HOME[bsCb].x + side * 18, y: HOME[bsCb].y }, 0.3);
-      p.S = mixPoint(HOME.S, { x: runner.x, y: Math.min(178, runner.y - 95) }, beat === 4 ? 0.2 : beat === 5 ? 0.38 : 0.62);
     }
 
     if (beat >= 3) {
-      p.LE = mixPoint(HOME.LE, { x: HOME.LE.x + side * 8, y: HOME.LE.y + 10 }, 0.35);
-      p.DT = mixPoint(HOME.DT, { x: run.holeX, y: HOME.DT.y + 12 }, beat >= 5 ? 0.18 : 0.08);
-      p.RE = mixPoint(HOME.RE, { x: HOME.RE.x + side * 8, y: HOME.RE.y + 10 }, 0.35);
+      p.EL = mixPoint(HOME.EL, { x: HOME.EL.x + side * 8, y: HOME.EL.y + 10 }, 0.35);
+      p.DTL = mixPoint(HOME.DTL, { x: run.holeX - 85, y: HOME.DTL.y + 10 }, beat >= 5 ? 0.16 : 0.08);
+      p.DTR = mixPoint(HOME.DTR, { x: run.holeX + 85, y: HOME.DTR.y + 10 }, beat >= 5 ? 0.16 : 0.08);
+      p.ER = mixPoint(HOME.ER, { x: HOME.ER.x + side * 8, y: HOME.ER.y + 10 }, 0.35);
     }
     return p;
   }
@@ -236,9 +243,10 @@
 
   function drawBlockArrows() {
     while (blockLayer.firstChild) blockLayer.removeChild(blockLayer.firstChild);
+    const targets = lineTargets(currentRun());
     ["LT", "LG", "C", "RG", "RT"].forEach((id) => {
       const home = HOME[id];
-      const target = LINE_TARGETS[id];
+      const target = targets[id];
       blockLayer.appendChild(el("path", {
         d: `M ${home.x},${home.y - 12} L ${target.x},${target.y}`,
         fill: "none", stroke: "#67e8f9", "stroke-width": "4", "stroke-linecap": "round",
