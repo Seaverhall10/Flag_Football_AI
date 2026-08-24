@@ -43,7 +43,7 @@
   const DEFENSE = ["EL", "DTL", "DTR", "ER", "LBL", "LBR", "CBL", "CBR"];
   const state = { runKey: "inside-right", formation: "wide", t: 0, playing: false, speed: 11000, startedAt: 0, startT: 0, raf: 0, selected: null, players: {} };
 
-  let svg, ball, holeRing, holeLabel, formationLabel, routeRunner, routeLead, routeFake, blockLayer, cueEl, beatEl, slider, playButton;
+  let svg, ball, holeRing, holeLabel, formationLabel, routeRunner, routeLead, routeFake, blockLayer, hipLayer, cueEl, beatEl, slider, playButton;
   function el(name, attrs) { const node = document.createElementNS(NS, name); Object.keys(attrs || {}).forEach((key) => node.setAttribute(key, attrs[key])); return node; }
   function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
   function lerp(a, b, t) { return a + (b - a) * t; }
@@ -55,22 +55,52 @@
   function backSideLb(run) { return run.side === "R" ? "LBL" : "LBR"; }
   function playSideCb(run) { return run.side === "R" ? "CBR" : "CBL"; }
   function backSideCb(run) { return run.side === "R" ? "CBL" : "CBR"; }
-
+  function playOut(run) { return run.side === "R" ? 1 : -1; }
+  function defHip(defId, kind, run) {
+    const d = HOME[defId];
+    const out = playOut(run);
+    const dx = kind === "outside" ? out * 16 : -out * 16;
+    return { x: d.x + dx, y: d.y + 10, id: d.label, defId: defId, kind: kind };
+  }
   function lineTargets(run) {
-    return { LT: { id: "EDGE-L", x: 235, y: 368 }, LG: { id: "DT-L", x: 370, y: 370 }, C: run.side === "R" ? { id: "HELP RG", x: 565, y: 374 } : { id: "HELP LG", x: 435, y: 374 }, RG: { id: "DT-R", x: 630, y: 370 }, RT: { id: "EDGE-R", x: 765, y: 368 } };
+    const psDt = run.side === "R" ? "DTR" : "DTL";
+    const psEdge = run.side === "R" ? "ER" : "EL";
+    const psG = run.side === "R" ? "RG" : "LG";
+    const psT = run.side === "R" ? "RT" : "LT";
+    const gHip = run.type === "inside" ? "outside" : "outside";
+    const tHip = run.type === "wide" ? "outside" : "inside";
+    const out = {
+      LT: defHip("EL", run.side === "L" ? tHip : "inside", run),
+      LG: defHip("DTL", run.side === "L" ? gHip : "inside", run),
+      RG: defHip("DTR", run.side === "R" ? gHip : "inside", run),
+      RT: defHip("ER", run.side === "R" ? tHip : "inside", run),
+      C: defHip(psDt, "inside", run)
+    };
+    out.C.id = "HELP " + HOME[psDt].label;
+    out[psG].kind = gHip;
+    out[psT].kind = tHip;
+    return out;
   }
   function lineCue(id, run) {
     const targets = lineTargets(run);
-    if (id === "C") return `Snap to QB → protect inside → ${targets.C.id}`;
-    if (id === (run.side === "R" ? "RT" : "LT")) return `Seal ${run.side === "R" ? "EDGE-R" : "EDGE-L"} · nothing crosses your face`;
-    if (id === (run.side === "R" ? "RG" : "LG")) return `Own ${targets[id].id}'s play-side hip`;
-    return `Stay home on ${targets[id].id} · head out · hands inside`;
+    const hip = targets[id] && targets[id].kind ? targets[id].kind.toUpperCase() + " HIP" : "HIP";
+    if (id === "C") return `Snap to QB. Then ${hip} of ${targets.C.id.replace("HELP ", "")}. Do not leave your man.`;
+    if (id === (run.side === "R" ? "RT" : "LT")) {
+      if (run.type === "off") return `Seal ${targets[id].id} · ${hip} · alley is yours to close`;
+      if (run.type === "wide") return `Reach ${targets[id].id} · ${hip} · nothing outside you`;
+      return `Stay home on ${targets[id].id} · ${hip}`;
+    }
+    if (id === (run.side === "R" ? "RG" : "LG")) return `Own ${targets[id].id} · ${hip}`;
+    return `Stay home on ${targets[id].id} · ${hip} · head out · hands inside`;
   }
   function roleFor(id, run) { if (id === "QB") return "QB RUNNER"; if (id === run.lead) return "LEAD WING"; if (id === run.fake) return "BACKSIDE WING"; return "BLOCK"; }
   function shortRole(id, run) { if (id === "QB") return "QB RUN"; if (id === run.lead) return "LEAD"; if (id === run.fake) return "FAKE"; return "BLOCK"; }
   function taskFor(id, run) {
     if (id === "QB") return `Catch direct snap → tuck → ${run.hole} → one cut → north`;
-    if (id === run.lead) return `${HOME[id].label}: called lane first → ${HOME[playSideLb(run)].label}`;
+    if (id === run.lead) {
+      if (state.formation === "wide" && run.type !== "inside") return `${HOME[id].label}: stay outside the Edge, get upfield, then ${HOME[playSideLb(run)].label}. Do not cut back.`;
+      return `${HOME[id].label}: ${run.hole} first → ${HOME[playSideLb(run)].label}`;
+    }
     if (id === run.fake) return `${HOME[id].label}: sell opposite action → get wide → finish fake`;
     return lineCue(id, run);
   }
@@ -81,8 +111,33 @@
     return [{ x: h.x, y: h.y }, { x: h.x, y: h.y - 8 }, { x: lerp(h.x, run.holeX, 0.18), y: 690 }, { x: lerp(h.x, run.holeX, 0.48), y: 555 }, { x: run.holeX, y: 425 }, { x: run.holeX, y: 315 }, { x: finishX, y: 75 }][beat];
   }
   function leadPose(run, beat) {
-    const h = home(run.lead); const lb = HOME[playSideLb(run)]; const side = run.side === "R" ? 1 : -1; const fitX = lb.x - side * 30; const laneX = run.type === "wide" ? run.holeX - side * 30 : run.holeX;
-    return [{ x: h.x, y: h.y }, { x: h.x + side * 8, y: h.y - 8 }, { x: lerp(h.x, laneX, 0.32), y: 575 }, { x: laneX, y: 470 }, { x: run.holeX, y: 355 }, { x: fitX, y: lb.y + 38 }, { x: fitX, y: lb.y + 32 }][beat];
+    const h = home(run.lead); const lb = HOME[playSideLb(run)]; const side = playOut(run);
+    const fit = { x: lb.x - side * 22, y: lb.y + 26 };
+    const spread = state.formation === "wide";
+    const crackRisk = spread && run.type !== "inside";
+    if (crackRisk) {
+      const edge = run.side === "R" ? HOME.ER : HOME.EL;
+      const outX = edge.x + side * 48;
+      return [
+        h,
+        { x: lerp(h.x, outX, 0.2), y: h.y - 16 },
+        { x: outX, y: 500 },
+        { x: outX, y: 355 },
+        { x: lerp(outX, fit.x, 0.4), y: 275 },
+        fit,
+        { x: fit.x, y: fit.y - 4 }
+      ][beat];
+    }
+    const laneX = run.type === "wide" ? run.holeX - side * 24 : run.holeX;
+    return [
+      h,
+      { x: h.x + side * 6, y: h.y - 8 },
+      { x: lerp(h.x, laneX, 0.32), y: 600 },
+      { x: laneX, y: 480 },
+      { x: run.holeX, y: 355 },
+      fit,
+      { x: fit.x, y: fit.y - 4 }
+    ][beat];
   }
   function fakePose(run, beat) {
     const h = home(run.fake); const dir = run.side === "R" ? -1 : 1; const wideX = dir < 0 ? 115 : 885;
@@ -100,10 +155,11 @@
       p[bsCb] = mixPoint(HOME[bsCb], { x: HOME[bsCb].x + side * 14, y: HOME[bsCb].y }, 0.25);
     }
     if (beat >= 3) {
-      p.EL = mixPoint(HOME.EL, { x: HOME.EL.x + side * 7, y: HOME.EL.y + 10 }, 0.3);
-      p.DTL = mixPoint(HOME.DTL, { x: run.holeX - 90, y: HOME.DTL.y + 10 }, beat >= 5 ? 0.15 : 0.07);
-      p.DTR = mixPoint(HOME.DTR, { x: run.holeX + 90, y: HOME.DTR.y + 10 }, beat >= 5 ? 0.15 : 0.07);
-      p.ER = mixPoint(HOME.ER, { x: HOME.ER.x + side * 7, y: HOME.ER.y + 10 }, 0.3);
+      const hold = run.type === "inside" ? 6 : 12;
+      p.EL = mixPoint(HOME.EL, { x: HOME.EL.x + (run.side === "L" ? -hold : 4), y: HOME.EL.y + 8 }, 0.28);
+      p.ER = mixPoint(HOME.ER, { x: HOME.ER.x + (run.side === "R" ? hold : -4), y: HOME.ER.y + 8 }, 0.28);
+      p.DTL = mixPoint(HOME.DTL, { x: HOME.DTL.x, y: HOME.DTL.y + 8 }, 0.22);
+      p.DTR = mixPoint(HOME.DTR, { x: HOME.DTR.x, y: HOME.DTR.y + 8 }, 0.22);
     }
     return p;
   }
@@ -112,18 +168,40 @@
 
   function drawBlockArrows() {
     while (blockLayer.firstChild) blockLayer.removeChild(blockLayer.firstChild);
-    const targets = lineTargets(currentRun());
+    const run = currentRun(), targets = lineTargets(run);
     ["LT", "LG", "C", "RG", "RT"].forEach((id) => {
       const h = home(id), target = targets[id];
-      blockLayer.appendChild(el("path", { d: `M ${h.x},${h.y - 10} L ${target.x},${target.y}`, fill: "none", stroke: "#67e8f9", "stroke-width": "5", "stroke-linecap": "round", "marker-end": "url(#blockArrow)", opacity: "0.95", "data-route-owner": id }));
+      const dx = target.x - h.x, dy = target.y - h.y, dist = Math.hypot(dx, dy) || 1;
+      const x1 = h.x + dx / dist * 18, y1 = h.y + dy / dist * 18;
+      const x2 = target.x - dx / dist * 8, y2 = target.y - dy / dist * 8;
+      blockLayer.appendChild(el("path", { d: `M ${x1},${y1} L ${x2},${y2}`, fill: "none", stroke: "#67e8f9", "stroke-width": "2.8", "stroke-linecap": "round", "marker-end": "url(#blockArrow)", opacity: "0.95", "data-route-owner": id }));
+    });
+  }
+  function drawHips(poses) {
+    if (!hipLayer) return;
+    hipLayer.innerHTML = "";
+    if (state.t < 2 || state.t > 5.1) return;
+    const run = currentRun(), targets = lineTargets(run);
+    ["LT", "LG", "C", "RG", "RT"].forEach((id) => {
+      const spec = targets[id];
+      if (!spec || !spec.defId) return;
+      const d = poses[spec.defId] || HOME[spec.defId];
+      const hip = defHip(spec.defId, spec.kind || "inside", run);
+      hip.x = d.x + (hip.x - HOME[spec.defId].x);
+      hip.y = d.y + 10;
+      const dir = spec.kind === "outside" ? playOut(run) : -playOut(run);
+      hipLayer.appendChild(el("path", {
+        d: `M ${hip.x - dir * 3},${hip.y - 8} L ${hip.x + dir * 10},${hip.y} L ${hip.x - dir * 3},${hip.y + 8} Z`,
+        fill: "#f6c344", stroke: "#071018", "stroke-width": "1.5", "data-route-owner": id
+      }));
     });
   }
   function token(id) {
     const spec = HOME[id], offense = OFFENSE.includes(id), g = el("g", { class: "sim-player", "data-player": id, tabindex: "0", role: "button", "aria-label": spec.label });
-    const hit = el("circle", { r: "46", fill: "transparent" }), selected = el("circle", { r: "40", fill: "none", stroke: "#fff", "stroke-width": "5", opacity: "0" });
-    const disc = el("circle", { r: offense ? "32" : "29", fill: offense ? "#07172c" : "#475569", stroke: offense ? "#f6c344" : (id.startsWith("CB") ? "#f6c344" : "#cbd5e1"), "stroke-width": offense ? "5" : "4" });
-    const label = el("text", { x: "0", y: "6", fill: "#fff", "font-size": spec.label.length > 4 ? "14" : "19", "font-weight": "900", "text-anchor": "middle", "pointer-events": "none" }); label.textContent = spec.label;
-    const role = el("text", { x: "0", y: "54", fill: "#f6c344", "font-size": "14", "font-weight": "900", "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "5", "pointer-events": "none" });
+    const hit = el("circle", { r: "26", fill: "transparent" }), selected = el("circle", { r: "22", fill: "none", stroke: "#fff", "stroke-width": "2", opacity: "0" });
+    const disc = el("circle", { r: offense ? "16" : "15", fill: offense ? "#07172c" : "#475569", stroke: offense ? "#f6c344" : (id.startsWith("CB") ? "#f6c344" : "#cbd5e1"), "stroke-width": "2.2" });
+    const label = el("text", { x: "0", y: "4", fill: "#fff", "font-size": spec.label.length > 4 ? "8" : "11", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none" }); label.textContent = spec.label;
+    const role = el("text", { x: "0", y: "26", fill: "#f6c344", "font-size": "8", "font-weight": "800", "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "3", "pointer-events": "none" });
     g.appendChild(hit); g.appendChild(selected); g.appendChild(disc); g.appendChild(label); g.appendChild(role);
     const choose = function () { selectPlayer(id); }; g.addEventListener("click", choose); g.addEventListener("keydown", function (event) { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); choose(); } });
     svg.appendChild(g); state.players[id] = { g, selected, role };
@@ -133,16 +211,16 @@
     const defs = el("defs", {}); defs.innerHTML = `<marker id="runnerArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f6c344"/></marker><marker id="leadArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fff"/></marker><marker id="fakeArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d8b4fe"/></marker><marker id="blockArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#67e8f9"/></marker><radialGradient id="fieldGlow" cx="50%" cy="65%" r="85%"><stop offset="0%" stop-color="#14532d"/><stop offset="100%" stop-color="#0b3522"/></radialGradient>`;
     svg.appendChild(defs); svg.appendChild(el("rect", { width: W, height: H, fill: "url(#fieldGlow)" }));
     [90, 190, 290, 520, 640, 760, 870].forEach((y) => svg.appendChild(el("line", { x1: "35", y1: y, x2: String(W - 35), y2: y, stroke: "rgba(255,255,255,.13)", "stroke-width": "2" })));
-    svg.appendChild(el("line", { x1: "26", y1: LOS, x2: String(W - 26), y2: LOS, stroke: "#f6c344", "stroke-width": "6" }));
-    const los = el("text", { x: "38", y: String(LOS - 14), fill: "#f6c344", "font-size": "19", "font-weight": "900" }); los.textContent = "LINE OF SCRIMMAGE"; svg.appendChild(los);
+    svg.appendChild(el("line", { x1: "26", y1: LOS, x2: String(W - 26), y2: LOS, stroke: "#f6c344", "stroke-width": "3" }));
+    const los = el("text", { x: "38", y: String(LOS - 10), fill: "#f6c344", "font-size": "11", "font-weight": "800" }); los.textContent = "LOS"; svg.appendChild(los);
     formationLabel = el("text", { x: "500", y: "915", fill: "#f6c344", "font-size": "19", "font-weight": "900", "text-anchor": "middle", "letter-spacing": "2" }); svg.appendChild(formationLabel);
     svg.appendChild(el("line", { x1: "500", y1: "478", x2: "500", y2: "790", stroke: "rgba(255,255,255,.38)", "stroke-width": "3", "stroke-dasharray": "10 12" }));
     const snapText = el("text", { x: "515", y: "620", fill: "#fff", "font-size": "15", "font-weight": "900", transform: "rotate(90 515 620)" }); snapText.textContent = "DIRECT SNAP TO QB"; svg.appendChild(snapText);
-    holeRing = el("circle", { r: "25", fill: "rgba(0,0,0,.14)", "stroke-width": "6", class: "sim-hole" }); holeLabel = el("text", { "font-size": "19", "font-weight": "900", "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "6" }); svg.appendChild(holeRing); svg.appendChild(holeLabel);
+    holeRing = el("circle", { r: "16", fill: "rgba(0,0,0,.14)", "stroke-width": "3", class: "sim-hole" }); holeLabel = el("text", { "font-size": "12", "font-weight": "800", "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "4" }); svg.appendChild(holeRing); svg.appendChild(holeLabel);
     blockLayer = el("g", { class: "sim-block-routes" }); svg.appendChild(blockLayer);
-    routeFake = el("path", { fill: "none", stroke: "#d8b4fe", "stroke-width": "7", "stroke-dasharray": "14 11", "stroke-linecap": "round", "marker-end": "url(#fakeArrow)" });
-    routeLead = el("path", { fill: "none", stroke: "#fff", "stroke-width": "8", "stroke-dasharray": "14 10", "stroke-linecap": "round", "marker-end": "url(#leadArrow)" });
-    routeRunner = el("path", { fill: "none", stroke: "#f6c344", "stroke-width": "10", "stroke-dasharray": "18 11", "stroke-linecap": "round", "marker-end": "url(#runnerArrow)", "data-route-owner": "QB" });
+    routeFake = el("path", { fill: "none", stroke: "#d8b4fe", "stroke-width": "3", "stroke-dasharray": "8 7", "stroke-linecap": "round", "marker-end": "url(#fakeArrow)" });
+    routeLead = el("path", { fill: "none", stroke: "#fff", "stroke-width": "3.2", "stroke-dasharray": "9 7", "stroke-linecap": "round", "marker-end": "url(#leadArrow)" });
+    routeRunner = el("path", { fill: "none", stroke: "#f6c344", "stroke-width": "3.4", "stroke-dasharray": "10 7", "stroke-linecap": "round", "marker-end": "url(#runnerArrow)", "data-route-owner": "QB" });
     svg.appendChild(routeFake); svg.appendChild(routeLead); svg.appendChild(routeRunner); DEFENSE.forEach(token); OFFENSE.forEach(token);
     ball = el("g", { class: "sim-ball" }); ball.appendChild(el("ellipse", { rx: "16", ry: "11", fill: "#f8fafc", stroke: "#3f2b1d", "stroke-width": "3" })); ball.appendChild(el("line", { x1: "-8", y1: "0", x2: "8", y2: "0", stroke: "#9f1239", "stroke-width": "2" })); svg.appendChild(ball); return svg;
   }
@@ -158,7 +236,8 @@
   function applyPoses() {
     const run = currentRun(), poses = interpolatedPoses(state.t);
     Object.keys(poses).forEach((id) => { const player = state.players[id]; player.g.setAttribute("transform", `translate(${poses[id].x},${poses[id].y})`); player.role.textContent = OFFENSE.includes(id) ? shortRole(id, run) : ""; player.selected.setAttribute("opacity", state.selected === id ? "1" : "0"); });
-    const center = poses.C, qb = poses.QB, snapAmount = clamp(state.t, 0, 1), ballPos = state.t < 1 ? mixPoint({ x: center.x, y: center.y + 24 }, { x: qb.x + 17, y: qb.y - 8 }, ease(snapAmount)) : { x: qb.x + 17, y: qb.y - 8 }; ball.setAttribute("transform", `translate(${ballPos.x},${ballPos.y})`);
+    drawHips(poses);
+    const center = poses.C, qb = poses.QB, snapAmount = clamp(state.t, 0, 1), ballPos = state.t < 1 ? mixPoint({ x: center.x, y: center.y + 16 }, { x: qb.x + 11, y: qb.y - 5 }, ease(snapAmount)) : { x: qb.x + 11, y: qb.y - 5 }; ball.setAttribute("transform", `translate(${ballPos.x},${ballPos.y})`);
     const shown = clamp(Math.round(state.t), 0, 6); beatEl.textContent = `${BEATS[shown].name} · ${shown + 1} OF 7`; cueEl.textContent = BEATS[shown].cue; slider.value = String(state.t); document.querySelectorAll("[data-sim-dot]").forEach((dot) => dot.classList.toggle("is-on", Number(dot.getAttribute("data-sim-dot")) === shown)); applyFocus();
   }
   function roleClass(role) { return role.toLowerCase().replace(/[^a-z0-9]+/g, "-"); }
