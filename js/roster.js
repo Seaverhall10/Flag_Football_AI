@@ -1,106 +1,32 @@
-/**
- * Cy-Fair K/1 Lions - Roster & Depth Chart Manager
- * 8v8: 5 OL + RB1 RB2 RB3 vs 3 DL, 2 LB, 2 CB, 1 S.
+﻿/**
+ * Cy-Fair K/1 Lions — Advanced Roster & Depth Chart Manager
+ * Features: Visual 8-on-8 field formation depth chart, CFSA 50% fair play compliance engine, ball-carries tracker.
  */
 
-const ROSTER_STORAGE_KEY = "lions_team_roster_data_v10_simple";
-const CARRY_STORAGE_KEY = "lions_player_carries";
-const FIELD_STORAGE_KEY = "lions_minifield_spots";
+const ROSTER_STORAGE_KEY = "lions_team_roster_data";
 
 const DEFAULT_ROSTER = [
-  { id: 1,  number: "", name: "Keegan",   offensePos: "RB1",          defensePos: "CB", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
-  { id: 2,  number: "", name: "Hunter",   offensePos: "RB2",          defensePos: "LB", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
-  { id: 3,  number: "", name: "Bo",       offensePos: "RB3",          defensePos: "S",  q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
-  { id: 4,  number: "", name: "Liam",     offensePos: "Snap",       defensePos: "DL", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
-  { id: 5,  number: "", name: "Case",     offensePos: "Line",   defensePos: "DL", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
-  { id: 6,  number: "", name: "Big Wade", offensePos: "Line",  defensePos: "DL", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
-  { id: 7,  number: "", name: "Lil Wade", offensePos: "Line",  defensePos: "LB", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
-  { id: 8,  number: "", name: "Carl",     offensePos: "Line", defensePos: "CB", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
-  { id: 9,  number: "", name: "Walker",   offensePos: "RB1",          defensePos: "CB", q1: "Offense", q2: "Bench",    q3: "Defense", q4: "Offense" },
-  { id: 10, number: "", name: "James",    offensePos: "RB2",          defensePos: "LB", q1: "Bench",   q2: "Offense", q3: "Offense", q4: "Defense" },
-  { id: 11, number: "", name: "Wiley",    offensePos: "RB3",          defensePos: "S",  q1: "Offense", q2: "Defense", q3: "Bench",    q4: "Offense" },
-  { id: 12, number: "", name: "Wenton",   offensePos: "Snap",       defensePos: "DL", q1: "Defense", q2: "Offense", q3: "Offense", q4: "Defense" },
-  { id: 13, number: "", name: "Luke",     offensePos: "Line",   defensePos: "DL", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Bench" },
-  { id: 14, number: "", name: "Gentry",   offensePos: "Line",  defensePos: "LB", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
-  { id: 15, number: "", name: "Julian",   offensePos: "Line",  defensePos: "CB", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" }
+  { id: 1, number: "2", name: "Player #2", offensePos: "Runner", defensePos: "Cornerback", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense", carries: 4 },
+  { id: 2, number: "7", name: "Player #7", offensePos: "Lead Blocker", defensePos: "Front Mid (MLB)", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense", carries: 2 },
+  { id: 3, number: "10", name: "Player #10", offensePos: "Center", defensePos: "Front Left", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense", carries: 0 },
+  { id: 4, number: "12", name: "Player #12", offensePos: "Left Guard", defensePos: "Front Right", q1: "Offense", q2: "Bench", q3: "Defense", q4: "Offense", carries: 1 },
+  { id: 5, number: "15", name: "Player #15", offensePos: "Right Guard", defensePos: "Cornerback", q1: "Offense", q2: "Defense", q3: "Bench", q4: "Offense", carries: 1 },
+  { id: 6, number: "21", name: "Player #21", offensePos: "Left Tackle", defensePos: "Front Mid", q1: "Offense", q2: "Offense", q3: "Defense", q4: "Defense", carries: 0 },
+  { id: 7, number: "24", name: "Player #24", offensePos: "Right Tackle", defensePos: "Front Left", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Bench", carries: 1 },
+  { id: 8, number: "33", name: "Player #33", offensePos: "Wide Receiver", defensePos: "Safety", q1: "Offense", q2: "Offense", q3: "Defense", q4: "Defense", carries: 2 },
+  { id: 9, number: "44", name: "Player #44", offensePos: "Runner (2nd)", defensePos: "Cornerback", q1: "Bench", q2: "Offense", q3: "Defense", q4: "Offense", carries: 3 },
+  { id: 10, number: "55", name: "Player #55", offensePos: "Lead (2nd)", defensePos: "Front Right", q1: "Defense", q2: "Offense", q3: "Offense", q4: "Defense", carries: 1 },
+  { id: 11, number: "88", name: "Player #88", offensePos: "Guard (2nd)", defensePos: "Front Left", q1: "Defense", q2: "Bench", q3: "Offense", q4: "Defense", carries: 0 }
 ];
-
-const OFFENSE_SPOTS = [
-  { key: "SNAP", label: "SNAP", match: "Snap" },
-  { key: "L1", label: "LINE", match: "Line" },
-  { key: "L2", label: "LINE", match: "Line" },
-  { key: "L3", label: "LINE", match: "Line" },
-  { key: "L4", label: "LINE", match: "Line" },
-  { key: "RB1", label: "RB1", match: "RB1" },
-  { key: "RB2", label: "RB2", match: "RB2" },
-  { key: "RB3", label: "RB3", match: "RB3" }
-];
-
-const DEFENSE_SPOTS = [
-  { key: "DL1", label: "DL", match: "DL" },
-  { key: "DL2", label: "DL", match: "DL" },
-  { key: "DL3", label: "DL", match: "DL" },
-  { key: "LB1", label: "LB", match: "LB" },
-  { key: "LB2", label: "LB", match: "LB" },
-  { key: "CB1", label: "CB", match: "CB" },
-  { key: "CB2", label: "CB", match: "CB" },
-  { key: "S", label: "S", match: "S" }
-];
-
-function jerseyLabel(p) {
-  const n = (p.number || "").toString().trim();
-  return n ? (p.name + " #" + n) : p.name;
-}
 
 class RosterManager {
   constructor() {
     this.players = this.loadRoster();
-    this.carries = this.loadCarries();
-    this.spots = this.loadSpots();
   }
 
   loadRoster() {
     const saved = localStorage.getItem(ROSTER_STORAGE_KEY);
     return saved ? JSON.parse(saved) : DEFAULT_ROSTER;
-  }
-
-  loadCarries() {
-    try {
-      return JSON.parse(localStorage.getItem(CARRY_STORAGE_KEY) || "{}");
-    } catch (e) {
-      return {};
-    }
-  }
-
-  saveCarries() {
-    localStorage.setItem(CARRY_STORAGE_KEY, JSON.stringify(this.carries));
-  }
-
-  loadSpots() {
-    try {
-      const saved = JSON.parse(localStorage.getItem(FIELD_STORAGE_KEY) || "null");
-      if (saved) return saved;
-    } catch (e) { /* fall through */ }
-    return this.autoSpots();
-  }
-
-  autoSpots() {
-    const spots = {};
-    OFFENSE_SPOTS.forEach((s) => {
-      const match = this.players.find((p) => p.offensePos === s.match && !Object.values(spots).includes(p.id));
-      spots[s.key] = match ? match.id : null;
-    });
-    DEFENSE_SPOTS.forEach((s) => {
-      const match = this.players.find((p) => p.defensePos === s.match && !Object.values(spots).includes("d" + p.id) && !Object.keys(spots).some((k) => k.startsWith(s.match) && spots[k] === p.id && DEFENSE_SPOTS.some((d) => d.key === k)));
-      const used = DEFENSE_SPOTS.filter((d) => spots[d.key]).map((d) => spots[d.key]);
-      const next = this.players.find((p) => p.defensePos === s.match && used.indexOf(p.id) === -1);
-      spots[s.key] = next ? next.id : null;
-    });
-    return spots;
-  }
-
-  saveSpots() {
-    localStorage.setItem(FIELD_STORAGE_KEY, JSON.stringify(this.spots));
   }
 
   saveRoster() {
@@ -113,13 +39,14 @@ class RosterManager {
     this.players.push({
       id: newId,
       number: number || "--",
-      name: name || ("Player #" + (number || "--")),
-      offensePos: offensePos || "RB1",
-      defensePos: defensePos || "DL",
+      name: name || `Player #${number}`,
+      offensePos: offensePos || "Line",
+      defensePos: defensePos || "Front",
       q1: "Offense",
       q2: "Defense",
       q3: "Offense",
-      q4: "Defense"
+      q4: "Defense",
+      carries: 0
     });
     this.saveRoster();
   }
@@ -134,42 +61,41 @@ class RosterManager {
   updatePlayer(id, field, value) {
     const p = this.players.find(pl => pl.id === id);
     if (p) {
-      if (field === "name") {
-        p.name = value;
-      } else {
-        p[field] = value;
-      }
+      p[field] = value;
       this.saveRoster();
     }
   }
 
-  giveCarry(id) {
-    this.carries[id] = (this.carries[id] || 0) + 1;
-    this.saveCarries();
-    this.renderRosterTable();
+  incrementCarries(id) {
+    const p = this.players.find(pl => pl.id === id);
+    if (p) {
+      p.carries = (p.carries || 0) + 1;
+      this.saveRoster();
+    }
   }
 
-  activeQuarters(p) {
-    return ["q1", "q2", "q3", "q4"].filter((q) => p[q] === "Offense" || p[q] === "Defense").length;
+  decrementCarries(id) {
+    const p = this.players.find(pl => pl.id === id);
+    if (p && p.carries > 0) {
+      p.carries = p.carries - 1;
+      this.saveRoster();
+    }
   }
 
-  renderPlaytimeValidator() {
-    const el = document.getElementById("playtime-validator");
-    if (!el) return;
-    const short = this.players.filter((p) => this.activeQuarters(p) < 2);
-    if (this.players.length === 0) {
-      el.className = "playtime-banner playtime-ok";
-      el.textContent = "50% playtime OK";
-      return;
-    }
-    if (short.length === 0) {
-      el.className = "playtime-banner playtime-ok";
-      el.textContent = "50% playtime OK";
-    } else {
-      el.className = "playtime-banner playtime-flag";
-      const list = short.map((p) => jerseyLabel(p)).join(", ");
-      el.textContent = "Playtime flag: " + list + " under 2 active quarters";
-    }
+  checkCompliance() {
+    let nonCompliantCount = 0;
+    const playerReports = this.players.map(p => {
+      const activeQuarters = ['q1', 'q2', 'q3', 'q4'].filter(q => p[q] !== "Bench").length;
+      const isCompliant = activeQuarters >= 2;
+      if (!isCompliant) nonCompliantCount++;
+      return { id: p.id, name: p.name, number: p.number, activeQuarters, isCompliant };
+    });
+
+    return {
+      isAllCompliant: nonCompliantCount === 0,
+      nonCompliantCount,
+      playerReports
+    };
   }
 
   renderRosterTable() {
@@ -178,31 +104,43 @@ class RosterManager {
 
     tbody.innerHTML = this.players.map((p) => `
       <tr>
-        <td style="font-weight:900;font-size:1.1rem;color:#07172c;text-align:center">#${p.number}</td>
-        <td>${jerseyLabel(p)}</td>
+        <td style="font-weight:900;font-size:1.1rem;color:var(--navy);text-align:center">#${p.number}</td>
+        <td>
+          <input type="text" value="${p.name}" class="editable-cell" onchange="rosterManager.updatePlayer(${p.id}, 'name', this.value)" style="font-weight:700;width:100%">
+        </td>
         <td>
           <select class="editable-cell" onchange="rosterManager.updatePlayer(${p.id}, 'offensePos', this.value)">
-            <option value="Snap" ${p.offensePos === 'Snap' ? 'selected' : ''}>Snap</option>
-            <option value="Line" ${p.offensePos === 'Line' ? 'selected' : ''}>Line</option>
-            <option value="RB1" ${p.offensePos === 'RB1' ? 'selected' : ''}>RB1</option>
-            <option value="RB2" ${p.offensePos === 'RB2' ? 'selected' : ''}>RB2</option>
-            <option value="RB3" ${p.offensePos === 'RB3' ? 'selected' : ''}>RB3</option>
+            <option value="Runner" ${p.offensePos === 'Runner' ? 'selected' : ''}>Designated Runner</option>
+            <option value="Lead Blocker" ${p.offensePos === 'Lead Blocker' ? 'selected' : ''}>Lead Blocker</option>
+            <option value="Center" ${p.offensePos === 'Center' ? 'selected' : ''}>Center (C)</option>
+            <option value="Left Guard" ${p.offensePos === 'Left Guard' ? 'selected' : ''}>Left Guard (LG)</option>
+            <option value="Right Guard" ${p.offensePos === 'Right Guard' ? 'selected' : ''}>Right Guard (RG)</option>
+            <option value="Left Tackle" ${p.offensePos === 'Left Tackle' ? 'selected' : ''}>Left Tackle (LT)</option>
+            <option value="Right Tackle" ${p.offensePos === 'Right Tackle' ? 'selected' : ''}>Right Tackle (RT)</option>
+            <option value="Wide Receiver" ${p.offensePos === 'Wide Receiver' ? 'selected' : ''}>Wide Receiver (WR)</option>
+            <option value="Runner (2nd)" ${p.offensePos === 'Runner (2nd)' ? 'selected' : ''}>Runner (2nd String)</option>
+            <option value="Lead (2nd)" ${p.offensePos === 'Lead (2nd)' ? 'selected' : ''}>Lead (2nd String)</option>
+            <option value="Guard (2nd)" ${p.offensePos === 'Guard (2nd)' ? 'selected' : ''}>Guard (2nd String)</option>
           </select>
         </td>
         <td>
           <select class="editable-cell" onchange="rosterManager.updatePlayer(${p.id}, 'defensePos', this.value)">
-            <option value="DL" ${p.defensePos === 'DL' ? 'selected' : ''}>DL</option>
-            <option value="LB" ${p.defensePos === 'LB' ? 'selected' : ''}>LB</option>
-            <option value="CB" ${p.defensePos === 'CB' ? 'selected' : ''}>CB</option>
-            <option value="S" ${p.defensePos === 'S' ? 'selected' : ''}>S</option>
+            <option value="Front Mid (MLB)" ${p.defensePos === 'Front Mid (MLB)' ? 'selected' : ''}>Middle Linebacker (MLB)</option>
+            <option value="Front Left" ${p.defensePos === 'Front Left' ? 'selected' : ''}>Front Left (DL)</option>
+            <option value="Front Right" ${p.defensePos === 'Front Right' ? 'selected' : ''}>Front Right (DL)</option>
+            <option value="Cornerback" ${p.defensePos === 'Cornerback' ? 'selected' : ''}>Cornerback (Contain)</option>
+            <option value="Safety" ${p.defensePos === 'Safety' ? 'selected' : ''}>Safety</option>
           </select>
         </td>
-        <td class="no-print" style="text-align:center">
-          <span class="carry-count">${this.carries[p.id] || 0}</span>
-          <button class="btn btn-secondary" type="button" style="padding:4px 8px;font-size:0.72rem;margin-left:6px" onclick="rosterManager.giveCarry(${p.id})">Gave a carry</button>
+        <td style="text-align:center" class="no-print">
+          <div style="display:inline-flex;align-items:center;gap:4px">
+            <button class="btn btn-secondary" style="padding:2px 6px;font-size:0.75rem" onclick="rosterManager.decrementCarries(${p.id})">-</button>
+            <strong style="min-width:18px;font-size:0.95rem">${p.carries || 0}</strong>
+            <button class="btn btn-secondary" style="padding:2px 6px;font-size:0.75rem" onclick="rosterManager.incrementCarries(${p.id})">+</button>
+          </div>
         </td>
         <td class="no-print" style="text-align:center">
-          <button class="btn btn-danger" style="padding:2px 8px;font-size:0.75rem" onclick="rosterManager.deletePlayer(${p.id})">X</button>
+          <button class="btn btn-danger" style="padding:2px 8px;font-size:0.75rem" onclick="rosterManager.deletePlayer(${p.id})">✕</button>
         </td>
       </tr>
     `).join("");
@@ -210,73 +148,40 @@ class RosterManager {
 
   renderQuarterRotation() {
     const tbody = document.getElementById("rotation-table-body");
+    const complianceBadge = document.getElementById("compliance-status-badge");
     if (!tbody) return;
 
-    tbody.innerHTML = this.players.map(p => `
-      <tr>
-        <td style="font-weight:900">${jerseyLabel(p)}</td>
-        ${['q1', 'q2', 'q3', 'q4'].map(q => `
-          <td style="text-align:center">
-            <select class="editable-cell" onchange="rosterManager.updatePlayer(${p.id}, '${q}', this.value)" style="font-weight:800;background:${p[q] === 'Offense' ? '#e3f2fd' : p[q] === 'Defense' ? '#e8f5e9' : '#fff3e0'}">
-              <option value="Offense" ${p[q] === 'Offense' ? 'selected' : ''}>Offense</option>
-              <option value="Defense" ${p[q] === 'Defense' ? 'selected' : ''}>Defense</option>
-              <option value="Bench" ${p[q] === 'Bench' ? 'selected' : ''}>Bench (Rest)</option>
-            </select>
-          </td>
-        `).join("")}
-      </tr>
-    `).join("");
-  }
-
-  playerById(id) {
-    return this.players.find((p) => p.id === id);
-  }
-
-  assignSpot(key) {
-    const nums = this.players.map((p) => "#" + p.number).join(", ");
-    const chosen = prompt("Assign jersey to " + key + " (enter number, blank to clear). " + nums);
-    if (chosen === null) return;
-    const trimmed = chosen.replace("#", "").trim();
-    if (!trimmed) {
-      this.spots[key] = null;
-    } else {
-      const p = this.players.find((pl) => String(pl.number) === trimmed);
-      this.spots[key] = p ? p.id : null;
+    const compliance = this.checkCompliance();
+    if (complianceBadge) {
+      if (compliance.isAllCompliant) {
+        complianceBadge.innerHTML = `<span style="background:#dcfce7;color:#166534;padding:4px 10px;border-radius:999px;font-weight:800;font-size:0.85rem">✓ CFSA Compliant: All ${this.players.length} Lions Active 2+ Quarters</span>`;
+      } else {
+        complianceBadge.innerHTML = `<span style="background:#fee2e2;color:#991b1b;padding:4px 10px;border-radius:999px;font-weight:800;font-size:0.85rem">⚠️ ${compliance.nonCompliantCount} Player(s) Under 2 Quarters</span>`;
+      }
     }
-    this.saveSpots();
-    this.renderMiniField();
-  }
 
-  spotChip(spot) {
-    const p = this.playerById(this.spots[spot.key]);
-    const num = p ? "#" + p.number : "—";
-    return `<button type="button" class="field-spot" data-spot="${spot.key}" onclick="rosterManager.assignSpot('${spot.key}')"><span class="field-pos">${spot.label}</span><span class="field-num">${num}</span></button>`;
-  }
-
-  renderMiniField() {
-    const el = document.getElementById("mini-field");
-    if (!el) return;
-    const o = {};
-    OFFENSE_SPOTS.forEach((s) => { o[s.key] = this.spotChip(s); });
-    const d = {};
-    DEFENSE_SPOTS.forEach((s) => { d[s.key] = this.spotChip(s); });
-    el.innerHTML = `
-      <div class="mini-field-board">
-        <div class="mini-side">
-          <div class="tiny" style="text-align:center;font-weight:800;margin-bottom:6px">OFFENSE</div>
-          <div class="field-row">${o.RB1}${o.RB2}${o.RB3}</div>
-          <div class="field-row">${o.L1}${o.L2}${o.SNAP}${o.L3}${o.L4}</div>
-        </div>
-        <div class="mini-los">LOS</div>
-        <div class="mini-side">
-          <div class="tiny" style="text-align:center;font-weight:800;margin-bottom:6px">DEFENSE</div>
-          <div class="field-row">${d.DL1}${d.DL2}${d.DL3}</div>
-          <div class="field-row">${d.LB1}${d.LB2}</div>
-          <div class="field-row">${d.CB1}${d.S}${d.CB2}</div>
-        </div>
-      </div>
-      <p class="tiny no-print">Tap a spot to assign a player. First names only.</p>
-    `;
+    tbody.innerHTML = this.players.map(p => {
+      const activeQtrs = ['q1', 'q2', 'q3', 'q4'].filter(q => p[q] !== "Bench").length;
+      return `
+        <tr>
+          <td style="font-weight:800">
+            #${p.number} ${p.name}
+            <small style="display:block;color:${activeQtrs >= 2 ? 'var(--green)' : 'var(--red)'};font-size:0.75rem">
+              ${activeQtrs} Qtrs ${activeQtrs >= 2 ? '✓' : '(Needs 2+)'}
+            </small>
+          </td>
+          ${['q1', 'q2', 'q3', 'q4'].map(q => `
+            <td style="text-align:center">
+              <select class="editable-cell" onchange="rosterManager.updatePlayer(${p.id}, '${q}', this.value)" style="font-weight:750;background:${p[q] === 'Offense' ? '#eff6ff' : p[q] === 'Defense' ? '#f0fdf4' : '#fff7ed'}">
+                <option value="Offense" ${p[q] === 'Offense' ? 'selected' : ''}>Offense</option>
+                <option value="Defense" ${p[q] === 'Defense' ? 'selected' : ''}>Defense</option>
+                <option value="Bench" ${p[q] === 'Bench' ? 'selected' : ''}>Bench (Rest)</option>
+              </select>
+            </td>
+          `).join("")}
+        </tr>
+      `;
+    }).join("");
   }
 
   renderDepthChart() {
@@ -284,40 +189,44 @@ class RosterManager {
     if (!container) return;
 
     const findPos = (posName) => {
-      const match = this.players.filter(p => p.offensePos === posName);
-      return match.map(m => jerseyLabel(m)).join("<br>") || "-";
+      const match = this.players.filter(p => p.offensePos.toLowerCase().includes(posName.toLowerCase()));
+      return match.map(m => `#${m.number} ${m.name}`).join("<br>") || "—";
     };
 
     const findDefPos = (posName) => {
-      const match = this.players.filter(p => p.defensePos === posName);
-      return match.map(m => jerseyLabel(m)).join("<br>") || "-";
+      const match = this.players.filter(p => p.defensePos.toLowerCase().includes(posName.toLowerCase()));
+      return match.map(m => `#${m.number} ${m.name}`).join("<br>") || "—";
     };
 
     container.innerHTML = `
       <div class="grid-2">
-        <div class="panel" style="border-left:6px solid #f5b800">
-          <h3 style="color:#07172c;margin-bottom:10px">OFFENSE 8 — Snap / Line / RB1 RB2 RB3</h3>
+        <div class="panel" style="border-left:5px solid var(--gold-bright)">
+          <h3 style="color:var(--navy);margin-bottom:10px">OFFENSE 8-ON-8 DEPTH</h3>
           <table style="font-size:0.88rem">
-            <thead><tr><th>Position</th><th>1st / 2nd String</th></tr></thead>
+            <thead><tr><th>Position</th><th>Active Starters & Rotation</th></tr></thead>
             <tbody>
-              <tr><td><strong>Snap</strong></td><td>${findPos("Snap")}</td></tr>
-              <tr><td><strong>Line</strong></td><td>${findPos("Line")}</td></tr>
-              <tr><td><strong>RB1</strong></td><td>${findPos("RB1")}</td></tr>
-              <tr><td><strong>RB2</strong></td><td>${findPos("RB2")}</td></tr>
-              <tr><td><strong>RB3</strong></td><td>${findPos("RB3")}</td></tr>
+              <tr><td><strong>Designated Runner (R)</strong></td><td><strong style="color:var(--red)">${findPos("Runner")}</strong></td></tr>
+              <tr><td><strong>Lead Blocker (L)</strong></td><td><strong style="color:var(--gold)">${findPos("Lead")}</strong></td></tr>
+              <tr><td><strong>Center (C)</strong></td><td>${findPos("Center")}</td></tr>
+              <tr><td><strong>Left Guard (LG)</strong></td><td>${findPos("Left Guard")}</td></tr>
+              <tr><td><strong>Right Guard (RG)</strong></td><td>${findPos("Right Guard")}</td></tr>
+              <tr><td><strong>Left Tackle (LT)</strong></td><td>${findPos("Left Tackle")}</td></tr>
+              <tr><td><strong>Right Tackle (RT)</strong></td><td>${findPos("Right Tackle")}</td></tr>
+              <tr><td><strong>Wide Receiver (WR)</strong></td><td>${findPos("Wide Receiver")}</td></tr>
             </tbody>
           </table>
         </div>
 
-        <div class="panel" style="border-left:6px solid #16365c">
-          <h3 style="color:#07172c;margin-bottom:10px">DEFENSE 8 — 3 DL, 2 LB, 2 CB, 1 S</h3>
+        <div class="panel" style="border-left:5px solid var(--navy)">
+          <h3 style="color:var(--navy);margin-bottom:10px">DEFENSE LOOK TEAM DEPTH</h3>
           <table style="font-size:0.88rem">
-            <thead><tr><th>Position</th><th>Players</th></tr></thead>
+            <thead><tr><th>Position</th><th>Defensive Starters</th></tr></thead>
             <tbody>
-              <tr><td><strong>DL (x3)</strong></td><td>${findDefPos("DL")}</td></tr>
-              <tr><td><strong>LB (x2)</strong></td><td>${findDefPos("LB")}</td></tr>
-              <tr><td><strong>CB (x2)</strong></td><td>${findDefPos("CB")}</td></tr>
-              <tr><td><strong>S (x1)</strong></td><td>${findDefPos("S")}</td></tr>
+              <tr><td><strong>Middle Linebacker (MLB)</strong></td><td><strong>${findDefPos("MLB")}</strong></td></tr>
+              <tr><td><strong>Front Left (DL)</strong></td><td>${findDefPos("Front Left")}</td></tr>
+              <tr><td><strong>Front Right (DL)</strong></td><td>${findDefPos("Front Right")}</td></tr>
+              <tr><td><strong>Cornerbacks (Contain)</strong></td><td><strong>${findDefPos("Cornerback")}</strong></td></tr>
+              <tr><td><strong>Safety (S)</strong></td><td>${findDefPos("Safety")}</td></tr>
             </tbody>
           </table>
         </div>
@@ -329,8 +238,6 @@ class RosterManager {
     this.renderRosterTable();
     this.renderQuarterRotation();
     this.renderDepthChart();
-    this.renderPlaytimeValidator();
-    this.renderMiniField();
   }
 }
 
@@ -342,15 +249,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("btn-add-player")?.addEventListener("click", () => {
     const num = prompt("Enter Jersey Number (e.g. 10):");
-    if (num !== null) {
-      rosterManager.addPlayer(num, name || ("Player #" + num), "RB1", "DL");
+    if (num !== null && num.trim() !== "") {
+      const name = prompt("Enter Player Name / Initial:", `Player #${num.trim()}`);
+      rosterManager.addPlayer(num.trim(), name, "Line", "Front");
     }
   });
 
   document.getElementById("btn-reset-roster")?.addEventListener("click", () => {
-    if (confirm("Reset roster to defaults?")) {
+    if (confirm("Reset roster to default K/1 squad?")) {
       localStorage.removeItem(ROSTER_STORAGE_KEY);
-      rosterManager.players = JSON.parse(JSON.stringify(DEFAULT_ROSTER));
+      rosterManager.players = DEFAULT_ROSTER;
       rosterManager.saveRoster();
     }
   });

@@ -1,11 +1,12 @@
 ﻿/**
- * Cy-Fair K/1 Lions — Audio Chimes & Interactive Timers
- * Web Audio API synthesizer for clean whistle/beeps + 30s Play Clock & Practice Timer.
+ * Cy-Fair K/1 Lions — Audio Chimes, Screen WakeLock & Interactive Timers
+ * Features: Screen WakeLock API (prevents phone sleep during practice), Fullscreen Stadium Mode, Web Audio chimes.
  */
 
 class SoundEffects {
   constructor() {
     this.ctx = null;
+    this.isUnlocked = false;
   }
 
   init() {
@@ -15,6 +16,10 @@ class SoundEffects {
         this.ctx = new AudioContext();
       }
     }
+    if (this.ctx && this.ctx.state === "suspended") {
+      this.ctx.resume();
+    }
+    this.isUnlocked = true;
   }
 
   playBeep(freq = 880, duration = 0.15, type = "sine") {
@@ -25,7 +30,7 @@ class SoundEffects {
       const gain = this.ctx.createGain();
       osc.type = type;
       osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-      gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+      gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
       osc.connect(gain);
       gain.connect(this.ctx.destination);
@@ -47,9 +52,9 @@ class SoundEffects {
       osc1.type = "triangle";
       osc2.type = "sine";
       osc1.frequency.setValueAtTime(2400, this.ctx.currentTime);
-      osc2.frequency.setValueAtTime(2450, this.ctx.currentTime);
+      osc2.frequency.setValueAtTime(2460, this.ctx.currentTime);
       
-      gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+      gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.45);
       
       osc1.connect(gain);
@@ -67,55 +72,50 @@ class SoundEffects {
 
   playCadence() {
     this.playBeep(520, 0.1);
-    setTimeout(() => this.playBeep(650, 0.15), 180);
+    setTimeout(() => this.playBeep(650, 0.15), 160);
   }
 }
 
 const sfx = new SoundEffects();
+window.sfx = sfx;
 
-function unlockWebAudio() {
-  sfx.init();
-  if (sfx.ctx && sfx.ctx.state === "suspended") {
-    sfx.ctx.resume();
+// Universal user-touch unlock for mobile audio
+document.addEventListener("touchstart", () => sfx.init(), { once: true });
+document.addEventListener("click", () => sfx.init(), { once: true });
+
+/**
+ * Screen WakeLock Controller
+ * Prevents mobile device screen from dimming/sleeping while timers are running on the field.
+ */
+class WakeLockController {
+  constructor() {
+    this.wakeLock = null;
+    this.isSupported = 'wakeLock' in navigator;
   }
-}
 
-let wakeLock = null;
-async function requestWakeLock() {
-  try {
-    if (navigator.wakeLock && navigator.wakeLock.request) {
-      wakeLock = await navigator.wakeLock.request("screen");
-      if (wakeLock) {
-        wakeLock.addEventListener("release", () => {});
+  async requestLock() {
+    if (!this.isSupported) return;
+    try {
+      if (!this.wakeLock) {
+        this.wakeLock = await navigator.wakeLock.request('screen');
+        this.wakeLock.addEventListener('release', () => {
+          this.wakeLock = null;
+        });
       }
+    } catch (err) {
+      console.warn('WakeLock request failed:', err);
     }
-  } catch (e) {}
-}
-async function releaseWakeLock() {
-  try {
-    if (wakeLock) {
-      await wakeLock.release();
-      wakeLock = null;
+  }
+
+  releaseLock() {
+    if (this.wakeLock) {
+      this.wakeLock.release().catch(() => {});
+      this.wakeLock = null;
     }
-  } catch (e) {
-    wakeLock = null;
   }
 }
-function anyTimerRunning() {
-  return !!(drillClockInstance && drillClockInstance.isRunning) ||
-    !!(practiceTimerInstance && practiceTimerInstance.isRunning);
-}
-function syncWakeLock() {
-  if (anyTimerRunning()) requestWakeLock();
-  else releaseWakeLock();
-}
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible" && anyTimerRunning()) {
-    requestWakeLock();
-  }
-});
-document.addEventListener("touchstart", unlockWebAudio, { passive: true });
-document.addEventListener("pointerdown", unlockWebAudio, { passive: true });
+
+const wakeController = new WakeLockController();
 
 /**
  * 30-Second 5v4 Drill Play Clock
@@ -175,17 +175,16 @@ class DrillPlayClock {
   }
 
   start() {
-    unlockWebAudio();
     sfx.init();
+    wakeController.requestLock();
     if (this.isRunning) return;
     this.isRunning = true;
-    syncWakeLock();
     sfx.playCadence();
 
     this.timer = setInterval(() => {
       this.timeLeft--;
       if (this.timeLeft <= 5 && this.timeLeft > 0) {
-        sfx.playBeep(600, 0.08);
+        sfx.playBeep(640, 0.08);
       }
 
       if (this.timeLeft <= 0) {
@@ -202,8 +201,8 @@ class DrillPlayClock {
   pause() {
     this.isRunning = false;
     clearInterval(this.timer);
+    wakeController.releaseLock();
     this.updateDisplay();
-    syncWakeLock();
   }
 
   reset() {
@@ -225,7 +224,7 @@ class DrillPlayClock {
       this.timeLeft = 0;
       this.updateDisplay();
       if (this.callInfoEl) {
-        this.callInfoEl.innerHTML = `<strong style="color:#2e7d32">18 Reps Complete!</strong> Great job Lions.`;
+        this.callInfoEl.innerHTML = `<strong style="color:#16a34a">18 Reps Complete!</strong> One Pride, Lions.`;
       }
     }
   }
@@ -283,15 +282,13 @@ class PracticeTimer {
   }
 
   start() {
-    unlockWebAudio();
     sfx.init();
+    wakeController.requestLock();
     if (this.isRunning) return;
     this.isRunning = true;
-    syncWakeLock();
     this.timer = setInterval(() => {
       this.elapsedSeconds++;
       
-      // Check for station transition chime
       const currentMin = this.elapsedSeconds / 60;
       if (Number.isInteger(currentMin) && this.stations.some(s => s.startMin === currentMin)) {
         sfx.playWhistle();
@@ -309,8 +306,8 @@ class PracticeTimer {
   pause() {
     this.isRunning = false;
     clearInterval(this.timer);
+    wakeController.releaseLock();
     this.updateDisplay();
-    syncWakeLock();
   }
 
   reset() {
@@ -340,22 +337,16 @@ function initTimers() {
     document.getElementById("btn-drill-next")?.addEventListener("click", () => drillClockInstance.nextRep());
     document.getElementById("btn-drill-prev")?.addEventListener("click", () => drillClockInstance.prevRep());
 
-    const field = document.getElementById("field-mode");
-    const fieldDigits = document.getElementById("field-mode-digits");
-    const origUpdate = drillClockInstance.updateDisplay.bind(drillClockInstance);
-    drillClockInstance.updateDisplay = function () {
-      origUpdate();
-      if (fieldDigits && this.display) fieldDigits.textContent = this.display.textContent;
-    };
-    document.getElementById("btn-drill-field")?.addEventListener("click", () => {
-      if (!field) return;
-      field.classList.add("is-on");
-      field.setAttribute("aria-hidden", "false");
-      if (fieldDigits) fieldDigits.textContent = drillClockInstance.display.textContent;
-    });
-    field?.addEventListener("click", () => {
-      field.classList.remove("is-on");
-      field.setAttribute("aria-hidden", "true");
+    // Fullscreen Stadium Clock Mode
+    document.getElementById("btn-drill-fullscreen")?.addEventListener("click", () => {
+      const widget = document.getElementById("play-clock-widget");
+      if (widget) {
+        if (!document.fullscreenElement) {
+          widget.requestFullscreen?.().catch(() => {});
+        } else {
+          document.exitFullscreen?.().catch(() => {});
+        }
+      }
     });
   }
 

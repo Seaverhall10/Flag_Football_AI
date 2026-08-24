@@ -3,82 +3,73 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Drills — LIONS K/1</title>
-  <meta name="description" content="5v4 drill clock and 60-minute practice plan.">
-  <link rel="stylesheet" href="css/styles.css?v=lev1">
+  <title>Drills & Practice Plans — Cy-Fair K/1 Lions</title>
+  <meta name="description" content="60-minute practice plan, 5v4 scripted drill, and 30-second play clock with Screen WakeLock for Cy-Fair K/1 Lions.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="mast"></header>
-<main id="main" class="wrap">
+  
+  <header class="mast">
+    <div class="mast-inner">
+      <a href="index.html" class="brand-group">
+        <div class="mark" aria-label="Cy-Fair Lions Crest">
+          <svg class="lion-logo" viewBox="0 0 36 36" fill="#f59e0b" aria-hidden="true">
+            <path d="M18 3 C13 3 9 6 8 11 C7 15 9 18 9 20 C7 20 5 22 5 25 C5 29 9 32 14 32 C15 32 16 34 18 34 C20 34 21 32 22 32 C27 32 31 29 31 25 C31 22 29 20 27 20 C27 18 29 15 28 11 C27 6 23 3 18 3 Z M13 15 C14.1 15 15 15.9 15 17 C15 18.1 14.1 19 13 19 C11.9 19 11 18.1 11 17 C11 15.9 11.9 15 13 15 Z M23 15 C24.1 15 25 15.9 25 17 C25 18.1 24.1 19 23 19 C21.9 19 21 18.1 21 17 C21 15.9 21.9 15 23 15 Z M18 26 C15.5 26 14 24.5 14 23.5 L22 23.5 C22 24.5 20.5 26 18 26 Z"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Cy-Fair K/1 Lions</h1>
+          <p>8-on-8 CFSA Flag Football · One Pride</p>
+        </div>
+      </a>
+      
+      <nav class="nav" aria-label="Coach navigation">
+        <a href="schedule.html">📅 Schedule</a>
+        <a href="playbook.html">📖 Playbook</a>
+        <a href="roster.html">👥 Roster</a>
+        <a href="drills.html" class="active">⏱️ Drills</a>
+        <a href="notes.html">📝 Notes</a>
+        <a class="ghost" href="app.html">⚡ Sideline</a>
+        <a class="ghost" href="sideline.html">🖨️ Print</a>
+      </nav>
+    </div>
+  </header>
 
-
-    <section class="panel">
-      <div class="panel-header">
-        <h2>5v4 Grid</h2>
-        <span class="tiny">Slow-mo play. Beats still work.</span>
-      </div>
-      <div class="look-toggle" role="group" aria-label="Half">
-        <button type="button" class="btn btn-secondary is-active" data-grid-side="R" aria-pressed="true">Right</button>
-        <button type="button" class="btn btn-secondary" data-grid-side="L" aria-pressed="false">Left</button>
-      </div>
-      <div class="look-toggle" role="group" aria-label="Hole" style="margin-top:8px">
-        <button type="button" class="btn btn-secondary is-active" data-grid-hole="inside" aria-pressed="true">Inside</button>
-        <button type="button" class="btn btn-secondary" data-grid-hole="off" aria-pressed="false">Off-Tackle</button>
-        <button type="button" class="btn btn-secondary" data-grid-hole="wide" aria-pressed="false">Wide</button>
-      </div>
-      <div class="look-toggle" role="group" aria-label="Second back" style="margin-top:8px">
-        <button type="button" class="btn btn-secondary is-active" data-grid-decoy="1">Decoy wide</button>
-        <button type="button" class="btn btn-secondary" data-grid-decoy="0">Lead through hole</button>
-      </div>
-      <p id="grid5-beat" class="timer-label" style="margin-top:10px">Beat 0 · PRE-SNAP</p>
-      <div id="grid5-root" class="sim-root grid5-root"></div>
-      <p id="grid5-cue" class="sim-cue" aria-live="polite">Find your jersey.</p>
-      <div class="sim-controls">
-        <button type="button" class="btn btn-primary sim-big" id="grid5-play">PLAY SLOW</button>
-        <button type="button" class="btn btn-secondary sim-big" id="grid5-back">BACK</button>
-        <button type="button" class="btn btn-secondary sim-big" id="grid5-next">NEXT BEAT</button>
-        <button type="button" class="btn btn-danger sim-big" id="grid5-reset">RESET</button>
-      </div>
-      <div class="look-toggle" role="group" aria-label="Speed" style="margin-top:8px">
-        <button type="button" class="btn btn-secondary is-active" data-grid-speed="slow">Slow-Mo</button>
-        <button type="button" class="btn btn-secondary" data-grid-speed="normal">Normal</button>
-        <button type="button" class="btn btn-secondary" data-grid-speed="fast">Fast</button>
-      </div>
-      <div class="sim-controls">
-        <button type="button" class="btn btn-secondary sim-big" id="grid5-slow">HOLD SLOW</button>
-      </div>
-      <label class="tiny" style="display:block;margin:8px 0 4px">Scrub
-        <input id="grid5-slider" type="range" min="0" max="6" value="0" step="0.02" style="width:100%">
-      </label>
-      <div class="grid5-dots" aria-hidden="true">
-        <span data-beat-dot="0"></span><span data-beat-dot="1"></span><span data-beat-dot="2"></span><span data-beat-dot="3"></span><span data-beat-dot="4"></span><span data-beat-dot="5"></span><span data-beat-dot="6"></span>
-      </div>
-      <p class="tiny">C, G, T + two RBs vs 2 DL, LB, CB. PLAY SLOW walks every step. Gold arrow = the hip to block. Gold dashed = ball. Purple dashed = decoy. White dashed = lead.</p>
+  <main id="main" class="wrap">
+    <section class="banner no-print">
+      <div class="eyebrow">⏱️ Field Timers & Pacing Tools</div>
+      <h2>Drills & Practice Plans</h2>
+      <p>High tempo, tight structure, consistent cues. Uses <strong>Screen WakeLock</strong> so your phone display stays awake and bright on the field without timing out.</p>
     </section>
 
     <!-- 1. 30-Second 5v4 Drill Play Clock -->
     <section class="panel">
       <div class="panel-header">
-        <h2>1. 5v4 Drill & 30-Second Play Clock</h2>
-        <span class="tiny">18 Reps Total</span>
+        <div>
+          <h2>1. 5v4 Drill & 30-Second Play Clock</h2>
+          <span class="tiny">18 Reps Total · ⚡ Screen Kept Awake</span>
+        </div>
+        <div class="no-print">
+          <button class="btn btn-secondary" id="btn-drill-fullscreen" style="font-size:0.8rem">⛶ Fullscreen Display</button>
+        </div>
       </div>
 
-      <div class="timer-widget">
+      <div class="timer-widget" id="play-clock-widget">
         <div class="timer-label" id="play-clock-rep">Rep 1 of 18</div>
         <div class="timer-display" id="play-clock-display">30s</div>
-        <div class="live-call-sub" id="play-clock-info" style="margin-bottom:12px">
+        <div class="live-call-sub" id="play-clock-info" style="margin-bottom:14px">
           <strong>Inside Right</strong> · Red Diamond · <span class="landmark-pill">C-RG</span><br>
           <small>Focus: Snap + hole</small>
         </div>
         
         <div class="timer-controls">
-          <button class="btn btn-secondary" id="btn-drill-prev">Prev</button>
-          <button class="btn btn-primary" id="btn-drill-start">Start</button>
-          <button class="btn btn-secondary" id="btn-drill-pause">Pause</button>
-          <button class="btn btn-primary" id="btn-drill-next" style="background:#2e7d32;color:#fff">Next</button>
-          <button class="btn btn-danger" id="btn-drill-reset">Reset</button>
-          <button class="btn btn-secondary" id="btn-drill-field">Field Mode</button>
+          <button class="btn btn-secondary" id="btn-drill-prev">⏮ Prev</button>
+          <button class="btn btn-primary" id="btn-drill-start">▶ Start Clock</button>
+          <button class="btn btn-secondary" id="btn-drill-pause">⏸ Pause</button>
+          <button class="btn btn-primary" id="btn-drill-next" style="background:#16a34a;color:#fff">Next Rep ⏭</button>
+          <button class="btn btn-danger" id="btn-drill-reset">↺ Reset</button>
         </div>
       </div>
 
@@ -134,8 +125,8 @@
       </div>
     </section>
 
-    <!-- 2. 60-Minute Practice Plan & Timer (hidden for now) -->
-    <section class="panel" id="practice-plan" style="display:none">
+    <!-- 2. 60-Minute Practice Plan & Timer -->
+    <section class="panel">
       <div class="panel-header">
         <h2>2. 60-Minute Practice Plan</h2>
         <a href="stations.html" class="tiny" style="font-weight:700">Print Station Posters →</a>
@@ -148,9 +139,9 @@
           <strong>Ready to start:</strong> 0–8m Arrival & Setup
         </div>
         <div class="timer-controls">
-          <button class="btn btn-primary" id="btn-practice-start">Start</button>
-          <button class="btn btn-secondary" id="btn-practice-pause">Pause</button>
-          <button class="btn btn-danger" id="btn-practice-reset">Reset</button>
+          <button class="btn btn-primary" id="btn-practice-start">▶ Start Practice</button>
+          <button class="btn btn-secondary" id="btn-practice-pause">⏸ Pause</button>
+          <button class="btn btn-danger" id="btn-practice-reset">↺ Reset</button>
         </div>
       </div>
 
@@ -185,7 +176,7 @@
         <div class="station-time">25–40m</div>
         <div class="station-desc">
           <strong>Station 4: 5v4 Scripted Drill (18 Reps)</strong>
-          <p class="tiny">30-sec next-ball tempo. 5 offense (OL + RB1 RB2 RB3) vs 4 look (3 DL + LB, or 2 LB + 2 CB). Snap + assignment + landmark.</p>
+          <p class="tiny">30-sec next-ball tempo. 5 offense vs 4 look defense. Snap + assignment + landmark.</p>
         </div>
         <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(25)">Jump</button>
       </div>
@@ -202,8 +193,8 @@
       <div class="station-item">
         <div class="station-time">52–58m</div>
         <div class="station-desc">
-          <strong>Station 6: Front / DL, LB, CB</strong>
-          <p class="tiny">Front/DL stay home, then flag. LBs fill. CB nothing outside.</p>
+          <strong>Station 6: Front 3 & CB Defense</strong>
+          <p class="tiny">Front stay home, then flag. Cornerbacks keep outside arm free, force runner inside.</p>
         </div>
         <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(52)">Jump</button>
       </div>
@@ -239,7 +230,7 @@
         </li>
         <li class="checklist-item">
           <input type="checkbox" id="cart-4">
-          <label for="cart-4"><strong>Pinnies / Vests:</strong> Look D: 3 DL + LB or 2 LB + 2 CB</label>
+          <label for="cart-4"><strong>Pinnies / Vests:</strong> For 4-player look defense</label>
         </li>
         <li class="checklist-item">
           <input type="checkbox" id="cart-5">
@@ -253,14 +244,14 @@
     </section>
   </main>
 
-<div id="field-mode" class="field-mode" role="dialog" aria-label="Fullscreen play clock" aria-hidden="true">
-    <div class="field-mode-digits" id="field-mode-digits">30s</div>
-    <div class="field-mode-hint">TAP TO EXIT</div>
-  </div>
-<footer class="foot"><div class="foot-inner"><div>18-rep 5v4. 30s clock.</div></div></footer>
-  <script src="js/grid5v4.js?v=lev1"></script>
-  <script src="js/timers.js?v=sim2"></script>
+  <footer class="foot">
+    <div class="foot-inner">
+      <div>Cy-Fair K/1 Lions · Drills & Practice Plans</div>
+      <div><a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></div>
+    </div>
+  </footer>
 
+  <script src="js/timers.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
