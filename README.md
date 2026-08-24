@@ -10,7 +10,7 @@ A modern, responsive, mobile-first coaching and sideline web application for the
 
 ## 🌟 Interactive Features
 
-- **📖 Interactive Playbook & SVG Field Diagrams (`playbook.html`):** Dynamic 8-on-8 field diagrams illustrating player alignment (Offense 8 vs Look Defense 4), landmark cones, lead blocking paths, and animated runner tracks.
+- **📖 Interactive Playbook & SVG Field Diagrams (`playbook.html`):** Dynamic 8v8 field diagrams illustrating 5 OL + RB1-3 vs 3 DL, 2 LB, 2 CB, 1 S, landmark cones, lead paths, and runner tracks. Wide Right/Left are perimeter runs by a designated RB — no split WR.
 - **⏱️ 5v4 Drill with 30-Second Play Clock (`drill.html`):** 18-rep scripted practice drill with a built-in Web Audio play clock, audio beeps, visual warning pulses, and rep counter.
 - **📋 60-Minute Practice Plan (`practice.html`):** Paced station-by-station schedule with interactive practice stopwatch and persistent gear cart checklist.
 - **⚡ Sideline Command Center (`app.html`):** Rapid play-calling interface with large touch targets, color-coded callouts, and audio cadence tones.
