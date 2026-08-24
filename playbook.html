@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Playbook - LIONS K/1</title>
   <meta name="description" content="Six locked runs. Interactive 8-on-8 play simulator. 5 OL + RB1-3 vs 3 DL, 2 LB, 2 CB, 1 S.">
-  <link rel="stylesheet" href="css/styles.css?v=sim3">
+  <link rel="stylesheet" href="css/styles.css?v=sim4">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -14,7 +14,8 @@
   <main id="main" class="wrap">
     <section class="panel">
       <div class="panel-header">
-        <h2>Runs</h2>
+        <h2>1. Pick the Play</h2>
+        <span class="tiny">All six plays · full 8v8 picture</span>
       </div>
       <div class="btn-grid">
         <button class="play-btn run-red" type="button" data-run-key="inside-right" data-name="Inside Right" data-symbol="Red Diamond" data-hole="C-RG" data-color="#d32f2f">
@@ -44,61 +45,48 @@
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel play-teacher">
       <div class="panel-header">
-        <h2>Play</h2>
-        <div class="look-toggle" role="group" aria-label="Look">
-          <button type="button" class="btn btn-secondary" data-look="5v4" aria-pressed="false">5v4 Practice</button>
-          <button type="button" class="btn btn-secondary is-active" data-look="8v8" aria-pressed="true">8v8 Game</button>
+        <div>
+          <div class="tiny">2. Watch Everybody</div>
+          <h2 id="sim-play-name">Inside Right</h2>
         </div>
+        <span class="play-call-badge" id="sim-play-badge">Red Diamond · C–RG</span>
       </div>
+      <div class="sim-key" aria-label="Route colors">
+        <span><i class="key-runner"></i>Runner</span>
+        <span><i class="key-lead"></i>Lead</span>
+        <span><i class="key-fake"></i>Fake</span>
+        <span><i class="key-block"></i>Block</span>
+      </div>
+      <p id="sim-beat" class="timer-label sim-beat">PRE-SNAP · FIND YOUR POSITION</p>
       <div id="sim-root" class="sim-root"></div>
-      <p id="sim-cue" class="sim-cue" aria-live="polite">Tap a kid. PLAY runs the snap.</p>
+      <p id="sim-cue" class="sim-cue" aria-live="polite">Find your position. Follow only your arrow.</p>
       <div class="sim-controls">
-        <button type="button" class="btn btn-primary sim-big" id="sim-play">PLAY</button>
-        <button type="button" class="btn btn-secondary sim-big" id="sim-reset">RESET</button>
+        <button type="button" class="btn btn-primary sim-big" id="sim-play">PLAY SLOW</button>
+        <button type="button" class="btn btn-secondary sim-big" id="sim-back">BACK</button>
+        <button type="button" class="btn btn-secondary sim-big" id="sim-next">NEXT BEAT</button>
+        <button type="button" class="btn btn-danger sim-big" id="sim-reset">RESET</button>
       </div>
-      <div class="sim-controls sim-react">
-        <button type="button" class="btn btn-secondary" id="sim-bounce">BOUNCE</button>
-        <button type="button" class="btn btn-secondary" id="sim-cutback">CUT BACK</button>
+      <div class="look-toggle" role="group" aria-label="Speed">
+        <button type="button" class="btn btn-secondary is-active" data-sim-speed="slow" aria-pressed="true">Slow-Mo</button>
+        <button type="button" class="btn btn-secondary" data-sim-speed="normal" aria-pressed="false">Normal</button>
+        <button type="button" class="btn btn-secondary" data-sim-speed="fast" aria-pressed="false">Fast</button>
       </div>
-      <p class="tiny sim-legend">Tap a kid · PLAY runs the snap</p>
+      <label class="tiny sim-scrub">Scrub through the play
+        <input id="sim-slider" type="range" min="0" max="6" value="0" step="0.02" aria-label="Scrub through play">
+      </label>
+      <div class="grid5-dots" aria-hidden="true">
+        <span data-sim-dot="0" class="is-on"></span><span data-sim-dot="1"></span><span data-sim-dot="2"></span><span data-sim-dot="3"></span><span data-sim-dot="4"></span><span data-sim-dot="5"></span><span data-sim-dot="6"></span>
+      </div>
     </section>
 
     <section class="panel">
-      <div class="panel-header"><h2>Assignments</h2></div>
-      <div class="grid-2">
-        <div>
-          <h3>Offense (8) — SNAP, LINE, LINE, LINE, LINE, RB1, RB2, RB3</h3>
-          <ul class="checklist">
-            <li class="checklist-item"><strong>SNAP:</strong> Clean snap, then line.</li>
-            <li class="checklist-item"><strong>LINE:</strong> Find your jersey. Head out. Hands inside.</li>
-            <li class="checklist-item"><strong>RB1 / RB2 / RB3:</strong> Shotgun ~3 yards. Direct snap to the designated runner. One of the other two is Lead (Hole first. LB.). Leftover RB stays extra back — not a wideout.</li>
-            <li class="checklist-item"><strong>Lead:</strong> Hole first. LB.</li>
-            <li class="checklist-item"><strong>Runner:</strong> Follow. Plant. Go.</li>
-          </ul>
-        </div>
-        <div>
-          <h3>Defense (8) — DL, DL, DL, LB, LB, CB, CB, S</h3>
-          <ul class="checklist">
-            <li class="checklist-item"><strong>Front / DL:</strong> Stay home, then flag.</li>
-            <li class="checklist-item"><strong>LB:</strong> Fill.</li>
-            <li class="checklist-item"><strong>CB:</strong> Nothing outside.</li>
-            <li class="checklist-item"><strong>S:</strong> Deep-ish middle. Not a 9th man in the box.</li>
-          </ul>
-          <table>
-            <thead><tr><th>Hole</th><th>Call</th></tr></thead>
-            <tbody>
-              <tr><td>C-RG</td><td>Red Diamond</td></tr>
-              <tr><td>C-LG</td><td>Blue Circle</td></tr>
-              <tr><td>RG-RT</td><td>Gold Star</td></tr>
-              <tr><td>LG-LT</td><td>Green Triangle</td></tr>
-              <tr><td>RT outside hip</td><td>Orange Square</td></tr>
-              <tr><td>LT outside hip</td><td>Purple Hexagon</td></tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="panel-header">
+        <h2>3. Find Your Job</h2>
+        <span class="tiny">Tap a card to highlight that player</span>
       </div>
+      <div id="sim-assignments" class="assignment-board"></div>
     </section>
 
     <section class="panel">
@@ -114,7 +102,7 @@
   </main>
 
   <footer class="foot"><div class="foot-inner"><div>Six locked runs. 5 OL + RB1-3 vs 3 DL, 2 LB, 2 CB, 1 S.</div></div></footer>
-  <script src="js/app.js?v=sim3"></script>
-  <script src="js/sim.js?v=sim3"></script>
+  <script src="js/app.js?v=sim4"></script>
+  <script src="js/sim.js?v=sim4"></script>
 </body>
 </html>

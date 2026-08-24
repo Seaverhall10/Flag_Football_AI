@@ -796,3 +796,102 @@ body.sunlight-mode .btn-grid { gap: 12px; }
 .grid5-dots span { width: 10px; height: 10px; border-radius: 50%; background: #3a4d68; display: inline-block; }
 .grid5-dots span.is-on { background: #D4A017; }
 #grid5-slow { min-width: 140px; }
+
+/* Full-team kid teaching playbook */
+.play-teacher .panel-header { align-items: flex-end; }
+.play-teacher .panel-header h2 { margin-top: 2px; font-size: clamp(1.35rem, 3vw, 2rem); }
+.play-call-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 7px 11px;
+  border: 2px solid var(--gold);
+  border-radius: 999px;
+  background: #071018;
+  font-size: .8rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+.sim-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 4px 0 10px;
+  color: var(--ink-soft);
+  font-size: .75rem;
+  font-weight: 800;
+}
+.sim-key span { display: inline-flex; align-items: center; gap: 5px; }
+.sim-key i { display: inline-block; width: 24px; height: 4px; border-radius: 4px; }
+.key-runner { background: var(--gold); }
+.key-lead { background: #fff; border: 1px solid #94a3b8; }
+.key-fake { background: #d8b4fe; }
+.key-block { background: #67e8f9; }
+.sim-beat {
+  margin: 0;
+  padding: 8px 12px;
+  color: #071018;
+  background: var(--gold);
+  border-radius: 10px 10px 0 0;
+  font-size: .82rem;
+  text-align: center;
+}
+.play-teacher .sim-root { border-radius: 0 0 12px 12px; border: 2px solid var(--gold); border-top: 0; }
+.full-team-svg { background: #0b3522; }
+.full-team-svg .sim-player { cursor: pointer; outline: none; }
+.full-team-svg .sim-player:focus { filter: drop-shadow(0 0 8px #fff); }
+.sim-scrub { display: block; margin: 10px 0 4px; font-weight: 800; }
+.sim-scrub input { display: block; width: 100%; margin-top: 7px; accent-color: var(--gold); }
+.assignment-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+.assignment-card {
+  position: relative;
+  min-height: 112px;
+  padding: 12px 10px 10px;
+  color: #fff;
+  background: #0a1628;
+  border: 1px solid var(--line);
+  border-top: 5px solid #67e8f9;
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+.assignment-card:hover,
+.assignment-card:focus,
+.assignment-card.is-selected { outline: 3px solid #fff; outline-offset: 1px; transform: translateY(-1px); }
+.assignment-card.role-runner { border-top-color: var(--gold); }
+.assignment-card.role-lead { border-top-color: #fff; }
+.assignment-card.role-fake { border-top-color: #d8b4fe; }
+.assignment-position {
+  display: inline-grid;
+  place-items: center;
+  min-width: 36px;
+  height: 30px;
+  padding: 0 7px;
+  margin-right: 5px;
+  color: #071018;
+  background: var(--gold);
+  border-radius: 6px;
+  font-size: .9rem;
+  font-weight: 900;
+}
+.assignment-role { color: var(--ink-soft); font-size: .72rem; font-weight: 900; letter-spacing: .08em; }
+.assignment-task { display: block; margin-top: 9px; font-size: .78rem; line-height: 1.28; font-weight: 750; }
+
+@media (max-width: 700px) {
+  .assignment-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .assignment-card { min-height: 104px; }
+  .play-teacher .sim-controls { display: grid; grid-template-columns: 1fr 1fr; }
+  .play-teacher .sim-big { min-width: 0; font-size: .82rem; letter-spacing: .02em; }
+  .play-teacher .panel-header { align-items: flex-start; }
+  .play-call-badge { font-size: .7rem; }
+}
+
+@media (max-width: 430px) {
+  .play-teacher { margin-left: -8px; margin-right: -8px; padding-left: 8px; padding-right: 8px; }
+  .sim-key { gap: 7px 10px; font-size: .68rem; }
+  .assignment-task { font-size: .72rem; }
+}

@@ -3,7 +3,6 @@
  */
 (function () {
   const TABS = [
-    { href: "schedule.html", label: "Schedule" },
     { href: "playbook.html", label: "Playbook" },
     { href: "roster.html", label: "Roster" },
     { href: "drills.html", label: "Drills" },
