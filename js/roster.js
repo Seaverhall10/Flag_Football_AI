@@ -3,22 +3,25 @@
  * 8v8: 5 OL + RB1 RB2 RB3 vs 3 DL, 2 LB, 2 CB, 1 S.
  */
 
-const ROSTER_STORAGE_KEY = "lions_team_roster_data_v8v8_rb";
+const ROSTER_STORAGE_KEY = "lions_team_roster_data_v9_names";
 const CARRY_STORAGE_KEY = "lions_player_carries";
 const FIELD_STORAGE_KEY = "lions_minifield_spots";
 
 const DEFAULT_ROSTER = [
-  { id: 1, number: "2", name: "Player #2", offensePos: "RB1", defensePos: "CB", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
-  { id: 2, number: "7", name: "Player #7", offensePos: "RB2", defensePos: "LB", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
-  { id: 3, number: "10", name: "Player #10", offensePos: "Center", defensePos: "DL", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
-  { id: 4, number: "12", name: "Player #12", offensePos: "Left Guard", defensePos: "DL", q1: "Offense", q2: "Bench", q3: "Defense", q4: "Offense" },
-  { id: 5, number: "15", name: "Player #15", offensePos: "Right Guard", defensePos: "CB", q1: "Offense", q2: "Defense", q3: "Bench", q4: "Offense" },
-  { id: 6, number: "21", name: "Player #21", offensePos: "Left Tackle", defensePos: "LB", q1: "Offense", q2: "Offense", q3: "Defense", q4: "Defense" },
-  { id: 7, number: "24", name: "Player #24", offensePos: "Right Tackle", defensePos: "DL", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Bench" },
-  { id: 8, number: "33", name: "Player #33", offensePos: "RB3", defensePos: "S", q1: "Offense", q2: "Offense", q3: "Defense", q4: "Defense" },
-  { id: 9, number: "44", name: "Player #44", offensePos: "RB1", defensePos: "CB", q1: "Bench", q2: "Offense", q3: "Defense", q4: "Offense" },
-  { id: 10, number: "55", name: "Player #55", offensePos: "RB2", defensePos: "LB", q1: "Defense", q2: "Offense", q3: "Offense", q4: "Defense" },
-  { id: 11, number: "88", name: "Player #88", offensePos: "Left Guard", defensePos: "DL", q1: "Defense", q2: "Bench", q3: "Offense", q4: "Defense" }
+  { id: 1,  number: "", name: "Keegan",   offensePos: "RB1",          defensePos: "CB", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
+  { id: 2,  number: "", name: "Hunter",   offensePos: "RB2",          defensePos: "LB", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
+  { id: 3,  number: "", name: "Bo",       offensePos: "RB3",          defensePos: "S",  q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
+  { id: 4,  number: "", name: "Liam",     offensePos: "Center",       defensePos: "DL", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
+  { id: 5,  number: "", name: "Case",     offensePos: "Left Guard",   defensePos: "DL", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
+  { id: 6,  number: "", name: "Big Wade", offensePos: "Right Guard",  defensePos: "DL", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
+  { id: 7,  number: "", name: "Lil Wade", offensePos: "Left Tackle",  defensePos: "LB", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
+  { id: 8,  number: "", name: "Carl",     offensePos: "Right Tackle", defensePos: "CB", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" },
+  { id: 9,  number: "", name: "Walker",   offensePos: "RB1",          defensePos: "CB", q1: "Offense", q2: "Bench",    q3: "Defense", q4: "Offense" },
+  { id: 10, number: "", name: "James",    offensePos: "RB2",          defensePos: "LB", q1: "Bench",   q2: "Offense", q3: "Offense", q4: "Defense" },
+  { id: 11, number: "", name: "Wiley",    offensePos: "RB3",          defensePos: "S",  q1: "Offense", q2: "Defense", q3: "Bench",    q4: "Offense" },
+  { id: 12, number: "", name: "Wenton",   offensePos: "Center",       defensePos: "DL", q1: "Defense", q2: "Offense", q3: "Offense", q4: "Defense" },
+  { id: 13, number: "", name: "Luke",     offensePos: "Left Guard",   defensePos: "DL", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Bench" },
+  { id: 14, number: "", name: "Gentry",   offensePos: "Right Guard",  defensePos: "LB", q1: "Defense", q2: "Offense", q3: "Defense", q4: "Offense" }
 ];
 
 const OFFENSE_SPOTS = [
@@ -44,7 +47,8 @@ const DEFENSE_SPOTS = [
 ];
 
 function jerseyLabel(p) {
-  return "Player #" + (p.number || p.id);
+  const n = (p.number || "").toString().trim();
+  return n ? (p.name + " #" + n) : p.name;
 }
 
 class RosterManager {
@@ -108,7 +112,7 @@ class RosterManager {
     this.players.push({
       id: newId,
       number: number || "--",
-      name: "Player #" + (number || "--"),
+      name: name || ("Player #" + (number || "--")),
       offensePos: offensePos || "RB1",
       defensePos: defensePos || "DL",
       q1: "Offense",
@@ -130,7 +134,7 @@ class RosterManager {
     const p = this.players.find(pl => pl.id === id);
     if (p) {
       if (field === "name") {
-        p.name = "Player #" + (p.number || id);
+        p.name = value;
       } else {
         p[field] = value;
       }
@@ -273,7 +277,7 @@ class RosterManager {
           <div class="field-row">${d.CB1}${d.S}${d.CB2}</div>
         </div>
       </div>
-      <p class="tiny no-print">Tap a spot to assign a jersey number. No names.</p>
+      <p class="tiny no-print">Tap a spot to assign a player. First names only.</p>
     `;
   }
 
@@ -344,7 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-add-player")?.addEventListener("click", () => {
     const num = prompt("Enter Jersey Number (e.g. 10):");
     if (num !== null) {
-      rosterManager.addPlayer(num, "Player #" + num, "RB1", "DL");
+      rosterManager.addPlayer(num, name || ("Player #" + num), "RB1", "DL");
     }
   });
 
