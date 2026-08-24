@@ -1,171 +1,94 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Interactive Playbook — Cy-Fair K/1 Lions</title>
-  <meta name="description" content="Interactive 8-on-8 visual flag football playbook for Cy-Fair K/1 Lions. Six locked runs with dynamic field diagrams.">
+  <title>Playbook — LIONS K/1</title>
+  <meta name="description" content="Six locked runs with field diagrams.">
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  
-  <header class="mast">
-    <div class="mast-inner">
-            <a href="index.html" class="brand-group">
-        <div class="mark" aria-label="Cy-Fair Lions Crest">
-          <svg class="lion-logo" viewBox="0 0 36 36" fill="#f59e0b" aria-hidden="true">
-            <path d="M18 3 C13 3 9 6 8 11 C7 15 9 18 9 20 C7 20 5 22 5 25 C5 29 9 32 14 32 C15 32 16 34 18 34 C20 34 21 32 22 32 C27 32 31 29 31 25 C31 22 29 20 27 20 C27 18 29 15 28 11 C27 6 23 3 18 3 Z M13 15 C14.1 15 15 15.9 15 17 C15 18.1 14.1 19 13 19 C11.9 19 11 18.1 11 17 C11 15.9 11.9 15 13 15 Z M23 15 C24.1 15 25 15.9 25 17 C25 18.1 24.1 19 23 19 C21.9 19 21 18.1 21 17 C21 15.9 21.9 15 23 15 Z M18 26 C15.5 26 14 24.5 14 23.5 L22 23.5 C22 24.5 20.5 26 18 26 Z"/>
-          </svg>
-        </div>
-        <div class="brand-text">
-          <h1>Cy-Fair K/1 Lions</h1>
-          <p>8-on-8 CFSA Flag Football · One Pride</p>
-        </div>
-      </a>
-      
-      <nav class="nav" aria-label="Coach navigation">
-        <a href="schedule.html">📅 Schedule</a>
-        <a href="playbook.html" class="active">📖 Playbook</a>
-        <a href="roster.html">👥 Roster</a>
-        <a href="drills.html">⏱️ Drills</a>
-        <a href="notes.html">📝 Notes</a>
-        <a class="ghost" href="app.html">⚡ Sideline</a>
-        <a class="ghost" href="sideline.html">🖨️ Print</a>
-      </nav>
-    </div>
-  </header>
+  <header class="mast"></header>
 
   <main id="main" class="wrap">
-    <section class="banner">
-      <h2>Interactive Playbook</h2>
-      <p>Six locked runs. Landmarks do not move. Select any run below to see the animated field diagram, blocking assignments, and runner track.</p>
-    </section>
-
-    <!-- Run Selector Buttons -->
     <section class="panel">
       <div class="panel-header">
-        <h2>Select Run to Visualize</h2>
-        <span class="tiny">Tap any play</span>
+        <h2>Runs</h2>
       </div>
       <div class="btn-grid">
         <button class="play-btn run-red" type="button" data-run-key="inside-right" data-name="Inside Right" data-symbol="Red Diamond" data-hole="C-RG" data-color="#d32f2f">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 22,12 12,22 2,12" fill="#d32f2f"/></svg>
-            Inside Right
-          </div>
+          <div class="btn-title">Inside Right</div>
           <small>Red Diamond · C-RG</small>
         </button>
-
         <button class="play-btn run-blue" type="button" data-run-key="inside-left" data-name="Inside Left" data-symbol="Blue Circle" data-hole="C-LG" data-color="#1976d2">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#1976d2"/></svg>
-            Inside Left
-          </div>
+          <div class="btn-title">Inside Left</div>
           <small>Blue Circle · C-LG</small>
         </button>
-
         <button class="play-btn run-gold" type="button" data-run-key="off-tackle-right" data-name="Off-Tackle Right" data-symbol="Gold Star" data-hole="RG-RT" data-color="#e6a100">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16.5,14 18.5,22 12,17.5 5.5,22 7.5,14 2,9 9,9" fill="#e6a100"/></svg>
-            Off-Tackle R
-          </div>
+          <div class="btn-title">Off-Tackle Right</div>
           <small>Gold Star · RG-RT</small>
         </button>
-
         <button class="play-btn run-green" type="button" data-run-key="off-tackle-left" data-name="Off-Tackle Left" data-symbol="Green Triangle" data-hole="LG-LT" data-color="#2e7d32">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><polygon points="12,3 22,21 2,21" fill="#2e7d32"/></svg>
-            Off-Tackle L
-          </div>
+          <div class="btn-title">Off-Tackle Left</div>
           <small>Green Triangle · LG-LT</small>
         </button>
-
         <button class="play-btn run-orange" type="button" data-run-key="wide-right" data-name="Wide Right" data-symbol="Orange Square" data-hole="RT outside hip" data-color="#e65100">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" fill="#e65100"/></svg>
-            Wide Right
-          </div>
-          <small>Orange Square · RT Outside</small>
+          <div class="btn-title">Wide Right</div>
+          <small>Orange Square · RT outside hip</small>
         </button>
-
         <button class="play-btn run-purple" type="button" data-run-key="wide-left" data-name="Wide Left" data-symbol="Purple Hexagon" data-hole="LT outside hip" data-color="#7b1fa2">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="#7b1fa2"/></svg>
-            Wide Left
-          </div>
-          <small>Purple Hexagon · LT Outside</small>
+          <div class="btn-title">Wide Left</div>
+          <small>Purple Hexagon · LT outside hip</small>
         </button>
       </div>
     </section>
 
-    <!-- Field Diagram Container -->
     <section class="panel">
       <div class="panel-header">
-        <h2>Visual 8-on-8 Field Alignment</h2>
-        <span class="tiny">Offense 8 vs Look Defense 4</span>
+        <h2>Field</h2>
       </div>
-      
-      <div class="field-container" id="field-diagram-container">
-        <!-- Rendered by field-diagram.js -->
-      </div>
-
-      <div class="stop-banner" style="margin-top:12px">
-        <strong>Execution Key: </strong>
-        <span id="run-detail-description">Direct snap to designated runner (~3 yards). Lead attacks hole first and blocks linebacker. Runner follows, plants, and explodes north.</span>
-      </div>
+      <div class="field-container" id="field-diagram-container"></div>
+      <p class="tiny" id="run-detail-description">Direct snap to designated runner (~3 yards). Lead attacks hole first and blocks linebacker. Runner follows, plants, and explodes north.</p>
     </section>
 
-    <!-- Position Assignment Breakdown -->
     <section class="panel">
-      <div class="panel-header">
-        <h2>Position Assignment Matrix</h2>
-      </div>
+      <div class="panel-header"><h2>Assignments</h2></div>
       <div class="grid-2">
         <div>
-          <h3>Offense (8 Players)</h3>
+          <h3>Offense (8)</h3>
           <ul class="checklist">
-            <li class="checklist-item"><strong>Center (C):</strong> Clean 3-yard snap direct to runner, then drive DL.</li>
-            <li class="checklist-item"><strong>Guards (LG / RG):</strong> Find jersey, head out, hands inside, maintain gap.</li>
-            <li class="checklist-item"><strong>Tackles (LT / RT):</strong> Seal edge, do not allow defenders inside.</li>
-            <li class="checklist-item"><strong>Wide Receiver (WR):</strong> Stalk block or clear out cornerback.</li>
-            <li class="checklist-item"><strong>Lead Blocker (L):</strong> Attack the called hole landmark FIRST, pick up LB.</li>
-            <li class="checklist-item"><strong>Designated Runner (R):</strong> Catch cleanly. <em>Follow. Plant. Go.</em></li>
+            <li class="checklist-item"><strong>C:</strong> Clean 3-yard snap, then drive DL.</li>
+            <li class="checklist-item"><strong>LG / RG:</strong> Find your jersey. Head out. Hands inside.</li>
+            <li class="checklist-item"><strong>LT / RT:</strong> Seal edge.</li>
+            <li class="checklist-item"><strong>WR:</strong> Stalk or clear CB.</li>
+            <li class="checklist-item"><strong>Lead:</strong> Hole first. LB.</li>
+            <li class="checklist-item"><strong>Runner:</strong> Follow. Plant. Go.</li>
           </ul>
         </div>
-
         <div>
-          <h3>Defense (Look Team 4)</h3>
+          <h3>Look defense (4)</h3>
           <ul class="checklist">
-            <li class="checklist-item"><strong>Front 3 (DL / LB):</strong> Stay home, fill gaps, then pull flag. No lunging.</li>
-            <li class="checklist-item"><strong>Cornerback (CB):</strong> Nothing outside. Keep outside arm free, force runner back inside.</li>
+            <li class="checklist-item"><strong>Front:</strong> Stay home, then flag.</li>
+            <li class="checklist-item"><strong>CB:</strong> Nothing outside.</li>
           </ul>
-          
-          <h3 style="margin-top:18px">Landmark Cone Setup</h3>
           <table>
-            <thead>
-              <tr><th>Hole</th><th>Cone Symbol</th><th>Landmark Location</th></tr>
-            </thead>
+            <thead><tr><th>Hole</th><th>Call</th></tr></thead>
             <tbody>
-              <tr><td>C-RG</td><td>Red Diamond</td><td>Inside Right A-Gap</td></tr>
-              <tr><td>C-LG</td><td>Blue Circle</td><td>Inside Left A-Gap</td></tr>
-              <tr><td>RG-RT</td><td>Gold Star</td><td>Off-Tackle B-Gap Right</td></tr>
-              <tr><td>LG-LT</td><td>Green Triangle</td><td>Off-Tackle B-Gap Left</td></tr>
-              <tr><td>RT Outside</td><td>Orange Square</td><td>C-Gap Perimeter Right</td></tr>
-              <tr><td>LT Outside</td><td>Purple Hexagon</td><td>C-Gap Perimeter Left</td></tr>
+              <tr><td>C-RG</td><td>Red Diamond</td></tr>
+              <tr><td>C-LG</td><td>Blue Circle</td></tr>
+              <tr><td>RG-RT</td><td>Gold Star</td></tr>
+              <tr><td>LG-LT</td><td>Green Triangle</td></tr>
+              <tr><td>RT outside hip</td><td>Orange Square</td></tr>
+              <tr><td>LT outside hip</td><td>Purple Hexagon</td></tr>
             </tbody>
           </table>
         </div>
       </div>
     </section>
 
-    <!-- Permanent Cues -->
     <section class="panel">
-      <div class="panel-header">
-        <h2>Universal Cues</h2>
-      </div>
-      <div class="cue-grid">
+      <div class="cue-row">
         <div class="cue"><strong>OL</strong>Find your jersey. Head out. Hands inside.</div>
         <div class="cue"><strong>Lead</strong>Hole first. LB.</div>
         <div class="cue"><strong>Runner</strong>Follow. Plant. Go.</div>
@@ -175,15 +98,8 @@
     </section>
   </main>
 
-  <footer class="foot">
-    <div class="foot-inner">
-      <div>Cy-Fair K/1 Lions · 8-on-8 CFSA Flag Football</div>
-      <div><a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></div>
-    </div>
-  </footer>
-
+  <footer class="foot"><div class="foot-inner"><div>Six locked runs.</div></div></footer>
   <script src="js/field-diagram.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
-
