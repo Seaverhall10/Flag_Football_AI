@@ -108,7 +108,8 @@ pass("Center and Linebacker use fixed independent landmarks", /function\s+center
 pass("drill avoids unsafe child action words", !/\b(?:kick|hold|fight|wrap|pancake|blast|smash|knockdown)\b|drive\s+through/i.test(`${drills.replace(/<[^>]*>/g, " ")}\n${halfDrill}`));
 pass("drill exposes role spotlight", /id=["']half-spotlight["']/.test(drills));
 pass("drill exposes visual-first kid mode", /class=["'][^"']*kid-demo-mode/.test(drills) && /id=["']half-mode["'][^>]*>CHANGE SETUP</i.test(drills));
-pass("kid field is full-width on phones and medium-width on desktop", /kid-demo-mode\s+\.sim-root\.half-drill-root\s*\{[\s\S]*?max-width:\s*none/i.test(styles) && /@media\s*\(min-width:\s*701px\)[\s\S]*?\.sim-root\.half-drill-root\s*\{[\s\S]*?max-width:\s*1080px/i.test(styles));
+pass("kid field is full-width on phones and paired with controls on desktop", /kid-demo-mode\s+\.sim-root\.half-drill-root\s*\{[\s\S]*?max-width:\s*none/i.test(styles) && /@media\s*\(min-width:\s*960px\)[\s\S]*?grid-template-columns:\s*minmax\(0,\s*620px\)\s+minmax\(300px,\s*1fr\)/i.test(styles));
+pass("secondary speed and scrub controls are collapsed", /<details\s+class=["']half-coach-controls["']/i.test(drills) && /<summary>COACH CONTROLS<\/summary>/i.test(drills));
 pass("drill links four official NFL or NFL-team examples", (drills.match(/class=["']half-clip-card["']/g) || []).length === 4 && (drills.match(/href=["']https:\/\/(?:www\.)?(?:nfl\.com|playfootball\.nfl\.com|youtube\.com)\//g) || []).length === 4);
 pass("no three-point stance instruction", !/3-point stance|three-point stance/i.test(`${drills}\n${playbook}\n${sim}`));
 pass("authority protects Center and A gaps", /No line defender is head-up on Center or in either A gap/i.test(authority));
