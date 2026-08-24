@@ -21,6 +21,13 @@
 - Desktop and 390×844 phone layouts have no horizontal overflow or console errors.
 - Legacy `drill.html`, `stations.html`, `practice.html`, and `js/grid5v4.js` are removed.
 - `node scripts/verify_project.mjs` passes 225 of 225 checks.
+- Pull request #4 merged as release commit `b3192ed`.
+- GitHub Pages deployment `32749342671` passed verification and deployment.
+- The cache-busted public playbook passed all 12 QB/Wing cases, with 16 players and eight jobs in every case.
+- The cache-busted public drill passed all eight lane/side/front cases, with nine players, five offensive jobs, and four defensive jobs in every case.
+- Public slow motion advanced only to Direct Snap after 1.2 seconds on both pages; neither animation jumped to the finish.
+- Public desktop and 390×844 phone checks found no overflow or browser errors.
+- Public legacy URLs `drill.html`, `stations.html`, and `practice.html` return HTTP 404.
 
 ## Unknown
 
@@ -29,7 +36,6 @@
 
 ## Next
 
-1. Review and merge the governed feature branch.
-2. Confirm GitHub Pages deployment succeeds.
-3. Repeat the critical playbook and drill checks on cache-busted public URLs.
-4. Record the released commit and public evidence here.
+1. Run an anonymous field-acceptance session with coaches and 5–7-year-old players.
+2. Confirm the current-season Edge/DE interpretation with the league before changing that alignment.
+3. Keep all removed drill systems out unless the owner explicitly changes the one-drill rule.
