@@ -4,8 +4,60 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Highlight Active Nav Tab based on current page URL
+  // One quiet app shell on every screen. Secondary tools live under Coach.
   const currentPath = window.location.pathname.split("/").pop() || "index.html";
+  const pageNames = {
+    "index.html": "Home",
+    "playbook.html": "Plays",
+    "drills.html": "Drill",
+    "app.html": "Coach",
+    "notes.html": "Coach Notes",
+    "roster.html": "Roster",
+    "tracker.html": "Rep Tracker"
+  };
+  const primaryLinks = [
+    { href: "index.html", label: "Home", pages: ["index.html"] },
+    { href: "playbook.html", label: "Plays", pages: ["playbook.html"] },
+    { href: "drills.html", label: "Drill", pages: ["drills.html"] },
+    { href: "app.html", label: "Coach", pages: ["app.html", "notes.html", "roster.html", "tracker.html"] }
+  ];
+  const activePrimary = primaryLinks.find((item) => item.pages.includes(currentPath))?.label || "Coach";
+  document.body.classList.add("app-shell-page");
+  if (["notes.html", "roster.html", "tracker.html", "runner.html"].includes(currentPath)) {
+    document.body.classList.add("secondary-coach-page");
+  }
+  const linkMarkup = primaryLinks.map((item) => {
+    const active = item.label === activePrimary ? ' class="active" aria-current="page"' : "";
+    return `<a href="${item.href}"${active}>${item.label}</a>`;
+  }).join("");
+
+  const mast = document.querySelector(".mast");
+  if (mast) {
+    mast.innerHTML = `
+      <div class="mast-inner">
+        <a href="index.html" class="brand-group" aria-label="Lions home">
+          <div class="brand-text"><h1>LIONS</h1><p>Practice tools</p></div>
+        </a>
+        <nav class="nav" aria-label="Primary navigation">${linkMarkup}</nav>
+      </div>`;
+  }
+
+  if (!document.querySelector(".mobile-appbar")) {
+    const appbar = document.createElement("header");
+    appbar.className = "mobile-appbar no-print";
+    appbar.innerHTML = `<a href="index.html" aria-label="Lions home">LIONS</a><strong>${pageNames[currentPath] || "Coach"}</strong>`;
+    document.body.insertBefore(appbar, document.querySelector("main") || document.body.firstChild);
+  }
+
+  if (!document.querySelector(".tabbar")) {
+    const tabbar = document.createElement("nav");
+    tabbar.className = "tabbar no-print";
+    tabbar.setAttribute("aria-label", "Primary navigation");
+    tabbar.innerHTML = linkMarkup;
+    document.body.appendChild(tabbar);
+  }
+
+  // Highlight any remaining page-specific navigation.
   const navLinks = document.querySelectorAll(".nav a");
   
   navLinks.forEach(link => {
@@ -14,6 +66,12 @@ document.addEventListener("DOMContentLoaded", () => {
       link.classList.add("active");
     }
   });
+
+  // Secondary playbook teaching material starts closed on a phone.
+  if (window.matchMedia("(max-width: 799px)").matches) {
+    document.querySelectorAll(".playbook-more").forEach((section) => section.removeAttribute("open"));
+    document.querySelectorAll(".mobile-collapse").forEach((section) => section.removeAttribute("open"));
+  }
 
   // 2. Command Center Play Caller Interaction
   const callDisplay = document.getElementById("call");

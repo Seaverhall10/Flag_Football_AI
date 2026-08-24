@@ -12,21 +12,13 @@ This repository is a public teaching app for 5–7-year-old players and their co
 
 If two instructions conflict, stop that part of the work and surface the conflict. Do not silently choose a new formation, play, blocking rule, privacy posture, or navigation structure.
 
-## Practice board (today)
+## Shared project board
 
 Huddle: https://github.com/Seaverhall10/Flag_Football_AI/issues/6
 
-Comment **Claim: `<file>`** on that issue before you edit. One owner per hot file. Branch + PR. Do not stack a second rewrite of `drills.html` / `js/half-drill*.js` on `main`.
+Comment **Claim: `<file>`** on that issue before editing a shared page. One owner per hot file. Branch + PR. Do not stack a second rewrite of `drills.html` or `js/half-drill.js` on another agent's active work.
 
-Hot files today: `drills.html`, `js/half-drill.v2.js`, `js/half-drill.js`. **Codex owns those** for the snap/handoff/QB-decoy picture. Other agents stand down on those files until Codex posts the PR on issue 6.
-
-Owner's newest instruction for the half-drill (overrides older "Corner stays unblocked" for this drill only):
-
-- Pick who has the ball (RB1 / RB2) and where they go (IN/OUT, L/R).
-- Outside: the other back **kicks the Corner** (inside hip).
-- Inside give to RB2: Center snaps to the **QB**, QB **hands** to RB2 up the middle, QB continues **wide as decoy**. Not a direct snap to RB2.
-- Center wraps the A-gap to the LB. Guard owns the DL. Tackle owns the edge.
-- Keep tokens small. Do not restore giant discs or PLACEHOLDER pages.
+The current drill authority is only the version in `PROJECT_AUTHORITY.md`: direct snap to the Runner, one Lead back, Corner unblocked, fixed Center angle to the Linebacker's starting landmark, and separate Offense/Defense teaching emphasis. Old handoff, RB1/RB2, Corner-block, duplicate-script, and tiny-token proposals are rejected history—not instructions.
 
 
 ## One governed writer
@@ -50,6 +42,9 @@ Owner's newest instruction for the half-drill (overrides older "Corner stays unb
 - The playbook must support true slow motion, Back, Next Beat, Reset, speed choice, and scrubbing.
 - The only public drill is the 5-on-4 half-offense versus half-defense drill defined in `PROJECT_AUTHORITY.md`. Do not restore old drill grids or station collections.
 - Schedule remains hidden from visible navigation until the owner explicitly restores it.
+- Mobile navigation has four primary destinations only: Home, Plays, Drill, and Coach. Roster, notes, tracker, backup, and print resources are secondary Coach tools.
+- The phone home screen leads with two actions only: run the drill or watch a play. Do not restore the six-play grid, repeated cue wall, Schedule, or agent/council jargon to the home screen.
+- Responsive width alone is not mobile usability. On a 390×844 phone, the current page name and primary action must be obvious, tap targets must be at least 44 pixels high, and secondary controls must be collapsed or placed after the teaching action.
 
 ## Child privacy
 

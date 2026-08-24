@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Coach Notes & Sideline Hub — Cy-Fair K/1 Lions</title>
   <meta name="description" content="Coach notes, stop rule tracker, sideline playcaller, and printable resources for Cy-Fair K/1 Lions.">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v=mobile-app-20260824">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -36,108 +36,34 @@
   </header>
 
   <main id="main" class="wrap">
-    <section class="banner no-print">
-      <div class="eyebrow">📝 Strategy, Rep Tracker & Data Sync</div>
-      <h2>Coach Notes & Sideline Hub</h2>
-      <p>Sideline play calling, 5-of-6 clean-rep tracking, coach game day notes, 1-click printables, and <strong>team backup sync</strong>.</p>
+    <section class="mobile-page-title">
+      <p class="eyebrow">Coach tools</p>
+      <h1>Notes and reps</h1>
+      <p>Write the next coaching point. Open the other tools only when needed.</p>
     </section>
 
-    <!-- 1. Interactive Sideline Playcaller -->
     <section class="panel">
       <div class="panel-header">
-        <h2>1. Live Sideline Playcaller</h2>
-        <span class="tiny">Outdoor High Contrast</span>
-      </div>
-
-      <div class="live-call-box" id="call" aria-live="polite">
-        <span>TAP A PLAY TO CALL</span>
-        <span class="live-call-sub" id="call-sub">Direct Snap · Shotgun ~3 Yd · Follow. Plant. Go.</span>
-      </div>
-
-      <div class="cue-strip">
-        <span>OL · Jersey · Head Out · Hands Inside</span>
-        <span>Lead · Hole First · LB</span>
-        <span>Runner · Follow. Plant. Go.</span>
-        <span>Front · Stay Home, Flag</span>
-        <span>CB · Nothing Outside</span>
-      </div>
-
-      <div class="btn-grid">
-        <button class="play-btn run-red" type="button" data-name="Inside Right" data-symbol="Red Diamond" data-hole="C-RG" data-color="#dc2626">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 22,12 12,22 2,12" fill="#dc2626"/></svg>
-            Inside Right
-          </div>
-          <small>Red Diamond · C-RG A-Gap</small>
-        </button>
-
-        <button class="play-btn run-blue" type="button" data-name="Inside Left" data-symbol="Blue Circle" data-hole="C-LG" data-color="#2563eb">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#2563eb"/></svg>
-            Inside Left
-          </div>
-          <small>Blue Circle · C-LG A-Gap</small>
-        </button>
-
-        <button class="play-btn run-gold" type="button" data-name="Off-Tackle Right" data-symbol="Gold Star" data-hole="RG-RT" data-color="#d97706">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16.5,14 18.5,22 12,17.5 5.5,22 7.5,14 2,9 9,9" fill="#d97706"/></svg>
-            Off-Tackle R
-          </div>
-          <small>Gold Star · RG-RT B-Gap</small>
-        </button>
-
-        <button class="play-btn run-green" type="button" data-name="Off-Tackle Left" data-symbol="Green Triangle" data-hole="LG-LT" data-color="#16a34a">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><polygon points="12,3 22,21 2,21" fill="#16a34a"/></svg>
-            Off-Tackle L
-          </div>
-          <small>Green Triangle · LG-LT B-Gap</small>
-        </button>
-
-        <button class="play-btn run-orange" type="button" data-name="Wide Right" data-symbol="Orange Square" data-hole="RT outside hip" data-color="#ea580c">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" fill="#ea580c"/></svg>
-            Wide Right
-          </div>
-          <small>Orange Square · RT Outside</small>
-        </button>
-
-        <button class="play-btn run-purple" type="button" data-name="Wide Left" data-symbol="Purple Hexagon" data-hole="LT outside hip" data-color="#9333ea">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="#9333ea"/></svg>
-            Wide Left
-          </div>
-          <small>Purple Hexagon · LT Outside</small>
-        </button>
-      </div>
-    </section>
-
-    <!-- 2. Clean-Rep Stop Rule Tracker -->
-    <section class="panel">
-      <div class="panel-header">
-        <h2>2. Clean-Rep Stop Rule Tracker</h2>
-        <span class="tiny">5-of-6 Target</span>
-      </div>
-      <div id="interactive-tracker-root">
-        <!-- Rendered by js/tracker.js -->
-      </div>
-    </section>
-
-    <!-- 3. Coach Scratchpad / Game Notes -->
-    <section class="panel">
-      <div class="panel-header">
-        <h2>3. Coach Game & Practice Notes</h2>
+        <h2>Practice notes</h2>
         <span class="tiny" id="notes-save-status">Saved</span>
       </div>
-      <p class="tiny" style="margin-top:-6px">Personal notes for game day rotations, player highlights, and focus areas. Saves automatically in browser.</p>
-      <textarea id="coach-notes-area" rows="6" placeholder="Type game notes, player improvements, reminders for next practice..." style="width:100%;padding:12px;border:1px solid var(--line-strong);border-radius:8px;font-family:inherit;font-size:0.95rem;line-height:1.4;box-sizing:border-box"></textarea>
+      <p class="tiny" style="margin-top:-6px">Saves automatically in this browser.</p>
+      <textarea id="coach-notes-area" rows="7" placeholder="What should we repeat, correct, or praise next practice?" style="width:100%;padding:12px;border:1px solid var(--line-strong);border-radius:8px;font-family:inherit;font-size:0.95rem;line-height:1.4;box-sizing:border-box"></textarea>
     </section>
 
-    <!-- 4. Team Data Backup & Sync (JSON) -->
-    <section class="panel no-print">
+    <details class="coach-more mobile-collapse">
+      <summary>Clean-rep tracker</summary>
+      <section class="panel">
+        <div class="panel-header"><h2>5-of-6 target</h2></div>
+        <div id="interactive-tracker-root"><!-- Rendered by js/tracker.js --></div>
+      </section>
+    </details>
+
+    <details class="coach-more mobile-collapse no-print">
+      <summary>Team backup</summary>
+      <section class="panel">
       <div class="panel-header">
-        <h2>4. Team Data Backup & Multi-Device Sync</h2>
+        <h2>Export or restore</h2>
         <span class="tiny">Export / Import</span>
       </div>
       <p class="tiny" style="margin-top:-6px">Export all your custom roster edits, schedule dates, notes, and tracker data into a single file to back up or share with assistant coaches.</p>
@@ -151,12 +77,14 @@
           <input type="file" id="import-json-file" accept=".json" onchange="importTeamBackup(this)" style="display:none">
         </label>
       </div>
-    </section>
+      </section>
+    </details>
 
-    <!-- 5. Printable Resource Suite -->
-    <section class="panel">
+    <details class="coach-more mobile-collapse">
+      <summary>Printables</summary>
+      <section class="panel">
       <div class="panel-header">
-        <h2>5. Printable Resource Suite</h2>
+        <h2>Printable resources</h2>
         <span class="tiny">Click to print</span>
       </div>
       <div class="links-grid">
@@ -181,7 +109,8 @@
           <span>Print</span>
         </a>
       </div>
-    </section>
+      </section>
+    </details>
   </main>
 
   <footer class="foot">
@@ -193,7 +122,7 @@
 
   <script src="js/timers.js"></script>
   <script src="js/tracker.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=mobile-app-20260824"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const textarea = document.getElementById("coach-notes-area");

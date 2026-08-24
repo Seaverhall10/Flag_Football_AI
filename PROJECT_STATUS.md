@@ -8,8 +8,19 @@
 - The public app has one drill only: five-player half offense versus four-player half defense.
 - The drill opens in an edge-to-edge Kid View with separate OFFENSE and DEFENSE teaching views.
 - The Center takes one fixed angle to the Linebacker's starting landmark, makes a short controlled push, then stops while the defender separates.
+- The whole public site must work as one organized mobile coaching app, not a collection of desktop pages that merely shrink.
+- The four primary destinations are Home, Plays, Drill, and Coach. Schedule remains hidden.
 
 ## Verified locally
+
+- A 390×844 live-site audit measured the pre-change playbook at 3.3 screens, notes at 3.2 screens, and roster at 4.9 screens; the drill had no visible route back to the rest of the app.
+- The rebuilt Home screen leads with exactly two practice actions: Run the blocking drill and Watch a play.
+- Every interactive page receives the same four-destination app shell. The current destination is identified in both the compact phone header and bottom navigation.
+- The playbook uses a swipeable compact play picker, two compact wing-spacing choices, the full 16-player animation, and four primary rep controls. Speed, scrubber, job cards, and general cues are secondary phone disclosures.
+- Notes no longer duplicates the six-play sideline caller. Notes, rep tracker, backup, and printables are separated by task; roster views collapse independently on phones.
+- Phone browser journeys passed all 12 playbook cases (six runs × two Wing spacings) with 16 players and eight jobs, and all eight drill setups with nine players, five offensive jobs, and four defensive jobs.
+- Tablet, laptop, and desktop checks covered Home, Plays, Drill, Coach, Notes, and Roster: 18 of 18 page/viewport cases had four primary destinations, no horizontal overflow, and no browser errors.
+- `node scripts/verify_project.mjs` passes 251 of 251 checks for this mobile information-architecture release candidate.
 
 - The full-team field is now 940 visual units tall instead of 640.
 - Spread Wings start at x=160 and x=840; Tight Wings start at x=395 and x=605 beside the QB.

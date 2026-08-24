@@ -24,6 +24,10 @@ Rollback baseline before council repair: `90bd722` (current incoming `main`). La
 | Shrink the board and player tokens to fit more controls above the fold | REJECTED | Directly conflicts with the owner's spacing correction and makes player labels too small to teach from a sideline screen |
 | Load a duplicate `half-drill.v2.js` beside the governed script | REJECTED | Repository verification fails because `drills.html` no longer loads the governed `js/half-drill.js`; duplicate authorities invite drift |
 | Field-check the final drill with anonymous 5–7-year-old players and coaches | TEST | Required before claiming the visual is kid-ready; no field-acceptance evidence exists yet |
+| Treat the website as one mobile coaching app with Home, Plays, Drill, and Coach | OWNER OVERRIDE — ACCEPTED | Owner correction on 2026-08-24. A phone audit found six inconsistent navigation links, duplicated play calling, and critical actions buried across pages up to 4.9 screens long. |
+| Lead Home with only Run the Drill and Watch a Play | OWNER OVERRIDE — ACCEPTED | These are the two practice actions. The six-play grid, cue wall, Schedule, and technical project language do not belong on the starting screen. |
+| Put roster, notes, tracker, backup, and printables under Coach | OWNER OVERRIDE — ACCEPTED | Keeps administration available without competing with the child teaching flow. Secondary phone sections collapse until the coach asks for them. |
+| Call a page mobile-friendly because it has no horizontal overflow | REJECTED | Width compliance did not produce a usable flow. Mobile acceptance also requires clear hierarchy, consistent navigation, 44-pixel targets, and the teaching action before secondary controls. |
 
 ## How to update this ledger
 

@@ -79,6 +79,17 @@ Never teach or depict head/neck contact, holding, wrapping, tackling, blocks in 
 - Score the play, not the child.
 - Do not add a play until every current run meets the scorecard gate and has zero unsafe blocks.
 
+## Mobile coaching experience
+
+- The public site is one coaching app, not a collection of unrelated pages.
+- Primary navigation is limited to `Home`, `Plays`, `Drill`, and `Coach` on phones and desktops.
+- Home presents two dominant choices: run the one approved drill or teach a slow-motion play.
+- Roster, notes, tracker, backup, and print resources live under Coach and do not compete with the practice actions.
+- The playbook puts play selection, wing spacing, the animation, and Play/Back/Next/Reset in that order. Speed, scrubbing, assignments, and general cues are secondary disclosures on phones.
+- The drill opens directly to the teaching field; its setup, Offense/Defense view, field, cue, and four rep controls remain the primary surface.
+- Schedule stays out of visible navigation until the owner explicitly restores it.
+- Do not put AI, agent, council, governance, or technical language in the child/coach interface.
+
 ## The only current drill
 
 The public teaching app has one drill: half offense versus half defense.
