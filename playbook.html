@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Playbook - LIONS K/1</title>
-  <meta name="description" content="Six locked runs with field diagrams. 5 OL + RB1-3 vs 3 DL, 2 LB, 2 CB, 1 S.">
-  <link rel="stylesheet" href="css/styles.css">
+  <meta name="description" content="Six locked runs. Interactive 8-on-8 play simulator. 5 OL + RB1-3 vs 3 DL, 2 LB, 2 CB, 1 S.">
+  <link rel="stylesheet" href="css/styles.css?v=sim1">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -35,21 +35,30 @@
         </button>
         <button class="play-btn run-orange" type="button" data-run-key="wide-right" data-name="Wide Right" data-symbol="Orange Square" data-hole="RT outside hip" data-color="#e65100">
           <div class="btn-title">Wide Right</div>
-          <small>Orange Square · RT outside hip</small>
+          <small>Orange Square · RT hip</small>
         </button>
         <button class="play-btn run-purple" type="button" data-run-key="wide-left" data-name="Wide Left" data-symbol="Purple Hexagon" data-hole="LT outside hip" data-color="#7b1fa2">
           <div class="btn-title">Wide Left</div>
-          <small>Purple Hexagon · LT outside hip</small>
+          <small>Purple Hexagon · LT hip</small>
         </button>
       </div>
     </section>
 
     <section class="panel">
       <div class="panel-header">
-        <h2>Field</h2>
+        <h2>Play</h2>
       </div>
-      <div class="field-container" id="field-diagram-container"></div>
-      <p class="tiny" id="run-detail-description">Direct snap to designated runner (~3 yards). Lead attacks hole first and blocks linebacker. Extra back stays with the play. Runner follows, plants, and explodes north.</p>
+      <div id="sim-root" class="sim-root"></div>
+      <p id="sim-cue" class="sim-cue" aria-live="polite">Tap a kid. PLAY runs the snap.</p>
+      <div class="sim-controls">
+        <button type="button" class="btn btn-primary sim-big" id="sim-play">PLAY</button>
+        <button type="button" class="btn btn-secondary sim-big" id="sim-reset">RESET</button>
+      </div>
+      <div class="sim-controls sim-react">
+        <button type="button" class="btn btn-secondary" id="sim-bounce">BOUNCE</button>
+        <button type="button" class="btn btn-secondary" id="sim-cutback">CUT BACK</button>
+      </div>
+      <p class="tiny sim-legend">Tap a kid · PLAY runs the snap</p>
     </section>
 
     <section class="panel">
@@ -101,7 +110,7 @@
   </main>
 
   <footer class="foot"><div class="foot-inner"><div>Six locked runs. 5 OL + RB1-3 vs 3 DL, 2 LB, 2 CB, 1 S.</div></div></footer>
-  <script src="js/field-diagram.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=sim1"></script>
+  <script src="js/sim.js?v=sim1"></script>
 </body>
 </html>

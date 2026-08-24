@@ -638,3 +638,34 @@ th {
   .print-header { display: block !important; border-bottom: 2pt solid #000; margin-bottom: 10pt; }
   .print-title { font-size: 16pt; font-weight: 900; margin: 0 0 6pt; }
 }
+
+/* 8v8 play simulator */
+.sim-root { width: 100%; margin: 0 0 10px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg); background: #0d3b24; }
+.sim-svg { display: block; width: 100%; height: auto; }
+.sim-cue {
+  margin: 10px 0 8px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+  background: #0A1628;
+  border: 1px solid var(--gold);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.sim-controls { display: flex; gap: 8px; margin: 8px 0; }
+.sim-controls .btn { flex: 1; }
+.sim-big { min-height: 48px; font-size: 1.05rem; letter-spacing: 0.06em; }
+.sim-legend { text-align: center; margin: 4px 0 0; }
+.sim-hole { animation: sim-pulse 1.4s ease-in-out infinite; }
+@keyframes sim-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sim-hole { animation: none; }
+}
