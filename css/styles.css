@@ -1330,3 +1330,27 @@ body.half-drill-page { padding-bottom: 16px; }
   .half-drill-page.kid-demo-mode .half-call-row { grid-template-columns: minmax(0, 1fr) 126px; gap: 6px; }
   .half-drill-page.kid-demo-mode .half-mode { min-width: 0; padding-left: 8px; padding-right: 8px; font-size: .72rem; }
 }
+@media (min-width: 701px) {
+  .half-drill-page.kid-demo-mode .wrap-drill {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 8px 12px 18px;
+  }
+  .half-drill-page.kid-demo-mode .panel {
+    padding: 8px;
+    border-radius: 10px;
+  }
+  .half-drill-page.kid-demo-mode .half-drill-teacher > * {
+    width: 100%;
+    max-width: 1080px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .half-drill-page.kid-demo-mode .sim-root.half-drill-root {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto 8px;
+    border: 3px solid var(--gold);
+    border-radius: 10px;
+  }
+}

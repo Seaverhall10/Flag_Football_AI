@@ -20,7 +20,7 @@
 - All 16 teaching cases were tested: Inside/Outside × Left/Right × Two-DL/Two-LB × Offense/Defense view.
 - The drill shows five offensive jobs and four defensive-integrity jobs; tapping one isolates the matchup.
 - Teaching views change visual emphasis only; a browser check at the controlled-push beat confirmed all nine player coordinates remain identical when switching views.
-- All responsibility paths are solid and direct. The field has no Kid View width cap, no masthead, and no large page margins.
+- All responsibility paths are solid and direct. The field stays edge-to-edge on phones and uses a centered 1080-pixel teaching width on larger screens, with no masthead or oversized page margins.
 - The Center and Linebacker follow independent fixed waypoints. Browser checks confirmed Center/LB positions at all seven exact beats, including visible fit, short push, separation, and pursuit.
 - Four official NFL/NFL Play Football clips are linked below the drill: offensive contact, game blocking technique, defensive shedding, and a real run-lane example.
 - Both animations advance slowly to Direct Snap after 1.2 seconds rather than jumping to the finish.
