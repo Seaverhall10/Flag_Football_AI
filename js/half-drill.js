@@ -306,7 +306,12 @@
   }
   function updateViewBox() {
     if (!svg) return;
-    svg.setAttribute("viewBox", state.side === "right" ? "200 20 780 780" : "20 20 780 780");
+    const phone = window.matchMedia && window.matchMedia("(max-width: 700px)").matches;
+    if (phone) {
+      svg.setAttribute("viewBox", state.side === "right" ? "200 20 780 780" : "20 20 780 780");
+    } else {
+      svg.setAttribute("viewBox", state.side === "right" ? "80 20 900 780" : "20 20 900 780");
+    }
   }
   function buildField() {
     svg = el("svg", { viewBox: `0 0 ${W} ${H}`, class: "sim-svg full-team-svg half-team-svg", role: "img", "aria-label": "Five-player half offense versus four-player half defense animated drill" });
