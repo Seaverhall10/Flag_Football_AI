@@ -36,6 +36,7 @@
         <fieldset class="drill-choice"><legend>RUN LANE</legend><div class="look-toggle" role="group" aria-label="Run lane"><button class="btn btn-secondary is-active" type="button" data-half-lane="inside" aria-pressed="true">INSIDE</button><button class="btn btn-secondary" type="button" data-half-lane="outside" aria-pressed="false">OUTSIDE</button></div></fieldset>
         <fieldset class="drill-choice"><legend>PLAY SIDE</legend><div class="look-toggle" role="group" aria-label="Play side"><button class="btn btn-secondary" type="button" data-half-side="left" aria-pressed="false">LEFT</button><button class="btn btn-secondary is-active" type="button" data-half-side="right" aria-pressed="true">RIGHT</button></div></fieldset>
         <fieldset class="drill-choice"><legend>FOURTH DEFENDER</legend><div class="look-toggle" role="group" aria-label="Fourth defender"><button class="btn btn-secondary is-active" type="button" data-half-front="two-dl" aria-pressed="true">2nd D-LINEMAN</button><button class="btn btn-secondary" type="button" data-half-front="two-lb" aria-pressed="false">2nd LINEBACKER</button></div></fieldset>
+        <fieldset class="drill-choice"><legend>LEAD PATH</legend><div class="look-toggle" role="group" aria-label="Lead path"><button class="btn btn-secondary is-active" type="button" data-half-decoy="on" aria-pressed="true">DECOY WIDE</button><button class="btn btn-secondary" type="button" data-half-decoy="off" aria-pressed="false">LEAD THROUGH HOLE</button></div></fieldset>
       </div>
       <div id="half-call" class="half-call" aria-live="polite"><strong>INSIDE RIGHT</strong><span>2 DL · 1 LB · 1 CB</span></div>
     </section>
@@ -45,7 +46,7 @@
         <div><div class="tiny">2. Watch All Nine Players</div><h2 id="half-title">Inside Right · Two-DL Front</h2></div>
         <span class="play-call-badge" id="half-badge">INSIDE · RIGHT</span>
       </div>
-      <div class="sim-key" aria-label="Drill path colors"><span><i class="key-runner"></i>Runner</span><span><i class="key-lead"></i>Lead RB</span><span><i class="key-block"></i>Block</span><span><i class="key-defense"></i>Defense</span></div>
+      <div class="sim-key" aria-label="Drill path colors"><span><i class="key-runner"></i>Runner</span><span><i class="key-lead"></i>Lead RB</span><span><i class="key-decoy"></i>Decoy</span><span><i class="key-hip"></i>Block hip</span><span><i class="key-block"></i>Block</span><span><i class="key-defense"></i>Defense</span></div>
       <p id="half-beat" class="timer-label sim-beat">LINE UP · 1 OF 7</p>
       <div id="half-drill-root" class="sim-root half-drill-root"></div>
       <p id="half-cue" class="sim-cue" aria-live="polite">Count defenders from inside out. Point to your job before the snap.</p>
@@ -88,7 +89,7 @@
   </main>
 
   <footer class="foot"><div class="foot-inner"><div>Cy-Fair K/1 Lions · One Half-Team Drill</div><div><a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></div></div></footer>
-  <script src="js/half-drill.js?v=half-team-20260824"></script>
+  <script src="js/half-drill.js?v=hip1"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

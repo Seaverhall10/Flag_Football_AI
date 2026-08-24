@@ -2,7 +2,7 @@
 (function () {
   "use strict";
   const NS = "http://www.w3.org/2000/svg";
-  const W = 1000, H = 920, LOS = 400;
+  const W = 1000, H = 920, LOS = 400, HIP = 30;
   const BEATS = [
     { name: "LINE UP", cue: "Count defenders from inside out. Point to your job before the snap." },
     { name: "DIRECT SNAP", cue: "Center snaps to Runner. Defense reads the ball without crossing early." },
@@ -12,10 +12,15 @@
     { name: "SHED / FLAG", cue: "Defense finds the ball, sheds toward the lane, and closes under control." },
     { name: "FINISH", cue: "Runner goes north. Defense pursues inside-out; Corner keeps contain." }
   ];
-  const state = { lane: "inside", side: "right", front: "two-dl", t: 0, playing: false, speed: 10500, startT: 0, startedAt: 0, raf: 0, selected: null, players: {} };
+  const state = {
+    lane: "inside", side: "right", front: "two-dl", decoy: true, t: 0, playing: false, speed: 10500,
+    startT: 0, startedAt: 0, raf: 0, selected: null, players: {},
+    nudge: { RUN: { x: 0, y: 0 }, LEAD: { x: 0, y: 0 } },
+    shown: null, dragging: null
+  };
   const OFFENSE = ["C", "G", "T", "RUN", "LEAD"];
   const DEFENSE = ["DL", "LB", "CB", "FLEX"];
-  let svg, ball, lanePath, laneLabel, blockLayer, defenseLayer, cueEl, beatEl, slider, playButton;
+  let svg, ball, lanePath, laneLabel, blockLayer, defenseLayer, hipLayer, cueEl, beatEl, slider, playButton;
 
   function el(name, attrs) { const node = document.createElementNS(NS, name); Object.keys(attrs || {}).forEach((key) => node.setAttribute(key, attrs[key])); return node; }
   function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
@@ -28,6 +33,11 @@
   function sideName() { return state.side.toUpperCase(); }
   function laneName() { return state.lane.toUpperCase(); }
   function frontName() { return state.front === "two-dl" ? "Two-DL Front" : "Two-LB Front"; }
+  function gHipKind() { return state.lane === "inside" ? "inside" : "outside"; }
+  function gHipLabel() { return gHipKind() === "inside" ? "INSIDE HIP" : "OUTSIDE HIP"; }
+  function playOut() { return state.side === "right" ? 1 : -1; }
+  function hipDx(kind) { const outside = playOut() * HIP; return kind === "outside" ? outside : -outside; }
+  function hipOf(def, kind) { return { x: def.x + hipDx(kind), y: def.y + 8 }; }
 
   function labels() {
     return {
@@ -49,19 +59,22 @@
   }
   function assignments() {
     const h = homes();
+    const gHip = hipOf(h.DL, gHipKind());
+    const tHip = hipOf(state.front === "two-dl" ? h.FLEX : h.LB, gHipKind());
+    const cHip = hipOf(h.DL, gHipKind() === "inside" ? "outside" : "inside");
     return state.front === "two-dl"
       ? {
-          C: { target: "DL", point: mix(h.C, h.DL, .72), task: "Snap → help Guard on D-LINE → protect inside" },
-          G: { target: "DL", point: h.DL, task: "Own D-LINE · play-side hip · head out" },
-          T: { target: "FLEX", point: h.FLEX, task: "Own EDGE / DL · keep outside arm from crossing" },
-          LEAD: { target: "LB", point: h.LB, task: `${laneName()} lane first → fit LINEBACKER under control` },
+          C: { target: "DL", point: cHip, task: "Snap → help Guard on D-LINE → protect inside" },
+          G: { target: "DL", point: gHip, task: `${gHipLabel()} of D-LINE · head out` },
+          T: { target: "FLEX", point: tHip, task: `${gHipLabel()} of EDGE / DL · keep outside arm from crossing` },
+          LEAD: { target: "LB", point: h.LB, task: state.decoy ? "Decoy wide to the numbers · occupy Corner" : `${laneName()} lane first → fit LINEBACKER under control` },
           RUN: { target: "LANE", point: { x: laneX(), y: LOS }, task: `Secure snap → ${laneName()} ${sideName()} → one cut → north` }
         }
       : {
-          C: { target: "DL", point: mix(h.C, h.DL, .72), task: "Snap → help Guard on D-LINE → protect inside" },
-          G: { target: "DL", point: h.DL, task: "Own D-LINE · play-side hip · head out" },
-          T: { target: "LB", point: h.LB, task: "Release under control to LB-IN · do not chase across" },
-          LEAD: { target: "FLEX", point: h.FLEX, task: `${laneName()} lane first → fit LB-OUT under control` },
+          C: { target: "DL", point: cHip, task: "Snap → help Guard on D-LINE → protect inside" },
+          G: { target: "DL", point: gHip, task: `${gHipLabel()} of D-LINE · head out` },
+          T: { target: "LB", point: tHip, task: `${gHipLabel()} of LB-IN · do not chase across` },
+          LEAD: { target: "FLEX", point: h.FLEX, task: state.decoy ? "Decoy wide to the numbers · occupy Corner" : `${laneName()} lane first → fit LB-OUT under control` },
           RUN: { target: "LANE", point: { x: laneX(), y: LOS }, task: `Secure snap → ${laneName()} ${sideName()} → one cut → north` }
         };
   }
@@ -80,7 +93,12 @@
           CB: `Unblocked contain · nothing outside · force Runner back to pursuit`
         };
   }
-  function offenseRole(id) { return id === "RUN" ? "BALL" : id === "LEAD" ? "LEAD" : "BLOCK"; }
+  function offenseRole(id) {
+    if (id === "RUN") return "BALL";
+    if (id === "LEAD") return state.decoy ? "DECOY" : "LEAD";
+    if (id === "G") return gHipLabel();
+    return "BLOCK";
+  }
 
   function basePoses() { const h = homes(), out = {}; Object.keys(h).forEach((id) => { out[id] = { x: h[id].x, y: h[id].y }; }); return out; }
   function runnerPose(beat) {
@@ -89,26 +107,108 @@
   }
   function leadPose(beat) {
     const h = homes().LEAD, target = assignments().LEAD.point, x = laneX();
+    if (state.decoy) {
+      const cb = homes().CB;
+      const flare = { x: lerp(h.x, cb.x, .78), y: cb.y + 36 };
+      return [
+        h,
+        { x: lerp(h.x, flare.x, .1), y: h.y - 6 },
+        { x: lerp(h.x, flare.x, .38), y: 575 },
+        { x: lerp(h.x, flare.x, .62), y: 455 },
+        { x: lerp(h.x, flare.x, .86), y: 340 },
+        flare,
+        { x: lerp(flare.x, cb.x, .28), y: cb.y + 28 }
+      ][beat];
+    }
     return [h, { x: h.x, y: h.y - 8 }, { x: lerp(h.x, x, .3), y: 610 }, { x: lerp(h.x, x, .68), y: 505 }, { x, y: 365 }, { x: target.x, y: target.y + 35 }, { x: target.x, y: target.y + 30 }][beat];
   }
   function poseAtBeat(beat) {
     const h = homes(), a = assignments(), out = basePoses();
-    ["C", "G", "T"].forEach((id) => { const amount = beat < 2 ? 0 : beat === 2 ? .42 : 1; out[id] = mix(h[id], a[id].point, amount); if (id === "C" && beat === 1) out[id].y += 8; });
-    out.RUN = runnerPose(beat); out.LEAD = leadPose(beat);
+    out.RUN = runnerPose(beat);
+    out.LEAD = leadPose(beat);
     const x = laneX(), laneBias = state.side === "right" ? -24 : 24;
-    if (beat >= 4) {
+    if (beat >= 5) {
       const lbTarget = { x: x + laneBias, y: 275 };
-      out.LB = mix(h.LB, lbTarget, beat === 4 ? .25 : beat === 5 ? .62 : .8);
+      out.LB = mix(h.LB, lbTarget, beat === 5 ? .62 : .8);
       const flexTarget = state.front === "two-dl" ? { x: h.FLEX.x + (state.side === "right" ? -20 : 20), y: h.FLEX.y + 25 } : { x: x + (state.side === "right" ? 35 : -35), y: 270 };
-      out.FLEX = mix(h.FLEX, flexTarget, beat === 4 ? .18 : beat === 5 ? .52 : .72);
+      out.FLEX = mix(h.FLEX, flexTarget, beat === 5 ? .52 : .72);
+      out.DL = mix(h.DL, { x: state.lane === "inside" ? x : h.DL.x + (state.side === "right" ? 22 : -22), y: h.DL.y + 28 }, beat === 5 ? .35 : .48);
       const cbTarget = { x: state.lane === "outside" ? x + (state.side === "right" ? 55 : -55) : h.CB.x + (state.side === "right" ? -35 : 35), y: 295 };
-      out.CB = mix(h.CB, cbTarget, beat === 4 ? .12 : beat === 5 ? .4 : .7);
+      out.CB = mix(h.CB, cbTarget, beat === 5 ? .4 : .7);
+    } else {
+      out.DL = mix(h.DL, { x: h.DL.x, y: h.DL.y + 6 }, beat >= 2 ? .2 : 0);
+      out.FLEX = mix(h.FLEX, { x: h.FLEX.x + playOut() * 8, y: h.FLEX.y + 4 }, beat >= 2 ? .15 : 0);
+      if (beat >= 4) {
+        out.LB = mix(h.LB, { x: x + laneBias, y: 275 }, .25);
+        const cbTarget = { x: state.lane === "outside" ? x + (state.side === "right" ? 55 : -55) : h.CB.x + (state.side === "right" ? -18 : 18), y: 295 };
+        out.CB = mix(h.CB, cbTarget, .12);
+      }
     }
-    if (beat >= 3) out.DL = mix(h.DL, { x: state.lane === "inside" ? x : h.DL.x + (state.side === "right" ? 22 : -22), y: h.DL.y + 28 }, beat === 3 ? .12 : beat === 4 ? .25 : .48);
+    ["C", "G", "T"].forEach((id) => {
+      const defId = a[id].target;
+      const hip = hipOf(out[defId] || a[id].point, id === "C" ? (gHipKind() === "inside" ? "outside" : "inside") : gHipKind());
+      const amount = beat < 2 ? 0 : beat === 2 ? .42 : beat === 3 ? 1 : .92;
+      out[id] = mix(h[id], hip, amount);
+      if (id === "C" && beat === 1) out[id].y += 8;
+    });
     return out;
   }
-  function posesAt(value) { const lo = Math.floor(value), hi = Math.min(6, lo + 1), u = ease(value - lo), a = poseAtBeat(lo), b = poseAtBeat(hi), out = {}; Object.keys(a).forEach((id) => { out[id] = mix(a[id], b[id], u); }); return out; }
+  function posesAt(value) {
+    const lo = Math.floor(value), hi = Math.min(6, lo + 1), u = ease(value - lo), a = poseAtBeat(lo), b = poseAtBeat(hi), out = {};
+    Object.keys(a).forEach((id) => { out[id] = mix(a[id], b[id], u); });
+    return out;
+  }
   function pathFor(id) { const points = []; for (let i = 0; i <= 6; i += 1) points.push(poseAtBeat(i)[id]); return "M " + points.map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" L "); }
+
+  function applyNudges(poses) {
+    poses.RUN = { x: poses.RUN.x + state.nudge.RUN.x, y: poses.RUN.y + state.nudge.RUN.y };
+    poses.LEAD = { x: poses.LEAD.x + state.nudge.LEAD.x, y: poses.LEAD.y + state.nudge.LEAD.y };
+  }
+  function reactToBall(poses) {
+    if (state.t < 1) return;
+    const ballX = poses.RUN.x;
+    const k = state.dragging === "RUN" ? 0.22 : 0.55;
+    const follow = clamp((state.t - 1) / 4.2, 0, 1);
+    const lbWant = { x: lerp(homes().LB.x, ballX + (state.side === "right" ? -24 : 24), follow), y: lerp(homes().LB.y, Math.min(poses.RUN.y - 50, 280), follow * 0.7) };
+    poses.LB = mix(poses.LB, lbWant, k);
+    const margin = 72;
+    let wantCb = poses.CB.x;
+    if (state.side === "right") wantCb = Math.max(poses.CB.x, ballX + margin);
+    else wantCb = Math.min(poses.CB.x, ballX - margin);
+    poses.CB.x = lerp(poses.CB.x, wantCb, k);
+    if (state.t < 5) {
+      const pin = state.dragging === "RUN" ? 0.35 : 0.2;
+      poses.DL = mix(poses.DL, { x: homes().DL.x, y: homes().DL.y + 6 }, pin);
+      poses.FLEX = mix(poses.FLEX, { x: homes().FLEX.x + playOut() * 8, y: homes().FLEX.y + 4 }, pin);
+    }
+  }
+  function separate(poses) {
+    const ids = Object.keys(poses);
+    for (let pass = 0; pass < 4; pass += 1) {
+      for (let i = 0; i < ids.length; i += 1) {
+        for (let j = i + 1; j < ids.length; j += 1) {
+          const a = poses[ids[i]], b = poses[ids[j]];
+          const dx = b.x - a.x, dy = b.y - a.y, dist = Math.hypot(dx, dy) || 0.01;
+          const min = 76;
+          if (dist < min) {
+            const push = (min - dist) / 2, nx = dx / dist, ny = dy / dist;
+            a.x -= nx * push; a.y -= ny * push; b.x += nx * push; b.y += ny * push;
+          }
+        }
+      }
+    }
+  }
+  function easeShown(poses) {
+    if (!state.shown || state.dragging) {
+      if (!state.shown) { state.shown = poses; return poses; }
+      const k = 0.28, out = {};
+      Object.keys(poses).forEach((id) => { out[id] = mix(state.shown[id], poses[id], id === state.dragging ? 1 : k); });
+      state.shown = out;
+      return out;
+    }
+    state.shown = poses;
+    return poses;
+  }
 
   function drawLane() {
     const x = laneX(), start = homes().RUN;
@@ -121,8 +221,16 @@
     blockLayer.innerHTML = "";
     const h = homes(), a = assignments();
     ["C", "G", "T", "LEAD"].forEach((id) => {
-      const target = a[id].point;
-      const path = el("path", { d: `M ${h[id].x},${h[id].y - 10} L ${target.x},${target.y}`, fill: "none", stroke: id === "LEAD" ? "#fff" : "#67e8f9", "stroke-width": id === "LEAD" ? "8" : "6", "stroke-dasharray": id === "LEAD" ? "14 10" : "", "marker-end": id === "LEAD" ? "url(#halfLeadArrow)" : "url(#halfBlockArrow)", "data-half-owner": id });
+      const target = id === "LEAD" && state.decoy ? { x: lerp(h.LEAD.x, homes().CB.x, .78), y: homes().CB.y + 36 } : a[id].point;
+      const decoyLead = id === "LEAD" && state.decoy;
+      const path = el("path", {
+        d: `M ${h[id].x},${h[id].y - 10} L ${target.x},${target.y}`, fill: "none",
+        stroke: decoyLead ? "#c084fc" : id === "LEAD" ? "#fff" : "#67e8f9",
+        "stroke-width": id === "LEAD" ? "8" : "6",
+        "stroke-dasharray": decoyLead ? "6 10" : id === "LEAD" ? "14 10" : "",
+        "marker-end": decoyLead ? "url(#halfDecoyArrow)" : id === "LEAD" ? "url(#halfLeadArrow)" : "url(#halfBlockArrow)",
+        "data-half-owner": id
+      });
       blockLayer.appendChild(path);
     });
   }
@@ -130,24 +238,79 @@
     defenseLayer.innerHTML = "";
     DEFENSE.forEach((id) => { const path = el("path", { d: pathFor(id), fill: "none", stroke: "#f87171", "stroke-width": "5", "stroke-dasharray": "8 10", opacity: ".72", "data-half-owner": id }); defenseLayer.appendChild(path); });
   }
+  function drawHips(poses) {
+    hipLayer.innerHTML = "";
+    if (state.t < 2 || state.t > 3.2) return;
+    const a = assignments();
+    [["G", a.G.target, gHipKind()], ["T", a.T.target, gHipKind()]].forEach(([ol, defId, kind]) => {
+      const hip = hipOf(poses[defId], kind);
+      const dir = hipDx(kind) >= 0 ? 1 : -1;
+      const chev = el("path", {
+        d: `M ${hip.x - dir * 6},${hip.y - 26} L ${hip.x + dir * 28},${hip.y} L ${hip.x - dir * 6},${hip.y + 26} L ${hip.x - dir * 2},${hip.y} Z`,
+        fill: "#f6c344", stroke: "#071018", "stroke-width": "3", "data-half-owner": ol, class: "half-hip-chevron"
+      });
+      hipLayer.appendChild(chev);
+      if (ol === "G") {
+        const lab = el("text", { x: String(hip.x + dir * 36), y: String(hip.y - 32), fill: "#f6c344", "font-size": "16", "font-weight": "900", "text-anchor": dir > 0 ? "start" : "end", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "6", "data-half-owner": "G" });
+        lab.textContent = gHipLabel();
+        hipLayer.appendChild(lab);
+      }
+    });
+  }
   function token(id) {
-    const offense = OFFENSE.includes(id), g = el("g", { class: "sim-player", "data-half-player": id, tabindex: "0", role: "button" });
+    const offense = OFFENSE.includes(id), g = el("g", { class: "sim-player" + (id === "RUN" || id === "LEAD" ? " half-draggable" : ""), "data-half-player": id, tabindex: "0", role: "button" });
     const hit = el("circle", { r: "48", fill: "transparent" }), selected = el("circle", { r: "42", fill: "none", stroke: "#fff", "stroke-width": "5", opacity: "0" });
     const disc = el("circle", { r: offense ? "34" : "31", fill: offense ? "#07172c" : "#7f1d1d", stroke: offense ? "#f6c344" : "#fecaca", "stroke-width": "5" });
     const label = el("text", { x: "0", y: "6", fill: "#fff", "font-size": "15", "font-weight": "900", "text-anchor": "middle", "pointer-events": "none" });
-    const role = el("text", { x: "0", y: "57", fill: offense ? "#f6c344" : "#fecaca", "font-size": "14", "font-weight": "900", "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "5", "pointer-events": "none" });
+    const role = el("text", { x: "0", y: "57", fill: offense ? "#f6c344" : "#fecaca", "font-size": "13", "font-weight": "900", "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "5", "pointer-events": "none" });
     g.appendChild(hit); g.appendChild(selected); g.appendChild(disc); g.appendChild(label); g.appendChild(role);
-    const choose = function () { selectPlayer(id); }; g.addEventListener("click", choose); g.addEventListener("keydown", function (event) { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); choose(); } });
+    const choose = function () { if (g.getAttribute("data-half-moved") === "1") { g.setAttribute("data-half-moved", "0"); return; } selectPlayer(id); };
+    g.addEventListener("click", choose);
+    g.addEventListener("keydown", function (event) { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); choose(); } });
+    if (id === "RUN" || id === "LEAD") bindDrag(g, id);
     svg.appendChild(g); state.players[id] = { g, selected, label, role };
+  }
+  function svgPoint(event) {
+    const ctm = svg.getScreenCTM();
+    if (!ctm) return { x: 0, y: 0 };
+    const pt = svg.createSVGPoint();
+    pt.x = event.clientX; pt.y = event.clientY;
+    const loc = pt.matrixTransform(ctm.inverse());
+    return { x: loc.x, y: loc.y };
+  }
+  function bindDrag(g, id) {
+    g.addEventListener("pointerdown", function (event) {
+      event.preventDefault();
+      g.setPointerCapture(event.pointerId);
+      const loc = svgPoint(event);
+      const scripted = posesAt(state.t)[id];
+      state.dragging = id;
+      state.dragOrigin = { x: loc.x - (scripted.x + state.nudge[id].x), y: loc.y - (scripted.y + state.nudge[id].y) };
+      g.setAttribute("data-half-moved", "0");
+    });
+    g.addEventListener("pointermove", function (event) {
+      if (state.dragging !== id) return;
+      const loc = svgPoint(event);
+      const scripted = posesAt(state.t)[id];
+      const nx = loc.x - state.dragOrigin.x - scripted.x;
+      const ny = loc.y - state.dragOrigin.y - scripted.y;
+      if (Math.hypot(nx - state.nudge[id].x, ny - state.nudge[id].y) > 2) g.setAttribute("data-half-moved", "1");
+      state.nudge[id] = { x: nx, y: ny };
+      applyPoses();
+    });
+    function endDrag() { if (state.dragging === id) state.dragging = null; }
+    g.addEventListener("pointerup", endDrag);
+    g.addEventListener("pointercancel", endDrag);
   }
   function buildField() {
     svg = el("svg", { viewBox: `0 0 ${W} ${H}`, class: "sim-svg full-team-svg half-team-svg", role: "img", "aria-label": "Five-player half offense versus four-player half defense animated drill" });
-    const defs = el("defs", {}); defs.innerHTML = `<marker id="halfRunArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f6c344"/></marker><marker id="halfLeadArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fff"/></marker><marker id="halfBlockArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#67e8f9"/></marker><radialGradient id="halfField" cx="50%" cy="65%" r="85%"><stop offset="0%" stop-color="#14532d"/><stop offset="100%" stop-color="#0b3522"/></radialGradient>`;
+    const defs = el("defs", {}); defs.innerHTML = `<marker id="halfRunArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f6c344"/></marker><marker id="halfLeadArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fff"/></marker><marker id="halfDecoyArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c084fc"/></marker><marker id="halfBlockArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#67e8f9"/></marker><radialGradient id="halfField" cx="50%" cy="65%" r="85%"><stop offset="0%" stop-color="#14532d"/><stop offset="100%" stop-color="#0b3522"/></radialGradient>`;
     svg.appendChild(defs); svg.appendChild(el("rect", { width: W, height: H, fill: "url(#halfField)" }));
     [90, 190, 290, 520, 640, 760, 870].forEach((y) => svg.appendChild(el("line", { x1: "35", y1: y, x2: "965", y2: y, stroke: "rgba(255,255,255,.13)", "stroke-width": "2" })));
     svg.appendChild(el("line", { x1: "25", y1: LOS, x2: "975", y2: LOS, stroke: "#f6c344", "stroke-width": "6" }));
     const los = el("text", { x: "38", y: LOS - 14, fill: "#f6c344", "font-size": "19", "font-weight": "900" }); los.textContent = "LINE OF SCRIMMAGE"; svg.appendChild(los);
-    defenseLayer = el("g", { class: "half-defense-routes" }); blockLayer = el("g", { class: "half-block-routes" }); svg.appendChild(defenseLayer); svg.appendChild(blockLayer);
+    defenseLayer = el("g", { class: "half-defense-routes" }); blockLayer = el("g", { class: "half-block-routes" }); hipLayer = el("g", { class: "half-hip-marks" });
+    svg.appendChild(defenseLayer); svg.appendChild(blockLayer); svg.appendChild(hipLayer);
     lanePath = el("path", { fill: "none", stroke: "#f6c344", "stroke-width": "12", "stroke-dasharray": "20 13", "stroke-linecap": "round", "marker-end": "url(#halfRunArrow)", "data-half-owner": "RUN" }); laneLabel = el("text", { fill: "#f6c344", "font-size": "20", "font-weight": "900", "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "6" }); svg.appendChild(lanePath); svg.appendChild(laneLabel);
     DEFENSE.forEach(token); OFFENSE.forEach(token);
     ball = el("g", {}); ball.appendChild(el("ellipse", { rx: "16", ry: "11", fill: "#f8fafc", stroke: "#3f2b1d", "stroke-width": "3" })); ball.appendChild(el("line", { x1: "-8", y1: "0", x2: "8", y2: "0", stroke: "#9f1239", "stroke-width": "2" })); svg.appendChild(ball); return svg;
@@ -157,37 +320,66 @@
     svg.querySelectorAll("[data-half-owner]").forEach((path) => { const same = path.getAttribute("data-half-owner") === selected; path.classList.toggle("is-dimmed", Boolean(selected && !same)); path.classList.toggle("is-focused", Boolean(selected && same)); });
   }
   function applyPoses() {
-    const poses = posesAt(state.t), h = homes(), short = tokenLabels();
-    Object.keys(poses).forEach((id) => { const player = state.players[id]; player.g.setAttribute("transform", `translate(${poses[id].x},${poses[id].y})`); player.label.textContent = short[id]; player.role.textContent = OFFENSE.includes(id) ? offenseRole(id) : "DEFEND"; player.selected.setAttribute("opacity", state.selected === id ? "1" : "0"); });
-    const center = poses.C, runner = poses.RUN, amount = clamp(state.t, 0, 1), ballPos = state.t < 1 ? mix({ x: center.x, y: center.y + 25 }, { x: runner.x + 18, y: runner.y - 8 }, ease(amount)) : { x: runner.x + 18, y: runner.y - 8 }; ball.setAttribute("transform", `translate(${ballPos.x},${ballPos.y})`);
+    let poses = posesAt(state.t);
+    applyNudges(poses);
+    reactToBall(poses);
+    ["C", "G", "T"].forEach((id) => {
+      const defId = assignments()[id].target;
+      const kind = id === "C" ? (gHipKind() === "inside" ? "outside" : "inside") : gHipKind();
+      if (state.t >= 2) {
+        const hip = hipOf(poses[defId], kind);
+        const amount = state.t < 3 ? lerp(0.42, 1, clamp(state.t - 2, 0, 1)) : 0.92;
+        poses[id] = mix(homes()[id], hip, amount);
+      }
+    });
+    separate(poses);
+    poses = easeShown(poses);
+    const short = tokenLabels();
+    Object.keys(poses).forEach((id) => {
+      const player = state.players[id];
+      player.g.setAttribute("transform", `translate(${poses[id].x},${poses[id].y})`);
+      player.label.textContent = short[id];
+      player.role.textContent = OFFENSE.includes(id) ? offenseRole(id) : "DEFEND";
+      player.selected.setAttribute("opacity", state.selected === id ? "1" : "0");
+    });
+    drawHips(poses);
+    const center = poses.C, runner = poses.RUN, amount = clamp(state.t, 0, 1), ballPos = state.t < 1 ? mix({ x: center.x, y: center.y + 25 }, { x: runner.x + 18, y: runner.y - 8 }, ease(amount)) : { x: runner.x + 18, y: runner.y - 8 };
+    ball.setAttribute("transform", `translate(${ballPos.x},${ballPos.y})`);
     const shown = clamp(Math.round(state.t), 0, 6); beatEl.textContent = `${BEATS[shown].name} · ${shown + 1} OF 7`; cueEl.textContent = BEATS[shown].cue; slider.value = String(state.t); document.querySelectorAll("[data-half-dot]").forEach((dot) => dot.classList.toggle("is-on", Number(dot.getAttribute("data-half-dot")) === shown)); applyFocus();
   }
   function updateJobs() {
     const h = homes(), a = assignments(), d = defenseTasks();
-    document.getElementById("half-offense-jobs").innerHTML = OFFENSE.map((id) => `<button type="button" class="assignment-card role-${offenseRole(id).toLowerCase()}" data-half-job="${id}"><span class="assignment-position">${h[id].label}</span><span class="assignment-role">${id === "RUN" ? "RUN THE LANE" : id === "LEAD" ? "LEAD BLOCK" : "BLOCK"}</span><span class="assignment-task">${a[id].task}</span></button>`).join("");
+    document.getElementById("half-offense-jobs").innerHTML = OFFENSE.map((id) => `<button type="button" class="assignment-card role-${offenseRole(id).toLowerCase().replace(" ", "-")}" data-half-job="${id}"><span class="assignment-position">${h[id].label}</span><span class="assignment-role">${id === "RUN" ? "RUN THE LANE" : id === "LEAD" ? (state.decoy ? "DECOY WIDE" : "LEAD BLOCK") : id === "G" ? gHipLabel() : "BLOCK"}</span><span class="assignment-task">${a[id].task}</span></button>`).join("");
     document.getElementById("half-defense-jobs").innerHTML = DEFENSE.map((id) => `<button type="button" class="assignment-card defense-job" data-half-job="${id}"><span class="assignment-position">${h[id].label}</span><span class="assignment-role">LANE INTEGRITY</span><span class="assignment-task">${d[id]}</span></button>`).join("");
     document.querySelectorAll("[data-half-job]").forEach((card) => card.addEventListener("click", function () { selectPlayer(card.getAttribute("data-half-job")); }));
   }
   function selectPlayer(id) { state.selected = state.selected === id ? null : id; applyPoses(); document.querySelectorAll("[data-half-job]").forEach((card) => card.classList.toggle("is-selected", card.getAttribute("data-half-job") === state.selected)); const task = OFFENSE.includes(id) ? assignments()[id].task : defenseTasks()[id]; if (state.selected) cueEl.textContent = `${homes()[id].label}: ${task}`; }
   function updateUi() {
     [["half-lane", state.lane], ["half-side", state.side], ["half-front", state.front]].forEach(([group, value]) => document.querySelectorAll(`[data-${group}]`).forEach((button) => { const active = button.getAttribute(`data-${group}`) === value; button.classList.toggle("is-active", active); button.setAttribute("aria-pressed", String(active)); }));
+    document.querySelectorAll("[data-half-decoy]").forEach((button) => {
+      const on = button.getAttribute("data-half-decoy") === "on";
+      const active = on === state.decoy;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
     const formation = state.front === "two-dl" ? "2 DL · 1 LB · 1 CB" : "1 DL · 2 LB · 1 CB";
-    document.getElementById("half-call").innerHTML = `<strong>${laneName()} ${sideName()}</strong><span>${formation}</span>`;
+    document.getElementById("half-call").innerHTML = `<strong>${laneName()} ${sideName()}</strong><span>${formation}${state.decoy ? " · DECOY WIDE" : ""}</span>`;
     document.getElementById("half-title").textContent = `${laneName()[0] + laneName().slice(1).toLowerCase()} ${sideName()[0] + sideName().slice(1).toLowerCase()} · ${frontName()}`;
     document.getElementById("half-badge").textContent = `${laneName()} · ${sideName()}`;
   }
-  function renderChoice() { pause(); state.t = 0; state.selected = null; updateUi(); drawLane(); drawAssignments(); drawDefensePaths(); updateJobs(); applyPoses(); }
+  function renderChoice() { pause(); state.t = 0; state.selected = null; state.nudge = { RUN: { x: 0, y: 0 }, LEAD: { x: 0, y: 0 } }; state.shown = null; updateUi(); drawLane(); drawAssignments(); drawDefensePaths(); updateJobs(); applyPoses(); }
   function setT(value) { state.t = clamp(value, 0, 6); applyPoses(); }
   function pause() { state.playing = false; if (state.raf) cancelAnimationFrame(state.raf); if (playButton) playButton.textContent = "PLAY SLOW"; }
   function tick(now) { if (!state.playing) return; const remaining = 6 - state.startT, duration = state.speed * (remaining / 6), progress = duration <= 0 ? 1 : clamp((now - state.startedAt) / duration, 0, 1); setT(state.startT + remaining * progress); if (progress < 1 && state.playing) state.raf = requestAnimationFrame(tick); else { state.playing = false; setT(6); playButton.textContent = "PLAY AGAIN"; } }
   function play() { if (state.playing) { pause(); return; } if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setT(6); return; } if (state.t >= 5.99) setT(0); state.playing = true; state.startT = state.t; state.startedAt = performance.now(); playButton.textContent = "PAUSE"; state.raf = requestAnimationFrame(tick); }
   function setBeat(value) { pause(); setT(clamp(value, 0, 6)); }
-  function bindChoice(selector, key) { document.querySelectorAll(selector).forEach((button) => button.addEventListener("click", function () { state[key] = button.getAttribute(selector.slice(1, -1)); renderChoice(); })); }
+  function bindChoice(selector, key) { document.querySelectorAll(selector).forEach((button) => button.addEventListener("click", function () { state[key] = button.getAttribute(selector.slice(1, -1)); if (key === "lane") state.decoy = state.lane === "inside"; renderChoice(); })); }
 
   document.addEventListener("DOMContentLoaded", function () {
     const root = document.getElementById("half-drill-root"); cueEl = document.getElementById("half-cue"); beatEl = document.getElementById("half-beat"); slider = document.getElementById("half-slider"); playButton = document.getElementById("half-play"); if (!root || !cueEl || !beatEl || !slider || !playButton) return;
     root.innerHTML = ""; root.appendChild(buildField()); bindChoice("[data-half-lane]", "lane"); bindChoice("[data-half-side]", "side"); bindChoice("[data-half-front]", "front");
-    playButton.addEventListener("click", play); document.getElementById("half-back").addEventListener("click", function () { setBeat(Math.round(state.t) - 1); }); document.getElementById("half-next").addEventListener("click", function () { setBeat(Math.round(state.t) + 1); }); document.getElementById("half-reset").addEventListener("click", function () { pause(); state.selected = null; setT(0); document.querySelectorAll("[data-half-job]").forEach((card) => card.classList.remove("is-selected")); }); slider.addEventListener("input", function () { pause(); setT(Number(slider.value)); });
+    document.querySelectorAll("[data-half-decoy]").forEach((button) => button.addEventListener("click", function () { state.decoy = button.getAttribute("data-half-decoy") === "on"; renderChoice(); }));
+    playButton.addEventListener("click", play); document.getElementById("half-back").addEventListener("click", function () { setBeat(Math.round(state.t) - 1); }); document.getElementById("half-next").addEventListener("click", function () { setBeat(Math.round(state.t) + 1); }); document.getElementById("half-reset").addEventListener("click", function () { pause(); state.selected = null; state.nudge = { RUN: { x: 0, y: 0 }, LEAD: { x: 0, y: 0 } }; state.shown = null; setT(0); document.querySelectorAll("[data-half-job]").forEach((card) => card.classList.remove("is-selected")); }); slider.addEventListener("input", function () { pause(); setT(Number(slider.value)); });
     document.querySelectorAll("[data-half-speed]").forEach((button) => button.addEventListener("click", function () { const speeds = { slow: 10500, normal: 6800, fast: 4200 }; state.speed = speeds[button.getAttribute("data-half-speed")] || 10500; document.querySelectorAll("[data-half-speed]").forEach((item) => { const active = item === button; item.classList.toggle("is-active", active); item.setAttribute("aria-pressed", String(active)); }); }));
     renderChoice();
   });

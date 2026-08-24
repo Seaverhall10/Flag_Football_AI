@@ -867,8 +867,14 @@ body.sunlight-mode .btn-grid { gap: 12px; }
 .formation-button.is-active { border-color: #fff; outline: 3px solid var(--gold); outline-offset: 1px; }
 .formation-explain { margin: 12px 0 0; color: #dbeafe; font-weight: 800; text-align: center; }
 .key-defense { background: #f87171; }
+
+.key-decoy { background: #c084fc; }
+.key-hip { background: #f6c344; height: 10px; width: 14px; clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.half-draggable { cursor: grab; }
+.half-draggable:active { cursor: grabbing; }
+.half-hip-chevron { pointer-events: none; }
 .half-drill-banner { border-left: 7px solid #f6c344; }
-.drill-choice-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.drill-choice-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .drill-choice { min-width: 0; padding: 12px; border: 1px solid #355271; border-radius: 11px; }
 .drill-choice legend { padding: 0 6px; color: var(--gold); font-size: .78rem; font-weight: 900; letter-spacing: .08em; }
 .drill-choice .look-toggle { display: grid; grid-template-columns: 1fr 1fr; }
