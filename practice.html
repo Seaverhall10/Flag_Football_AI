@@ -22,15 +22,13 @@
       </a>
       
       <nav class="nav" aria-label="Coach navigation">
-        <a href="index.html">Home</a>
-        <a href="app.html">Command</a>
-        <a href="playbook.html">Playbook</a>
-        <a href="practice.html" class="active">Practice</a>
-        <a href="drill.html">Drill</a>
-        <a href="runner.html">Runner</a>
-        <a href="tracker.html">Tracker</a>
-        <a href="schedule.html">Schedule</a>
-        <a class="ghost" href="sideline.html">Print</a>
+        <a href="schedule.html">📅 Schedule</a>
+        <a href="playbook.html">📖 Playbook</a>
+        <a href="roster.html">👥 Roster</a>
+        <a href="drills.html" class="active">⏱️ Drills</a>
+        <a href="notes.html">📝 Notes</a>
+        <a class="ghost" href="app.html">⚡ Sideline</a>
+        <a class="ghost" href="sideline.html">🖨️ Print</a>
       </nav>
     </div>
   </header>
@@ -46,7 +44,7 @@
       <div class="timer-label">Practice Stopwatch (60 Min)</div>
       <div class="timer-display" id="practice-timer-display">00:00</div>
       <div class="live-call-sub" id="practice-station-info" style="margin-bottom:8px">
-        <strong>Ready to start:</strong> 0–8m Arrival & Equipment Setup
+        <strong>Ready to start:</strong> 0–8m Arrival & Setup
       </div>
       <div class="timer-controls">
         <button class="btn btn-primary" id="btn-practice-start">▶ Start Practice</button>
@@ -65,8 +63,8 @@
       <div class="station-item">
         <div class="station-time">0–8m</div>
         <div class="station-desc">
-          <strong>Arrival, Flags & Equipment Setup</strong>
-          <p class="tiny">Check belt clips before first whistle. Cones on all 6 landmark holes. No player names on boards.</p>
+          <strong>Station 1: Arrival, Flags & Equipment Setup</strong>
+          <p class="tiny">Check belt clips. Cones on all 6 landmark holes. No player names on boards.</p>
         </div>
         <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(0)">Jump</button>
       </div>
@@ -74,8 +72,8 @@
       <div class="station-item">
         <div class="station-time">8–15m</div>
         <div class="station-desc">
-          <strong>Warm Movement & Fit-Up</strong>
-          <p class="tiny">Cues: <em>Find jersey. Head out. Hands inside.</em> Light tag drills, high knees, agility weave.</p>
+          <strong>Station 2: Warm Movement & Fit-Up</strong>
+          <p class="tiny">Cues: <em>Find jersey. Head out. Hands inside.</em> Light tag drills, agility weave.</p>
         </div>
         <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(8)">Jump</button>
       </div>
@@ -83,8 +81,8 @@
       <div class="station-item">
         <div class="station-time">15–25m</div>
         <div class="station-desc">
-          <strong>Snap Station & Direct Exchange</strong>
-          <p class="tiny">Shotgun ~3 yards direct to designated runner. Focus on clean snap grip, quiet cadence, firm catch.</p>
+          <strong>Station 3: Shotgun Snap Station</strong>
+          <p class="tiny">Shotgun ~3 yards direct to designated runner. Two-hand catch into chest.</p>
         </div>
         <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(15)">Jump</button>
       </div>
@@ -92,8 +90,8 @@
       <div class="station-item">
         <div class="station-time">25–40m</div>
         <div class="station-desc">
-          <strong>5v4 Scripted Drill (18 Reps)</strong>
-          <p class="tiny">30-second next-ball tempo. 5 offense vs 4 look defense. <a href="drill.html">Open 30s Play Clock →</a></p>
+          <strong>Station 4: 5v4 Scripted Drill (18 Reps)</strong>
+          <p class="tiny">30-sec next-ball tempo. 5 offense vs 4 look defense. <a href="drills.html">Open 30s Play Clock →</a></p>
         </div>
         <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(25)">Jump</button>
       </div>
@@ -101,8 +99,8 @@
       <div class="station-item">
         <div class="station-time">40–52m</div>
         <div class="station-desc">
-          <strong>Six-Run Cycle</strong>
-          <p class="tiny">One color at a time. Landmark cones are the holes. Lead blocks hole first, then LB. Runner cuts north.</p>
+          <strong>Station 5: Six-Run Cycle</strong>
+          <p class="tiny">One color at a time. Cones are the hole landmarks. Lead blocks hole first, LB.</p>
         </div>
         <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(40)">Jump</button>
       </div>
@@ -110,8 +108,8 @@
       <div class="station-item">
         <div class="station-time">52–58m</div>
         <div class="station-desc">
-          <strong>Front & Cornerback Defense</strong>
-          <p class="tiny">Front 3: Stay home, then flag. Cornerbacks: Nothing outside, contain runner inside.</p>
+          <strong>Station 6: Front 3 & CB Defense</strong>
+          <p class="tiny">Front stay home, then flag. Cornerbacks keep outside arm free, force runner inside.</p>
         </div>
         <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(52)">Jump</button>
       </div>
@@ -119,51 +117,12 @@
       <div class="station-item">
         <div class="station-time">58–60m</div>
         <div class="station-desc">
-          <strong>Close, Water & Tracker Mark</strong>
-          <p class="tiny">Repeat the 5 cues together. Record clean reps on the <a href="tracker.html">tracker</a>. Parents check schedule.</p>
+          <strong>Station 7: Close & Team Review</strong>
+          <p class="tiny">Hydration, repeat 5 cues together, record clean reps on tracker clipboard.</p>
         </div>
         <button class="btn btn-secondary" onclick="practiceTimerInstance?.jumpToStation(58)">Jump</button>
       </div>
     </section>
-
-    <!-- Cart & Equipment Checklist -->
-    <section class="panel">
-      <div class="panel-header">
-        <h2>Coach Cart Checklist</h2>
-        <span class="tiny">Saved in browser</span>
-      </div>
-      <ul class="checklist">
-        <li class="checklist-item">
-          <input type="checkbox" id="cart-1">
-          <label for="cart-1"><strong>Football Bag:</strong> Size-appropriate youth balls + extra balls for 30s next-ball</label>
-        </li>
-        <li class="checklist-item">
-          <input type="checkbox" id="cart-2">
-          <label for="cart-2"><strong>Flags & Belts:</strong> Inspected clips, clean velcro, extra belts</label>
-        </li>
-        <li class="checklist-item">
-          <input type="checkbox" id="cart-3">
-          <label for="cart-3"><strong>Cones (6 Colors):</strong> Holes C-RG, C-LG, RG-RT, LG-LT, RT outside, LT outside</label>
-        </li>
-        <li class="checklist-item">
-          <input type="checkbox" id="cart-4">
-          <label for="cart-4"><strong>Pinnies / Vests:</strong> For the 4-player look defense</label>
-        </li>
-        <li class="checklist-item">
-          <input type="checkbox" id="cart-5">
-          <label for="cart-5"><strong>First Aid & Water:</strong> Ice packs, band-aids, hydration cooler</label>
-        </li>
-        <li class="checklist-item">
-          <input type="checkbox" id="cart-6">
-          <label for="cart-6"><strong>Coach Sideline Pack:</strong> Laminated play cards, whistle, tracker clipboard</label>
-        </li>
-      </ul>
-    </section>
-
-    <!-- Stop Rule -->
-    <div class="stop-banner">
-      <strong>Clipboard Rule:</strong> No new offense until all six runs average 5-of-6 clean snap, assignments, landmark, legal contact across two practices.
-    </div>
   </main>
 
   <footer class="foot">

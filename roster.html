@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Roster & Depth Chart — Cy-Fair K/1 Lions</title>
+  <meta name="description" content="Cy-Fair K/1 Lions Flag Football team roster, 8-on-8 depth chart, and fair-play quarter rotation tracker.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  
+  <header class="mast">
+    <div class="mast-inner">
+      <a href="index.html" class="brand-group">
+        <div class="mark" aria-hidden="true">K1</div>
+        <div class="brand-text">
+          <h1>Cy-Fair K/1 Lions</h1>
+          <p>8-on-8 CFSA · Ages 5–6 · Shotgun ~3 yd</p>
+        </div>
+      </a>
+      
+      <nav class="nav" aria-label="Coach navigation">
+        <a href="schedule.html">📅 Schedule</a>
+        <a href="playbook.html">📖 Playbook</a>
+        <a href="roster.html" class="active">👥 Roster</a>
+        <a href="drills.html">⏱️ Drills</a>
+        <a href="notes.html">📝 Notes</a>
+        <a class="ghost" href="app.html">⚡ Sideline</a>
+        <a class="ghost" href="sideline.html">🖨️ Print</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <section class="banner no-print">
+      <h2>Team Roster & Depth Chart</h2>
+      <p>Manage player numbers, 8-on-8 starter positions, and quarter rotations to ensure equal playing time and touches for all kids.</p>
+    </section>
+
+    <!-- Printable Header -->
+    <div class="print-header" style="display:none">
+      <h1 class="print-title">Cy-Fair K/1 Lions · Official Roster & Depth Chart</h1>
+      <p>8-on-8 CFSA Flag Football · Ages 5–6</p>
+    </div>
+
+    <!-- Depth Chart View -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>8-on-8 Depth Chart</h2>
+        <div class="no-print">
+          <button class="btn btn-primary" onclick="window.print()">Print Roster Card</button>
+        </div>
+      </div>
+      <div id="depth-chart-grid">
+        <!-- Rendered by js/roster.js -->
+      </div>
+    </section>
+
+    <!-- Full Player Roster -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Player Roster & Position Roles</h2>
+        <div class="no-print">
+          <button class="btn btn-secondary" id="btn-add-player">+ Add Player</button>
+          <button class="btn btn-danger" id="btn-reset-roster" style="font-size:0.75rem;padding:6px 10px">Reset Defaults</button>
+        </div>
+      </div>
+
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:70px;text-align:center">Jersey</th>
+              <th>Player Name / Initial</th>
+              <th>Primary Offense Role</th>
+              <th>Primary Defense Role</th>
+              <th class="no-print" style="width:60px;text-align:center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="roster-table-body">
+            <!-- Rendered by js/roster.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Fair-Play Quarter Rotation Planner -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Quarter-by-Quarter Rotation Matrix</h2>
+        <span class="tiny">Equal play for every Lion</span>
+      </div>
+      <p class="tiny no-print" style="margin-top:-6px">Select Offense / Defense / Bench per quarter. Changes save automatically.</p>
+
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th style="text-align:center;width:120px">1st Quarter</th>
+              <th style="text-align:center;width:120px">2nd Quarter</th>
+              <th style="text-align:center;width:120px">3rd Quarter</th>
+              <th style="text-align:center;width:120px">4th Quarter</th>
+            </tr>
+          </thead>
+          <tbody id="rotation-table-body">
+            <!-- Rendered by js/roster.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CFSA Fair Play Rules -->
+    <div class="stop-banner">
+      <strong>CFSA K/1 Substitution Rule:</strong> Every child plays a minimum of 2 full quarters. Rotate runners across games so every player experiences ball carries!
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-inner">
+      <div>Cy-Fair K/1 Lions · Team Roster & Depth Chart</div>
+      <div><a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></div>
+    </div>
+  </footer>
+
+  <script src="js/roster.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

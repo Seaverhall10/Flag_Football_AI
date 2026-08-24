@@ -1032,3 +1032,28 @@ tr:nth-child(even) td {
     font-size: 0.9rem;
   }
 }
+/* Additional utility styles for Roster & 5-Pillar Layout */
+
+.editable-cell {
+  padding: 6px 8px;
+  border: 1px solid #d4c8af;
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  font-family: inherit;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.editable-cell:focus {
+  outline: 2px solid var(--gold);
+  border-color: var(--navy);
+}
+
+.nav-badge {
+  font-size: 0.65rem;
+  background: #d32f2f;
+  color: #fff;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 900;
+}
