@@ -12,12 +12,14 @@ Help 5–7-year-olds answer three questions without reading a coach manual:
 
 The app teaches one visual decision at a time. It does not add complexity merely because software can display it.
 
-## Locked offense
+## Locked offense — owner correction 2026-08-24
 
 - Format: CFSA K/1, 8-on-8, shotgun.
-- Formation: `LT · LG · C · RG · RT` plus `RB1 · RB2 · RB3`.
+- Formation: `LT · LG · C · RG · RT` plus `QB · WING-L · WING-R`.
 - Five players are on the line; no more than three are in the backfield.
-- One back is the designated Runner, one is Lead, and one carries out the Fake.
+- On the current six runs, QB catches the direct snap and is the Runner.
+- The play-side Wing is Lead; the backside Wing sells the opposite action and finishes the fake.
+- Wing spacing has two teachable versions: Spread Wings and Tight Wings. Spacing changes; identities and assignments do not.
 - The current base offense has no split Wide Receiver.
 - Passing remains parked until the six runs meet the owner's execution gate.
 
@@ -25,12 +27,12 @@ The app teaches one visual decision at a time. It does not add complexity merely
 
 | Play | Symbol | Landmark | Runner path |
 | --- | --- | --- | --- |
-| Inside Right | Red Diamond | C–RG | Follow Lead, plant once, north |
-| Inside Left | Blue Circle | C–LG | Follow Lead, plant once, north |
-| Off-Tackle Right | Gold Star | RG–RT | Press alley, outside-foot plant, north |
-| Off-Tackle Left | Green Triangle | LG–LT | Press alley, outside-foot plant, north |
-| Wide Right | Orange Square | Outside RT | Reach landmark, turn north |
-| Wide Left | Purple Hexagon | Outside LT | Reach landmark, turn north |
+| QB Inside Right | Red Diamond | C–RG | Catch, follow Lead Wing, plant once, north |
+| QB Inside Left | Blue Circle | C–LG | Catch, follow Lead Wing, plant once, north |
+| QB Off-Tackle Right | Gold Star | RG–RT | Catch, press alley, outside-foot plant, north |
+| QB Off-Tackle Left | Green Triangle | LG–LT | Catch, press alley, outside-foot plant, north |
+| QB Wide Right | Orange Square | Outside RT | Catch, reach landmark, turn north |
+| QB Wide Left | Purple Hexagon | Outside LT | Catch, reach landmark, turn north |
 
 ## Fixed offensive responsibilities
 
@@ -39,9 +41,9 @@ The app teaches one visual decision at a time. It does not add complexity merely
 - `C → clean snap, then protect/help inside on the play-side DT`
 - `RG → DT-R`
 - `RT → Edge-R`
-- `Lead → called landmark first, then play-side LB`
-- `Runner → ball, called landmark, one plant, north`
-- `Fake → opposite action, get wide, finish the fake`
+- `QB → catch direct snap, tuck, called landmark, one plant, north`
+- `Play-side Wing → called landmark first, then play-side LB`
+- `Backside Wing → opposite action, get wide, finish the fake`
 - Cornerbacks are not assigned a blocker in this run system.
 
 The visual may change leverage or help detail by play, but it may not silently change ownership.
@@ -69,13 +71,26 @@ Never teach or depict head/neck contact, holding, wrapping, tackling, blocks in 
 
 ## Learning design
 
-- Show all players before the snap.
-- Use one cue per beat: Pre-snap, Snap, First Step, Fit, Hole, Plant, Go.
-- Keep Runner, Lead, Fake, and Block paths visually distinct.
+- Show all players before the snap with enough vertical and horizontal space to distinguish every route.
+- Use one cue per beat: Line Up, Direct Snap, First Step, Fit, Lane, One Cut, Finish.
+- Keep QB Run, Lead Wing, Backside Wing, and Block paths visually distinct.
 - A child can tap a job card to highlight only that responsibility without removing the full-team context.
 - Use position labels, not child names.
 - Score the play, not the child.
 - Do not add a play until every current run meets the scorecard gate and has zero unsafe blocks.
+
+## The only current drill
+
+The public teaching app has one drill: half offense versus half defense.
+
+- Offense: Center, Guard, Tackle, QB/Runner receiving the direct snap, and one Lead Running Back.
+- Defense: defensive lineman, linebacker, cornerback, and a fourth defender selectable as either another defensive lineman or another linebacker.
+- Coaches select Inside or Outside and Left or Right before the rep.
+- Every view names each offensive blocking target and each defender's lane-integrity job.
+- With two DL: Guard owns inside DL, Tackle owns outside DL/Edge, Lead RB owns LB, Center snaps then helps inside, Corner is unblocked.
+- With two LB: Guard owns DL, Tackle releases to inside LB, Lead RB owns outside/play-side LB, Center snaps then helps inside, Corner is unblocked.
+- Defense learns alignment, leverage, controlled hands, separation from the block, shed direction, pursuit, and contain—not collision wins.
+- The drill must animate Line Up, Direct Snap, First Step, Fit, Lane, Shed/Flag, and Finish in true slow motion.
 
 ## Current uncertainty
 

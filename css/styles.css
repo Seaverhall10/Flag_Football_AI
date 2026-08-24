@@ -840,6 +840,51 @@ body.sunlight-mode .btn-grid { gap: 12px; }
 .full-team-svg { background: #0b3522; }
 .full-team-svg .sim-player { cursor: pointer; outline: none; }
 .full-team-svg .sim-player:focus { filter: drop-shadow(0 0 8px #fff); }
+.full-team-svg .sim-player,
+.full-team-svg [data-route-owner] { transition: opacity .18s ease, filter .18s ease; }
+.full-team-svg .is-dimmed { opacity: .14; }
+.full-team-svg [data-route-owner].is-focused { filter: drop-shadow(0 0 8px #fff); opacity: 1; }
+.formation-picker { border: 2px solid #2b4568; }
+.formation-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.formation-button {
+  display: grid;
+  gap: 7px;
+  min-height: 84px;
+  padding: 12px 14px;
+  color: #fff;
+  background: #0a1628;
+  border: 2px solid #355271;
+  border-radius: 11px;
+  cursor: pointer;
+  text-align: center;
+}
+.formation-button strong { color: var(--gold); font-size: 1rem; letter-spacing: .06em; }
+.formation-button span { color: #dbeafe; font-size: .82rem; font-weight: 800; }
+.formation-button.is-active { border-color: #fff; outline: 3px solid var(--gold); outline-offset: 1px; }
+.formation-explain { margin: 12px 0 0; color: #dbeafe; font-weight: 800; text-align: center; }
+.key-defense { background: #f87171; }
+.half-drill-banner { border-left: 7px solid #f6c344; }
+.drill-choice-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.drill-choice { min-width: 0; padding: 12px; border: 1px solid #355271; border-radius: 11px; }
+.drill-choice legend { padding: 0 6px; color: var(--gold); font-size: .78rem; font-weight: 900; letter-spacing: .08em; }
+.drill-choice .look-toggle { display: grid; grid-template-columns: 1fr 1fr; }
+.drill-choice .btn { min-width: 0; white-space: normal; }
+.half-call { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; padding: 12px 16px; border: 2px solid var(--gold); border-radius: 10px; background: #071018; }
+.half-call strong { color: var(--gold); font-size: 1.2rem; letter-spacing: .07em; }
+.half-call span { color: #dbeafe; font-weight: 900; }
+.half-team-svg .defense-job { border-top-color: #f87171; }
+.half-defense-board .assignment-card { border-top-color: #f87171; }
+.half-job-board { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.half-defense-board { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.half-guide-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.half-guide-card { position: relative; min-height: 160px; padding: 17px 17px 17px 62px; border: 1px solid #355271; border-radius: 11px; background: #0a1628; }
+.half-guide-card h3 { margin: 0 0 8px; color: #fff; }
+.half-guide-card p { margin: 0; color: #dbeafe; line-height: 1.45; }
+.guide-number { position: absolute; left: 15px; top: 17px; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; color: #071018; background: var(--gold); font-weight: 900; }
 .sim-scrub { display: block; margin: 10px 0 4px; font-weight: 800; }
 .sim-scrub input { display: block; width: 100%; margin-top: 7px; accent-color: var(--gold); }
 .assignment-board {
@@ -865,6 +910,9 @@ body.sunlight-mode .btn-grid { gap: 12px; }
 .assignment-card.role-runner { border-top-color: var(--gold); }
 .assignment-card.role-lead { border-top-color: #fff; }
 .assignment-card.role-fake { border-top-color: #d8b4fe; }
+.assignment-card.role-qb-runner { border-top-color: var(--gold); }
+.assignment-card.role-lead-wing { border-top-color: #fff; }
+.assignment-card.role-backside-wing { border-top-color: #d8b4fe; }
 .assignment-position {
   display: inline-grid;
   place-items: center;
@@ -882,6 +930,13 @@ body.sunlight-mode .btn-grid { gap: 12px; }
 .assignment-task { display: block; margin-top: 9px; font-size: .78rem; line-height: 1.28; font-weight: 750; }
 
 @media (max-width: 700px) {
+  .drill-choice-grid { grid-template-columns: 1fr; }
+  .half-job-board,
+  .half-defense-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .half-guide-grid { grid-template-columns: 1fr; }
+  .half-call { align-items: flex-start; flex-direction: column; }
+  .formation-buttons { grid-template-columns: 1fr; }
+  .formation-button { min-height: 70px; }
   .assignment-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .assignment-card { min-height: 104px; }
   .play-teacher .sim-controls { display: grid; grid-template-columns: 1fr 1fr; }
