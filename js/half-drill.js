@@ -6,8 +6,8 @@
   const BEATS = [
     { name: "LINE UP", cue: "Count defenders from inside out. Point to your job before the snap." },
     { name: "DIRECT SNAP", cue: "Center snaps to Runner. Defense reads the ball without crossing early." },
-    { name: "FIRST STEP", cue: "Offense steps to its assignment. Defense protects its starting lane." },
-    { name: "FIT", cue: "Eyes up. Head out. Hands inside. Defense anchors and creates separation." },
+    { name: "FIRST STEP", cue: "Guard: your DL. Center: climb to the backer." },
+    { name: "FIT", cue: "G on the DL. C on the backer. T on the edge." },
     { name: "LANE", cue: "Lead RB enters first. Runner commits to the selected lane." },
     { name: "SHED / FLAG", cue: "Defense finds the ball, sheds toward the lane, and closes under control." },
     { name: "FINISH", cue: "Runner goes north. Defense pursues inside-out; Corner keeps contain." }
@@ -60,35 +60,28 @@
   function assignments() {
     const h = homes();
     const gHip = hipOf(h.DL, gHipKind());
-    const tHip = hipOf(state.front === "two-dl" ? h.FLEX : h.LB, gHipKind());
-    const cHip = hipOf(h.DL, gHipKind() === "inside" ? "outside" : "inside");
-    return state.front === "two-dl"
-      ? {
-          C: { target: "DL", point: cHip, task: "Snap → help Guard on D-LINE → protect inside" },
-          G: { target: "DL", point: gHip, task: `${gHipLabel()} of D-LINE · head out` },
-          T: { target: "FLEX", point: tHip, task: `${gHipLabel()} of EDGE / DL · keep outside arm from crossing` },
-          LEAD: { target: "LB", point: h.LB, task: state.decoy ? "Decoy wide to the numbers · occupy Corner" : `${laneName()} lane first → fit LINEBACKER under control` },
-          RUN: { target: "LANE", point: { x: laneX(), y: LOS }, task: `Secure snap → ${laneName()} ${sideName()} → one cut → north` }
-        }
-      : {
-          C: { target: "DL", point: cHip, task: "Snap → help Guard on D-LINE → protect inside" },
-          G: { target: "DL", point: gHip, task: `${gHipLabel()} of D-LINE · head out` },
-          T: { target: "LB", point: tHip, task: `${gHipLabel()} of LB-IN · do not chase across` },
-          LEAD: { target: "FLEX", point: h.FLEX, task: state.decoy ? "Decoy wide to the numbers · occupy Corner" : `${laneName()} lane first → fit LB-OUT under control` },
-          RUN: { target: "LANE", point: { x: laneX(), y: LOS }, task: `Secure snap → ${laneName()} ${sideName()} → one cut → north` }
-        };
+    const tHip = hipOf(h.FLEX, gHipKind());
+    const cHip = hipOf(h.LB, "inside");
+    const lanePt = { x: laneX(), y: LOS - 20 };
+    return {
+      C: { target: "LB", point: cHip, task: "Snap. Then climb to the backer. Do not block Guard's DL." },
+      G: { target: "DL", point: gHip, task: `${gHipLabel()} of D-LINE. That is YOUR guy.` },
+      T: { target: "FLEX", point: tHip, task: `${gHipLabel()} of EDGE. Stay on him.` },
+      LEAD: { target: state.decoy ? "CB" : "LANE", point: state.decoy ? { x: h.CB.x, y: h.CB.y + 36 } : lanePt, task: state.decoy ? "Decoy wide. Hold the Corner." : "Lead through the hole. Center has the backer." },
+      RUN: { target: "LANE", point: { x: laneX(), y: LOS }, task: `Snap. ${laneName()} ${sideName()}. One cut. North.` }
+    };
   }
   function defenseTasks() {
     return state.front === "two-dl"
       ? {
           DL: `Anchor inside · separate from Guard · shed toward ${laneName()} lane`,
           FLEX: `Set the edge · outside arm free · squeeze without losing contain`,
-          LB: `Stay square · scrape inside-out · meet Lead RB in the lane`,
+          LB: `Stay square. Center is climbing to you. Shed, then the ball.`,
           CB: `Unblocked contain · nothing outside · force Runner back to pursuit`
         }
       : {
           DL: `Anchor inside · separate from Guard · shed toward ${laneName()} lane`,
-          LB: `Read Tackle release · keep inside leverage · close under control`,
+          LB: `Stay square. Center is climbing to you. Shed, then the ball.`,
           FLEX: `Stay square outside · fit Lead RB · protect the selected lane`,
           CB: `Unblocked contain · nothing outside · force Runner back to pursuit`
         };
@@ -97,6 +90,7 @@
     if (id === "RUN") return "BALL";
     if (id === "LEAD") return state.decoy ? "DECOY" : "LEAD";
     if (id === "G") return gHipLabel();
+    if (id === "C") return "TO LB";
     return "BLOCK";
   }
 
@@ -144,13 +138,17 @@
         out.CB = mix(h.CB, cbTarget, .12);
       }
     }
-    ["C", "G", "T"].forEach((id) => {
-      const defId = a[id].target;
-      const hip = hipOf(out[defId] || a[id].point, id === "C" ? (gHipKind() === "inside" ? "outside" : "inside") : gHipKind());
-      const amount = beat < 2 ? 0 : beat === 2 ? .42 : beat === 3 ? 1 : .92;
-      out[id] = mix(h[id], hip, amount);
-      if (id === "C" && beat === 1) out[id].y += 8;
-    });
+    const gHipNow = hipOf(out.DL, gHipKind());
+    const tHipNow = hipOf(out.FLEX, gHipKind());
+    const cHipNow = hipOf(out.LB, "inside");
+    const gAmt = beat < 2 ? 0 : beat === 2 ? .5 : 1;
+    const tAmt = beat < 2 ? 0 : beat === 2 ? .45 : 1;
+    const cAmt = beat <= 1 ? 0 : beat === 2 ? .22 : beat === 3 ? .55 : beat === 4 ? .82 : .95;
+    out.G = mix(h.G, gHipNow, gAmt);
+    out.T = mix(h.T, tHipNow, tAmt);
+    out.C = mix(h.C, cHipNow, cAmt);
+    if (beat === 1) out.C = { x: h.C.x, y: h.C.y + 10 };
+    if (beat === 2) out.C = mix({ x: h.C.x, y: h.C.y - 8 }, cHipNow, .22);
     return out;
   }
   function posesAt(value) {
@@ -240,9 +238,9 @@
   }
   function drawHips(poses) {
     hipLayer.innerHTML = "";
-    if (state.t < 2 || state.t > 3.2) return;
+    if (state.t < 1.6 || state.t > 5.1) return;
     const a = assignments();
-    [["G", a.G.target, gHipKind()], ["T", a.T.target, gHipKind()]].forEach(([ol, defId, kind]) => {
+    [["G", "DL", gHipKind()], ["T", "FLEX", gHipKind()], ["C", "LB", "inside"]].forEach(([ol, defId, kind]) => {
       const hip = hipOf(poses[defId], kind);
       const dir = hipDx(kind) >= 0 ? 1 : -1;
       const chev = el("path", {
@@ -250,11 +248,9 @@
         fill: "#f6c344", stroke: "#071018", "stroke-width": "3", "data-half-owner": ol, class: "half-hip-chevron"
       });
       hipLayer.appendChild(chev);
-      if (ol === "G") {
-        const lab = el("text", { x: String(hip.x + dir * 36), y: String(hip.y - 32), fill: "#f6c344", "font-size": "16", "font-weight": "900", "text-anchor": dir > 0 ? "start" : "end", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "6", "data-half-owner": "G" });
-        lab.textContent = gHipLabel();
-        hipLayer.appendChild(lab);
-      }
+      const lab = el("text", { x: String(hip.x + dir * 36), y: String(hip.y - 32), fill: "#f6c344", "font-size": "15", "font-weight": "900", "text-anchor": dir > 0 ? "start" : "end", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "6", "data-half-owner": ol });
+      lab.textContent = ol === "C" ? "C TO LB" : (ol + " " + gHipLabel());
+      hipLayer.appendChild(lab);
     });
   }
   function token(id) {
@@ -323,15 +319,14 @@
     let poses = posesAt(state.t);
     applyNudges(poses);
     reactToBall(poses);
-    ["C", "G", "T"].forEach((id) => {
-      const defId = assignments()[id].target;
-      const kind = id === "C" ? (gHipKind() === "inside" ? "outside" : "inside") : gHipKind();
-      if (state.t >= 2) {
-        const hip = hipOf(poses[defId], kind);
-        const amount = state.t < 3 ? lerp(0.42, 1, clamp(state.t - 2, 0, 1)) : 0.92;
-        poses[id] = mix(homes()[id], hip, amount);
-      }
-    });
+    if (state.t >= 2) {
+      const gAmt = state.t < 3 ? lerp(0.5, 1, clamp(state.t - 2, 0, 1)) : 1;
+      const tAmt = gAmt;
+      const cAmt = clamp((state.t - 1.15) / 3.2, 0, 0.96);
+      poses.G = mix(homes().G, hipOf(poses.DL, gHipKind()), gAmt);
+      poses.T = mix(homes().T, hipOf(poses.FLEX, gHipKind()), tAmt);
+      poses.C = mix(homes().C, hipOf(poses.LB, "inside"), cAmt);
+    }
     separate(poses);
     poses = easeShown(poses);
     const short = tokenLabels();
