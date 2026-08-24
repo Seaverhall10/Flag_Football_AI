@@ -13,7 +13,28 @@ This file is the working agreement for **every** agent, API, and human editing t
 4. Never force-push `main`. Never replace a page with PLACEHOLDER.
 5. If you see another agent already on `drills.html` / `js/half-drill*.js`, **stop** and comment instead of stacking a second rewrite.
 
+<<<<<<< Updated upstream
 Hot files today (practice day):
+=======
+## Practice board (today)
+
+Huddle: https://github.com/Seaverhall10/Flag_Football_AI/issues/6
+
+Comment **Claim: `<file>`** on that issue before you edit. One owner per hot file. Branch + PR. Do not stack a second rewrite of `drills.html` / `js/half-drill*.js` on `main`.
+
+Hot files today: `drills.html`, `js/half-drill.v2.js`, `js/half-drill.js`. **Codex owns those** for the snap/handoff/QB-decoy picture. Other agents stand down on those files until Codex posts the PR on issue 6.
+
+Owner's newest instruction for the half-drill (overrides older "Corner stays unblocked" for this drill only):
+
+- Pick who has the ball (RB1 / RB2) and where they go (IN/OUT, L/R).
+- Outside: the other back **kicks the Corner** (inside hip).
+- Inside give to RB2: Center snaps to the **QB**, QB **hands** to RB2 up the middle, QB continues **wide as decoy**. Not a direct snap to RB2.
+- Center wraps the A-gap to the LB. Guard owns the DL. Tackle owns the edge.
+- Keep tokens small. Do not restore giant discs or PLACEHOLDER pages.
+
+
+## One governed writer
+>>>>>>> Stashed changes
 
 - `drills.html`
 - `js/half-drill.v2.js`
