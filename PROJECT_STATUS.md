@@ -6,6 +6,8 @@
 - The other two backs are WING-L and WING-R, with both spread and tight spacing.
 - The animation must give young players enough room to see every route, block, and lane.
 - The public app has one drill only: five-player half offense versus four-player half defense.
+- The drill opens in an edge-to-edge Kid View with separate OFFENSE and DEFENSE teaching views.
+- The Center takes one fixed angle to the Linebacker's starting landmark, makes a short controlled push, then stops while the defender separates.
 
 ## Verified locally
 
@@ -15,12 +17,16 @@
 - QB owns the direct snap and run on every call; play-side Wing leads and backside Wing fakes.
 - Tapping a job dims the other 15 players and isolates the selected route or block.
 - The single half-team drill contains Center, Guard, Tackle, Runner, and Lead RB versus DL, LB, CB, and a selectable DL/LB.
-- All eight drill combinations were tested: Inside/Outside × Left/Right × Two-DL/Two-LB.
+- All 16 teaching cases were tested: Inside/Outside × Left/Right × Two-DL/Two-LB × Offense/Defense view.
 - The drill shows five offensive jobs and four defensive-integrity jobs; tapping one isolates the matchup.
+- Teaching views change visual emphasis only; a browser check at the controlled-push beat confirmed all nine player coordinates remain identical when switching views.
+- All responsibility paths are solid and direct. The field has no Kid View width cap, no masthead, and no large page margins.
+- The Center and Linebacker follow independent fixed waypoints. Browser checks confirmed Center/LB positions at all seven exact beats, including visible fit, short push, separation, and pursuit.
+- Four official NFL/NFL Play Football clips are linked below the drill: offensive contact, game blocking technique, defensive shedding, and a real run-lane example.
 - Both animations advance slowly to Direct Snap after 1.2 seconds rather than jumping to the finish.
 - Desktop and 390×844 phone layouts have no horizontal overflow or console errors.
 - Legacy `drill.html`, `stations.html`, `practice.html`, and `js/grid5v4.js` are removed.
-- `node scripts/verify_project.mjs` passes 225 of 225 checks.
+- `node scripts/verify_project.mjs` passes 239 of 239 checks for the current release candidate.
 - Pull request #4 merged as release commit `b3192ed`.
 - GitHub Pages deployment `32749342671` passed verification and deployment.
 - The cache-busted public playbook passed all 12 QB/Wing cases, with 16 players and eight jobs in every case.

@@ -2,6 +2,12 @@
 
 Describe the child- or coach-facing improvement in plain language.
 
+## Council decision
+
+- Council issue/comment:
+- Decision state: `ACCEPTED FOR BUILD`
+- Assigned builder/branch:
+
 ## Authority impact
 
 - [ ] No formation, play, assignment, safety, privacy, or hidden-navigation rule changed.
@@ -14,6 +20,7 @@ Describe the child- or coach-facing improvement in plain language.
 - [ ] 390×844 mobile checked
 - [ ] No console errors
 - [ ] Rollback commit recorded
+- [ ] Council decision and deployed evidence will be updated
 
 ## Evidence
 

@@ -48,6 +48,8 @@ Old drill grids and station-poster collections are intentionally removed.
 ## Governance
 
 - `AGENTS.md` — rules for every human and AI contributor.
+- `COUNCIL_BOARD.md` — the one GitHub discussion protocol for Grok, Jarvis, Codex, other agents, APIs, coaches, and the owner.
+- `COUNCIL_DECISIONS.md` — durable accepted, test, owner-needed, rejected, and verified decisions.
 - `PROJECT_AUTHORITY.md` — football, safety, privacy, formation, and drill truth.
 - `AI_CHANGE_PROTOCOL.md` — branch, review, testing, deployment, and rollback rules.
 - `PROJECT_STATUS.md` — verified state, unknowns, and next work.
