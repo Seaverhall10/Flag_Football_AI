@@ -104,6 +104,22 @@
       <textarea id="coach-notes-area" rows="6" placeholder="Type game notes, player improvements, reminders for next practice..." style="width:100%;padding:12px;border:2px solid var(--navy-light);border-radius:6px;font-family:inherit;font-size:0.95rem;line-height:1.4"></textarea>
     </section>
 
+
+    <section class="panel no-print">
+      <div class="panel-header">
+        <h2>Team Backup</h2>
+        <span class="tiny">JSON of roster, schedule, tracker, carries</span>
+      </div>
+      <p class="tiny">Export or import this browser's team data. Does not include children's names.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+        <button type="button" class="btn btn-primary" id="btn-export-backup">Export Team Backup</button>
+        <label class="btn btn-secondary" style="cursor:pointer">
+          Import Team Backup
+          <input type="file" id="input-import-backup" accept="application/json,.json" style="display:none">
+        </label>
+      </div>
+    </section>
+
     <!-- 4. Printable Resource Suite -->
     <section class="panel">
       <div class="panel-header">
@@ -149,6 +165,7 @@
     <footer class="foot"><div class="foot-inner"><div>Local notes stay in this browser.</div></div></footer>
 <script src="js/timers.js"></script>
   <script src="js/tracker.js"></script>
+  <script src="js/backup.js"></script>
   <script src="js/app.js"></script>
   <script>
     // Coach Notes auto-save logic

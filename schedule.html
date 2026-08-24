@@ -29,6 +29,7 @@
               <th>Time</th>
               <th>Location</th>
               <th>Notes</th>
+              <th class="no-print">Jersey</th>
               <th class="no-print"></th>
             </tr>
           </thead>
@@ -95,66 +96,7 @@
     </section>
   </main>
   <footer class="foot"><div class="foot-inner"><div>Placeholder schedule until dates lock.</div></div></footer>
-  <script>
-    const DEFAULT_SCHEDULE = [
-      { type: "Practice", date: "Week 1 - Tue", time: "5:30 PM - 6:30 PM", loc: "CFSA Complex Field #2", notes: "Arrival & 5v4 intro" },
-      { type: "Practice", date: "Week 1 - Thu", time: "5:30 PM - 6:30 PM", loc: "CFSA Complex Field #2", notes: "6-run cycle" },
-      { type: "Game", date: "Week 1 - Sat", time: "9:00 AM", loc: "CFSA Main Complex Field #1", notes: "Arrive 8:40 AM" },
-      { type: "Practice", date: "Week 2 - Tue", time: "5:30 PM - 6:30 PM", loc: "CFSA Complex Field #2", notes: "Snap station" },
-      { type: "Practice", date: "Week 2 - Thu", time: "5:30 PM - 6:30 PM", loc: "CFSA Complex Field #2", notes: "Tracker session" },
-      { type: "Game", date: "Week 2 - Sat", time: "10:15 AM", loc: "CFSA Main Complex Field #3", notes: "Gold Star / Green Triangle" }
-    ];
-    function loadSchedule() {
-      const saved = localStorage.getItem("lions_season_schedule");
-      return saved ? JSON.parse(saved) : DEFAULT_SCHEDULE;
-    }
-    function saveSchedule(events) {
-      localStorage.setItem("lions_season_schedule", JSON.stringify(events));
-      renderSchedule();
-    }
-    function renderSchedule() {
-      const events = loadSchedule();
-      const tbody = document.getElementById("schedule-body");
-      if (!tbody) return;
-      tbody.innerHTML = events.map((evt, idx) => `
-        <tr>
-          <td><strong>${evt.type}</strong></td>
-          <td>${evt.date}</td>
-          <td>${evt.time}</td>
-          <td>${evt.loc}</td>
-          <td>${evt.notes || "-"}</td>
-          <td class="no-print"><button class="btn btn-danger" onclick="deleteEvent(${idx})">X</button></td>
-        </tr>`).join("");
-    }
-    function deleteEvent(idx) {
-      const events = loadSchedule();
-      events.splice(idx, 1);
-      saveSchedule(events);
-    }
-    document.getElementById("btn-add-event")?.addEventListener("click", () => {
-      const panel = document.getElementById("add-event-panel");
-      panel.style.display = panel.style.display === "none" ? "block" : "none";
-    });
-    document.getElementById("btn-cancel-add")?.addEventListener("click", () => {
-      document.getElementById("add-event-panel").style.display = "none";
-    });
-    document.getElementById("event-form")?.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const events = loadSchedule();
-      events.push({
-        type: document.getElementById("evt-type").value,
-        date: document.getElementById("evt-date").value,
-        time: document.getElementById("evt-time").value,
-        loc: document.getElementById("evt-loc").value,
-        notes: document.getElementById("evt-notes").value
-      });
-      saveSchedule(events);
-      document.getElementById("event-form").reset();
-      document.getElementById("add-event-panel").style.display = "none";
-    });
-    document.addEventListener("DOMContentLoaded", renderSchedule);
-  </script>
-
+  <script src="js/schedule.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

@@ -712,3 +712,79 @@ th {
   text-shadow: 0 0 24px rgba(212,160,23,.45);
 }
 .field-mode-hint { color: #c5ccd6; font-weight: 700; margin-top: 16px; letter-spacing: 0.12em; }
+
+
+/* Playtime validator + mini field + jersey + sunlight */
+.playtime-banner {
+  margin: 10px 0 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-align: center;
+}
+.playtime-ok { background: #14532d; color: #bbf7d0; border: 2px solid #22c55e; }
+.playtime-flag { background: #7f1d1d; color: #fecaca; border: 2px solid #ef4444; }
+.carry-count {
+  display: inline-block;
+  min-width: 1.5rem;
+  font-weight: 900;
+  font-size: 0.95rem;
+}
+.mini-field-board {
+  background: #0d3b24;
+  border-radius: 12px;
+  padding: 12px;
+  border: 2px solid #1f6b42;
+}
+.mini-los {
+  text-align: center;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  margin: 8px 0;
+  border-top: 2px dashed #fff;
+  padding-top: 6px;
+}
+.field-row { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
+.field-spot {
+  min-width: 52px;
+  min-height: 52px;
+  border: 2px solid #f5d47a;
+  background: #0A1628;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+.field-pos { font-size: 0.65rem; color: #f5d47a; font-weight: 800; }
+.field-num { font-size: 1rem; font-weight: 900; }
+.jersey-badge {
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-weight: 800;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+.jersey-home { background: #0A1628; color: #e8b423; border: 2px solid #e8b423; }
+.jersey-away { background: #e8b423; color: #0A1628; border: 2px solid #0A1628; }
+
+body.sunlight-mode {
+  background: #000 !important;
+  color: #fff;
+  font-size: 22px;
+}
+body.sunlight-mode .mast { background: #000; }
+body.sunlight-mode .panel { background: #111; }
+body.sunlight-mode .live-call-box { font-size: 2.4rem; background: #000; border: 3px solid #ffd000; }
+body.sunlight-mode .play-btn { font-size: 1.35rem; min-height: 96px; filter: saturate(1.8); }
+body.sunlight-mode .play-btn.run-red { background: #ff1a1a; color: #fff; }
+body.sunlight-mode .play-btn.run-blue { background: #1a6aff; color: #fff; }
+body.sunlight-mode .play-btn.run-gold { background: #ffd000; color: #000; }
+body.sunlight-mode .btn-grid { gap: 12px; }

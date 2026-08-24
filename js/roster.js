@@ -1,9 +1,11 @@
-﻿/**
+/**
  * Cy-Fair K/1 Lions - Roster & Depth Chart Manager
  * 8v8: 5 OL + RB1 RB2 RB3 vs 3 DL, 2 LB, 2 CB, 1 S.
  */
 
 const ROSTER_STORAGE_KEY = "lions_team_roster_data_v8v8_rb";
+const CARRY_STORAGE_KEY = "lions_player_carries";
+const FIELD_STORAGE_KEY = "lions_minifield_spots";
 
 const DEFAULT_ROSTER = [
   { id: 1, number: "2", name: "Player #2", offensePos: "RB1", defensePos: "CB", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense" },
@@ -19,14 +21,81 @@ const DEFAULT_ROSTER = [
   { id: 11, number: "88", name: "Player #88", offensePos: "Left Guard", defensePos: "DL", q1: "Defense", q2: "Bench", q3: "Offense", q4: "Defense" }
 ];
 
+const OFFENSE_SPOTS = [
+  { key: "LT", label: "LT", match: "Left Tackle" },
+  { key: "LG", label: "LG", match: "Left Guard" },
+  { key: "C", label: "C", match: "Center" },
+  { key: "RG", label: "RG", match: "Right Guard" },
+  { key: "RT", label: "RT", match: "Right Tackle" },
+  { key: "RB1", label: "RB1", match: "RB1" },
+  { key: "RB2", label: "RB2", match: "RB2" },
+  { key: "RB3", label: "RB3", match: "RB3" }
+];
+
+const DEFENSE_SPOTS = [
+  { key: "DL1", label: "DL", match: "DL" },
+  { key: "DL2", label: "DL", match: "DL" },
+  { key: "DL3", label: "DL", match: "DL" },
+  { key: "LB1", label: "LB", match: "LB" },
+  { key: "LB2", label: "LB", match: "LB" },
+  { key: "CB1", label: "CB", match: "CB" },
+  { key: "CB2", label: "CB", match: "CB" },
+  { key: "S", label: "S", match: "S" }
+];
+
+function jerseyLabel(p) {
+  return "Player #" + (p.number || p.id);
+}
+
 class RosterManager {
   constructor() {
     this.players = this.loadRoster();
+    this.carries = this.loadCarries();
+    this.spots = this.loadSpots();
   }
 
   loadRoster() {
     const saved = localStorage.getItem(ROSTER_STORAGE_KEY);
     return saved ? JSON.parse(saved) : DEFAULT_ROSTER;
+  }
+
+  loadCarries() {
+    try {
+      return JSON.parse(localStorage.getItem(CARRY_STORAGE_KEY) || "{}");
+    } catch (e) {
+      return {};
+    }
+  }
+
+  saveCarries() {
+    localStorage.setItem(CARRY_STORAGE_KEY, JSON.stringify(this.carries));
+  }
+
+  loadSpots() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(FIELD_STORAGE_KEY) || "null");
+      if (saved) return saved;
+    } catch (e) { /* fall through */ }
+    return this.autoSpots();
+  }
+
+  autoSpots() {
+    const spots = {};
+    OFFENSE_SPOTS.forEach((s) => {
+      const match = this.players.find((p) => p.offensePos === s.match && !Object.values(spots).includes(p.id));
+      spots[s.key] = match ? match.id : null;
+    });
+    DEFENSE_SPOTS.forEach((s) => {
+      const match = this.players.find((p) => p.defensePos === s.match && !Object.values(spots).includes("d" + p.id) && !Object.keys(spots).some((k) => k.startsWith(s.match) && spots[k] === p.id && DEFENSE_SPOTS.some((d) => d.key === k)));
+      const used = DEFENSE_SPOTS.filter((d) => spots[d.key]).map((d) => spots[d.key]);
+      const next = this.players.find((p) => p.defensePos === s.match && used.indexOf(p.id) === -1);
+      spots[s.key] = next ? next.id : null;
+    });
+    return spots;
+  }
+
+  saveSpots() {
+    localStorage.setItem(FIELD_STORAGE_KEY, JSON.stringify(this.spots));
   }
 
   saveRoster() {
@@ -39,7 +108,7 @@ class RosterManager {
     this.players.push({
       id: newId,
       number: number || "--",
-      name: name || `Player #${number}`,
+      name: "Player #" + (number || "--"),
       offensePos: offensePos || "RB1",
       defensePos: defensePos || "DL",
       q1: "Offense",
@@ -60,8 +129,41 @@ class RosterManager {
   updatePlayer(id, field, value) {
     const p = this.players.find(pl => pl.id === id);
     if (p) {
-      p[field] = value;
+      if (field === "name") {
+        p.name = "Player #" + (p.number || id);
+      } else {
+        p[field] = value;
+      }
       this.saveRoster();
+    }
+  }
+
+  giveCarry(id) {
+    this.carries[id] = (this.carries[id] || 0) + 1;
+    this.saveCarries();
+    this.renderRosterTable();
+  }
+
+  activeQuarters(p) {
+    return ["q1", "q2", "q3", "q4"].filter((q) => p[q] === "Offense" || p[q] === "Defense").length;
+  }
+
+  renderPlaytimeValidator() {
+    const el = document.getElementById("playtime-validator");
+    if (!el) return;
+    const short = this.players.filter((p) => this.activeQuarters(p) < 2);
+    if (this.players.length === 0) {
+      el.className = "playtime-banner playtime-ok";
+      el.textContent = "50% playtime OK";
+      return;
+    }
+    if (short.length === 0) {
+      el.className = "playtime-banner playtime-ok";
+      el.textContent = "50% playtime OK";
+    } else {
+      el.className = "playtime-banner playtime-flag";
+      const list = short.map((p) => jerseyLabel(p)).join(", ");
+      el.textContent = "Playtime flag: " + list + " under 2 active quarters";
     }
   }
 
@@ -72,9 +174,7 @@ class RosterManager {
     tbody.innerHTML = this.players.map((p) => `
       <tr>
         <td style="font-weight:900;font-size:1.1rem;color:#07172c;text-align:center">#${p.number}</td>
-        <td>
-          <input type="text" value="${p.name}" class="editable-cell" onchange="rosterManager.updatePlayer(${p.id}, 'name', this.value)" style="font-weight:700;width:100%">
-        </td>
+        <td>${jerseyLabel(p)}</td>
         <td>
           <select class="editable-cell" onchange="rosterManager.updatePlayer(${p.id}, 'offensePos', this.value)">
             <option value="Center" ${p.offensePos === 'Center' ? 'selected' : ''}>Center (C)</option>
@@ -96,6 +196,10 @@ class RosterManager {
           </select>
         </td>
         <td class="no-print" style="text-align:center">
+          <span class="carry-count">${this.carries[p.id] || 0}</span>
+          <button class="btn btn-secondary" type="button" style="padding:4px 8px;font-size:0.72rem;margin-left:6px" onclick="rosterManager.giveCarry(${p.id})">Gave a carry</button>
+        </td>
+        <td class="no-print" style="text-align:center">
           <button class="btn btn-danger" style="padding:2px 8px;font-size:0.75rem" onclick="rosterManager.deletePlayer(${p.id})">X</button>
         </td>
       </tr>
@@ -108,7 +212,7 @@ class RosterManager {
 
     tbody.innerHTML = this.players.map(p => `
       <tr>
-        <td style="font-weight:900">#${p.number} ${p.name}</td>
+        <td style="font-weight:900">${jerseyLabel(p)}</td>
         ${['q1', 'q2', 'q3', 'q4'].map(q => `
           <td style="text-align:center">
             <select class="editable-cell" onchange="rosterManager.updatePlayer(${p.id}, '${q}', this.value)" style="font-weight:800;background:${p[q] === 'Offense' ? '#e3f2fd' : p[q] === 'Defense' ? '#e8f5e9' : '#fff3e0'}">
@@ -122,18 +226,69 @@ class RosterManager {
     `).join("");
   }
 
+  playerById(id) {
+    return this.players.find((p) => p.id === id);
+  }
+
+  assignSpot(key) {
+    const nums = this.players.map((p) => "#" + p.number).join(", ");
+    const chosen = prompt("Assign jersey to " + key + " (enter number, blank to clear). " + nums);
+    if (chosen === null) return;
+    const trimmed = chosen.replace("#", "").trim();
+    if (!trimmed) {
+      this.spots[key] = null;
+    } else {
+      const p = this.players.find((pl) => String(pl.number) === trimmed);
+      this.spots[key] = p ? p.id : null;
+    }
+    this.saveSpots();
+    this.renderMiniField();
+  }
+
+  spotChip(spot) {
+    const p = this.playerById(this.spots[spot.key]);
+    const num = p ? "#" + p.number : "—";
+    return `<button type="button" class="field-spot" data-spot="${spot.key}" onclick="rosterManager.assignSpot('${spot.key}')"><span class="field-pos">${spot.label}</span><span class="field-num">${num}</span></button>`;
+  }
+
+  renderMiniField() {
+    const el = document.getElementById("mini-field");
+    if (!el) return;
+    const o = {};
+    OFFENSE_SPOTS.forEach((s) => { o[s.key] = this.spotChip(s); });
+    const d = {};
+    DEFENSE_SPOTS.forEach((s) => { d[s.key] = this.spotChip(s); });
+    el.innerHTML = `
+      <div class="mini-field-board">
+        <div class="mini-side">
+          <div class="tiny" style="text-align:center;font-weight:800;margin-bottom:6px">OFFENSE</div>
+          <div class="field-row">${o.RB1}${o.RB2}${o.RB3}</div>
+          <div class="field-row">${o.LT}${o.LG}${o.C}${o.RG}${o.RT}</div>
+        </div>
+        <div class="mini-los">LOS</div>
+        <div class="mini-side">
+          <div class="tiny" style="text-align:center;font-weight:800;margin-bottom:6px">DEFENSE</div>
+          <div class="field-row">${d.DL1}${d.DL2}${d.DL3}</div>
+          <div class="field-row">${d.LB1}${d.LB2}</div>
+          <div class="field-row">${d.CB1}${d.S}${d.CB2}</div>
+        </div>
+      </div>
+      <p class="tiny no-print">Tap a spot to assign a jersey number. No names.</p>
+    `;
+  }
+
   renderDepthChart() {
     const container = document.getElementById("depth-chart-grid");
     if (!container) return;
 
     const findPos = (posName) => {
       const match = this.players.filter(p => p.offensePos === posName);
-      return match.map(m => `#${m.number} ${m.name}`).join("<br>") || "-";
+      return match.map(m => jerseyLabel(m)).join("<br>") || "-";
     };
 
     const findDefPos = (posName) => {
       const match = this.players.filter(p => p.defensePos === posName);
-      return match.map(m => `#${m.number} ${m.name}`).join("<br>") || "-";
+      return match.map(m => jerseyLabel(m)).join("<br>") || "-";
     };
 
     container.innerHTML = `
@@ -175,6 +330,8 @@ class RosterManager {
     this.renderRosterTable();
     this.renderQuarterRotation();
     this.renderDepthChart();
+    this.renderPlaytimeValidator();
+    this.renderMiniField();
   }
 }
 
@@ -187,15 +344,14 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-add-player")?.addEventListener("click", () => {
     const num = prompt("Enter Jersey Number (e.g. 10):");
     if (num !== null) {
-      const name = prompt("Enter Player Label:", `Player #${num}`);
-      rosterManager.addPlayer(num, name, "RB1", "DL");
+      rosterManager.addPlayer(num, "Player #" + num, "RB1", "DL");
     }
   });
 
   document.getElementById("btn-reset-roster")?.addEventListener("click", () => {
     if (confirm("Reset roster to defaults?")) {
       localStorage.removeItem(ROSTER_STORAGE_KEY);
-      rosterManager.players = DEFAULT_ROSTER;
+      rosterManager.players = JSON.parse(JSON.stringify(DEFAULT_ROSTER));
       rosterManager.saveRoster();
     }
   });

@@ -32,6 +32,7 @@
         <a href="notes.html">📝 Notes</a>
         <a class="ghost" href="app.html">⚡ Sideline</a>
         <a class="ghost" href="sideline.html">🖨️ Print</a>
+        <button type="button" class="btn btn-secondary" id="sunlight-toggle">Sunlight</button>
       </nav>
     </div>
   </header>
@@ -109,6 +110,17 @@
     </div>
 
     <!-- Quick Sideline Tools -->
+
+    <section class="panel no-print" style="margin-top:20px">
+      <div class="panel-header"><h2>Team Backup</h2></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+        <button type="button" class="btn btn-primary" id="btn-export-backup">Export Team Backup</button>
+        <label class="btn btn-secondary" style="cursor:pointer">Import Team Backup
+          <input type="file" id="input-import-backup" accept="application/json,.json" style="display:none">
+        </label>
+      </div>
+    </section>
+
     <section class="panel" style="margin-top:20px">
       <div class="panel-header">
         <h2>Quick Navigation</h2>
@@ -141,8 +153,25 @@
     </div>
   </footer>
 
+  <script src="js/backup.js"></script>
   <script src="js/timers.js"></script>
   <script src="js/app.js"></script>
+  <script>
+    (function () {
+      const KEY = "lions_sunlight_mode";
+      function apply() {
+        if (localStorage.getItem(KEY) === "1") document.body.classList.add("sunlight-mode");
+        else document.body.classList.remove("sunlight-mode");
+      }
+      document.addEventListener("DOMContentLoaded", () => {
+        apply();
+        document.getElementById("sunlight-toggle")?.addEventListener("click", () => {
+          const on = document.body.classList.toggle("sunlight-mode");
+          localStorage.setItem(KEY, on ? "1" : "0");
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
 

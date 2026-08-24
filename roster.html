@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -12,13 +12,13 @@
   <header class="mast"></header>
 <main id="main" class="wrap">
 
-    <!-- Printable Header -->
     <div class="print-header" style="display:none">
       <h1 class="print-title">Cy-Fair K/1 Lions · Official Roster & Depth Chart</h1>
       <p>8-on-8 CFSA Flag Football · Ages 5–6</p>
     </div>
 
-    <!-- Depth Chart View -->
+    <div id="playtime-validator" class="playtime-banner" role="status"></div>
+
     <section class="panel">
       <div class="panel-header">
         <h2>8v8 Depth Chart — 5 OL + RB1-3 vs 3 DL, 2 LB, 2 CB, 1 S</h2>
@@ -26,12 +26,17 @@
           <button class="btn btn-primary" onclick="window.print()">Print Roster Card</button>
         </div>
       </div>
-      <div id="depth-chart-grid">
-        <!-- Rendered by js/roster.js -->
-      </div>
+      <div id="depth-chart-grid"></div>
     </section>
 
-    <!-- Full Player Roster -->
+    <section class="panel no-print">
+      <div class="panel-header">
+        <h2>Mini field (jersey numbers)</h2>
+        <span class="tiny">Click a spot to assign</span>
+      </div>
+      <div id="mini-field"></div>
+    </section>
+
     <section class="panel">
       <div class="panel-header">
         <h2>Roster (jersey / role only)</h2>
@@ -49,23 +54,21 @@
               <th>Label</th>
               <th>Primary Offense Role</th>
               <th>Primary Defense Role</th>
+              <th class="no-print" style="text-align:center">Carries</th>
               <th class="no-print" style="width:60px;text-align:center">Action</th>
             </tr>
           </thead>
-          <tbody id="roster-table-body">
-            <!-- Rendered by js/roster.js -->
-          </tbody>
+          <tbody id="roster-table-body"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- Fair-Play Quarter Rotation Planner -->
     <section class="panel">
       <div class="panel-header">
         <h2>Quarter-by-Quarter Rotation Matrix</h2>
         <span class="tiny">Equal play for every Lion</span>
       </div>
-      <p class="tiny no-print" style="margin-top:-6px">Select Offense / Defense / Bench per quarter. Changes save automatically.</p>
+      <p class="tiny no-print" style="margin-top:-6px">Select Offense / Defense / Bench per quarter. Changes save automatically. Active = Offense or Defense.</p>
 
       <div style="overflow-x:auto">
         <table>
@@ -78,20 +81,16 @@
               <th style="text-align:center;width:120px">4th Quarter</th>
             </tr>
           </thead>
-          <tbody id="rotation-table-body">
-            <!-- Rendered by js/roster.js -->
-          </tbody>
+          <tbody id="rotation-table-body"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- CFSA Fair Play Rules -->
 <p class="stop-line">Every player: at least two full quarters. Rotate runners. No names on public pages.</p>
   </main>
 
 <footer class="foot"><div class="foot-inner"><div>Jersey numbers only on public view.</div></div></footer>
   <script src="js/roster.js"></script>
-
   <script src="js/app.js"></script>
 </body>
 </html>
