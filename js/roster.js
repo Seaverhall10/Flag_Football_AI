@@ -13,7 +13,7 @@ const DEFAULT_ROSTER = [
   { id: 5, number: "15", name: "Player #15", offensePos: "Right Guard", defensePos: "Cornerback", q1: "Offense", q2: "Defense", q3: "Bench", q4: "Offense", carries: 1 },
   { id: 6, number: "21", name: "Player #21", offensePos: "Left Tackle", defensePos: "Front Mid", q1: "Offense", q2: "Offense", q3: "Defense", q4: "Defense", carries: 0 },
   { id: 7, number: "24", name: "Player #24", offensePos: "Right Tackle", defensePos: "Front Left", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Bench", carries: 1 },
-  { id: 8, number: "33", name: "Player #33", offensePos: "Wide Receiver", defensePos: "Safety", q1: "Offense", q2: "Offense", q3: "Defense", q4: "Defense", carries: 2 },
+  { id: 8, number: "33", name: "Player #33", offensePos: "Extra Back (RB3)", defensePos: "Safety", q1: "Offense", q2: "Offense", q3: "Defense", q4: "Defense", carries: 2 },
   { id: 9, number: "44", name: "Player #44", offensePos: "Runner (2nd)", defensePos: "Cornerback", q1: "Bench", q2: "Offense", q3: "Defense", q4: "Offense", carries: 3 },
   { id: 10, number: "55", name: "Player #55", offensePos: "Lead (2nd)", defensePos: "Front Right", q1: "Defense", q2: "Offense", q3: "Offense", q4: "Defense", carries: 1 },
   { id: 11, number: "88", name: "Player #88", offensePos: "Guard (2nd)", defensePos: "Front Left", q1: "Defense", q2: "Bench", q3: "Offense", q4: "Defense", carries: 0 }
@@ -117,7 +117,7 @@ class RosterManager {
             <option value="Right Guard" ${p.offensePos === 'Right Guard' ? 'selected' : ''}>Right Guard (RG)</option>
             <option value="Left Tackle" ${p.offensePos === 'Left Tackle' ? 'selected' : ''}>Left Tackle (LT)</option>
             <option value="Right Tackle" ${p.offensePos === 'Right Tackle' ? 'selected' : ''}>Right Tackle (RT)</option>
-            <option value="Wide Receiver" ${p.offensePos === 'Wide Receiver' ? 'selected' : ''}>Wide Receiver (WR)</option>
+            <option value="Extra Back (RB3)" ${p.offensePos === 'Extra Back (RB3)' ? 'selected' : ''}>Extra Back / Fake (RB3)</option>
             <option value="Runner (2nd)" ${p.offensePos === 'Runner (2nd)' ? 'selected' : ''}>Runner (2nd String)</option>
             <option value="Lead (2nd)" ${p.offensePos === 'Lead (2nd)' ? 'selected' : ''}>Lead (2nd String)</option>
             <option value="Guard (2nd)" ${p.offensePos === 'Guard (2nd)' ? 'selected' : ''}>Guard (2nd String)</option>
@@ -212,7 +212,7 @@ class RosterManager {
               <tr><td><strong>Right Guard (RG)</strong></td><td>${findPos("Right Guard")}</td></tr>
               <tr><td><strong>Left Tackle (LT)</strong></td><td>${findPos("Left Tackle")}</td></tr>
               <tr><td><strong>Right Tackle (RT)</strong></td><td>${findPos("Right Tackle")}</td></tr>
-              <tr><td><strong>Wide Receiver (WR)</strong></td><td>${findPos("Wide Receiver")}</td></tr>
+              <tr><td><strong>Extra Back / Fake (RB3)</strong></td><td>${findPos("Extra Back")}</td></tr>
             </tbody>
           </table>
         </div>

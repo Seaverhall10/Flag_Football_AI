@@ -10,12 +10,12 @@ A modern, responsive, mobile-first coaching and sideline web application for the
 
 ## 🌟 Interactive Features
 
-- **📖 Interactive Playbook & SVG Field Diagrams (`playbook.html`):** Dynamic 8v8 field diagrams illustrating 5 OL + RB1-3 vs 3 DL, 2 LB, 2 CB, 1 S, landmark cones, lead paths, and runner tracks. Wide Right/Left are perimeter runs by a designated RB — no split WR.
+- **📖 Full-Team Slow-Motion Playbook (`playbook.html`):** Seven teaching beats show all eight offensive players and all eight look-team defenders. Every lineman has a named block/help job, while Runner, Lead, and Fake routes remain visually distinct.
 - **⏱️ 5v4 Drill with 30-Second Play Clock (`drill.html`):** 18-rep scripted practice drill with a built-in Web Audio play clock, audio beeps, visual warning pulses, and rep counter.
 - **📋 60-Minute Practice Plan (`practice.html`):** Paced station-by-station schedule with interactive practice stopwatch and persistent gear cart checklist.
 - **⚡ Sideline Command Center (`app.html`):** Rapid play-calling interface with large touch targets, color-coded callouts, and audio cadence tones.
 - **📊 Clean-Rep Stop Rule Tracker (`tracker.html`):** Digital tap-to-score matrix for tracking clean reps across practices, calculating progress towards the 5-of-6 stop rule target with browser `localStorage` auto-saving.
-- **📅 Season Schedule & Event Hub (`schedule.html`):** Editable game and practice calendar with field locations, opponent notes, and print view.
+- **🛡️ Jarvis-Governed Collaboration:** Football authority, child privacy, agent roles, release gates, and public verification are kept in the repository so every AI works from the same system.
 - **🖨️ Printable Resource Suite:** Print-optimized, laminated-card-ready sheets:
   - [Sideline Card](sideline.html)
   - [Wristband Inserts](wristbands.html)
@@ -68,7 +68,7 @@ Flag_Football_AI/
 │   └── styles.css           # Responsive outdoor theme & print styles
 ├── js/
 │   ├── app.js               # Core app utilities & state persistence
-│   ├── field-diagram.js     # SVG 8-on-8 formation & play visualizer
+│   ├── sim.js               # Governed seven-beat, full-team play teacher
 │   ├── timers.js            # Web Audio chimes, 30s play clock & stopwatch
 │   └── tracker.js           # 5-of-6 clean rep matrix logic
 ├── index.html               # Team Hub & Quick-Jump Dashboard
@@ -78,7 +78,7 @@ Flag_Football_AI/
 ├── drill.html               # 5v4 Drill & 30s Play Clock
 ├── runner.html              # Runner Looks & Cues
 ├── tracker.html             # Clean-Rep Stop Rule Tracker
-├── schedule.html            # Season Schedule & Event Manager
+├── schedule.html            # Dormant schedule tool (hidden from navigation)
 ├── sideline.html            # Printable Sideline Card
 ├── wristbands.html          # Printable Wristband Strips
 ├── flashcards.html          # Printable Play & Cue Flashcards
@@ -87,6 +87,10 @@ Flag_Football_AI/
 ├── runner-guide.html        # Printable Runner Guide
 ├── styles.css               # Root stylesheet alias
 ├── .nojekyll                # GitHub Pages asset routing rule
+├── AGENTS.md                # Rules every AI and human contributor follows
+├── PROJECT_AUTHORITY.md     # Football, safety, privacy, and teaching truth
+├── AI_CHANGE_PROTOCOL.md    # Branch, review, deployment, and rollback rules
+├── PROJECT_STATUS.md        # Verified state, unknowns, and next work
 └── README.md                # Project documentation
 ```
 
