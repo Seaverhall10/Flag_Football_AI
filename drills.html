@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Drills — LIONS K/1</title>
   <meta name="description" content="5v4 drill clock and 60-minute practice plan.">
-  <link rel="stylesheet" href="css/styles.css?v=slow1">
+  <link rel="stylesheet" href="css/styles.css?v=lev1">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -26,6 +26,10 @@
         <button type="button" class="btn btn-secondary is-active" data-grid-hole="inside" aria-pressed="true">Inside</button>
         <button type="button" class="btn btn-secondary" data-grid-hole="off" aria-pressed="false">Off-Tackle</button>
         <button type="button" class="btn btn-secondary" data-grid-hole="wide" aria-pressed="false">Wide</button>
+      </div>
+      <div class="look-toggle" role="group" aria-label="Second back" style="margin-top:8px">
+        <button type="button" class="btn btn-secondary is-active" data-grid-decoy="1">Decoy wide</button>
+        <button type="button" class="btn btn-secondary" data-grid-decoy="0">Lead through hole</button>
       </div>
       <p id="grid5-beat" class="timer-label" style="margin-top:10px">Beat 0 · PRE-SNAP</p>
       <div id="grid5-root" class="sim-root grid5-root"></div>
@@ -50,7 +54,7 @@
       <div class="grid5-dots" aria-hidden="true">
         <span data-beat-dot="0"></span><span data-beat-dot="1"></span><span data-beat-dot="2"></span><span data-beat-dot="3"></span><span data-beat-dot="4"></span><span data-beat-dot="5"></span><span data-beat-dot="6"></span>
       </div>
-      <p class="tiny">C, G, T + two RBs vs 2 DL, LB, CB. PLAY SLOW walks every step. Drag the runner. NEXT still freezes a picture.</p>
+      <p class="tiny">C, G, T + two RBs vs 2 DL, LB, CB. PLAY SLOW walks every step. Gold arrow = the hip to block. Gold dashed = ball. Purple dashed = decoy. White dashed = lead.</p>
     </section>
 
     <!-- 1. 30-Second 5v4 Drill Play Clock -->
@@ -254,7 +258,7 @@
     <div class="field-mode-hint">TAP TO EXIT</div>
   </div>
 <footer class="foot"><div class="foot-inner"><div>18-rep 5v4. 30s clock.</div></div></footer>
-  <script src="js/grid5v4.js?v=slow1"></script>
+  <script src="js/grid5v4.js?v=lev1"></script>
   <script src="js/timers.js?v=sim2"></script>
 
   <script src="js/app.js"></script>
