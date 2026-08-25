@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="js/gate.js?v=edge-20260825"></script>
+  <script src="js/gate.js?v=hud-20260825"></script>
   <title>Interactive Playbook — Cy-Fair K/1 Lions</title>
   <meta name="description" content="Fourteen coach-sheet plays for the Cy-Fair K/1 Lions. Photo next to a slow-motion recreation.">
-  <link rel="stylesheet" href="css/styles.css?v=edge-20260825">
+  <link rel="stylesheet" href="css/styles.css?v=hud-20260825">
 </head>
 <body class="playbook-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -86,19 +86,18 @@
           <img id="coach-sheet-photo" src="plays/play-01.jpg" alt="Coach sheet for Play 1 A-Gap Right">
           <figcaption>Coach sheet</figcaption>
         </figure>
-        <figure class="proof-pane proof-live-pane">
+                <figure class="proof-pane proof-live-pane">
           <div id="sim-root" class="sim-root"></div>
-          <figcaption>Live recreation</figcaption>
+          <div class="sim-controls">
+            <button type="button" class="btn btn-primary" id="sim-play">PLAY</button>
+            <button type="button" class="btn btn-secondary" id="sim-back">BACK</button>
+            <button type="button" class="btn btn-secondary" id="sim-next">NEXT</button>
+            <button type="button" class="btn btn-danger" id="sim-reset">RESET</button>
+          </div>
         </figure>
       </div>
 
       <p id="sim-cue" class="sim-cue" aria-live="polite">Find your circle. Two-point stance. Eyes up.</p>
-      <div class="sim-controls">
-        <button type="button" class="btn btn-primary sim-big" id="sim-play">PLAY SLOW</button>
-        <button type="button" class="btn btn-secondary sim-big" id="sim-back">BACK</button>
-        <button type="button" class="btn btn-secondary sim-big" id="sim-next">NEXT BEAT</button>
-        <button type="button" class="btn btn-danger sim-big" id="sim-reset">RESET</button>
-      </div>
       <details class="playbook-more playbook-coach-controls">
         <summary>Coach controls</summary>
         <div class="look-toggle" role="group" aria-label="Speed">
@@ -147,8 +146,8 @@
     </div>
   </footer>
 
-  <script src="js/plays-data.js?v=edge-20260825"></script>
-  <script src="js/sim.js?v=edge-20260825"></script>
-  <script src="js/app.js?v=edge-20260825"></script>
+  <script src="js/plays-data.js?v=hud-20260825"></script>
+  <script src="js/sim.js?v=hud-20260825"></script>
+  <script src="js/app.js?v=hud-20260825"></script>
 </body>
 </html>

@@ -1911,3 +1911,49 @@ body.playbook-page .wrap,
   }
 }
 /* === lions-playbook-edge: end === */
+
+/* === field-hud-controls: start === */
+.playbook-page .proof-live-pane {
+  position: relative;
+  background: #0d3b24;
+}
+.playbook-page .proof-live-pane figcaption { display: none; }
+.playbook-page .proof-live-pane .sim-root,
+.playbook-page .proof-live-pane .sim-svg {
+  height: calc(72vh - 44px) !important;
+  min-height: calc(72vh - 44px) !important;
+}
+.playbook-page .proof-live-pane .sim-controls {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  z-index: 6;
+  display: flex;
+  gap: 5px;
+  margin: 0;
+  padding: 5px;
+  background: rgba(7, 16, 24, 0.62);
+  border-radius: 10px;
+}
+.playbook-page .proof-live-pane .sim-controls .btn {
+  flex: 1;
+  min-height: 32px;
+  padding: 3px 4px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  border-radius: 8px;
+}
+.playbook-page .proof-live-pane .sim-controls .btn.sim-big {
+  min-height: 32px;
+  font-size: 0.68rem;
+}
+@media (min-width: 900px) {
+  .playbook-page .proof-live-pane .sim-root,
+  .playbook-page .proof-live-pane .sim-svg {
+    height: calc(78vh - 44px) !important;
+    min-height: calc(78vh - 44px) !important;
+  }
+}
+/* === field-hud-controls: end === */
