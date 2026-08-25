@@ -32,13 +32,10 @@ The current drill authority is only the version in `PROJECT_AUTHORITY.md`: direc
 
 ## Protected product decisions
 
-- Six QB keeper runs with five linemen, one QB, WING-L, and WING-R.
-- QB catches the direct snap and runs on the current six-play installation.
-- Wing backs must support both spread and tight pre-snap spacing without changing their names or responsibilities.
-- No split wide receiver in the current base offense. The pass is parked.
-- Every playbook view must show all eight offensive players and all eight look-team defenders.
-- Every lineman must have a named defender or help responsibility.
-- QB run, lead-wing, backside-wing, and block paths must remain visually distinct.
+- The playbook source of truth is the 14 binder photos in `/plays` (play-01.jpg … play-14.jpg), not the old six QB-wing keepers. Recreate each sheet: circles with the letters on that page (`C`, `G`, `T`, `W`, `RB`), squares for defense, red dashed ball path, solid black arrows for blocks/leads. Do not restore Inside Right / Off-Tackle / Wide QB keepers, spread/tight wing toggles, or Red Diamond six-call chrome.
+- Every playbook view must show the offense and defense tokens drawn on that sheet (usually eight and eight).
+- Every lineman must have the defender that player's arrow points at on that photo.
+- Ball path, lead/fake routes, and block arrows must remain visually distinct and match that play.
 - The playbook must support true slow motion, Back, Next Beat, Reset, speed choice, and scrubbing.
 - The only public drill is the 5-on-4 half-offense versus half-defense drill defined in `PROJECT_AUTHORITY.md`. Do not restore old drill grids or station collections.
 - Schedule remains hidden from visible navigation until the owner explicitly restores it.
@@ -71,7 +68,7 @@ node scripts/verify_project.mjs
 
 Then verify in a real browser:
 
-- all six plays;
+- all 14 coach-sheet plays;
 - 16 visible players per play;
 - eight offensive job cards;
 - slow-motion movement does not jump to the finish;

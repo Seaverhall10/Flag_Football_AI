@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sideline Command Center — Cy-Fair K/1 Lions</title>
-  <meta name="description" content="High visibility live playcaller and sideline command center for Cy-Fair K/1 Lions flag football.">
-  <link rel="stylesheet" href="css/styles.css?v=mobile-app-20260824">
+  <meta name="description" content="Live play caller for the 14 Cy-Fair K/1 Lions coach-sheet plays.">
+  <link rel="stylesheet" href="css/styles.css?v=coach-plays-20260825">
 </head>
 <body class="coach-page">
   <a class="skip-link" href="#main">Skip to content</a>
-  
+
   <header class="mast">
     <div class="mast-inner">
             <a href="index.html" class="brand-group">
@@ -23,7 +23,7 @@
           <p>8-on-8 CFSA Flag Football · One Pride</p>
         </div>
       </a>
-      
+
       <nav class="nav" aria-label="Coach navigation">
         <a href="playbook.html">📖 Playbook</a>
         <a href="roster.html">👥 Roster</a>
@@ -43,73 +43,35 @@
       <p>Call the play, then get back to the kids.</p>
     </section>
 
-    <!-- Active Call Display -->
     <div class="live-call-box" id="call" aria-live="polite">
       <span>TAP A PLAY TO CALL</span>
-      <span class="live-call-sub" id="call-sub">Direct Snap to QB · QB Keeper · Wings Lead/Fake</span>
+      <span class="live-call-sub" id="call-sub">Fourteen coach-sheet plays</span>
     </div>
 
-    <!-- Quick Cue Reminder Strip -->
     <div class="cue-strip">
-      <span>OL · Jersey · Head Out · Hands Inside</span>
-      <span>Lead · Hole First · LB</span>
-      <span>Runner · Follow. Plant. Go.</span>
+      <span>OL · Two-point · Head Out · Hands Inside</span>
+      <span>RB · See it. Catch it. Tuck it.</span>
+      <span>W · Your arrow is your job</span>
       <span>Front · Stay Home, Flag</span>
       <span>CB · Nothing Outside</span>
     </div>
 
-    <!-- 6 Live Play Buttons -->
-    <div class="btn-grid">
-      <button class="play-btn run-red" type="button" data-name="Inside Right" data-symbol="Red Diamond" data-hole="C-RG" data-color="#d32f2f">
-        <div class="btn-title">
-          <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 22,12 12,22 2,12" fill="#d32f2f"/></svg>
-          Inside Right
-        </div>
-        <small>Red Diamond · C-RG A-Gap</small>
-      </button>
-
-      <button class="play-btn run-blue" type="button" data-name="Inside Left" data-symbol="Blue Circle" data-hole="C-LG" data-color="#1976d2">
-        <div class="btn-title">
-          <svg class="sym" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#1976d2"/></svg>
-          Inside Left
-        </div>
-        <small>Blue Circle · C-LG A-Gap</small>
-      </button>
-
-      <button class="play-btn run-gold" type="button" data-name="Off-Tackle Right" data-symbol="Gold Star" data-hole="RG-RT" data-color="#e6a100">
-        <div class="btn-title">
-          <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16.5,14 18.5,22 12,17.5 5.5,22 7.5,14 2,9 9,9" fill="#e6a100"/></svg>
-          Off-Tackle R
-        </div>
-        <small>Gold Star · RG-RT B-Gap</small>
-      </button>
-
-      <button class="play-btn run-green" type="button" data-name="Off-Tackle Left" data-symbol="Green Triangle" data-hole="LG-LT" data-color="#2e7d32">
-        <div class="btn-title">
-          <svg class="sym" viewBox="0 0 24 24"><polygon points="12,3 22,21 2,21" fill="#2e7d32"/></svg>
-          Off-Tackle L
-        </div>
-        <small>Green Triangle · LG-LT B-Gap</small>
-      </button>
-
-      <button class="play-btn run-orange" type="button" data-name="Wide Right" data-symbol="Orange Square" data-hole="RT outside hip" data-color="#e65100">
-        <div class="btn-title">
-          <svg class="sym" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" fill="#e65100"/></svg>
-          Wide Right
-        </div>
-        <small>Orange Square · RT Outside</small>
-      </button>
-
-      <button class="play-btn run-purple" type="button" data-name="Wide Left" data-symbol="Purple Hexagon" data-hole="LT outside hip" data-color="#7b1fa2">
-        <div class="btn-title">
-          <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="#7b1fa2"/></svg>
-          Wide Left
-        </div>
-        <small>Purple Hexagon · LT Outside</small>
-      </button>
+    <div class="btn-grid sideline-plays">
+      <button class="play-btn run-red" type="button" data-run-key="play-01" data-name="Play 1" data-call="Off-Tackle Right" data-color="#d32f2f"><div class="btn-title">Play 1</div><small>Off-Tackle Right</small></button>
+      <button class="play-btn run-blue" type="button" data-run-key="play-02" data-name="Play 2" data-call="Off-Tackle Left" data-color="#1976d2"><div class="btn-title">Play 2</div><small>Off-Tackle Left</small></button>
+      <button class="play-btn run-gold" type="button" data-run-key="play-03" data-name="Play 3" data-call="Sweep Right" data-color="#e6a100"><div class="btn-title">Play 3</div><small>Sweep Right</small></button>
+      <button class="play-btn run-green" type="button" data-run-key="play-04" data-name="Play 4" data-call="Sweep Left" data-color="#2e7d32"><div class="btn-title">Play 4</div><small>Sweep Left</small></button>
+      <button class="play-btn run-orange" type="button" data-run-key="play-05" data-name="Play 5" data-call="Wing Pass Right" data-color="#e65100"><div class="btn-title">Play 5</div><small>Wing Pass Right</small></button>
+      <button class="play-btn run-purple" type="button" data-run-key="play-06" data-name="Play 6" data-call="Reverse Left" data-color="#7b1fa2"><div class="btn-title">Play 6</div><small>Reverse Left</small></button>
+      <button class="play-btn run-red" type="button" data-run-key="play-07" data-name="Play 7" data-call="A-Gap Right" data-color="#d32f2f"><div class="btn-title">Play 7</div><small>A-Gap Right</small></button>
+      <button class="play-btn run-blue" type="button" data-run-key="play-08" data-name="Play 8" data-call="A-Gap Left" data-color="#1976d2"><div class="btn-title">Play 8</div><small>A-Gap Left</small></button>
+      <button class="play-btn run-gold" type="button" data-run-key="play-09" data-name="Play 9" data-call="Toss Right" data-color="#e6a100"><div class="btn-title">Play 9</div><small>Toss Right</small></button>
+      <button class="play-btn run-green" type="button" data-run-key="play-10" data-name="Play 10" data-call="Toss Left" data-color="#2e7d32"><div class="btn-title">Play 10</div><small>Toss Left</small></button>
+      <button class="play-btn run-orange" type="button" data-run-key="play-11" data-name="Play 11" data-call="Boot Right" data-color="#e65100"><div class="btn-title">Play 11</div><small>Boot Right</small></button>
+      <button class="play-btn run-purple" type="button" data-run-key="play-12" data-name="Play 12" data-call="Sweep Left" data-color="#7b1fa2"><div class="btn-title">Play 12</div><small>Sweep Left</small></button>
+      <button class="play-btn run-red" type="button" data-run-key="play-13" data-name="Play 13" data-call="Wide Sweep Right" data-color="#d32f2f"><div class="btn-title">Play 13</div><small>Wide Sweep Right</small></button>
+      <button class="play-btn run-blue" type="button" data-run-key="play-14" data-name="Play 14" data-call="Wide Sweep Left" data-color="#1976d2"><div class="btn-title">Play 14</div><small>Wide Sweep Left</small></button>
     </div>
-
-    <!-- Quick Sideline Tools -->
 
     <details class="coach-more no-print">
       <summary>Team backup</summary>
@@ -157,7 +119,7 @@
 
   <script src="js/backup.js"></script>
   <script src="js/timers.js"></script>
-  <script src="js/app.js?v=mobile-app-20260824"></script>
+  <script src="js/app.js?v=coach-plays-20260825"></script>
   <script>
     (function () {
       const KEY = "lions_sunlight_mode";
@@ -171,9 +133,26 @@
           const on = document.body.classList.toggle("sunlight-mode");
           localStorage.setItem(KEY, on ? "1" : "0");
         });
+        const callDisplay = document.getElementById("call");
+        const callSub = document.getElementById("call-sub");
+        document.querySelectorAll(".sideline-plays .play-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const name = btn.getAttribute("data-name") || "Play";
+            const call = btn.getAttribute("data-call") || "";
+            const color = btn.getAttribute("data-color") || "var(--gold)";
+            callDisplay.innerHTML = "<span>" + name + "</span><span class=\"live-call-sub\" id=\"call-sub\">" + call + "</span>";
+            const sub = document.getElementById("call-sub");
+            if (sub) sub.textContent = call;
+            document.querySelectorAll(".sideline-plays .play-btn").forEach((b) => {
+              b.style.outline = "none";
+              b.classList.remove("active");
+            });
+            btn.classList.add("active");
+            btn.style.outline = "3px solid " + color;
+          });
+        });
       });
     })();
   </script>
 </body>
 </html>
-

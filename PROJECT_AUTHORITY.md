@@ -12,41 +12,47 @@ Help 5–7-year-olds answer three questions without reading a coach manual:
 
 The app teaches one visual decision at a time. It does not add complexity merely because software can display it.
 
-## Locked offense — owner correction 2026-08-24
+## Locked offense — owner correction 2026-08-25
 
-- Format: CFSA K/1, 8-on-8, shotgun.
-- Formation: `LT · LG · C · RG · RT` plus `QB · WING-L · WING-R`.
-- Five players are on the line; no more than three are in the backfield.
-- On the current six runs, QB catches the direct snap and is the Runner.
-- The play-side Wing is Lead; the backside Wing sells the opposite action and finishes the fake.
-- Wing spacing has two teachable versions: Spread Wings and Tight Wings. Spacing changes; identities and assignments do not.
-- The current base offense has no split Wide Receiver.
-- Passing remains parked until the six runs meet the owner's execution gate.
+The public playbook is the 14 coach-sheet plays photographed by the owner. Do not restore the old six QB-keeper runs.
 
-## Six calls
+- Format: CFSA K/1, 8-on-8 flag.
+- Formation is the sheet: circles labeled `C`, `G`, `T`, `W`, `RB` as drawn. Two RBs are both labeled `RB` (color/outline distinguishes them).
+- Do not invent `QB`, `WING-L`, `WING-R`, `LT`, or `LG` unless that letter is actually on that photo.
+- Most plays are five on the line (`T G C G T`) plus `W` plus two backs. If a photo has 7 or 9 offense tokens, match that photo.
+- Center is yellow. Play-side is often purple/blue. Backside is grey/white. Ball path is red dashed. Other routes are solid black.
+- Offense tokens are circles; defense tokens are squares labeled `CB`, `DE`, `DT`, `LB`.
+- Each play's blocking map and ball path come from that photo. Do not reuse one blocking map for all 14 plays.
+- Spread/tight wing toggles and Red Diamond / Blue Circle / Gold Star six-call chrome are retired.
 
-| Play | Symbol | Landmark | Runner path |
-| --- | --- | --- | --- |
-| QB Inside Right | Red Diamond | C–RG | Catch, follow Lead Wing, plant once, north |
-| QB Inside Left | Blue Circle | C–LG | Catch, follow Lead Wing, plant once, north |
-| QB Off-Tackle Right | Gold Star | RG–RT | Catch, press alley, outside-foot plant, north |
-| QB Off-Tackle Left | Green Triangle | LG–LT | Catch, press alley, outside-foot plant, north |
-| QB Wide Right | Orange Square | Outside RT | Catch, reach landmark, turn north |
-| QB Wide Left | Purple Hexagon | Outside LT | Catch, reach landmark, turn north |
+## Fourteen coach-sheet calls
+
+| Play | Call | What the sheet shows |
+| --- | --- | --- |
+| Play 1 | Off-Tackle Right | Deep RB through the right tackle gap; other RB leads to the right DE |
+| Play 2 | Off-Tackle Left | Deep RB off-tackle left; other RB leads to the left DE |
+| Play 3 | Sweep Right | Middle RB sweeps right; Wing fakes left |
+| Play 4 | Sweep Left | Middle RB sweeps left; fake right |
+| Play 5 | Wing Pass Right | RB rolls right; ball to the Wing deep right |
+| Play 6 | Reverse Left | Pitch to the Wing sweeping left |
+| Play 7 | A-Gap Right | RB through C–RG; other RB leads; right CB slides |
+| Play 8 | A-Gap Left | RB through C–LG; play-side is left/purple |
+| Play 9 | Toss Right | I-backs; lead to the right CB; sweep outside the Wing |
+| Play 10 | Toss Left | Lead to the left CB; sweep left |
+| Play 11 | Boot Right | Keep right; backside RB and Wing lead the edge |
+| Play 12 | Sweep Left | Wing leads left; other RB crosses |
+| Play 13 | Wide Sweep Right | Split backs; wide sweep right |
+| Play 14 | Wide Sweep Left | Split backs; wide sweep left |
 
 ## Fixed offensive responsibilities
 
-- `LT → Edge-L`
-- `LG → DT-L`
-- `C → clean snap, then protect/help inside on the play-side DT`
-- `RG → DT-R`
-- `RT → Edge-R`
-- `QB → catch direct snap, tuck, called landmark, one plant, north`
-- `Play-side Wing → called landmark first, then play-side LB`
-- `Backside Wing → opposite action, get wide, finish the fake`
-- Cornerbacks are not assigned a blocker in this run system.
-
-The visual may change leverage or help detail by play, but it may not silently change ownership.
+- Each lineman's job is the defender that player's arrow points at on that sheet.
+- `C` snaps, then follows the curved or straight arrow drawn on that play.
+- The red-outlined / red-path `RB` is the ball (or the passer/pitcher until the ball leaves).
+- The other `RB` leads, fakes, or blocks as drawn.
+- `W` blocks or runs the route drawn on that sheet.
+- Assignments may include a CB when the photo points a lead arrow at that square.
+- Do not restore "QB catches the direct snap and is the Runner" as the public playbook rule.
 
 ## Teaching defense
 
@@ -73,7 +79,7 @@ Never teach or depict head/neck contact, holding, wrapping, tackling, blocks in 
 
 - Show all players before the snap with enough vertical and horizontal space to distinguish every route.
 - Use one cue per beat: Line Up, Direct Snap, First Step, Fit, Lane, One Cut, Finish.
-- Keep QB Run, Lead Wing, Backside Wing, and Block paths visually distinct.
+- Keep ball path (red dashed), lead/fake routes, and block arrows visually distinct, matching that play's photo.
 - A child can tap a job card to highlight only that responsibility without removing the full-team context.
 - Use position labels, not child names.
 - Score the play, not the child.
@@ -85,7 +91,7 @@ Never teach or depict head/neck contact, holding, wrapping, tackling, blocks in 
 - Primary navigation is limited to `Home`, `Plays`, `Drill`, and `Coach` on phones and desktops.
 - Home presents two dominant choices: run the one approved drill or teach a slow-motion play.
 - Roster, notes, tracker, backup, and print resources live under Coach and do not compete with the practice actions.
-- The playbook puts play selection, wing spacing, the animation, and Play/Back/Next/Reset in that order. Speed, scrubbing, assignments, and general cues are secondary disclosures on phones.
+- The playbook puts play selection, the coach-sheet photo beside the live recreation, and Play/Back/Next/Reset in that order. Speed, scrubbing, assignments, and general cues are secondary disclosures on phones.
 - The drill opens directly to the teaching field; its setup, Offense/Defense view, field, cue, and four rep controls remain the primary surface.
 - Schedule stays out of visible navigation until the owner explicitly restores it.
 - Do not put AI, agent, council, governance, or technical language in the child/coach interface.

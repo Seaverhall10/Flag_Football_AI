@@ -1683,3 +1683,106 @@ body.half-drill-page { padding-bottom: 16px; }
 @media print {
   .mobile-appbar { display: none !important; }
 }
+
+/* Coach-sheet playbook (14 photographed plays) */
+.playbook-page .play-picker .btn-grid {
+  display: flex;
+  gap: 8px;
+  margin: 6px -2px 0;
+  padding: 4px 2px 8px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.playbook-page .play-picker .btn-grid::-webkit-scrollbar { display: none; }
+.playbook-page .play-picker .play-btn {
+  flex: 0 0 132px;
+  min-height: 62px;
+  padding: 8px 10px 8px 14px;
+  scroll-snap-align: start;
+}
+.playbook-page .play-picker .play-btn small {
+  display: block;
+  font-size: .72rem;
+}
+.playbook-page .play-picker .btn-title { font-size: .92rem; }
+
+.proof-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 0 0 10px;
+}
+.proof-pane {
+  margin: 0;
+  background: #071018;
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.proof-pane img,
+.proof-pane .sim-root {
+  display: block;
+  width: 100%;
+  margin: 0;
+  background: #0b3522;
+}
+.proof-pane img {
+  max-height: 70vh;
+  object-fit: contain;
+  background: #111;
+}
+.proof-live-pane .sim-root {
+  border-radius: 0;
+  border: 0;
+  box-shadow: none;
+  margin: 0;
+}
+.proof-pane figcaption {
+  margin: 0;
+  padding: 7px 10px;
+  text-align: center;
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: #071018;
+  border-top: 1px solid #2b4568;
+}
+.sim-key i.key-ball {
+  background: transparent;
+  border-top: 3px dashed #dc2626;
+  height: 0;
+  width: 28px;
+}
+.sim-key i.key-block { background: #111; }
+.coach-page .sideline-plays {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.coach-page .sideline-plays .play-btn {
+  flex: 1 1 140px;
+  min-width: 132px;
+}
+
+@media (min-width: 900px) {
+  .proof-row {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+  .proof-pane img { max-height: none; height: 100%; min-height: 420px; }
+}
+
+@media (max-width: 799px) {
+  .playbook-page .play-picker .play-btn { flex-basis: 120px; min-height: 58px; }
+  .playbook-page .play-picker .play-btn small { display: block; }
+  .coach-page .sideline-plays {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .coach-page .sideline-plays .play-btn { flex: 0 0 150px; }
+}

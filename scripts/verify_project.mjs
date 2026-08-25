@@ -76,29 +76,32 @@ pass("notes separates secondary tools", (notes.match(/<details\s+class=["'][^"']
 pass("roster views collapse independently on phones", (rosterPage.match(/<details\s+class=["'][^"']*mobile-collapse/g) || []).length === 3 && /querySelectorAll\(["']\.mobile-collapse["']\)/.test(appShell));
 
 const runKeys = [...playbook.matchAll(/data-run-key=["']([^"']+)["']/g)].map((match) => match[1]);
-pass("exactly six unique play selectors", runKeys.length === 6 && new Set(runKeys).size === 6, runKeys.join(", "));
+const expectedKeys = Array.from({ length: 14 }, (_, i) => `play-${String(i + 1).padStart(2, "0")}`);
+pass("exactly 14 unique play selectors", runKeys.length === 14 && new Set(runKeys).size === 14, runKeys.join(", "));
+pass("play keys are play-01 through play-14", expectedKeys.every((key) => runKeys.includes(key)), runKeys.join(", "));
+pass("playbook includes coach photos", /plays\/play-01\.jpg/.test(playbook) && fs.existsSync(path.join(root, "plays/play-01.jpg")));
 pass("playbook loads governed simulator", /src=["']js\/sim\.js(?:\?[^"']*)?["']/i.test(playbook));
 pass("playbook does not load replacement field simulator", !/src=["']js\/field-diagram\.js/i.test(playbook));
+const playsData = fs.existsSync(path.join(root, "js/plays-data.js")) ? read("js/plays-data.js") : "";
+pass("plays-data defines 14 plays", expectedKeys.every((key) => playsData.includes(`id: "${key}"`) || playsData.includes(`id: '${key}'`)), "missing play ids in js/plays-data.js");
+pass("sim or plays-data lists all 14 plays", expectedKeys.every((key) => sim.includes(key) || playsData.includes(key)));
 
 for (const id of ["sim-root", "sim-play", "sim-back", "sim-next", "sim-reset", "sim-slider", "sim-assignments"]) {
   pass(`playbook control #${id}`, new RegExp(`id=["']${id}["']`).test(playbook));
 }
 
-for (const id of ["LT", "LG", "C", "RG", "RT", "QB", "WBL", "WBR"]) {
-  pass(`offense position ${id}`, new RegExp(`\\b${id}\\b`).test(sim));
+for (const letter of ["C", "G", "T", "W", "RB"]) {
+  pass(`offense letter ${letter} in plays-data`, new RegExp(`letter:\s*["']${letter}["']`).test(playsData) || new RegExp(`"${letter}"`).test(playsData));
 }
-for (const id of ["EL", "DTL", "DTR", "ER", "LBL", "LBR", "CBL", "CBR"]) {
-  pass(`defense position ${id}`, new RegExp(`\\b${id}\\b`).test(sim));
+for (const letter of ["DT", "DE", "LB", "CB"]) {
+  pass(`defense letter ${letter} in plays-data`, new RegExp(`letter:\s*["']${letter}["']`).test(playsData) || playsData.includes(`"${letter}"`));
 }
 
 pass("no split wide receiver in governed playbook", !/wide receiver|data-pos=["']WR["']/i.test(`${playbook}\n${sim}\n${roster}`));
-pass("no interchangeable RB1 RB2 RB3 model", !/\\bRB[123]\\b/.test(`${playbook}\n${sim}\n${authority}\n${roster}`));
-pass("all six current calls are QB runs", (sim.match(/name:\s*["']QB\s/g) || []).length === 6);
-pass("spread Wing formation control", /data-sim-formation=["']wide["']/.test(playbook));
-pass("tight Wing formation control", /data-sim-formation=["']tight["']/.test(playbook));
-pass("playbook uses tall teaching field", /const H\s*=\s*940/.test(sim));
-pass("authority locks direct snap to QB", /QB catches the direct snap and is the Runner/i.test(authority));
-pass("authority locks spread and tight Wings", /Spread Wings and Tight Wings/i.test(authority));
+pass("old six QB keepers are gone from playbook", !/data-run-key=["']inside-right["']/.test(playbook) && !/QB Keeper/.test(playbook));
+pass("spread/tight wing toggles removed", !/data-sim-formation=["']wide["']/.test(playbook) && !/data-sim-formation=["']tight["']/.test(playbook));
+pass("authority locks 14 coach-sheet plays", /14 coach-sheet plays photographed by the owner/i.test(authority));
+pass("authority does not restore QB as the public runner", !/QB catches the direct snap and is the Runner/i.test(authority));
 
 const drillPages = [...html.keys()].filter((relative) => /^drills?\.html$/i.test(relative));
 pass("exactly one public drill page", drillPages.length === 1 && drillPages[0] === "drills.html", drillPages.join(", "));

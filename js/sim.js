@@ -1,274 +1,524 @@
 /**
- * Lions K/1 full-team slow-motion teacher.
- * QB takes the direct snap and runs; WING-L and WING-R align wide or tight.
+ * Lions K/1 slow-motion teacher — data-driven from js/plays-data.js.
+ * Recreates the 14 coach-sheet diagrams. No QB-wing keeper model.
  */
 (function () {
   "use strict";
 
-  const NS = "http://www.w3.org/2000/svg";
-  const W = 1000;
-  const H = 940;
-  const LOS = 400;
-  const BEATS = [
-    { name: "LINE UP", cue: "QB behind Center. WING-L and WING-R use the selected spacing." },
-    { name: "DIRECT SNAP", cue: "Center snaps to QB. QB: see it, catch it, tuck it." },
-    { name: "FIRST STEP", cue: "Line finds its jersey. Play-side Wing aims for the called lane." },
-    { name: "FIT", cue: "Blockers arrive under control: head out, hands inside, feet moving." },
-    { name: "LANE", cue: "Lead Wing enters first. QB follows the same-colored lane." },
-    { name: "ONE CUT", cue: "QB plants once at the landmark. Defenders shed and keep leverage." },
-    { name: "FINISH", cue: "QB goes north. Defense pursues for the flag without losing contain." }
+  var NS = "http://www.w3.org/2000/svg";
+  var W = 1000;
+  var H = 900;
+  var LOS = 400;
+  var BEATS = [
+    { name: "LINE UP", cue: "Find your circle. Two-point stance. Eyes up." },
+    { name: "SNAP", cue: "Center snaps. Ball goes to the marked RB. See it. Catch it. Tuck it." },
+    { name: "FIRST STEP", cue: "First step on your arrow. Head out. Hands inside." },
+    { name: "FIT", cue: "Arrive under control. Open hands inside. No holding." },
+    { name: "LANE", cue: "Ball follows the red dashed path. Blockers stay on their man." },
+    { name: "CUT", cue: "One cut. Eyes up. Defense pursues for the flag." },
+    { name: "FINISH", cue: "North. Flag only — no tackling, no blocks in the back." }
   ];
 
-  const RUNS = {
-    "inside-right": { name: "QB Inside Right", symbol: "Red Diamond", color: "#ef4444", hole: "C–RG", holeX: 555, side: "R", type: "inside", lead: "WBR", fake: "WBL" },
-    "inside-left": { name: "QB Inside Left", symbol: "Blue Circle", color: "#3b82f6", hole: "C–LG", holeX: 445, side: "L", type: "inside", lead: "WBL", fake: "WBR" },
-    "off-tackle-right": { name: "QB Off-Tackle Right", symbol: "Gold Star", color: "#f6c344", hole: "RG–RT", holeX: 665, side: "R", type: "off", lead: "WBR", fake: "WBL" },
-    "off-tackle-left": { name: "QB Off-Tackle Left", symbol: "Green Triangle", color: "#4ade80", hole: "LG–LT", holeX: 335, side: "L", type: "off", lead: "WBL", fake: "WBR" },
-    "wide-right": { name: "QB Wide Right", symbol: "Orange Square", color: "#fb923c", hole: "Outside RT", holeX: 810, side: "R", type: "wide", lead: "WBR", fake: "WBL" },
-    "wide-left": { name: "QB Wide Left", symbol: "Purple Hexagon", color: "#c084fc", hole: "Outside LT", holeX: 190, side: "L", type: "wide", lead: "WBL", fake: "WBR" }
-  };
+  var state = { runKey: "play-01", t: 0, playing: false, speed: 11000, startedAt: 0, startT: 0, raf: 0, selected: null, players: {} };
+  var svg, ball, routeLayer, blockLayer, iconLayer, cueEl, beatEl, slider, playButton, photoEl;
 
-  const HOME = {
-    LT: { x: 280, y: 450, label: "LT" }, LG: { x: 390, y: 450, label: "LG" },
-    C: { x: 500, y: 450, label: "C" }, RG: { x: 610, y: 450, label: "RG" }, RT: { x: 720, y: 450, label: "RT" },
-    QB: { x: 500, y: 800, label: "QB" }, WBL: { x: 160, y: 650, label: "WING-L" }, WBR: { x: 840, y: 650, label: "WING-R" },
-    EL: { x: 205, y: 340, label: "EDGE-L" }, DTL: { x: 390, y: 340, label: "DT-L" }, DTR: { x: 610, y: 340, label: "DT-R" }, ER: { x: 795, y: 340, label: "EDGE-R" },
-    LBL: { x: 420, y: 225, label: "LB-L" }, LBR: { x: 580, y: 225, label: "LB-R" }, CBL: { x: 90, y: 270, label: "CB-L" }, CBR: { x: 910, y: 270, label: "CB-R" }
-  };
-  const BACKFIELD = {
-    wide: { QB: { x: 500, y: 800 }, WBL: { x: 160, y: 650 }, WBR: { x: 840, y: 650 }, label: "SPREAD WINGS — CREATE SPACE" },
-    tight: { QB: { x: 500, y: 805 }, WBL: { x: 395, y: 760 }, WBR: { x: 605, y: 760 }, label: "TIGHT WINGS — LINE UP TOGETHER" }
-  };
-  const OFFENSE = ["LT", "LG", "C", "RG", "RT", "QB", "WBL", "WBR"];
-  const DEFENSE = ["EL", "DTL", "DTR", "ER", "LBL", "LBR", "CBL", "CBR"];
-  const state = { runKey: "inside-right", formation: "wide", t: 0, playing: false, speed: 11000, startedAt: 0, startT: 0, raf: 0, selected: null, players: {} };
-
-  let svg, ball, holeRing, holeLabel, formationLabel, routeRunner, routeLead, routeFake, blockLayer, hipLayer, cueEl, beatEl, slider, playButton;
-  function el(name, attrs) { const node = document.createElementNS(NS, name); Object.keys(attrs || {}).forEach((key) => node.setAttribute(key, attrs[key])); return node; }
+  function plays() { return window.LIONS_PLAYS || []; }
+  function playMap() { return window.LIONS_PLAY_MAP || {}; }
+  function currentPlay() { return playMap()[state.runKey] || plays()[0]; }
+  function el(name, attrs) {
+    var node = document.createElementNS(NS, name);
+    Object.keys(attrs || {}).forEach(function (key) { node.setAttribute(key, attrs[key]); });
+    return node;
+  }
   function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
   function lerp(a, b, t) { return a + (b - a) * t; }
   function ease(t) { return t * t * (3 - 2 * t); }
   function mixPoint(a, b, t) { return { x: lerp(a.x, b.x, t), y: lerp(a.y, b.y, t) }; }
-  function currentRun() { return RUNS[state.runKey]; }
-  function home(id) { return BACKFIELD[state.formation][id] || HOME[id]; }
-  function playSideLb(run) { return run.side === "R" ? "LBR" : "LBL"; }
-  function backSideLb(run) { return run.side === "R" ? "LBL" : "LBR"; }
-  function playSideCb(run) { return run.side === "R" ? "CBR" : "CBL"; }
-  function backSideCb(run) { return run.side === "R" ? "CBL" : "CBR"; }
-  function playOut(run) { return run.side === "R" ? 1 : -1; }
-  function defHip(defId, kind, run) {
-    const d = HOME[defId];
-    const out = playOut(run);
-    const dx = kind === "outside" ? out * 16 : -out * 16;
-    return { x: d.x + dx, y: d.y + 10, id: d.label, defId: defId, kind: kind };
+  function darkFill(color) {
+    if (!color) return false;
+    var c = color.replace("#", "");
+    if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+    var r = parseInt(c.slice(0, 2), 16), g = parseInt(c.slice(2, 4), 16), b = parseInt(c.slice(4, 6), 16);
+    return (r * 0.299 + g * 0.587 + b * 0.114) < 150;
   }
-  function lineTargets(run) {
-    const psDt = run.side === "R" ? "DTR" : "DTL";
-    const psEdge = run.side === "R" ? "ER" : "EL";
-    const psG = run.side === "R" ? "RG" : "LG";
-    const psT = run.side === "R" ? "RT" : "LT";
-    const gHip = run.type === "inside" ? "outside" : "outside";
-    const tHip = run.type === "wide" ? "outside" : "inside";
-    const out = {
-      LT: defHip("EL", run.side === "L" ? tHip : "inside", run),
-      LG: defHip("DTL", run.side === "L" ? gHip : "inside", run),
-      RG: defHip("DTR", run.side === "R" ? gHip : "inside", run),
-      RT: defHip("ER", run.side === "R" ? tHip : "inside", run),
-      C: defHip(psDt, "inside", run)
-    };
-    out.C.id = "HELP " + HOME[psDt].label;
-    out[psG].kind = gHip;
-    out[psT].kind = tHip;
-    return out;
-  }
-  function lineCue(id, run) {
-    const targets = lineTargets(run);
-    const hip = targets[id] && targets[id].kind ? targets[id].kind.toUpperCase() + " HIP" : "HIP";
-    if (id === "C") return `Snap to QB. Then ${hip} of ${targets.C.id.replace("HELP ", "")}. Do not leave your man.`;
-    if (id === (run.side === "R" ? "RT" : "LT")) {
-      if (run.type === "off") return `Seal ${targets[id].id} · ${hip} · alley is yours to close`;
-      if (run.type === "wide") return `Reach ${targets[id].id} · ${hip} · nothing outside you`;
-      return `Stay home on ${targets[id].id} · ${hip}`;
-    }
-    if (id === (run.side === "R" ? "RG" : "LG")) return `Own ${targets[id].id} · ${hip}`;
-    return `Stay home on ${targets[id].id} · ${hip} · head out · hands inside`;
-  }
-  function roleFor(id, run) { if (id === "QB") return "QB RUNNER"; if (id === run.lead) return "LEAD WING"; if (id === run.fake) return "BACKSIDE WING"; return "BLOCK"; }
-  function shortRole(id, run) { if (id === "QB") return "QB RUN"; if (id === run.lead) return "LEAD"; if (id === run.fake) return "FAKE"; return "BLOCK"; }
-  function taskFor(id, run) {
-    if (id === "QB") return `Catch direct snap → tuck → ${run.hole} → one cut → north`;
-    if (id === run.lead) {
-      if (state.formation === "wide" && run.type !== "inside") return `${HOME[id].label}: stay outside the Edge, get upfield, then ${HOME[playSideLb(run)].label}. Do not cut back.`;
-      return `${HOME[id].label}: ${run.hole} first → ${HOME[playSideLb(run)].label}`;
-    }
-    if (id === run.fake) return `${HOME[id].label}: sell opposite action → get wide → finish fake`;
-    return lineCue(id, run);
-  }
-  function basePoses() { const poses = {}; Object.keys(HOME).forEach((id) => { const h = home(id); poses[id] = { x: h.x, y: h.y }; }); return poses; }
 
-  function qbPose(run, beat) {
-    const h = home("QB"); const side = run.side === "R" ? 1 : -1; const finishX = run.type === "wide" ? run.holeX + side * 20 : run.holeX;
-    return [{ x: h.x, y: h.y }, { x: h.x, y: h.y - 8 }, { x: lerp(h.x, run.holeX, 0.18), y: 690 }, { x: lerp(h.x, run.holeX, 0.48), y: 555 }, { x: run.holeX, y: 425 }, { x: run.holeX, y: 315 }, { x: finishX, y: 75 }][beat];
+  function findOff(play, id) {
+    for (var i = 0; i < play.offense.length; i++) if (play.offense[i].id === id) return play.offense[i];
+    return null;
   }
-  function leadPose(run, beat) {
-    const h = home(run.lead); const lb = HOME[playSideLb(run)]; const side = playOut(run);
-    const fit = { x: lb.x - side * 22, y: lb.y + 26 };
-    const spread = state.formation === "wide";
-    const crackRisk = spread && run.type !== "inside";
-    if (crackRisk) {
-      const edge = run.side === "R" ? HOME.ER : HOME.EL;
-      const outX = edge.x + side * 48;
-      return [
-        h,
-        { x: lerp(h.x, outX, 0.2), y: h.y - 16 },
-        { x: outX, y: 500 },
-        { x: outX, y: 355 },
-        { x: lerp(outX, fit.x, 0.4), y: 275 },
-        fit,
-        { x: fit.x, y: fit.y - 4 }
-      ][beat];
+  function findDef(play, id) {
+    for (var i = 0; i < play.defense.length; i++) if (play.defense[i].id === id) return play.defense[i];
+    return null;
+  }
+  function routeFor(play, id) {
+    var routes = play.routes || [];
+    for (var i = 0; i < routes.length; i++) if (routes[i].from === id) return routes[i];
+    return null;
+  }
+  function blockFor(play, id) {
+    var blocks = play.blocks || [];
+    for (var i = 0; i < blocks.length; i++) if (blocks[i].from === id) return blocks[i];
+    return null;
+  }
+
+  function pathPoints(play, id) {
+    var p = findOff(play, id);
+    if (!p) {
+      var d = findDef(play, id);
+      if (!d) return [{ x: 0, y: 0 }];
+      if (d.slide && d.slide.length) return d.slide.slice();
+      return [{ x: d.x, y: d.y }];
     }
-    const laneX = run.type === "wide" ? run.holeX - side * 24 : run.holeX;
-    return [
-      h,
-      { x: h.x + side * 6, y: h.y - 8 },
-      { x: lerp(h.x, laneX, 0.32), y: 600 },
-      { x: laneX, y: 480 },
-      { x: run.holeX, y: 355 },
-      fit,
-      { x: fit.x, y: fit.y - 4 }
-    ][beat];
+    var route = routeFor(play, id);
+    if (route && route.points && route.points.length) {
+      var pts = route.points.slice();
+      if (pts[0].x !== p.x || pts[0].y !== p.y) pts.unshift({ x: p.x, y: p.y });
+      return pts;
+    }
+    var block = blockFor(play, id);
+    if (block) {
+      var defn = findDef(play, block.toDefenderId);
+      if (defn) {
+        var dx = defn.x - p.x, dy = defn.y - p.y, dist = Math.hypot(dx, dy) || 1;
+        return [{ x: p.x, y: p.y }, { x: defn.x - dx / dist * 30, y: defn.y - dy / dist * 30 }];
+      }
+    }
+    return [{ x: p.x, y: p.y }];
   }
-  function fakePose(run, beat) {
-    const h = home(run.fake); const dir = run.side === "R" ? -1 : 1; const wideX = dir < 0 ? 115 : 885;
-    return [{ x: h.x, y: h.y }, { x: h.x + dir * 10, y: h.y - 6 }, { x: lerp(h.x, wideX, 0.22), y: 610 }, { x: lerp(h.x, wideX, 0.48), y: 525 }, { x: lerp(h.x, wideX, 0.72), y: 430 }, { x: wideX, y: 335 }, { x: wideX, y: 245 }][beat];
+
+  function samplePath(points, u) {
+    if (!points || !points.length) return { x: 0, y: 0 };
+    if (points.length === 1 || u <= 0) return { x: points[0].x, y: points[0].y };
+    if (u >= 1) return { x: points[points.length - 1].x, y: points[points.length - 1].y };
+    var segs = [];
+    var total = 0;
+    for (var i = 0; i < points.length - 1; i++) {
+      var len = Math.hypot(points[i + 1].x - points[i].x, points[i + 1].y - points[i].y) || 0.001;
+      segs.push(len);
+      total += len;
+    }
+    var target = u * total, acc = 0;
+    for (var j = 0; j < segs.length; j++) {
+      if (acc + segs[j] >= target) {
+        var t = (target - acc) / segs[j];
+        return mixPoint(points[j], points[j + 1], t);
+      }
+      acc += segs[j];
+    }
+    return { x: points[points.length - 1].x, y: points[points.length - 1].y };
   }
+
+  function motionAmount(kind, beat) {
+    if (kind === "block") {
+      if (beat < 2) return 0;
+      if (beat === 2) return 0.38;
+      if (beat === 3) return 0.78;
+      return 1;
+    }
+    if (kind === "slide") {
+      if (beat < 4) return 0;
+      return (beat - 3) / 3;
+    }
+    return clamp(beat / 6, 0, 1);
+  }
+
+  function kindFor(play, id) {
+    if (findDef(play, id) && findDef(play, id).slide) return "slide";
+    if (routeFor(play, id)) {
+      var r = routeFor(play, id);
+      if (r.style === "dashed" && r.color && r.color.toLowerCase() !== "#dc2626" && r.color !== "red") return "route";
+      return "route";
+    }
+    if (blockFor(play, id)) return "block";
+    return "route";
+  }
+
   function poseAtBeat(beat) {
-    const run = currentRun(); const p = basePoses(); const targets = lineTargets(run);
-    ["LT", "LG", "C", "RG", "RT"].forEach((id) => { const amount = beat < 2 ? 0 : beat === 2 ? 0.42 : 1; p[id] = mixPoint(home(id), targets[id], amount); if (id === "C" && beat === 1) p[id].y += 8; });
-    p.QB = qbPose(run, beat); p[run.lead] = leadPose(run, beat); p[run.fake] = fakePose(run, beat);
-    const psLb = playSideLb(run), bsLb = backSideLb(run), psCb = playSideCb(run), bsCb = backSideCb(run), side = run.side === "R" ? 1 : -1;
-    if (beat >= 4) {
-      p[psLb] = mixPoint(HOME[psLb], { x: run.holeX - side * 24, y: 270 }, beat === 4 ? 0.28 : 0.72);
-      p[bsLb] = mixPoint(HOME[bsLb], { x: run.holeX - side * 95, y: 260 }, beat === 4 ? 0.15 : 0.34);
-      p[psCb] = mixPoint(HOME[psCb], { x: clamp(run.holeX + side * 90, 70, 930), y: 300 }, beat === 4 ? 0.16 : beat === 5 ? 0.42 : 0.72);
-      p[bsCb] = mixPoint(HOME[bsCb], { x: HOME[bsCb].x + side * 14, y: HOME[bsCb].y }, 0.25);
-    }
-    if (beat >= 3) {
-      const hold = run.type === "inside" ? 6 : 12;
-      p.EL = mixPoint(HOME.EL, { x: HOME.EL.x + (run.side === "L" ? -hold : 4), y: HOME.EL.y + 8 }, 0.28);
-      p.ER = mixPoint(HOME.ER, { x: HOME.ER.x + (run.side === "R" ? hold : -4), y: HOME.ER.y + 8 }, 0.28);
-      p.DTL = mixPoint(HOME.DTL, { x: HOME.DTL.x, y: HOME.DTL.y + 8 }, 0.22);
-      p.DTR = mixPoint(HOME.DTR, { x: HOME.DTR.x, y: HOME.DTR.y + 8 }, 0.22);
-    }
+    var play = currentPlay();
+    var poses = {};
+    play.offense.forEach(function (p) {
+      var pts = pathPoints(play, p.id);
+      var amt = motionAmount(kindFor(play, p.id), beat);
+      if (p.role === "SNAP" && beat === 1) {
+        poses[p.id] = { x: p.x, y: p.y + 8 };
+      } else {
+        poses[p.id] = samplePath(pts, amt);
+      }
+    });
+    play.defense.forEach(function (d) {
+      if (d.slide && d.slide.length) {
+        poses[d.id] = samplePath(d.slide, motionAmount("slide", beat));
+      } else {
+        poses[d.id] = { x: d.x, y: d.y };
+      }
+    });
+    return poses;
+  }
+
+  function interpolatedPoses(value) {
+    var lo = Math.floor(value), hi = Math.min(6, lo + 1), u = ease(value - lo);
+    var a = poseAtBeat(lo), b = poseAtBeat(hi), p = {};
+    Object.keys(a).forEach(function (id) { p[id] = mixPoint(a[id], b[id], u); });
     return p;
   }
-  function interpolatedPoses(value) { const lo = Math.floor(value), hi = Math.min(6, lo + 1), u = ease(value - lo), a = poseAtBeat(lo), b = poseAtBeat(hi), p = {}; Object.keys(a).forEach((id) => { p[id] = mixPoint(a[id], b[id], u); }); return p; }
-  function pathFor(id) { const pts = []; for (let beat = 0; beat <= 6; beat += 1) pts.push(poseAtBeat(beat)[id]); return "M " + pts.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" L "); }
 
-  function drawBlockArrows() {
-    while (blockLayer.firstChild) blockLayer.removeChild(blockLayer.firstChild);
-    const run = currentRun(), targets = lineTargets(run);
-    ["LT", "LG", "C", "RG", "RT"].forEach((id) => {
-      const h = home(id), target = targets[id];
-      const dx = target.x - h.x, dy = target.y - h.y, dist = Math.hypot(dx, dy) || 1;
-      const x1 = h.x + dx / dist * 18, y1 = h.y + dy / dist * 18;
-      const x2 = target.x - dx / dist * 8, y2 = target.y - dy / dist * 8;
-      blockLayer.appendChild(el("path", { d: `M ${x1},${y1} L ${x2},${y2}`, fill: "none", stroke: "#67e8f9", "stroke-width": "2.8", "stroke-linecap": "round", "marker-end": "url(#blockArrow)", opacity: "0.95", "data-route-owner": id }));
-    });
+  function dFromPoints(points) {
+    return "M " + points.map(function (p) { return p.x.toFixed(1) + "," + p.y.toFixed(1); }).join(" L ");
   }
-  function drawHips(poses) {
-    if (!hipLayer) return;
-    hipLayer.innerHTML = "";
-    if (state.t < 2 || state.t > 5.1) return;
-    const run = currentRun(), targets = lineTargets(run);
-    ["LT", "LG", "C", "RG", "RT"].forEach((id) => {
-      const spec = targets[id];
-      if (!spec || !spec.defId) return;
-      const d = poses[spec.defId] || HOME[spec.defId];
-      const hip = defHip(spec.defId, spec.kind || "inside", run);
-      hip.x = d.x + (hip.x - HOME[spec.defId].x);
-      hip.y = d.y + 10;
-      const dir = spec.kind === "outside" ? playOut(run) : -playOut(run);
-      hipLayer.appendChild(el("path", {
-        d: `M ${hip.x - dir * 3},${hip.y - 8} L ${hip.x + dir * 10},${hip.y} L ${hip.x - dir * 3},${hip.y + 8} Z`,
-        fill: "#f6c344", stroke: "#071018", "stroke-width": "1.5", "data-route-owner": id
+
+  function shorten(points, startPad, endPad) {
+    if (points.length < 2) return points;
+    var copy = points.map(function (p) { return { x: p.x, y: p.y }; });
+    var dx = copy[1].x - copy[0].x, dy = copy[1].y - copy[0].y, dist = Math.hypot(dx, dy) || 1;
+    copy[0].x += dx / dist * startPad;
+    copy[0].y += dy / dist * startPad;
+    var n = copy.length - 1;
+    var dx2 = copy[n].x - copy[n - 1].x, dy2 = copy[n].y - copy[n - 1].y, dist2 = Math.hypot(dx2, dy2) || 1;
+    copy[n].x -= dx2 / dist2 * endPad;
+    copy[n].y -= dy2 / dist2 * endPad;
+    return copy;
+  }
+
+  function footballIcon(x, y) {
+    var g = el("g", { transform: "translate(" + x + "," + y + ")", "data-ball-icon": "1" });
+    g.appendChild(el("ellipse", { rx: "11", ry: "7.5", fill: "#f8fafc", stroke: "#3f2b1d", "stroke-width": "2.2" }));
+    g.appendChild(el("line", { x1: "-6", y1: "0", x2: "6", y2: "0", stroke: "#9f1239", "stroke-width": "1.6" }));
+    return g;
+  }
+
+  function drawStaticRoutes() {
+    while (blockLayer.firstChild) blockLayer.removeChild(blockLayer.firstChild);
+    while (routeLayer.firstChild) routeLayer.removeChild(routeLayer.firstChild);
+    while (iconLayer.firstChild) iconLayer.removeChild(iconLayer.firstChild);
+    var play = currentPlay();
+    var routed = {};
+    (play.routes || []).forEach(function (route) {
+      routed[route.from] = true;
+      var from = findOff(play, route.from);
+      if (!from) return;
+      var pts = route.points.slice();
+      if (pts[0].x !== from.x || pts[0].y !== from.y) pts.unshift({ x: from.x, y: from.y });
+      var dashed = route.style === "dashed";
+      var color = route.color || "#111111";
+      var isBall = color.toLowerCase() === "#dc2626" || color === "red";
+      var path = el("path", {
+        d: dFromPoints(shorten(pts, 18, 8)),
+        fill: "none",
+        stroke: isBall ? "#dc2626" : color,
+        "stroke-width": isBall ? "3.2" : "2.8",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "marker-end": isBall ? "url(#ballArrow)" : "url(#blockArrow)",
+        "data-route-owner": route.from
+      });
+      if (dashed) path.setAttribute("stroke-dasharray", isBall ? "9 7" : "8 7");
+      routeLayer.appendChild(path);
+    });
+    (play.blocks || []).forEach(function (block) {
+      if (routed[block.from]) return;
+      var from = findOff(play, block.from);
+      var to = findDef(play, block.toDefenderId);
+      if (!from || !to) return;
+      var pts = shorten([{ x: from.x, y: from.y }, { x: to.x, y: to.y }], 20, 18);
+      blockLayer.appendChild(el("path", {
+        d: dFromPoints(pts),
+        fill: "none",
+        stroke: "#111111",
+        "stroke-width": "2.8",
+        "stroke-linecap": "round",
+        "marker-end": "url(#blockArrow)",
+        "data-route-owner": block.from
       }));
     });
+    var ballPts = play.ball && play.ball.points ? play.ball.points : [];
+    if (ballPts.length > 1) {
+      var ballPath = el("path", {
+        d: dFromPoints(ballPts),
+        fill: "none",
+        stroke: "#dc2626",
+        "stroke-width": "3.1",
+        "stroke-dasharray": "9 7",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        "marker-end": "url(#ballArrow)",
+        "data-route-owner": play.ball.carrierId || ""
+      });
+      routeLayer.appendChild(ballPath);
+    }
+    (play.ball && play.ball.icons || []).forEach(function (pt) {
+      iconLayer.appendChild(footballIcon(pt.x, pt.y));
+    });
   }
-  function token(id) {
-    const spec = HOME[id], offense = OFFENSE.includes(id), g = el("g", { class: "sim-player", "data-player": id, tabindex: "0", role: "button", "aria-label": spec.label });
-    const hit = el("circle", { r: "26", fill: "transparent" }), selected = el("circle", { r: "22", fill: "none", stroke: "#fff", "stroke-width": "2", opacity: "0" });
-    const disc = el("circle", { r: offense ? "16" : "15", fill: offense ? "#07172c" : "#475569", stroke: offense ? "#f6c344" : (id.startsWith("CB") ? "#f6c344" : "#cbd5e1"), "stroke-width": "2.2" });
-    const label = el("text", { x: "0", y: "4", fill: "#fff", "font-size": spec.label.length > 4 ? "8" : "11", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none" }); label.textContent = spec.label;
-    const role = el("text", { x: "0", y: "26", fill: "#f6c344", "font-size": "8", "font-weight": "800", "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "3", "pointer-events": "none" });
-    g.appendChild(hit); g.appendChild(selected); g.appendChild(disc); g.appendChild(label); g.appendChild(role);
-    const choose = function () { selectPlayer(id); }; g.addEventListener("click", choose); g.addEventListener("keydown", function (event) { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); choose(); } });
-    svg.appendChild(g); state.players[id] = { g, selected, role };
+
+  function tokenOffense(p) {
+    var g = el("g", { class: "sim-player", "data-player": p.id, tabindex: "0", role: "button", "aria-label": p.letter });
+    g.appendChild(el("circle", { r: "26", fill: "transparent" }));
+    var selected = el("circle", { r: "24", fill: "none", stroke: "#fff", "stroke-width": "2.4", opacity: "0" });
+    var stroke = p.stroke || "#1a1a1a";
+    var sw = p.stroke ? "3.4" : "2.2";
+    var disc = el("circle", { r: "17", fill: p.color, stroke: stroke, "stroke-width": sw });
+    var label = el("text", {
+      x: "0", y: "5",
+      fill: darkFill(p.color) ? "#fff" : "#111",
+      "font-size": "12", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none"
+    });
+    label.textContent = p.letter;
+    var role = el("text", {
+      x: "0", y: "30", fill: "#f6c344", "font-size": "8", "font-weight": "800",
+      "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "3", "pointer-events": "none"
+    });
+    g.appendChild(selected); g.appendChild(disc); g.appendChild(label); g.appendChild(role);
+    g.addEventListener("click", function () { selectPlayer(p.id); });
+    g.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selectPlayer(p.id); }
+    });
+    svg.appendChild(g);
+    state.players[p.id] = { g: g, selected: selected, role: role, kind: "O", spec: p };
   }
+
+  function tokenDefense(d) {
+    var g = el("g", { class: "sim-player", "data-player": d.id, tabindex: "0", role: "button", "aria-label": d.letter });
+    g.appendChild(el("circle", { r: "26", fill: "transparent" }));
+    var selected = el("circle", { r: "24", fill: "none", stroke: "#fff", "stroke-width": "2.4", opacity: "0" });
+    var sq = el("rect", { x: "-15", y: "-15", width: "30", height: "30", rx: "3", fill: "#f8fafc", stroke: "#111", "stroke-width": "2.2" });
+    var label = el("text", {
+      x: "0", y: "5", fill: "#111", "font-size": "11", "font-weight": "800",
+      "text-anchor": "middle", "pointer-events": "none"
+    });
+    label.textContent = d.letter;
+    var role = el("text", { x: "0", y: "30", fill: "#f6c344", "font-size": "8", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none" });
+    g.appendChild(selected); g.appendChild(sq); g.appendChild(label); g.appendChild(role);
+    g.addEventListener("click", function () { selectPlayer(d.id); });
+    g.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selectPlayer(d.id); }
+    });
+    svg.appendChild(g);
+    state.players[d.id] = { g: g, selected: selected, role: role, kind: "D", spec: d };
+  }
+
+  function rebuildTokens() {
+    Object.keys(state.players).forEach(function (id) {
+      var node = state.players[id].g;
+      if (node && node.parentNode) node.parentNode.removeChild(node);
+    });
+    state.players = {};
+    var play = currentPlay();
+    play.defense.forEach(tokenDefense);
+    play.offense.forEach(tokenOffense);
+    if (ball && ball.parentNode) svg.appendChild(ball);
+  }
+
   function buildField() {
-    svg = el("svg", { viewBox: `0 0 ${W} ${H}`, class: "sim-svg full-team-svg", role: "img", "aria-label": "Eight-on-eight QB direct-snap play with two wing backs" });
-    const defs = el("defs", {}); defs.innerHTML = `<marker id="runnerArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f6c344"/></marker><marker id="leadArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fff"/></marker><marker id="fakeArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d8b4fe"/></marker><marker id="blockArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#67e8f9"/></marker><radialGradient id="fieldGlow" cx="50%" cy="65%" r="85%"><stop offset="0%" stop-color="#14532d"/><stop offset="100%" stop-color="#0b3522"/></radialGradient>`;
-    svg.appendChild(defs); svg.appendChild(el("rect", { width: W, height: H, fill: "url(#fieldGlow)" }));
-    [90, 190, 290, 520, 640, 760, 870].forEach((y) => svg.appendChild(el("line", { x1: "35", y1: y, x2: String(W - 35), y2: y, stroke: "rgba(255,255,255,.13)", "stroke-width": "2" })));
-    svg.appendChild(el("line", { x1: "26", y1: LOS, x2: String(W - 26), y2: LOS, stroke: "#f6c344", "stroke-width": "3" }));
-    const los = el("text", { x: "38", y: String(LOS - 10), fill: "#f6c344", "font-size": "11", "font-weight": "800" }); los.textContent = "LOS"; svg.appendChild(los);
-    formationLabel = el("text", { x: "500", y: "915", fill: "#f6c344", "font-size": "19", "font-weight": "900", "text-anchor": "middle", "letter-spacing": "2" }); svg.appendChild(formationLabel);
-    svg.appendChild(el("line", { x1: "500", y1: "478", x2: "500", y2: "790", stroke: "rgba(255,255,255,.38)", "stroke-width": "3", "stroke-dasharray": "10 12" }));
-    const snapText = el("text", { x: "515", y: "620", fill: "#fff", "font-size": "15", "font-weight": "900", transform: "rotate(90 515 620)" }); snapText.textContent = "DIRECT SNAP TO QB"; svg.appendChild(snapText);
-    holeRing = el("circle", { r: "16", fill: "rgba(0,0,0,.14)", "stroke-width": "3", class: "sim-hole" }); holeLabel = el("text", { "font-size": "12", "font-weight": "800", "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "4" }); svg.appendChild(holeRing); svg.appendChild(holeLabel);
-    blockLayer = el("g", { class: "sim-block-routes" }); svg.appendChild(blockLayer);
-    hipLayer = el("g", { class: "sim-hip-marks" }); svg.appendChild(hipLayer);
-    routeFake = el("path", { fill: "none", stroke: "#d8b4fe", "stroke-width": "3", "stroke-dasharray": "8 7", "stroke-linecap": "round", "marker-end": "url(#fakeArrow)" });
-    routeLead = el("path", { fill: "none", stroke: "#fff", "stroke-width": "3.2", "stroke-dasharray": "9 7", "stroke-linecap": "round", "marker-end": "url(#leadArrow)" });
-    routeRunner = el("path", { fill: "none", stroke: "#f6c344", "stroke-width": "3.4", "stroke-dasharray": "10 7", "stroke-linecap": "round", "marker-end": "url(#runnerArrow)", "data-route-owner": "QB" });
-    svg.appendChild(routeFake); svg.appendChild(routeLead); svg.appendChild(routeRunner); DEFENSE.forEach(token); OFFENSE.forEach(token);
-    ball = el("g", { class: "sim-ball" }); ball.appendChild(el("ellipse", { rx: "16", ry: "11", fill: "#f8fafc", stroke: "#3f2b1d", "stroke-width": "3" })); ball.appendChild(el("line", { x1: "-8", y1: "0", x2: "8", y2: "0", stroke: "#9f1239", "stroke-width": "2" })); svg.appendChild(ball); return svg;
+    svg = el("svg", { viewBox: "0 0 " + W + " " + H, class: "sim-svg full-team-svg", role: "img", "aria-label": "Coach-sheet recreation" });
+    var defs = el("defs", {});
+    defs.innerHTML =
+      '<marker id="ballArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>' +
+      '<marker id="blockArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111111"/></marker>' +
+      '<radialGradient id="fieldGlow" cx="50%" cy="65%" r="85%"><stop offset="0%" stop-color="#14532d"/><stop offset="100%" stop-color="#0b3522"/></radialGradient>';
+    svg.appendChild(defs);
+    svg.appendChild(el("rect", { width: String(W), height: String(H), fill: "url(#fieldGlow)" }));
+    [90, 190, 290, 520, 640, 760, 850].forEach(function (y) {
+      svg.appendChild(el("line", { x1: "30", y1: String(y), x2: String(W - 30), y2: String(y), stroke: "rgba(255,255,255,.13)", "stroke-width": "2" }));
+    });
+    svg.appendChild(el("line", { x1: "26", y1: String(LOS), x2: String(W - 26), y2: String(LOS), stroke: "#f6c344", "stroke-width": "3" }));
+    var los = el("text", { x: "38", y: String(LOS - 10), fill: "#f6c344", "font-size": "11", "font-weight": "800" });
+    los.textContent = "LOS";
+    svg.appendChild(los);
+    blockLayer = el("g", { class: "sim-block-routes" });
+    routeLayer = el("g", { class: "sim-skill-routes" });
+    iconLayer = el("g", { class: "sim-ball-icons" });
+    svg.appendChild(blockLayer);
+    svg.appendChild(routeLayer);
+    svg.appendChild(iconLayer);
+    ball = el("g", { class: "sim-ball" });
+    ball.appendChild(el("ellipse", { rx: "14", ry: "10", fill: "#f8fafc", stroke: "#3f2b1d", "stroke-width": "2.6" }));
+    ball.appendChild(el("line", { x1: "-7", y1: "0", x2: "7", y2: "0", stroke: "#9f1239", "stroke-width": "1.8" }));
+    svg.appendChild(ball);
+    return svg;
   }
-  function updateRoutes() {
-    const run = currentRun(); routeRunner.setAttribute("d", pathFor("QB")); routeRunner.setAttribute("stroke", run.color);
-    routeLead.setAttribute("d", pathFor(run.lead)); routeLead.setAttribute("data-route-owner", run.lead); routeFake.setAttribute("d", pathFor(run.fake)); routeFake.setAttribute("data-route-owner", run.fake);
-    drawBlockArrows(); holeRing.setAttribute("cx", run.holeX); holeRing.setAttribute("cy", LOS); holeRing.setAttribute("stroke", run.color); holeLabel.setAttribute("x", run.holeX); holeLabel.setAttribute("y", LOS - 34); holeLabel.setAttribute("fill", run.color); holeLabel.textContent = run.hole; formationLabel.textContent = BACKFIELD[state.formation].label;
-  }
+
   function applyFocus() {
-    const selected = state.selected; Object.keys(state.players).forEach((id) => state.players[id].g.classList.toggle("is-dimmed", Boolean(selected && id !== selected)));
-    svg.querySelectorAll("[data-route-owner]").forEach((route) => { const owner = route.getAttribute("data-route-owner"); route.classList.toggle("is-dimmed", Boolean(selected && owner !== selected)); route.classList.toggle("is-focused", Boolean(selected && owner === selected)); });
+    var selected = state.selected;
+    Object.keys(state.players).forEach(function (id) {
+      state.players[id].g.classList.toggle("is-dimmed", Boolean(selected && id !== selected));
+    });
+    svg.querySelectorAll("[data-route-owner]").forEach(function (route) {
+      var owner = route.getAttribute("data-route-owner");
+      route.classList.toggle("is-dimmed", Boolean(selected && owner !== selected));
+      route.classList.toggle("is-focused", Boolean(selected && owner === selected));
+    });
   }
+
+  function ballPosAt(t) {
+    var play = currentPlay();
+    var pts = play.ball && play.ball.points ? play.ball.points : [];
+    if (!pts.length) {
+      var c = findOff(play, "c") || play.offense[0];
+      return { x: c.x, y: c.y };
+    }
+    return samplePath(pts, clamp(t / 6, 0, 1));
+  }
+
+  function shortRole(p) {
+    if (!p) return "";
+    if (p.role === "RUN" || p.role === "PASS" || p.role === "PITCH") return "BALL";
+    if (p.role === "LEAD") return "LEAD";
+    if (p.role === "FAKE") return "FAKE";
+    if (p.role === "CATCH") return "CATCH";
+    if (p.role === "SNAP") return "SNAP";
+    return "BLOCK";
+  }
+
   function applyPoses() {
-    const run = currentRun(), poses = interpolatedPoses(state.t);
-    Object.keys(poses).forEach((id) => { const player = state.players[id]; player.g.setAttribute("transform", `translate(${poses[id].x},${poses[id].y})`); player.role.textContent = OFFENSE.includes(id) ? shortRole(id, run) : ""; player.selected.setAttribute("opacity", state.selected === id ? "1" : "0"); });
-    drawHips(poses);
-    const center = poses.C, qb = poses.QB, snapAmount = clamp(state.t, 0, 1), ballPos = state.t < 1 ? mixPoint({ x: center.x, y: center.y + 16 }, { x: qb.x + 11, y: qb.y - 5 }, ease(snapAmount)) : { x: qb.x + 11, y: qb.y - 5 }; ball.setAttribute("transform", `translate(${ballPos.x},${ballPos.y})`);
-    const shown = clamp(Math.round(state.t), 0, 6); beatEl.textContent = `${BEATS[shown].name} · ${shown + 1} OF 7`; cueEl.textContent = BEATS[shown].cue; slider.value = String(state.t); document.querySelectorAll("[data-sim-dot]").forEach((dot) => dot.classList.toggle("is-on", Number(dot.getAttribute("data-sim-dot")) === shown)); applyFocus();
+    var play = currentPlay();
+    var poses = interpolatedPoses(state.t);
+    Object.keys(state.players).forEach(function (id) {
+      var player = state.players[id];
+      var pos = poses[id];
+      if (!pos) return;
+      player.g.setAttribute("transform", "translate(" + pos.x + "," + pos.y + ")");
+      player.selected.setAttribute("opacity", state.selected === id ? "1" : "0");
+      if (player.kind === "O") player.role.textContent = shortRole(player.spec);
+      else player.role.textContent = "";
+    });
+    var bp = ballPosAt(state.t);
+    ball.setAttribute("transform", "translate(" + bp.x + "," + bp.y + ")");
+    var shown = clamp(Math.round(state.t), 0, 6);
+    if (beatEl) beatEl.textContent = BEATS[shown].name + " · " + (shown + 1) + " OF 7";
+    if (cueEl && !state.selected) cueEl.textContent = play.cue || BEATS[shown].cue;
+    if (slider) slider.value = String(state.t);
+    document.querySelectorAll("[data-sim-dot]").forEach(function (dot) {
+      dot.classList.toggle("is-on", Number(dot.getAttribute("data-sim-dot")) === shown);
+    });
+    applyFocus();
   }
-  function roleClass(role) { return role.toLowerCase().replace(/[^a-z0-9]+/g, "-"); }
+
+  function jobFor(id) {
+    var play = currentPlay();
+    var o = findOff(play, id);
+    if (o) return o.letter + ": " + (o.job || shortRole(o));
+    var d = findDef(play, id);
+    if (d) return d.letter + ": stay home, then flag. No tackling.";
+    return "";
+  }
+
   function updateAssignments() {
-    const run = currentRun(), board = document.getElementById("sim-assignments"), order = ["LT", "LG", "C", "RG", "RT", "QB", "WBL", "WBR"];
-    board.innerHTML = order.map((id) => { const role = roleFor(id, run); return `<button type="button" class="assignment-card role-${roleClass(role)}" data-assignment-player="${id}"><span class="assignment-position">${HOME[id].label}</span><span class="assignment-role">${role}</span><span class="assignment-task">${taskFor(id, run)}</span></button>`; }).join("");
-    board.querySelectorAll("[data-assignment-player]").forEach((card) => card.addEventListener("click", function () { selectPlayer(card.getAttribute("data-assignment-player")); }));
+    var play = currentPlay();
+    var board = document.getElementById("sim-assignments");
+    if (!board) return;
+    board.innerHTML = play.offense.map(function (p) {
+      var role = p.role === "RUN" || p.role === "PASS" || p.role === "PITCH" ? "BALL" : (p.role || "BLOCK");
+      var cls = "assignment-card role-" + String(role).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      return '<button type="button" class="' + cls + '" data-assignment-player="' + p.id + '">' +
+        '<span class="assignment-position">' + p.letter + "</span>" +
+        '<span class="assignment-role">' + role + "</span>" +
+        '<span class="assignment-task">' + (p.job || "") + "</span></button>";
+    }).join("");
+    board.querySelectorAll("[data-assignment-player]").forEach(function (card) {
+      card.addEventListener("click", function () { selectPlayer(card.getAttribute("data-assignment-player")); });
+    });
   }
-  function selectPlayer(id) { state.selected = state.selected === id ? null : id; applyPoses(); document.querySelectorAll("[data-assignment-player]").forEach((card) => card.classList.toggle("is-selected", card.getAttribute("data-assignment-player") === state.selected)); if (state.selected && OFFENSE.includes(state.selected)) cueEl.textContent = `${HOME[state.selected].label}: ${taskFor(state.selected, currentRun())}`; }
+
+  function selectPlayer(id) {
+    state.selected = state.selected === id ? null : id;
+    applyPoses();
+    document.querySelectorAll("[data-assignment-player]").forEach(function (card) {
+      card.classList.toggle("is-selected", card.getAttribute("data-assignment-player") === state.selected);
+    });
+    if (state.selected && cueEl) cueEl.textContent = jobFor(state.selected);
+  }
+
   function setT(value) { state.t = clamp(value, 0, 6); applyPoses(); }
+  function pause() {
+    state.playing = false;
+    if (state.raf) cancelAnimationFrame(state.raf);
+    if (playButton) playButton.textContent = "PLAY SLOW";
+  }
   function setBeat(value) { pause(); setT(clamp(value, 0, 6)); }
-  function pause() { state.playing = false; if (state.raf) cancelAnimationFrame(state.raf); if (playButton) playButton.textContent = "PLAY SLOW"; }
-  function tick(now) { if (!state.playing) return; const remaining = 6 - state.startT, duration = state.speed * (remaining / 6), progress = duration <= 0 ? 1 : clamp((now - state.startedAt) / duration, 0, 1); setT(state.startT + remaining * progress); if (progress < 1 && state.playing) state.raf = requestAnimationFrame(tick); else { state.playing = false; setT(6); playButton.textContent = "PLAY AGAIN"; } }
-  function play() { if (state.playing) { pause(); return; } if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setT(6); return; } if (state.t >= 5.99) setT(0); state.playing = true; state.startT = state.t; state.startedAt = performance.now(); playButton.textContent = "PAUSE"; state.raf = requestAnimationFrame(tick); }
-  function reset() { pause(); state.selected = null; setT(0); document.querySelectorAll("[data-assignment-player]").forEach((card) => card.classList.remove("is-selected")); }
-  function updateFormationUi() {
-    document.querySelectorAll("[data-sim-formation]").forEach((button) => { const active = button.getAttribute("data-sim-formation") === state.formation; button.classList.toggle("is-active", active); button.setAttribute("aria-pressed", String(active)); });
-    const explanation = document.getElementById("sim-formation-explain"); if (explanation) explanation.textContent = state.formation === "wide" ? "Wings split wide so every child can see the QB, lane, and leverage." : "Both Wings line up close to the QB for the tight backfield look.";
+  function tick(now) {
+    if (!state.playing) return;
+    var remaining = 6 - state.startT;
+    var duration = state.speed * (remaining / 6);
+    var progress = duration <= 0 ? 1 : clamp((now - state.startedAt) / duration, 0, 1);
+    setT(state.startT + remaining * progress);
+    if (progress < 1 && state.playing) state.raf = requestAnimationFrame(tick);
+    else { state.playing = false; setT(6); if (playButton) playButton.textContent = "PLAY AGAIN"; }
   }
-  function setFormation(key) { if (!BACKFIELD[key]) return; pause(); state.formation = key; state.selected = null; state.t = 0; updateFormationUi(); updateRoutes(); updateAssignments(); applyPoses(); }
+  function play() {
+    if (state.playing) { pause(); return; }
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setT(6); return; }
+    if (state.t >= 5.99) setT(0);
+    state.playing = true;
+    state.startT = state.t;
+    state.startedAt = performance.now();
+    if (playButton) playButton.textContent = "PAUSE";
+    state.raf = requestAnimationFrame(tick);
+  }
+  function reset() {
+    pause();
+    state.selected = null;
+    setT(0);
+    document.querySelectorAll("[data-assignment-player]").forEach(function (card) { card.classList.remove("is-selected"); });
+  }
+
   function setRun(key) {
-    if (!RUNS[key]) return; pause(); state.runKey = key; state.selected = null; state.t = 0; const run = currentRun(); document.getElementById("sim-play-name").textContent = run.name;
-    const badge = document.getElementById("sim-play-badge"); badge.textContent = `${run.symbol} · ${run.hole}`; badge.style.borderColor = run.color; badge.style.color = run.color;
-    document.querySelectorAll(".play-btn").forEach((button) => { const active = button.getAttribute("data-run-key") === key; button.classList.toggle("is-active", active); button.setAttribute("aria-pressed", String(active)); button.style.outline = ""; }); updateRoutes(); updateAssignments(); applyPoses();
+    if (!playMap()[key]) return;
+    pause();
+    state.runKey = key;
+    state.selected = null;
+    state.t = 0;
+    var play = currentPlay();
+    var nameEl = document.getElementById("sim-play-name");
+    if (nameEl) nameEl.textContent = play.name + " · " + play.call;
+    var badge = document.getElementById("sim-play-badge");
+    if (badge) { badge.textContent = play.call; badge.style.borderColor = ""; badge.style.color = ""; }
+    if (photoEl) {
+      photoEl.src = play.photo;
+      photoEl.alt = "Coach sheet for " + play.name + " " + play.call;
+    }
+    document.querySelectorAll(".play-btn").forEach(function (button) {
+      var active = button.getAttribute("data-run-key") === key;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    rebuildTokens();
+    drawStaticRoutes();
+    updateAssignments();
+    applyPoses();
   }
+
   document.addEventListener("DOMContentLoaded", function () {
-    const root = document.getElementById("sim-root"); cueEl = document.getElementById("sim-cue"); beatEl = document.getElementById("sim-beat"); slider = document.getElementById("sim-slider"); playButton = document.getElementById("sim-play"); if (!root || !cueEl || !beatEl || !slider || !playButton) return;
-    root.innerHTML = ""; root.appendChild(buildField()); document.querySelectorAll(".play-btn").forEach((button) => button.addEventListener("click", function () { setRun(button.getAttribute("data-run-key")); })); document.querySelectorAll("[data-sim-formation]").forEach((button) => button.addEventListener("click", function () { setFormation(button.getAttribute("data-sim-formation")); }));
-    playButton.addEventListener("click", play); document.getElementById("sim-back").addEventListener("click", function () { setBeat(Math.round(state.t) - 1); }); document.getElementById("sim-next").addEventListener("click", function () { setBeat(Math.round(state.t) + 1); }); document.getElementById("sim-reset").addEventListener("click", reset); slider.addEventListener("input", function () { pause(); setT(Number(slider.value)); });
-    document.querySelectorAll("[data-sim-speed]").forEach((button) => button.addEventListener("click", function () { const speeds = { slow: 11000, normal: 7000, fast: 4300 }; state.speed = speeds[button.getAttribute("data-sim-speed")] || 11000; document.querySelectorAll("[data-sim-speed]").forEach((item) => { const active = item === button; item.classList.toggle("is-active", active); item.setAttribute("aria-pressed", String(active)); }); }));
-    updateFormationUi(); setRun("inside-right");
+    var root = document.getElementById("sim-root");
+    cueEl = document.getElementById("sim-cue");
+    beatEl = document.getElementById("sim-beat");
+    slider = document.getElementById("sim-slider");
+    playButton = document.getElementById("sim-play");
+    photoEl = document.getElementById("coach-sheet-photo");
+    if (!root || !plays().length) return;
+    root.innerHTML = "";
+    root.appendChild(buildField());
+    document.querySelectorAll(".play-btn[data-run-key]").forEach(function (button) {
+      button.addEventListener("click", function () { setRun(button.getAttribute("data-run-key")); });
+    });
+    if (playButton) playButton.addEventListener("click", play);
+    var back = document.getElementById("sim-back");
+    var next = document.getElementById("sim-next");
+    var rst = document.getElementById("sim-reset");
+    if (back) back.addEventListener("click", function () { setBeat(Math.round(state.t) - 1); });
+    if (next) next.addEventListener("click", function () { setBeat(Math.round(state.t) + 1); });
+    if (rst) rst.addEventListener("click", reset);
+    if (slider) slider.addEventListener("input", function () { pause(); setT(Number(slider.value)); });
+    document.querySelectorAll("[data-sim-speed]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        var speeds = { slow: 11000, normal: 7000, fast: 4300 };
+        state.speed = speeds[button.getAttribute("data-sim-speed")] || 11000;
+        document.querySelectorAll("[data-sim-speed]").forEach(function (item) {
+          var active = item === button;
+          item.classList.toggle("is-active", active);
+          item.setAttribute("aria-pressed", String(active));
+        });
+      });
+    });
+    setRun("play-01");
   });
 })();
