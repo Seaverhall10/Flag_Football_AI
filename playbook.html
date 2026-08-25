@@ -1,15 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Interactive Playbook — Cy-Fair K/1 Lions</title>
-  <meta name="description" content="Seven-beat QB direct-snap playbook with wide and tight wing-back spacing for the Cy-Fair K/1 Lions.">
-  <link rel="stylesheet" href="css/styles.css?v=mobile-app-20260824">
+  <meta name="description" content="Fourteen coach-sheet plays for the Cy-Fair K/1 Lions. Photo next to a slow-motion recreation.">
+  <link rel="stylesheet" href="css/styles.css?v=coach-plays-20260825">
 </head>
 <body class="playbook-page">
   <a class="skip-link" href="#main">Skip to content</a>
-  
+
   <header class="mast">
     <div class="mast-inner">
       <a href="index.html" class="brand-group">
@@ -23,7 +23,7 @@
           <p>8-on-8 CFSA Flag Football · One Pride</p>
         </div>
       </a>
-      
+
       <nav class="nav" aria-label="Coach navigation">
         <a href="playbook.html" class="active">📖 Playbook</a>
         <a href="roster.html">👥 Roster</a>
@@ -39,100 +39,59 @@
     <section class="mobile-page-title">
       <p class="eyebrow">Slow-motion teaching</p>
       <h1>Playbook</h1>
-      <p>Pick a run. Watch every player do their job.</p>
+      <p>Pick a play. Match the coach sheet. Watch every job.</p>
     </section>
 
-    <!-- Run Selector Buttons -->
     <section class="panel play-picker">
       <div class="panel-header">
-        <h2>1. Pick the run</h2>
+        <h2>1. Pick the play</h2>
         <span class="tiny">Swipe or tap</span>
       </div>
       <div class="btn-grid">
-        <button class="play-btn run-red active" type="button" data-run-key="inside-right" data-name="Inside Right" data-symbol="Red Diamond" data-hole="C-RG" data-color="#dc2626" style="outline:3px solid #dc2626">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 22,12 12,22 2,12" fill="#dc2626"/></svg>
-            Inside Right
-          </div>
-          <small>QB Keeper · C-RG A-Gap</small>
-        </button>
-
-        <button class="play-btn run-blue" type="button" data-run-key="inside-left" data-name="Inside Left" data-symbol="Blue Circle" data-hole="C-LG" data-color="#2563eb">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#2563eb"/></svg>
-            Inside Left
-          </div>
-          <small>QB Keeper · C-LG A-Gap</small>
-        </button>
-
-        <button class="play-btn run-gold" type="button" data-run-key="off-tackle-right" data-name="Off-Tackle Right" data-symbol="Gold Star" data-hole="RG-RT" data-color="#d97706">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16.5,14 18.5,22 12,17.5 5.5,22 7.5,14 2,9 9,9" fill="#d97706"/></svg>
-            Off-Tackle R
-          </div>
-          <small>QB Keeper · RG-RT B-Gap</small>
-        </button>
-
-        <button class="play-btn run-green" type="button" data-run-key="off-tackle-left" data-name="Off-Tackle Left" data-symbol="Green Triangle" data-hole="LG-LT" data-color="#16a34a">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><polygon points="12,3 22,21 2,21" fill="#16a34a"/></svg>
-            Off-Tackle L
-          </div>
-          <small>QB Keeper · LG-LT B-Gap</small>
-        </button>
-
-        <button class="play-btn run-orange" type="button" data-run-key="wide-right" data-name="Wide Right" data-symbol="Orange Square" data-hole="RT outside hip" data-color="#ea580c">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" fill="#ea580c"/></svg>
-            Wide Right
-          </div>
-          <small>QB Keeper · RT Outside</small>
-        </button>
-
-        <button class="play-btn run-purple" type="button" data-run-key="wide-left" data-name="Wide Left" data-symbol="Purple Hexagon" data-hole="LT outside hip" data-color="#9333ea">
-          <div class="btn-title">
-            <svg class="sym" viewBox="0 0 24 24"><polygon points="12,2 21,7 21,17 12,22 3,17 3,7" fill="#9333ea"/></svg>
-            Wide Left
-          </div>
-          <small>QB Keeper · LT Outside</small>
-        </button>
+        <button class="play-btn run-red active" type="button" data-run-key="play-01" aria-pressed="true"><div class="btn-title">Play 1</div><small>Off-Tackle Right</small></button>
+        <button class="play-btn run-blue" type="button" data-run-key="play-02"><div class="btn-title">Play 2</div><small>Off-Tackle Left</small></button>
+        <button class="play-btn run-gold" type="button" data-run-key="play-03"><div class="btn-title">Play 3</div><small>Sweep Right</small></button>
+        <button class="play-btn run-green" type="button" data-run-key="play-04"><div class="btn-title">Play 4</div><small>Sweep Left</small></button>
+        <button class="play-btn run-orange" type="button" data-run-key="play-05"><div class="btn-title">Play 5</div><small>Wing Pass Right</small></button>
+        <button class="play-btn run-purple" type="button" data-run-key="play-06"><div class="btn-title">Play 6</div><small>Reverse Left</small></button>
+        <button class="play-btn run-red" type="button" data-run-key="play-07"><div class="btn-title">Play 7</div><small>A-Gap Right</small></button>
+        <button class="play-btn run-blue" type="button" data-run-key="play-08"><div class="btn-title">Play 8</div><small>A-Gap Left</small></button>
+        <button class="play-btn run-gold" type="button" data-run-key="play-09"><div class="btn-title">Play 9</div><small>Toss Right</small></button>
+        <button class="play-btn run-green" type="button" data-run-key="play-10"><div class="btn-title">Play 10</div><small>Toss Left</small></button>
+        <button class="play-btn run-orange" type="button" data-run-key="play-11"><div class="btn-title">Play 11</div><small>Boot Right</small></button>
+        <button class="play-btn run-purple" type="button" data-run-key="play-12"><div class="btn-title">Play 12</div><small>Sweep Left</small></button>
+        <button class="play-btn run-red" type="button" data-run-key="play-13"><div class="btn-title">Play 13</div><small>Wide Sweep Right</small></button>
+        <button class="play-btn run-blue" type="button" data-run-key="play-14"><div class="btn-title">Play 14</div><small>Wide Sweep Left</small></button>
       </div>
     </section>
 
-    <section class="panel formation-picker">
-      <div class="panel-header">
-        <h2>2. Set the wings</h2>
-        <span class="tiny">Same play · different spacing</span>
-      </div>
-      <div class="formation-buttons" role="group" aria-label="Wing-back spacing">
-        <button type="button" class="formation-button is-active" data-sim-formation="wide" aria-pressed="true">
-          <strong>SPREAD WINGS</strong><span>WING-L ← QB → WING-R</span>
-        </button>
-        <button type="button" class="formation-button" data-sim-formation="tight" aria-pressed="false">
-          <strong>TIGHT WINGS</strong><span>WING-L · QB · WING-R</span>
-        </button>
-      </div>
-      <p id="sim-formation-explain" class="formation-explain">Wings split wide so every child can see the QB, lane, and leverage.</p>
-    </section>
-
-    <!-- Governed seven-beat full-team simulator -->
     <section class="panel play-teacher">
       <div class="panel-header">
         <div>
-          <div class="tiny">3. Watch Everybody</div>
-          <h2 id="sim-play-name">QB Inside Right</h2>
+          <div class="tiny">2. Coach sheet + live picture</div>
+          <h2 id="sim-play-name">Play 1 · Off-Tackle Right</h2>
         </div>
-        <span class="play-call-badge" id="sim-play-badge">Red Diamond · C–RG</span>
+        <span class="play-call-badge" id="sim-play-badge">Off-Tackle Right</span>
       </div>
       <div class="sim-key" aria-label="Route colors">
-        <span><i class="key-runner"></i>QB Run</span>
-        <span><i class="key-lead"></i>Lead Wing</span>
-        <span><i class="key-fake"></i>Backside Wing</span>
-        <span><i class="key-block"></i>Block</span>
+        <span><i class="key-runner key-ball"></i>Ball path</span>
+        <span><i class="key-block"></i>Block / lead</span>
+        <span><i class="key-fake"></i>Fake</span>
       </div>
       <p id="sim-beat" class="timer-label sim-beat">LINE UP · 1 OF 7</p>
-      <div id="sim-root" class="sim-root"></div>
-      <p id="sim-cue" class="sim-cue" aria-live="polite">QB behind Center. WING-L and WING-R use the selected spacing.</p>
+
+      <div class="proof-row">
+        <figure class="proof-pane proof-photo-pane">
+          <img id="coach-sheet-photo" src="plays/play-01.jpg" alt="Coach sheet for Play 1 Off-Tackle Right">
+          <figcaption>Coach sheet</figcaption>
+        </figure>
+        <figure class="proof-pane proof-live-pane">
+          <div id="sim-root" class="sim-root"></div>
+          <figcaption>Live recreation</figcaption>
+        </figure>
+      </div>
+
+      <p id="sim-cue" class="sim-cue" aria-live="polite">Find your circle. Two-point stance. Eyes up.</p>
       <div class="sim-controls">
         <button type="button" class="btn btn-primary sim-big" id="sim-play">PLAY SLOW</button>
         <button type="button" class="btn btn-secondary sim-big" id="sim-back">BACK</button>
@@ -155,9 +114,8 @@
       </details>
     </section>
 
-    <!-- Position assignments -->
     <details class="playbook-more" open>
-      <summary>4. Find my job</summary>
+      <summary>3. Find my job</summary>
       <section class="panel">
         <div class="panel-header">
           <h2>Tap a position</h2>
@@ -167,15 +125,14 @@
       </section>
     </details>
 
-    <!-- Universal Cues -->
     <details class="playbook-more" open>
       <summary>Coaching words</summary>
       <section class="panel">
         <div class="cue-grid">
-          <div class="cue"><strong>OL</strong>Find your jersey. Head out. Hands inside.</div>
-          <div class="cue"><strong>QB</strong>See it. Catch it. Tuck it. Run.</div>
-          <div class="cue"><strong>Wings</strong>Lead side first. Backside sells fake.</div>
-          <div class="cue"><strong>Front</strong>Stay home, then flag.</div>
+          <div class="cue"><strong>OL</strong>Two-point. Eyes up. Head out. Hands inside.</div>
+          <div class="cue"><strong>RB</strong>See it. Catch it. Tuck it. Follow the red path.</div>
+          <div class="cue"><strong>W</strong>Your arrow is your job. Stay on it.</div>
+          <div class="cue"><strong>Front</strong>Stay home, then flag. No tackling.</div>
           <div class="cue"><strong>CB</strong>Nothing outside. Force in.</div>
         </div>
       </section>
@@ -189,7 +146,8 @@
     </div>
   </footer>
 
-  <script src="js/sim.js?v=ot-hips"></script>
-  <script src="js/app.js?v=mobile-app-20260824"></script>
+  <script src="js/plays-data.js?v=coach-plays-20260825"></script>
+  <script src="js/sim.js?v=coach-plays-20260825"></script>
+  <script src="js/app.js?v=coach-plays-20260825"></script>
 </body>
 </html>
