@@ -1,7 +1,8 @@
 /**
  * Cy-Fair K/1 Lions — 14 coach-sheet plays.
  * Source of truth: photographed binder pages in /plays (play-01.jpg … play-14.jpg).
- * Labels match the sheet: C, G, T, W, RB, DT, DE, LB, CB. Circles = offense, squares = defense.
+ * Labels match the sheet plus a deep Safety: C, G, T, W, RB, DT, DE, LB, CB, S. Circles = offense, squares = defense.
+ * Defense is 3-2-2-1 (single nose DT, two LB, two CB, one S). Both guards double the nose.
  */
 (function (root) {
   "use strict";
@@ -28,18 +29,22 @@
     opts = opts || {};
     var deL = opts.deL != null ? opts.deL : 225;
     var deR = opts.deR != null ? opts.deR : 775;
-    var dtL = opts.dtL != null ? opts.dtL : 410;
-    var dtR = opts.dtR != null ? opts.dtR : 590;
     var y = 348;
+    var sSlide = opts.sSlide || (opts.hand === "L"
+      ? [{ x: 500, y: 118 }, { x: 360, y: 105 }]
+      : [{ x: 500, y: 118 }, { x: 640, y: 105 }]);
     return [
       def("cb-l", "CB", opts.cbL != null ? opts.cbL : 78, 300, opts.cbLSlide ? { slide: opts.cbLSlide } : null),
       def("de-l", "DE", deL, y),
-      def("dt-l", "DT", dtL, y),
-      def("dt-r", "DT", dtR, y),
+      def("dt-l", "DT", 500, y),
       def("de-r", "DE", deR, y),
       def("cb-r", "CB", opts.cbR != null ? opts.cbR : 922, 300, opts.cbRSlide ? { slide: opts.cbRSlide } : null),
       def("lb-l", "LB", opts.lbL != null ? opts.lbL : 330, 228),
-      def("lb-r", "LB", opts.lbR != null ? opts.lbR : 670, 228)
+      def("lb-r", "LB", opts.lbR != null ? opts.lbR : 670, 228),
+      def("s", "S", 500, 118, {
+        job: "Stay deep. Hash to hash. Fit the run after the cut. Flag only.",
+        slide: sSlide
+      })
     ];
   }
   function blk(from, to) { return { from: from, toDefenderId: to }; }
@@ -64,19 +69,19 @@
         off("rg", "G", PUR, 588, 452, "Block the right DT. Stay square."),
         off("rt", "T", PUR, 672, 452, "Climb to the right LB. Head out."),
         off("rb-lead", "RB", PUR, 430, 538, "Lead around the right tackle. Point at the right DE.", { role: "LEAD" }),
-        off("rb-ball", "RB", GOLD, 545, 602, "Catch the snap. Hit the A-gap right (C–RG). One cut. North.", { role: "RUN", stroke: RED })
+        off("rb-ball", "RB", GOLD, 545, 602, "Catch the snap. Hit the A-gap right (C–RG). One cut. North. Cut off the linebacker. Watch the Safety.", { role: "RUN", stroke: RED })
       ],
       defense: front({ deL: 175, deR: 760, lbL: 300, lbR: 640 }),
       blocks: [
         blk("w", "de-l"), blk("lt", "lb-l"), blk("lg", "dt-l"),
-        blk("rg", "dt-r"), blk("rt", "lb-r"), blk("rb-lead", "de-r")
+        blk("rg", "dt-l"), blk("rt", "lb-r"), blk("rb-lead", "de-r")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 455, y: 390 }, { x: 390, y: 250 }]),
         rte("rb-lead", [{ x: 430, y: 538 }, { x: 620, y: 500 }, { x: 740, y: 400 }, { x: 770, y: 330 }]),
-        rte("rb-ball", [{ x: 545, y: 602 }, { x: 530, y: 500 }, { x: 545, y: 400 }, { x: 555, y: 240 }, { x: 560, y: 80 }], "dashed", RED)
+        rte("rb-ball", [{ x: 545, y: 602 }, { x: 530, y: 500 }, { x: 545, y: 400 }, { x: 545, y: 250 }, { x: 640, y: 230 }, { x: 655, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 545, y: 590 }, { x: 530, y: 500 }, { x: 545, y: 400 }, { x: 555, y: 240 }, { x: 560, y: 80 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 545, y: 590 }, { x: 530, y: 500 }, { x: 545, y: 400 }, { x: 545, y: 250 }, { x: 640, y: 230 }, { x: 655, y: 80 }] }
     },
 
     /* 2. Off-Tackle Left — W right; purple RB leads left; red RB through LT–DE. */
@@ -94,19 +99,19 @@
         off("rt", "T", PUR, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 772, 468, "Block the right DE. Hands inside."),
         off("rb-lead", "RB", PUR, 575, 530, "Lead left. Point at the left DE.", { role: "LEAD" }),
-        off("rb-ball", "RB", GOLD, 455, 605, "Catch it. Off-tackle left. One cut. North.", { role: "RUN", stroke: RED })
+        off("rb-ball", "RB", GOLD, 455, 605, "Catch it. Off-tackle left. One cut. North. Cut off the linebacker. Watch the Safety.", { role: "RUN", stroke: RED })
       ],
-      defense: front({ deL: 250, deR: 790, lbL: 290, lbR: 680 }),
+      defense: front({ deL: 250, deR: 790, lbL: 290, lbR: 680, hand: "L" }),
       blocks: [
-        blk("lt", "lb-l"), blk("lg", "dt-l"), blk("rg", "dt-r"),
+        blk("lt", "lb-l"), blk("lg", "dt-l"), blk("rg", "dt-l"),
         blk("rt", "lb-r"), blk("w", "de-r"), blk("rb-lead", "de-l")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 450, y: 385 }, { x: 360, y: 250 }]),
         rte("rb-lead", [{ x: 575, y: 530 }, { x: 430, y: 500 }, { x: 280, y: 400 }, { x: 240, y: 330 }]),
-        rte("rb-ball", [{ x: 455, y: 605 }, { x: 370, y: 500 }, { x: 300, y: 400 }, { x: 270, y: 240 }, { x: 250, y: 80 }], "dashed", RED)
+        rte("rb-ball", [{ x: 455, y: 605 }, { x: 370, y: 500 }, { x: 300, y: 380 }, { x: 210, y: 250 }, { x: 195, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 455, y: 590 }, { x: 370, y: 500 }, { x: 300, y: 400 }, { x: 270, y: 240 }, { x: 250, y: 80 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 455, y: 590 }, { x: 370, y: 500 }, { x: 300, y: 380 }, { x: 210, y: 250 }, { x: 195, y: 80 }] }
     },
 
     /* 3. Sweep Right, fake left to W. */
@@ -129,14 +134,14 @@
       defense: front(),
       blocks: [
         blk("lt", "de-l"), blk("lg", "dt-l"), blk("c", "lb-l"),
-        blk("rg", "dt-r"), blk("rt", "lb-r"), blk("rb-lead", "de-r")
+        blk("rg", "dt-l"), blk("rt", "lb-r"), blk("rb-lead", "de-r")
       ],
       routes: [
         rte("w", [{ x: 355, y: 545 }, { x: 250, y: 560 }, { x: 130, y: 480 }, { x: 90, y: 300 }], "dashed", "#111111"),
         rte("rb-lead", [{ x: 595, y: 538 }, { x: 700, y: 430 }, { x: 775, y: 340 }]),
-        rte("rb-ball", [{ x: 500, y: 575 }, { x: 620, y: 590 }, { x: 760, y: 520 }, { x: 860, y: 360 }, { x: 880, y: 90 }], "dashed", RED)
+        rte("rb-ball", [{ x: 500, y: 575 }, { x: 620, y: 590 }, { x: 760, y: 520 }, { x: 860, y: 360 }, { x: 860, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 500, y: 560 }, { x: 620, y: 590 }, { x: 760, y: 520 }, { x: 860, y: 360 }, { x: 880, y: 90 }], icons: [{ x: 500, y: 530 }, { x: 700, y: 555 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 500, y: 560 }, { x: 620, y: 590 }, { x: 760, y: 520 }, { x: 860, y: 360 }, { x: 860, y: 80 }], icons: [{ x: 500, y: 530 }, { x: 700, y: 555 }] }
     },
 
     /* 4. Sweep Left, fake right. */
@@ -153,20 +158,20 @@
         off("rg", "G", BLU, 588, 452, "Block the right DT."),
         off("rt", "T", BLU, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 360, 545, "Stay home, then open the left edge.", { role: "LEAD" }),
-        off("rb-ball", "RB", GOLD, 500, 575, "Catch it. Sweep left. One cut. North.", { role: "RUN", stroke: RED }),
+        off("rb-ball", "RB", GOLD, 500, 575, "Catch it. Sweep left. One cut. North. Cut off the linebacker. Watch the Safety.", { role: "RUN", stroke: RED }),
         off("rb-fake", "RB", BLU, 595, 538, "Sell the fake right, then the right DE.", { role: "FAKE" })
       ],
-      defense: front(),
+      defense: front({ hand: "L" }),
       blocks: [
         blk("lt", "de-l"), blk("lg", "dt-l"), blk("c", "lb-l"),
-        blk("rg", "dt-r"), blk("rt", "lb-r"), blk("rb-fake", "de-r")
+        blk("rg", "dt-l"), blk("rt", "lb-r"), blk("rb-fake", "de-r")
       ],
       routes: [
         rte("rb-fake", [{ x: 595, y: 538 }, { x: 720, y: 560 }, { x: 860, y: 470 }, { x: 900, y: 300 }], "dashed", "#111111"),
         rte("w", [{ x: 360, y: 545 }, { x: 250, y: 430 }, { x: 180, y: 300 }]),
-        rte("rb-ball", [{ x: 500, y: 575 }, { x: 360, y: 590 }, { x: 200, y: 500 }, { x: 110, y: 340 }, { x: 90, y: 90 }], "dashed", RED)
+        rte("rb-ball", [{ x: 500, y: 575 }, { x: 360, y: 590 }, { x: 200, y: 500 }, { x: 110, y: 360 }, { x: 110, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 500, y: 560 }, { x: 360, y: 590 }, { x: 200, y: 500 }, { x: 110, y: 340 }, { x: 90, y: 90 }], icons: [{ x: 500, y: 530 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 500, y: 560 }, { x: 360, y: 590 }, { x: 200, y: 500 }, { x: 110, y: 360 }, { x: 110, y: 80 }], icons: [{ x: 500, y: 530 }] }
     },
 
     /* 5. Wing pass / rollout right. Football icons on the dashed path to W. */
@@ -189,7 +194,7 @@
       defense: front({ deR: 800, cbR: 940 }),
       blocks: [
         blk("lt", "de-l"), blk("lg", "dt-l"), blk("c", "lb-l"),
-        blk("rg", "dt-r"), blk("rt", "de-r"), blk("rb-lead", "de-r")
+        blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "de-r")
       ],
       routes: [
         rte("w", [{ x: 810, y: 460 }, { x: 760, y: 540 }, { x: 820, y: 380 }, { x: 880, y: 180 }, { x: 910, y: 70 }], "dashed", "#111111"),
@@ -220,19 +225,19 @@
         off("rb-lead", "RB", PUR, 360, 545, "Lead the left DE. Head out.", { role: "LEAD" }),
         off("rb-ball", "RB", GOLD, 500, 575, "Catch it. Pitch left to the Wing.", { role: "PITCH", stroke: RED })
       ],
-      defense: front({ deL: 175, lbL: 310, lbR: 620 }),
+      defense: front({ deL: 175, lbL: 310, lbR: 620, hand: "L" }),
       blocks: [
         blk("lt", "lb-l"), blk("lg", "dt-l"), blk("c", "lb-r"),
-        blk("rg", "dt-r"), blk("rt", "de-r"), blk("rb-lead", "de-l")
+        blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "de-l")
       ],
       routes: [
-        rte("w", [{ x: 210, y: 470 }, { x: 300, y: 560 }, { x: 250, y: 600 }, { x: 120, y: 480 }, { x: 70, y: 280 }, { x: 60, y: 80 }], "dashed", "#111111"),
+        rte("w", [{ x: 210, y: 470 }, { x: 300, y: 560 }, { x: 250, y: 600 }, { x: 120, y: 480 }, { x: 120, y: 400 }, { x: 120, y: 80 }], "dashed", "#111111"),
         rte("rb-lead", [{ x: 360, y: 545 }, { x: 260, y: 430 }, { x: 200, y: 340 }]),
         rte("rb-ball", [{ x: 500, y: 575 }, { x: 430, y: 560 }])
       ],
       ball: {
         carrierId: "w",
-        points: [{ x: 500, y: 468 }, { x: 500, y: 560 }, { x: 360, y: 575 }, { x: 250, y: 600 }, { x: 120, y: 480 }, { x: 70, y: 280 }, { x: 60, y: 80 }],
+        points: [{ x: 500, y: 468 }, { x: 500, y: 560 }, { x: 360, y: 575 }, { x: 250, y: 600 }, { x: 120, y: 480 }, { x: 120, y: 400 }, { x: 120, y: 80 }],
         icons: [{ x: 500, y: 530 }, { x: 360, y: 575 }, { x: 140, y: 450 }]
       }
     },
@@ -260,14 +265,14 @@
       }),
       blocks: [
         blk("lt", "de-l"), blk("lg", "dt-l"), blk("c", "lb-l"),
-        blk("rg", "dt-r"), blk("rt", "lb-r"), blk("w", "de-r")
+        blk("rg", "dt-l"), blk("rt", "lb-r"), blk("w", "de-r")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 455, y: 380 }, { x: 350, y: 230 }]),
         rte("rb-lead", [{ x: 588, y: 545 }, { x: 588, y: 400 }, { x: 600, y: 280 }]),
-        rte("rb-ball", [{ x: 430, y: 575 }, { x: 500, y: 500 }, { x: 545, y: 400 }, { x: 555, y: 240 }, { x: 560, y: 80 }], "dashed", RED)
+        rte("rb-ball", [{ x: 430, y: 575 }, { x: 500, y: 500 }, { x: 545, y: 400 }, { x: 545, y: 250 }, { x: 640, y: 230 }, { x: 655, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 430, y: 560 }, { x: 500, y: 500 }, { x: 545, y: 400 }, { x: 555, y: 240 }, { x: 560, y: 80 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 430, y: 560 }, { x: 500, y: 500 }, { x: 545, y: 400 }, { x: 545, y: 250 }, { x: 640, y: 230 }, { x: 655, y: 80 }] }
     },
 
     /* 8. A-Gap Left — W left (play side purple); red RB through C–LG. Left CB slides. */
@@ -285,22 +290,23 @@
         off("rg", "G", WHT, 588, 452, "Block the right DT. Stay home."),
         off("rt", "T", WHT, 672, 452, "Block the right DE."),
         off("rb-lead", "RB", PUR, 430, 538, "Lead straight through the C–LG A-gap.", { role: "LEAD" }),
-        off("rb-ball", "RB", GOLD, 530, 590, "Catch it. A-gap left. One cut. North.", { role: "RUN", stroke: RED })
+        off("rb-ball", "RB", GOLD, 530, 590, "Catch it. A-gap left. One cut. North. Cut off the linebacker. Watch the Safety.", { role: "RUN", stroke: RED })
       ],
       defense: front({
         deL: 175,
+        hand: "L",
         cbLSlide: [{ x: 78, y: 300 }, { x: 220, y: 250 }, { x: 330, y: 230 }]
       }),
       blocks: [
         blk("w", "de-l"), blk("lt", "lb-l"), blk("lg", "dt-l"),
-        blk("rg", "dt-r"), blk("rt", "de-r")
+        blk("rg", "dt-l"), blk("rt", "de-r")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 545, y: 380 }, { x: 650, y: 230 }]),
         rte("rb-lead", [{ x: 430, y: 538 }, { x: 445, y: 400 }, { x: 450, y: 250 }]),
-        rte("rb-ball", [{ x: 530, y: 590 }, { x: 480, y: 500 }, { x: 455, y: 400 }, { x: 440, y: 240 }, { x: 430, y: 80 }], "dashed", RED)
+        rte("rb-ball", [{ x: 530, y: 590 }, { x: 480, y: 500 }, { x: 455, y: 400 }, { x: 455, y: 250 }, { x: 360, y: 230 }, { x: 345, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 530, y: 575 }, { x: 480, y: 500 }, { x: 455, y: 400 }, { x: 440, y: 240 }, { x: 430, y: 80 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 530, y: 575 }, { x: 480, y: 500 }, { x: 455, y: 400 }, { x: 455, y: 250 }, { x: 360, y: 230 }, { x: 345, y: 80 }] }
     },
 
     /* 9. Toss Right — I-backs; purple RB leads to CB; red RB sweeps outside W. */
@@ -322,15 +328,15 @@
       ],
       defense: front({ deR: 800, lbL: 300, lbR: 700 }),
       blocks: [
-        blk("lt", "lb-l"), blk("lg", "dt-l"), blk("rg", "dt-r"),
+        blk("lt", "lb-l"), blk("lg", "dt-l"), blk("rg", "dt-l"),
         blk("rt", "lb-r"), blk("w", "de-r"), blk("rb-lead", "cb-r")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 440, y: 380 }, { x: 340, y: 250 }]),
         rte("rb-lead", [{ x: 500, y: 530 }, { x: 680, y: 520 }, { x: 820, y: 400 }, { x: 900, y: 280 }]),
-        rte("rb-ball", [{ x: 500, y: 610 }, { x: 700, y: 580 }, { x: 860, y: 450 }, { x: 910, y: 260 }, { x: 920, y: 80 }], "dashed", RED)
+        rte("rb-ball", [{ x: 500, y: 610 }, { x: 700, y: 580 }, { x: 860, y: 450 }, { x: 860, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 500, y: 595 }, { x: 700, y: 580 }, { x: 860, y: 450 }, { x: 910, y: 260 }, { x: 920, y: 80 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 500, y: 595 }, { x: 700, y: 580 }, { x: 860, y: 450 }, { x: 860, y: 80 }] }
     },
 
     /* 10. Toss Left — W left; blue RB leads to CB; red RB sweeps left. */
@@ -350,17 +356,17 @@
         off("rb-lead", "RB", BLU, 430, 545, "Lead wide left. Point at the left CB.", { role: "LEAD" }),
         off("rb-ball", "RB", GOLD, 545, 610, "Catch it. Sweep left. Follow the lead.", { role: "RUN", stroke: RED })
       ],
-      defense: front({ deL: 175, lbL: 300, lbR: 560 }),
+      defense: front({ deL: 175, lbL: 300, lbR: 560, hand: "L" }),
       blocks: [
         blk("w", "de-l"), blk("lt", "lb-l"), blk("lg", "dt-l"),
-        blk("c", "lb-r"), blk("rg", "dt-r"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
+        blk("c", "lb-r"), blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 560, y: 370 }, { x: 640, y: 230 }]),
         rte("rb-lead", [{ x: 430, y: 545 }, { x: 260, y: 500 }, { x: 130, y: 380 }, { x: 80, y: 260 }]),
-        rte("rb-ball", [{ x: 545, y: 610 }, { x: 360, y: 590 }, { x: 160, y: 470 }, { x: 80, y: 280 }, { x: 70, y: 80 }], "dashed", RED)
+        rte("rb-ball", [{ x: 545, y: 610 }, { x: 360, y: 590 }, { x: 160, y: 470 }, { x: 160, y: 400 }, { x: 160, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 545, y: 595 }, { x: 360, y: 590 }, { x: 160, y: 470 }, { x: 80, y: 280 }, { x: 70, y: 80 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 545, y: 595 }, { x: 360, y: 590 }, { x: 160, y: 470 }, { x: 160, y: 400 }, { x: 160, y: 80 }] }
     },
 
     /* 11. Boot Right — W crack/lead; purple RB crosses to CB; red RB keeps right. */
@@ -383,16 +389,16 @@
       defense: front({ deR: 790 }),
       blocks: [
         blk("lt", "de-l"), blk("lg", "dt-l"), blk("c", "lb-l"),
-        blk("rg", "dt-r"), blk("rt", "de-r")
+        blk("rg", "dt-l"), blk("rt", "de-r")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 440, y: 380 }, { x: 340, y: 230 }]),
         rte("rt", [{ x: 672, y: 452 }, { x: 750, y: 400 }, { x: 790, y: 340 }]),
         rte("w", [{ x: 760, y: 530 }, { x: 820, y: 400 }, { x: 850, y: 300 }]),
         rte("rb-lead", [{ x: 340, y: 575 }, { x: 560, y: 540 }, { x: 780, y: 400 }, { x: 900, y: 260 }]),
-        rte("rb-ball", [{ x: 500, y: 575 }, { x: 640, y: 540 }, { x: 780, y: 430 }, { x: 860, y: 260 }, { x: 880, y: 80 }], "dashed", RED)
+        rte("rb-ball", [{ x: 500, y: 575 }, { x: 640, y: 540 }, { x: 780, y: 430 }, { x: 780, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 500, y: 560 }, { x: 640, y: 540 }, { x: 780, y: 430 }, { x: 860, y: 260 }, { x: 880, y: 80 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 500, y: 560 }, { x: 640, y: 540 }, { x: 780, y: 430 }, { x: 780, y: 80 }] }
     },
 
     /* 12. Sweep Left — W leads left; purple RB crosses; red RB sweeps left. */
@@ -412,19 +418,19 @@
         off("rb-lead", "RB", PUR, 590, 555, "Cross left. Lead the left Corner.", { role: "LEAD" }),
         off("rb-ball", "RB", GOLD, 500, 585, "Catch it. Sweep left. Follow the Wing.", { role: "RUN", stroke: RED })
       ],
-      defense: front(),
+      defense: front({ hand: "L" }),
       blocks: [
         blk("w", "de-l"), blk("lt", "lb-l"), blk("lg", "dt-l"),
-        blk("c", "lb-r"), blk("rg", "dt-r"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
+        blk("c", "lb-r"), blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 560, y: 370 }, { x: 660, y: 230 }]),
         rte("w", [{ x: 330, y: 545 }, { x: 250, y: 430 }, { x: 210, y: 340 }]),
         rte("lt", [{ x: 328, y: 452 }, { x: 330, y: 340 }, { x: 330, y: 230 }]),
         rte("rb-lead", [{ x: 590, y: 555 }, { x: 300, y: 520 }, { x: 140, y: 380 }, { x: 80, y: 260 }]),
-        rte("rb-ball", [{ x: 500, y: 585 }, { x: 330, y: 580 }, { x: 160, y: 470 }, { x: 80, y: 280 }, { x: 70, y: 80 }], "dashed", RED)
+        rte("rb-ball", [{ x: 500, y: 585 }, { x: 330, y: 580 }, { x: 160, y: 470 }, { x: 160, y: 400 }, { x: 160, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 500, y: 570 }, { x: 330, y: 580 }, { x: 160, y: 470 }, { x: 80, y: 280 }, { x: 70, y: 80 }], icons: [{ x: 70, y: 90 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 500, y: 570 }, { x: 330, y: 580 }, { x: 160, y: 470 }, { x: 160, y: 400 }, { x: 160, y: 80 }], icons: [{ x: 70, y: 90 }] }
     },
 
     /* 13. Wide Sweep Right — split backs; blue RB leads to CB; red RB wider. */
@@ -447,14 +453,14 @@
       defense: front({ deR: 800 }),
       blocks: [
         blk("lt", "de-l"), blk("lg", "dt-l"), blk("c", "lb-l"),
-        blk("rg", "dt-r"), blk("rt", "lb-r"), blk("w", "de-r"), blk("rb-lead", "cb-r")
+        blk("rg", "dt-l"), blk("rt", "lb-r"), blk("w", "de-r"), blk("rb-lead", "cb-r")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 440, y: 380 }, { x: 340, y: 230 }]),
         rte("rb-lead", [{ x: 545, y: 575 }, { x: 720, y: 540 }, { x: 860, y: 400 }, { x: 920, y: 260 }]),
-        rte("rb-ball", [{ x: 455, y: 575 }, { x: 620, y: 620 }, { x: 820, y: 560 }, { x: 930, y: 380 }, { x: 950, y: 80 }], "dashed", RED)
+        rte("rb-ball", [{ x: 455, y: 575 }, { x: 620, y: 620 }, { x: 820, y: 560 }, { x: 900, y: 380 }, { x: 900, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 455, y: 560 }, { x: 620, y: 620 }, { x: 820, y: 560 }, { x: 930, y: 380 }, { x: 950, y: 80 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 455, y: 560 }, { x: 620, y: 620 }, { x: 820, y: 560 }, { x: 900, y: 380 }, { x: 900, y: 80 }] }
     },
 
     /* 14. Wide Sweep Left — W left; blue RB leads to CB; red RB sweeps left. */
@@ -474,17 +480,17 @@
         off("rb-lead", "RB", BLU, 380, 555, "Lead wide left. Point at the left CB.", { role: "LEAD" }),
         off("rb-ball", "RB", GOLD, 470, 585, "Catch it. Sweep left outside the Wing.", { role: "RUN", stroke: RED })
       ],
-      defense: front({ deL: 175, lbL: 300, lbR: 560 }),
+      defense: front({ deL: 175, lbL: 300, lbR: 560, hand: "L" }),
       blocks: [
         blk("w", "de-l"), blk("lt", "lb-l"), blk("lg", "dt-l"),
-        blk("c", "lb-r"), blk("rg", "dt-r"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
+        blk("c", "lb-r"), blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 560, y: 370 }, { x: 650, y: 230 }]),
         rte("rb-lead", [{ x: 380, y: 555 }, { x: 230, y: 500 }, { x: 110, y: 360 }, { x: 70, y: 240 }]),
-        rte("rb-ball", [{ x: 470, y: 585 }, { x: 280, y: 590 }, { x: 130, y: 470 }, { x: 60, y: 280 }, { x: 50, y: 80 }], "dashed", RED)
+        rte("rb-ball", [{ x: 470, y: 585 }, { x: 280, y: 590 }, { x: 130, y: 470 }, { x: 130, y: 400 }, { x: 130, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 470, y: 570 }, { x: 280, y: 590 }, { x: 130, y: 470 }, { x: 60, y: 280 }, { x: 50, y: 80 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 470, y: 570 }, { x: 280, y: 590 }, { x: 130, y: 470 }, { x: 130, y: 400 }, { x: 130, y: 80 }] }
     }
   ];
 

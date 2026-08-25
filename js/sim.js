@@ -15,7 +15,7 @@
     { name: "FIRST STEP", cue: "First step on your arrow. Head out. Hands inside." },
     { name: "FIT", cue: "Arrive under control. Open hands inside. No holding." },
     { name: "LANE", cue: "Ball follows the red dashed path. Blockers stay on their man." },
-    { name: "CUT", cue: "One cut. Eyes up. Defense pursues for the flag." },
+    { name: "CUT", cue: "Plant. One cut. Safety is the last flag." },
     { name: "FINISH", cue: "North. Flag only — no tackling, no blocks in the back." }
   ];
 
@@ -463,7 +463,7 @@
     var o = findOff(play, id);
     if (o) return positionTitle(o) + ": " + (o.job || shortRole(o));
     var d = findDef(play, id);
-    if (d) return d.letter + ": stay home, then flag. No tackling.";
+    if (d) return d.letter + ": " + (d.job || "stay home, then flag. No tackling.");
     return "";
   }
 
