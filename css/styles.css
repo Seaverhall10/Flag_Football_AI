@@ -296,7 +296,7 @@ a:hover { color: var(--gold-bright); }
   background: var(--navy-light);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  padding: 14px 16px 14px 18px;
+  padding: 10px 12px 10px 14px;
   min-height: 72px;
   display: flex;
   flex-direction: column;
@@ -321,7 +321,7 @@ a:hover { color: var(--gold-bright); }
 .run-purple::before { background: var(--purple); }
 
 .run-name, .btn-title, .run-card-title {
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   font-weight: 800;
   margin: 0;
   display: flex;
@@ -329,7 +329,7 @@ a:hover { color: var(--gold-bright); }
   gap: 6px;
 }
 .run-meta, .play-btn small, .run-card .tiny {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--ink-soft);
   font-weight: 600;
 }
@@ -900,8 +900,8 @@ body.sunlight-mode .btn-grid { gap: 12px; }
 }
 .assignment-card {
   position: relative;
-  min-height: 132px;
-  padding: 16px 14px 14px;
+  min-height: 112px;
+  padding: 12px 10px 10px;
   color: #fff;
   background: #0a1628;
   border: 1px solid var(--line);
@@ -922,18 +922,18 @@ body.sunlight-mode .btn-grid { gap: 12px; }
 .assignment-position {
   display: inline-grid;
   place-items: center;
-  min-width: 42px;
-  height: 36px;
-  padding: 0 8px;
-  margin-right: 6px;
+  min-width: 36px;
+  height: 30px;
+  padding: 0 7px;
+  margin-right: 5px;
   color: #071018;
   background: var(--gold);
   border-radius: 6px;
-  font-size: 1.05rem;
+  font-size: .9rem;
   font-weight: 900;
 }
-.assignment-role { color: var(--ink-soft); font-size: .85rem; font-weight: 900; letter-spacing: .08em; }
-.assignment-task { display: block; margin-top: 10px; font-size: .95rem; line-height: 1.35; font-weight: 750; }
+.assignment-role { color: var(--ink-soft); font-size: .72rem; font-weight: 900; letter-spacing: .08em; }
+.assignment-task { display: block; margin-top: 9px; font-size: .78rem; line-height: 1.28; font-weight: 750; }
 
 @media (max-width: 700px) {
   .drill-choice-grid { grid-template-columns: 1fr; }
@@ -944,7 +944,7 @@ body.sunlight-mode .btn-grid { gap: 12px; }
   .formation-buttons { grid-template-columns: 1fr; }
   .formation-button { min-height: 70px; }
   .assignment-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .assignment-card { min-height: 124px; }
+  .assignment-card { min-height: 104px; }
   .play-teacher .sim-controls { display: grid; grid-template-columns: 1fr 1fr; }
   .play-teacher .sim-big { min-width: 0; font-size: .82rem; letter-spacing: .02em; }
   .play-teacher .panel-header { align-items: flex-start; }
@@ -954,7 +954,7 @@ body.sunlight-mode .btn-grid { gap: 12px; }
 @media (max-width: 430px) {
   .play-teacher { margin-left: -8px; margin-right: -8px; padding-left: 8px; padding-right: 8px; }
   .sim-key { gap: 7px 10px; font-size: .68rem; }
-  .assignment-task { font-size: .88rem; }
+  .assignment-task { font-size: .72rem; }
 }
 
 /* ==========================================================================
@@ -1273,8 +1273,8 @@ body.half-drill-page { padding-bottom: 16px; }
 .half-clip-card span { font-size: .84rem; line-height: 1.35; }
 .half-clip-card em { color: #93c5fd; font-size: .78rem; font-style: normal; font-weight: 850; }
 .half-clip-note { margin: 0; padding: 0 12px 12px; color: #cbd5e1; }
-.half-drill-page .assignment-card { min-height: 120px; padding: 14px 12px 12px; }
-.half-drill-page .assignment-task { font-size: .95rem; margin-top: 10px; }
+.half-drill-page .assignment-card { min-height: 96px; padding: 10px; }
+.half-drill-page .assignment-task { font-size: .8rem; margin-top: 7px; }
 .half-drill-page .foot-inner { font-size: 0.72rem; padding: 8px 10px; }
 .half-drill-page.kid-demo-mode .drill-choice-grid,
 .half-drill-page.kid-demo-mode .half-more,
@@ -1622,14 +1622,13 @@ body.half-drill-page { padding-bottom: 16px; }
   .playbook-page .play-picker .btn-grid::-webkit-scrollbar,
   .coach-page .btn-grid::-webkit-scrollbar { display: none; }
   .playbook-page .play-picker .play-btn {
-    flex: 0 0 200px;
-    min-width: 200px;
-    min-height: 72px;
-    padding: 12px 14px 12px 18px;
+    flex: 0 0 142px;
+    min-height: 58px;
+    padding: 8px 9px 8px 12px;
     scroll-snap-align: start;
   }
-  .playbook-page .play-picker .play-btn small { display: block; font-size: .85rem; }
-  .playbook-page .play-picker .btn-title { font-size: 1.15rem; }
+  .playbook-page .play-picker .play-btn small { display: none; }
+  .playbook-page .play-picker .btn-title { font-size: .86rem; }
   .playbook-page .formation-picker .panel-header { margin-bottom: 6px; }
   .playbook-page .formation-picker .panel-header h2 { font-size: .88rem; }
   .playbook-page .formation-picker .tiny,
@@ -1656,8 +1655,8 @@ body.half-drill-page { padding-bottom: 16px; }
     overflow-x: auto;
     scrollbar-width: none;
   }
-  .coach-page .play-btn { flex: 0 0 200px; min-width: 200px; min-height: 72px; }
-  .coach-page .play-btn small { display: block; font-size: .85rem; }
+  .coach-page .play-btn { flex: 0 0 150px; min-height: 62px; }
+  .coach-page .play-btn small { display: none; }
 
   .half-drill-page.kid-demo-mode { padding-bottom: calc(62px + env(safe-area-inset-bottom)); }
   .half-drill-page.kid-demo-mode .mobile-appbar { display: none; }
@@ -1697,17 +1696,16 @@ body.half-drill-page { padding-bottom: 16px; }
 }
 .playbook-page .play-picker .btn-grid::-webkit-scrollbar { display: none; }
 .playbook-page .play-picker .play-btn {
-  flex: 0 0 200px;
-  min-width: 200px;
-  min-height: 72px;
-  padding: 12px 14px 12px 18px;
+  flex: 0 0 132px;
+  min-height: 62px;
+  padding: 8px 10px 8px 14px;
   scroll-snap-align: start;
 }
 .playbook-page .play-picker .play-btn small {
   display: block;
-  font-size: .85rem;
+  font-size: .72rem;
 }
-.playbook-page .play-picker .btn-title { font-size: 1.15rem; }
+.playbook-page .play-picker .btn-title { font-size: .92rem; }
 
 .proof-row {
   display: grid;
@@ -1730,15 +1728,25 @@ body.half-drill-page { padding-bottom: 16px; }
   background: #0b3522;
 }
 .proof-pane img {
-  max-height: 70vh;
+  max-height: 28vh;
   object-fit: contain;
   background: #111;
 }
+.proof-live-pane { order: 1; }
+.proof-photo-pane { order: 2; }
 .proof-live-pane .sim-root {
   border-radius: 0;
   border: 0;
   box-shadow: none;
   margin: 0;
+  width: 100%;
+  min-height: 65vh;
+}
+.proof-live-pane .sim-svg {
+  display: block;
+  width: 100%;
+  height: 65vh;
+  min-height: 65vh;
 }
 .proof-pane figcaption {
   margin: 0;
@@ -1759,36 +1767,147 @@ body.half-drill-page { padding-bottom: 16px; }
   width: 28px;
 }
 .sim-key i.key-block { background: #111; }
+.sim-key i.key-rb-gold,
+.sim-key i.key-rb-purple,
+.sim-key i.key-rb-blue {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #111;
+}
+.sim-key i.key-rb-gold { background: #e8b423; border-color: #dc2626; }
+.sim-key i.key-rb-purple { background: #6d4ecb; }
+.sim-key i.key-rb-blue { background: #2f6fe0; }
+.assignment-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+.assignment-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #111;
+  box-sizing: border-box;
+  flex: 0 0 14px;
+}
+.assignment-head .assignment-position {
+  display: inline;
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  color: #fff;
+  background: transparent;
+  border-radius: 0;
+  font-size: .92rem;
+  font-weight: 900;
+}
+.assignment-card.role-ball,
+.assignment-card.role-pass,
+.assignment-card.role-pitch { border-top-color: #e8b423; }
 .coach-page .sideline-plays {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 .coach-page .sideline-plays .play-btn {
-  flex: 1 1 200px;
-  min-width: 200px;
-  min-height: 72px;
-  padding: 12px 14px 12px 18px;
+  flex: 1 1 140px;
+  min-width: 132px;
 }
-.coach-page .sideline-plays .btn-title { font-size: 1.15rem; }
-.coach-page .sideline-plays .play-btn small { display: block; font-size: .85rem; }
 
 @media (min-width: 900px) {
   .proof-row {
     grid-template-columns: 1fr 1fr;
     align-items: stretch;
   }
-  .proof-pane img { max-height: none; height: 100%; min-height: 420px; }
+  .proof-photo-pane { order: 1; }
+  .proof-live-pane { order: 2; }
+  .proof-pane img { max-height: none; height: 100%; min-height: 520px; object-fit: contain; }
+  .proof-live-pane .sim-root,
+  .proof-live-pane .sim-svg {
+    min-height: 520px;
+    height: 520px;
+  }
 }
 
 @media (max-width: 799px) {
-  .playbook-page .play-picker .play-btn { flex-basis: 200px; min-width: 200px; min-height: 72px; }
-  .playbook-page .play-picker .play-btn small { display: block; font-size: .85rem; }
+  .playbook-page .play-picker .play-btn { flex-basis: 120px; min-height: 58px; }
+  .playbook-page .play-picker .play-btn small { display: block; }
   .coach-page .sideline-plays {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
     scrollbar-width: none;
   }
-  .coach-page .sideline-plays .play-btn { flex: 0 0 200px; min-width: 200px; min-height: 72px; }
+  .coach-page .sideline-plays .play-btn { flex: 0 0 150px; }
 }
+
+/* === lions-playbook-edge: start === */
+html:has(body.playbook-page),
+body.playbook-page { max-width: 100%; overflow-x: hidden; }
+body.playbook-page .wrap,
+#view-app:has(#view-playbook:not([hidden])) .wrap,
+#view-playbook {
+  max-width: none !important;
+  width: 100%;
+  margin: 0;
+  padding: 0 !important;
+}
+.playbook-page .mobile-page-title {
+  margin: 0;
+  padding: 6px 8px 2px;
+}
+.playbook-page .play-picker.panel {
+  margin: 0;
+  padding: 6px 8px 4px;
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+}
+.playbook-page .play-teacher.panel {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: #071018;
+}
+.playbook-page .play-teacher .panel-header,
+.playbook-page .play-teacher .sim-key,
+.playbook-page .play-teacher .sim-beat,
+.playbook-page .play-teacher .sim-cue,
+.playbook-page .play-teacher .sim-controls {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.playbook-page .proof-row {
+  gap: 0;
+  margin: 0;
+}
+.playbook-page .proof-pane {
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+}
+.playbook-page .proof-live-pane { border: 0; }
+.playbook-page .proof-live-pane .sim-root,
+.playbook-page .proof-live-pane .sim-svg {
+  width: 100% !important;
+  min-height: 72vh !important;
+  height: 72vh !important;
+  border-radius: 0;
+  margin: 0;
+}
+.playbook-page .proof-pane img { max-height: 22vh; }
+.playbook-page .playbook-more { margin: 8px 8px 12px; }
+@media (min-width: 900px) {
+  body.playbook-page .wrap { max-width: none !important; padding: 0 !important; }
+  .playbook-page .proof-live-pane .sim-root,
+  .playbook-page .proof-live-pane .sim-svg {
+    min-height: 78vh !important;
+    height: 78vh !important;
+  }
+}
+/* === lions-playbook-edge: end === */

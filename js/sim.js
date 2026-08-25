@@ -11,7 +11,7 @@
   var LOS = 400;
   var BEATS = [
     { name: "LINE UP", cue: "Find your circle. Two-point stance. Eyes up." },
-    { name: "SNAP", cue: "Center snaps. Ball goes to the marked RB. See it. Catch it. Tuck it." },
+    { name: "SNAP", cue: "Center snaps. Ball goes to the Gold RB. See it. Catch it. Tuck it." },
     { name: "FIRST STEP", cue: "First step on your arrow. Head out. Hands inside." },
     { name: "FIT", cue: "Arrive under control. Open hands inside. No holding." },
     { name: "LANE", cue: "Ball follows the red dashed path. Blockers stay on their man." },
@@ -250,22 +250,81 @@
     });
   }
 
+
+  var GOLD_RB_FILL = "#e8b423";
+  var GOLD_RB_STROKE = "#dc2626";
+  var BLUE_RB_FILL = "#2f6fe0";
+
+  function isRb(p) {
+    if (!p) return false;
+    if (p.letter === "RB") return true;
+    return Boolean(p.id && String(p.id).indexOf("rb-") === 0);
+  }
+  function isBallBack(p) {
+    if (!p) return false;
+    if (p.id === "rb-ball") return true;
+    if (!isRb(p)) return false;
+    return p.role === "RUN" || p.role === "PASS" || p.role === "PITCH";
+  }
+  function rbColorKey(p) {
+    if (!isRb(p)) return "";
+    if (isBallBack(p)) return "GOLD";
+    var c = String(p.color || "").toLowerCase();
+    if (c === BLUE_RB_FILL) return "BLUE";
+    return "PURPLE";
+  }
+  function positionTitle(p) {
+    if (!p) return "";
+    var key = rbColorKey(p);
+    if (key === "GOLD") return "Gold RB";
+    if (key === "BLUE") return "Blue RB";
+    if (key === "PURPLE") return "Purple RB";
+    return p.letter;
+  }
+  function assignmentRole(p) {
+    if (!p) return "BLOCK";
+    if (p.role === "RUN") return "BALL";
+    if (p.role === "PASS" || p.role === "PITCH" || p.role === "LEAD" || p.role === "FAKE" || p.role === "CATCH" || p.role === "SNAP") return p.role;
+    return p.role || "BLOCK";
+  }
+  function tokenFill(p) {
+    if (isBallBack(p)) return GOLD_RB_FILL;
+    return p.color;
+  }
+  function setRoleCaption(textEl, p) {
+    while (textEl.firstChild) textEl.removeChild(textEl.firstChild);
+    var key = rbColorKey(p);
+    if (key) {
+      textEl.appendChild(document.createTextNode(key));
+      if (p.role === "LEAD" || p.role === "FAKE") {
+        var extra = document.createElementNS(NS, "tspan");
+        extra.setAttribute("x", "0");
+        extra.setAttribute("dy", "13");
+        extra.textContent = p.role;
+        textEl.appendChild(extra);
+      }
+      return;
+    }
+    textEl.appendChild(document.createTextNode(shortRole(p)));
+  }
+
   function tokenOffense(p) {
-    var g = el("g", { class: "sim-player", "data-player": p.id, tabindex: "0", role: "button", "aria-label": p.letter });
-    g.appendChild(el("circle", { r: "26", fill: "transparent" }));
-    var selected = el("circle", { r: "24", fill: "none", stroke: "#fff", "stroke-width": "2.4", opacity: "0" });
-    var stroke = p.stroke || "#1a1a1a";
-    var sw = p.stroke ? "3.4" : "2.2";
-    var disc = el("circle", { r: "17", fill: p.color, stroke: stroke, "stroke-width": sw });
+    var fill = tokenFill(p);
+    var g = el("g", { class: "sim-player", "data-player": p.id, tabindex: "0", role: "button", "aria-label": positionTitle(p) });
+    g.appendChild(el("circle", { r: "32", fill: "transparent" }));
+    var selected = el("circle", { r: "30", fill: "none", stroke: "#fff", "stroke-width": "2.6", opacity: "0" });
+    var stroke = isBallBack(p) ? GOLD_RB_STROKE : (p.stroke || "#1a1a1a");
+    var sw = (isBallBack(p) || p.stroke) ? "3.6" : "2.4";
+    var disc = el("circle", { r: "24", fill: fill, stroke: stroke, "stroke-width": sw });
     var label = el("text", {
-      x: "0", y: "5",
-      fill: darkFill(p.color) ? "#fff" : "#111",
-      "font-size": "12", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none"
+      x: "0", y: "6",
+      fill: darkFill(fill) ? "#fff" : "#111",
+      "font-size": "16", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none"
     });
     label.textContent = p.letter;
     var role = el("text", {
-      x: "0", y: "30", fill: "#f6c344", "font-size": "8", "font-weight": "800",
-      "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "3", "pointer-events": "none"
+      x: "0", y: "40", fill: "#f6c344", "font-size": "11", "font-weight": "800",
+      "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "3.4", "pointer-events": "none"
     });
     g.appendChild(selected); g.appendChild(disc); g.appendChild(label); g.appendChild(role);
     g.addEventListener("click", function () { selectPlayer(p.id); });
@@ -278,15 +337,15 @@
 
   function tokenDefense(d) {
     var g = el("g", { class: "sim-player", "data-player": d.id, tabindex: "0", role: "button", "aria-label": d.letter });
-    g.appendChild(el("circle", { r: "26", fill: "transparent" }));
-    var selected = el("circle", { r: "24", fill: "none", stroke: "#fff", "stroke-width": "2.4", opacity: "0" });
-    var sq = el("rect", { x: "-15", y: "-15", width: "30", height: "30", rx: "3", fill: "#f8fafc", stroke: "#111", "stroke-width": "2.2" });
+    g.appendChild(el("circle", { r: "34", fill: "transparent" }));
+    var selected = el("circle", { r: "32", fill: "none", stroke: "#fff", "stroke-width": "2.6", opacity: "0" });
+    var sq = el("rect", { x: "-18", y: "-18", width: "36", height: "36", rx: "4", fill: "#f8fafc", stroke: "#111", "stroke-width": "2.4" });
     var label = el("text", {
-      x: "0", y: "5", fill: "#111", "font-size": "11", "font-weight": "800",
+      x: "0", y: "6", fill: "#111", "font-size": "14", "font-weight": "800",
       "text-anchor": "middle", "pointer-events": "none"
     });
     label.textContent = d.letter;
-    var role = el("text", { x: "0", y: "30", fill: "#f6c344", "font-size": "8", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none" });
+    var role = el("text", { x: "0", y: "40", fill: "#f6c344", "font-size": "11", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none" });
     g.appendChild(selected); g.appendChild(sq); g.appendChild(label); g.appendChild(role);
     g.addEventListener("click", function () { selectPlayer(d.id); });
     g.addEventListener("keydown", function (event) {
@@ -309,7 +368,7 @@
   }
 
   function buildField() {
-    svg = el("svg", { viewBox: "0 0 " + W + " " + H, class: "sim-svg full-team-svg", role: "img", "aria-label": "Coach-sheet recreation" });
+    svg = el("svg", { viewBox: "0 0 " + W + " " + H, preserveAspectRatio: "xMidYMid meet", class: "sim-svg full-team-svg", role: "img", "aria-label": "Coach-sheet recreation" });
     var defs = el("defs", {});
     defs.innerHTML =
       '<marker id="ballArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>' +
@@ -361,6 +420,12 @@
 
   function shortRole(p) {
     if (!p) return "";
+    var key = rbColorKey(p);
+    if (key) {
+      if (p.role === "LEAD") return key + " LEAD";
+      if (p.role === "FAKE") return key + " FAKE";
+      return key;
+    }
     if (p.role === "RUN" || p.role === "PASS" || p.role === "PITCH") return "BALL";
     if (p.role === "LEAD") return "LEAD";
     if (p.role === "FAKE") return "FAKE";
@@ -378,7 +443,7 @@
       if (!pos) return;
       player.g.setAttribute("transform", "translate(" + pos.x + "," + pos.y + ")");
       player.selected.setAttribute("opacity", state.selected === id ? "1" : "0");
-      if (player.kind === "O") player.role.textContent = shortRole(player.spec);
+      if (player.kind === "O") setRoleCaption(player.role, player.spec);
       else player.role.textContent = "";
     });
     var bp = ballPosAt(state.t);
@@ -396,7 +461,7 @@
   function jobFor(id) {
     var play = currentPlay();
     var o = findOff(play, id);
-    if (o) return o.letter + ": " + (o.job || shortRole(o));
+    if (o) return positionTitle(o) + ": " + (o.job || shortRole(o));
     var d = findDef(play, id);
     if (d) return d.letter + ": stay home, then flag. No tackling.";
     return "";
@@ -407,10 +472,15 @@
     var board = document.getElementById("sim-assignments");
     if (!board) return;
     board.innerHTML = play.offense.map(function (p) {
-      var role = p.role === "RUN" || p.role === "PASS" || p.role === "PITCH" ? "BALL" : (p.role || "BLOCK");
+      var role = assignmentRole(p);
+      var title = positionTitle(p);
+      var fill = tokenFill(p) || "#d0d4da";
+      var ring = isBallBack(p) ? GOLD_RB_STROKE : "#111111";
       var cls = "assignment-card role-" + String(role).toLowerCase().replace(/[^a-z0-9]+/g, "-");
       return '<button type="button" class="' + cls + '" data-assignment-player="' + p.id + '">' +
-        '<span class="assignment-position">' + p.letter + "</span>" +
+        '<span class="assignment-head">' +
+        '<span class="assignment-swatch" style="background:' + fill + ";border-color:" + ring + '"></span>' +
+        '<span class="assignment-position">' + title + "</span></span>" +
         '<span class="assignment-role">' + role + "</span>" +
         '<span class="assignment-task">' + (p.job || "") + "</span></button>";
     }).join("");

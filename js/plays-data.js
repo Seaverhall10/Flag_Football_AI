@@ -11,6 +11,7 @@
   var BLU = "#2f6fe0";
   var GRY = "#d0d4da";
   var WHT = "#f7f8fa";
+  var GOLD = "#e8b423";
   var RED = "#dc2626";
 
   function off(id, letter, color, x, y, job, extra) {
@@ -54,7 +55,7 @@
       name: "Play 1",
       call: "A-Gap Right",
       photo: "plays/play-01.jpg",
-      cue: "Snap to the deep RB. Hit the A-gap between Center and right Guard. Head out. Hands inside.",
+      cue: "Snap to the Gold RB. Hit the A-gap between Center and right Guard. Head out. Hands inside.",
       offense: [
         off("w", "W", GRY, 228, 452, "Block the left DE. Head out. Hands inside."),
         off("lt", "T", WHT, 328, 452, "Climb to the left LB. Eyes up. Two-point."),
@@ -63,7 +64,7 @@
         off("rg", "G", PUR, 588, 452, "Block the right DT. Stay square."),
         off("rt", "T", PUR, 672, 452, "Climb to the right LB. Head out."),
         off("rb-lead", "RB", PUR, 430, 538, "Lead around the right tackle. Point at the right DE.", { role: "LEAD" }),
-        off("rb-ball", "RB", WHT, 545, 602, "Catch the snap. Hit the A-gap right (C–RG). One cut. North.", { role: "RUN", stroke: RED })
+        off("rb-ball", "RB", GOLD, 545, 602, "Catch the snap. Hit the A-gap right (C–RG). One cut. North.", { role: "RUN", stroke: RED })
       ],
       defense: front({ deL: 175, deR: 760, lbL: 300, lbR: 640 }),
       blocks: [
@@ -84,7 +85,7 @@
       name: "Play 2",
       call: "Off-Tackle Left",
       photo: "plays/play-02.jpg",
-      cue: "Deep RB takes the snap and follows the lead through the left tackle gap.",
+      cue: "Gold RB takes the snap and follows the lead through the left tackle gap.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Climb to the left LB. Head out."),
         off("lg", "G", GRY, 412, 452, "Block the left DT. Hands inside."),
@@ -93,7 +94,7 @@
         off("rt", "T", PUR, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 772, 468, "Block the right DE. Hands inside."),
         off("rb-lead", "RB", PUR, 575, 530, "Lead left. Point at the left DE.", { role: "LEAD" }),
-        off("rb-ball", "RB", WHT, 455, 605, "Catch it. Off-tackle left. One cut. North.", { role: "RUN", stroke: RED })
+        off("rb-ball", "RB", GOLD, 455, 605, "Catch it. Off-tackle left. One cut. North.", { role: "RUN", stroke: RED })
       ],
       defense: front({ deL: 250, deR: 790, lbL: 290, lbR: 680 }),
       blocks: [
@@ -114,7 +115,7 @@
       name: "Play 3",
       call: "Sweep Right",
       photo: "plays/play-03.jpg",
-      cue: "Snap to the middle RB. Fake left to the Wing. Sweep right behind the lead RB.",
+      cue: "Snap to the Gold RB. Fake left to the Wing. Sweep right behind the lead RB.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE. Head out."),
         off("lg", "G", GRY, 412, 452, "Block the left DT. Hands inside."),
@@ -122,7 +123,7 @@
         off("rg", "G", PUR, 588, 452, "Block the right DT."),
         off("rt", "T", PUR, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 355, 545, "Sell the fake left. Eyes up.", { role: "FAKE" }),
-        off("rb-ball", "RB", WHT, 500, 575, "Catch it. Sweep right. Follow the lead.", { role: "RUN", stroke: RED }),
+        off("rb-ball", "RB", GOLD, 500, 575, "Catch it. Sweep right. Follow the lead.", { role: "RUN", stroke: RED }),
         off("rb-lead", "RB", PUR, 595, 538, "Lead the right DE. Head out.", { role: "LEAD" })
       ],
       defense: front(),
@@ -144,7 +145,7 @@
       name: "Play 4",
       call: "Sweep Left",
       photo: "plays/play-04.jpg",
-      cue: "Snap to the middle RB. Fake right. Sweep left behind the Wing.",
+      cue: "Snap to the Gold RB. Fake right. Sweep left behind the Wing.",
       offense: [
         off("lt", "T", WHT, 328, 452, "Block the left DE. Head out."),
         off("lg", "G", WHT, 412, 452, "Block the left DT. Hands inside."),
@@ -152,7 +153,7 @@
         off("rg", "G", BLU, 588, 452, "Block the right DT."),
         off("rt", "T", BLU, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 360, 545, "Stay home, then open the left edge.", { role: "LEAD" }),
-        off("rb-ball", "RB", WHT, 500, 575, "Catch it. Sweep left. One cut. North.", { role: "RUN", stroke: RED }),
+        off("rb-ball", "RB", GOLD, 500, 575, "Catch it. Sweep left. One cut. North.", { role: "RUN", stroke: RED }),
         off("rb-fake", "RB", BLU, 595, 538, "Sell the fake right, then the right DE.", { role: "FAKE" })
       ],
       defense: front(),
@@ -174,7 +175,7 @@
       name: "Play 5",
       call: "Wing Pass Right",
       photo: "plays/play-05.jpg",
-      cue: "Snap to the middle RB. Roll right. Throw to the Wing on the deep right.",
+      cue: "Snap to the Gold RB. Roll right. Throw to the Wing on the deep right.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE. Head out."),
         off("lg", "G", GRY, 412, 452, "Block the left DT. Hands inside."),
@@ -182,7 +183,7 @@
         off("rg", "G", PUR, 588, 452, "Block the right DT."),
         off("rt", "T", PUR, 672, 452, "Block the right DE. Protect the roll."),
         off("w", "W", GRY, 810, 460, "Take one step back, then go deep right. Eyes up.", { role: "CATCH" }),
-        off("rb-ball", "RB", WHT, 500, 575, "Catch the snap. Roll right. Throw to the Wing.", { role: "PASS", stroke: RED }),
+        off("rb-ball", "RB", GOLD, 500, 575, "Catch the snap. Roll right. Throw to the Wing.", { role: "PASS", stroke: RED }),
         off("rb-lead", "RB", PUR, 595, 545, "Protect the roll. Point at the right DE.", { role: "LEAD" })
       ],
       defense: front({ deR: 800, cbR: 940 }),
@@ -208,7 +209,7 @@
       name: "Play 6",
       call: "Reverse Left",
       photo: "plays/play-06.jpg",
-      cue: "Snap to the middle RB. Pitch to the Wing. Wing sweeps the left edge.",
+      cue: "Snap to the Gold RB. Pitch to the Wing. Wing sweeps the left edge.",
       offense: [
         off("w", "W", GRY, 210, 470, "Come back for the pitch, then sweep left.", { role: "RUN" }),
         off("lt", "T", GRY, 328, 452, "Climb to the left LB. Head out."),
@@ -217,7 +218,7 @@
         off("rg", "G", PUR, 588, 452, "Block the right DT."),
         off("rt", "T", PUR, 672, 452, "Block the right DE."),
         off("rb-lead", "RB", PUR, 360, 545, "Lead the left DE. Head out.", { role: "LEAD" }),
-        off("rb-ball", "RB", WHT, 500, 575, "Catch it. Pitch left to the Wing.", { role: "PITCH", stroke: RED })
+        off("rb-ball", "RB", GOLD, 500, 575, "Catch it. Pitch left to the Wing.", { role: "PITCH", stroke: RED })
       ],
       defense: front({ deL: 175, lbL: 310, lbR: 620 }),
       blocks: [
@@ -242,7 +243,7 @@
       name: "Play 7",
       call: "A-Gap Right",
       photo: "plays/play-07.jpg",
-      cue: "Red RB through the C–RG gap. Blue RB leads. Line stays square.",
+      cue: "Gold RB through the C–RG gap. Blue RB leads. Line stays square.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE. Head out."),
         off("lg", "G", GRY, 412, 452, "Block the left DT. Hands inside."),
@@ -250,7 +251,7 @@
         off("rg", "G", PUR, 588, 452, "Block the right DT. Own that jersey."),
         off("rt", "T", PUR, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 772, 468, "Block the right DE. Hands inside."),
-        off("rb-ball", "RB", WHT, 430, 575, "Catch it. Hit the A-gap right. North.", { role: "RUN", stroke: RED }),
+        off("rb-ball", "RB", GOLD, 430, 575, "Catch it. Hit the A-gap right. North.", { role: "RUN", stroke: RED }),
         off("rb-lead", "RB", BLU, 588, 545, "Lead straight up inside the right guard.", { role: "LEAD" })
       ],
       defense: front({
@@ -275,7 +276,7 @@
       name: "Play 8",
       call: "A-Gap Left",
       photo: "plays/play-08.jpg",
-      cue: "Red RB through the C–LG gap. Purple RB leads that same A-gap.",
+      cue: "Gold RB through the C–LG gap. Purple RB leads that same A-gap.",
       offense: [
         off("w", "W", GRY, 228, 452, "Block the left DE. Head out."),
         off("lt", "T", PUR, 328, 452, "Climb to the left LB."),
@@ -284,7 +285,7 @@
         off("rg", "G", WHT, 588, 452, "Block the right DT. Stay home."),
         off("rt", "T", WHT, 672, 452, "Block the right DE."),
         off("rb-lead", "RB", PUR, 430, 538, "Lead straight through the C–LG A-gap.", { role: "LEAD" }),
-        off("rb-ball", "RB", WHT, 530, 590, "Catch it. A-gap left. One cut. North.", { role: "RUN", stroke: RED })
+        off("rb-ball", "RB", GOLD, 530, 590, "Catch it. A-gap left. One cut. North.", { role: "RUN", stroke: RED })
       ],
       defense: front({
         deL: 175,
@@ -308,7 +309,7 @@
       name: "Play 9",
       call: "Toss Right",
       photo: "plays/play-09.jpg",
-      cue: "Deep RB sweeps right. Purple RB leads to the corner. Wing seals the DE.",
+      cue: "Gold RB sweeps right. Purple RB leads to the corner. Wing seals the DE.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Climb to the left LB. Head out."),
         off("lg", "G", GRY, 412, 452, "Block the left DT."),
@@ -317,7 +318,7 @@
         off("rt", "T", PUR, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 772, 468, "Block the right DE. Seal the edge."),
         off("rb-lead", "RB", PUR, 500, 530, "Lead wide right. Point at the right CB.", { role: "LEAD" }),
-        off("rb-ball", "RB", WHT, 500, 610, "Catch it. Sweep outside the Wing. North.", { role: "RUN", stroke: RED })
+        off("rb-ball", "RB", GOLD, 500, 610, "Catch it. Sweep outside the Wing. North.", { role: "RUN", stroke: RED })
       ],
       defense: front({ deR: 800, lbL: 300, lbR: 700 }),
       blocks: [
@@ -338,7 +339,7 @@
       name: "Play 10",
       call: "Toss Left",
       photo: "plays/play-10.jpg",
-      cue: "Red RB sweeps left. Blue RB leads to the corner. Wing seals the DE.",
+      cue: "Gold RB sweeps left. Blue RB leads to the corner. Wing seals the DE.",
       offense: [
         off("w", "W", GRY, 228, 460, "Block the left DE. Seal the edge."),
         off("lt", "T", WHT, 328, 452, "Climb to the left LB."),
@@ -347,7 +348,7 @@
         off("rg", "G", BLU, 588, 452, "Block the right DT."),
         off("rt", "T", BLU, 672, 452, "Block the right DE."),
         off("rb-lead", "RB", BLU, 430, 545, "Lead wide left. Point at the left CB.", { role: "LEAD" }),
-        off("rb-ball", "RB", WHT, 545, 610, "Catch it. Sweep left. Follow the lead.", { role: "RUN", stroke: RED })
+        off("rb-ball", "RB", GOLD, 545, 610, "Catch it. Sweep left. Follow the lead.", { role: "RUN", stroke: RED })
       ],
       defense: front({ deL: 175, lbL: 300, lbR: 560 }),
       blocks: [
@@ -368,7 +369,7 @@
       name: "Play 11",
       call: "Boot Right",
       photo: "plays/play-11.jpg",
-      cue: "Snap to the middle RB. Keep right. Wing and backside RB lead the edge.",
+      cue: "Snap to the Gold RB. Keep right. Wing and backside RB lead the edge.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE. Head out."),
         off("lg", "G", GRY, 412, 452, "Block the left DT."),
@@ -377,7 +378,7 @@
         off("rt", "T", PUR, 672, 452, "Block the right DE. Head out."),
         off("w", "W", GRY, 760, 530, "Get outside right. Lead the edge.", { role: "LEAD" }),
         off("rb-lead", "RB", PUR, 340, 575, "Cross right as the lead. Do not take the Corner.", { role: "LEAD" }),
-        off("rb-ball", "RB", WHT, 500, 575, "Catch it. Keep right. Follow the Wing.", { role: "RUN", stroke: RED })
+        off("rb-ball", "RB", GOLD, 500, 575, "Catch it. Keep right. Follow the Wing.", { role: "RUN", stroke: RED })
       ],
       defense: front({ deR: 790 }),
       blocks: [
@@ -400,7 +401,7 @@
       name: "Play 12",
       call: "Sweep Left",
       photo: "plays/play-12.jpg",
-      cue: "Red RB sweeps left behind the Wing. Purple RB crosses as the lead.",
+      cue: "Gold RB sweeps left behind the Wing. Purple RB crosses as the lead.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Climb to the left LB. Head out."),
         off("lg", "G", GRY, 412, 452, "Block the left DT."),
@@ -409,7 +410,7 @@
         off("rt", "T", PUR, 672, 452, "Block the right DE."),
         off("w", "W", GRY, 330, 545, "Block the left DE. Seal the edge.", { role: "LEAD" }),
         off("rb-lead", "RB", PUR, 590, 555, "Cross left. Lead the left Corner.", { role: "LEAD" }),
-        off("rb-ball", "RB", WHT, 500, 585, "Catch it. Sweep left. Follow the Wing.", { role: "RUN", stroke: RED })
+        off("rb-ball", "RB", GOLD, 500, 585, "Catch it. Sweep left. Follow the Wing.", { role: "RUN", stroke: RED })
       ],
       defense: front(),
       blocks: [
@@ -432,7 +433,7 @@
       name: "Play 13",
       call: "Wide Sweep Right",
       photo: "plays/play-13.jpg",
-      cue: "Red RB sweeps wide right. Blue RB leads to the corner. Wing seals the DE.",
+      cue: "Gold RB sweeps wide right. Blue RB leads to the corner. Wing seals the DE.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE. Head out."),
         off("lg", "G", GRY, 412, 452, "Block the left DT."),
@@ -440,7 +441,7 @@
         off("rg", "G", BLU, 588, 452, "Block the right DT."),
         off("rt", "T", BLU, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 772, 468, "Block the right DE. Seal the edge."),
-        off("rb-ball", "RB", WHT, 455, 575, "Catch it. Sweep wide right. Outside everyone.", { role: "RUN", stroke: RED }),
+        off("rb-ball", "RB", GOLD, 455, 575, "Catch it. Sweep wide right. Outside everyone.", { role: "RUN", stroke: RED }),
         off("rb-lead", "RB", BLU, 545, 575, "Lead right. Point at the right CB.", { role: "LEAD" })
       ],
       defense: front({ deR: 800 }),
@@ -462,7 +463,7 @@
       name: "Play 14",
       call: "Wide Sweep Left",
       photo: "plays/play-14.jpg",
-      cue: "Red RB sweeps left. Blue RB leads to the corner. Wing seals the DE.",
+      cue: "Gold RB sweeps left. Blue RB leads to the corner. Wing seals the DE.",
       offense: [
         off("w", "W", GRY, 228, 460, "Block the left DE. Seal the edge."),
         off("lt", "T", GRY, 328, 452, "Climb to the left LB."),
@@ -471,7 +472,7 @@
         off("rg", "G", BLU, 588, 452, "Block the right DT."),
         off("rt", "T", BLU, 672, 452, "Block the right DE."),
         off("rb-lead", "RB", BLU, 380, 555, "Lead wide left. Point at the left CB.", { role: "LEAD" }),
-        off("rb-ball", "RB", WHT, 470, 585, "Catch it. Sweep left outside the Wing.", { role: "RUN", stroke: RED })
+        off("rb-ball", "RB", GOLD, 470, 585, "Catch it. Sweep left outside the Wing.", { role: "RUN", stroke: RED })
       ],
       defense: front({ deL: 175, lbL: 300, lbR: 560 }),
       blocks: [
