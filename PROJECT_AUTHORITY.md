@@ -12,6 +12,8 @@ Help 5–7-year-olds answer three questions without reading a coach manual:
 
 The app teaches one visual decision at a time. It does not add complexity merely because software can display it.
 
+The public Pages site is session-locked; coaches type the team password to open it.
+
 ## Locked offense — owner correction 2026-08-25
 
 The public playbook is the 14 coach-sheet plays photographed by the owner. Do not restore the old six QB-keeper runs.

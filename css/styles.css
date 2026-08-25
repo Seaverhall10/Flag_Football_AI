@@ -296,7 +296,7 @@ a:hover { color: var(--gold-bright); }
   background: var(--navy-light);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  padding: 10px 12px 10px 14px;
+  padding: 14px 16px 14px 18px;
   min-height: 72px;
   display: flex;
   flex-direction: column;
@@ -321,7 +321,7 @@ a:hover { color: var(--gold-bright); }
 .run-purple::before { background: var(--purple); }
 
 .run-name, .btn-title, .run-card-title {
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   font-weight: 800;
   margin: 0;
   display: flex;
@@ -329,7 +329,7 @@ a:hover { color: var(--gold-bright); }
   gap: 6px;
 }
 .run-meta, .play-btn small, .run-card .tiny {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: var(--ink-soft);
   font-weight: 600;
 }
@@ -900,8 +900,8 @@ body.sunlight-mode .btn-grid { gap: 12px; }
 }
 .assignment-card {
   position: relative;
-  min-height: 112px;
-  padding: 12px 10px 10px;
+  min-height: 132px;
+  padding: 16px 14px 14px;
   color: #fff;
   background: #0a1628;
   border: 1px solid var(--line);
@@ -922,18 +922,18 @@ body.sunlight-mode .btn-grid { gap: 12px; }
 .assignment-position {
   display: inline-grid;
   place-items: center;
-  min-width: 36px;
-  height: 30px;
-  padding: 0 7px;
-  margin-right: 5px;
+  min-width: 42px;
+  height: 36px;
+  padding: 0 8px;
+  margin-right: 6px;
   color: #071018;
   background: var(--gold);
   border-radius: 6px;
-  font-size: .9rem;
+  font-size: 1.05rem;
   font-weight: 900;
 }
-.assignment-role { color: var(--ink-soft); font-size: .72rem; font-weight: 900; letter-spacing: .08em; }
-.assignment-task { display: block; margin-top: 9px; font-size: .78rem; line-height: 1.28; font-weight: 750; }
+.assignment-role { color: var(--ink-soft); font-size: .85rem; font-weight: 900; letter-spacing: .08em; }
+.assignment-task { display: block; margin-top: 10px; font-size: .95rem; line-height: 1.35; font-weight: 750; }
 
 @media (max-width: 700px) {
   .drill-choice-grid { grid-template-columns: 1fr; }
@@ -944,7 +944,7 @@ body.sunlight-mode .btn-grid { gap: 12px; }
   .formation-buttons { grid-template-columns: 1fr; }
   .formation-button { min-height: 70px; }
   .assignment-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .assignment-card { min-height: 104px; }
+  .assignment-card { min-height: 124px; }
   .play-teacher .sim-controls { display: grid; grid-template-columns: 1fr 1fr; }
   .play-teacher .sim-big { min-width: 0; font-size: .82rem; letter-spacing: .02em; }
   .play-teacher .panel-header { align-items: flex-start; }
@@ -954,7 +954,7 @@ body.sunlight-mode .btn-grid { gap: 12px; }
 @media (max-width: 430px) {
   .play-teacher { margin-left: -8px; margin-right: -8px; padding-left: 8px; padding-right: 8px; }
   .sim-key { gap: 7px 10px; font-size: .68rem; }
-  .assignment-task { font-size: .72rem; }
+  .assignment-task { font-size: .88rem; }
 }
 
 /* ==========================================================================
@@ -1273,8 +1273,8 @@ body.half-drill-page { padding-bottom: 16px; }
 .half-clip-card span { font-size: .84rem; line-height: 1.35; }
 .half-clip-card em { color: #93c5fd; font-size: .78rem; font-style: normal; font-weight: 850; }
 .half-clip-note { margin: 0; padding: 0 12px 12px; color: #cbd5e1; }
-.half-drill-page .assignment-card { min-height: 96px; padding: 10px; }
-.half-drill-page .assignment-task { font-size: .8rem; margin-top: 7px; }
+.half-drill-page .assignment-card { min-height: 120px; padding: 14px 12px 12px; }
+.half-drill-page .assignment-task { font-size: .95rem; margin-top: 10px; }
 .half-drill-page .foot-inner { font-size: 0.72rem; padding: 8px 10px; }
 .half-drill-page.kid-demo-mode .drill-choice-grid,
 .half-drill-page.kid-demo-mode .half-more,
@@ -1622,13 +1622,14 @@ body.half-drill-page { padding-bottom: 16px; }
   .playbook-page .play-picker .btn-grid::-webkit-scrollbar,
   .coach-page .btn-grid::-webkit-scrollbar { display: none; }
   .playbook-page .play-picker .play-btn {
-    flex: 0 0 142px;
-    min-height: 58px;
-    padding: 8px 9px 8px 12px;
+    flex: 0 0 200px;
+    min-width: 200px;
+    min-height: 72px;
+    padding: 12px 14px 12px 18px;
     scroll-snap-align: start;
   }
-  .playbook-page .play-picker .play-btn small { display: none; }
-  .playbook-page .play-picker .btn-title { font-size: .86rem; }
+  .playbook-page .play-picker .play-btn small { display: block; font-size: .85rem; }
+  .playbook-page .play-picker .btn-title { font-size: 1.15rem; }
   .playbook-page .formation-picker .panel-header { margin-bottom: 6px; }
   .playbook-page .formation-picker .panel-header h2 { font-size: .88rem; }
   .playbook-page .formation-picker .tiny,
@@ -1655,8 +1656,8 @@ body.half-drill-page { padding-bottom: 16px; }
     overflow-x: auto;
     scrollbar-width: none;
   }
-  .coach-page .play-btn { flex: 0 0 150px; min-height: 62px; }
-  .coach-page .play-btn small { display: none; }
+  .coach-page .play-btn { flex: 0 0 200px; min-width: 200px; min-height: 72px; }
+  .coach-page .play-btn small { display: block; font-size: .85rem; }
 
   .half-drill-page.kid-demo-mode { padding-bottom: calc(62px + env(safe-area-inset-bottom)); }
   .half-drill-page.kid-demo-mode .mobile-appbar { display: none; }
@@ -1696,16 +1697,17 @@ body.half-drill-page { padding-bottom: 16px; }
 }
 .playbook-page .play-picker .btn-grid::-webkit-scrollbar { display: none; }
 .playbook-page .play-picker .play-btn {
-  flex: 0 0 132px;
-  min-height: 62px;
-  padding: 8px 10px 8px 14px;
+  flex: 0 0 200px;
+  min-width: 200px;
+  min-height: 72px;
+  padding: 12px 14px 12px 18px;
   scroll-snap-align: start;
 }
 .playbook-page .play-picker .play-btn small {
   display: block;
-  font-size: .72rem;
+  font-size: .85rem;
 }
-.playbook-page .play-picker .btn-title { font-size: .92rem; }
+.playbook-page .play-picker .btn-title { font-size: 1.15rem; }
 
 .proof-row {
   display: grid;
@@ -1763,9 +1765,13 @@ body.half-drill-page { padding-bottom: 16px; }
   gap: 8px;
 }
 .coach-page .sideline-plays .play-btn {
-  flex: 1 1 140px;
-  min-width: 132px;
+  flex: 1 1 200px;
+  min-width: 200px;
+  min-height: 72px;
+  padding: 12px 14px 12px 18px;
 }
+.coach-page .sideline-plays .btn-title { font-size: 1.15rem; }
+.coach-page .sideline-plays .play-btn small { display: block; font-size: .85rem; }
 
 @media (min-width: 900px) {
   .proof-row {
@@ -1776,13 +1782,13 @@ body.half-drill-page { padding-bottom: 16px; }
 }
 
 @media (max-width: 799px) {
-  .playbook-page .play-picker .play-btn { flex-basis: 120px; min-height: 58px; }
-  .playbook-page .play-picker .play-btn small { display: block; }
+  .playbook-page .play-picker .play-btn { flex-basis: 200px; min-width: 200px; min-height: 72px; }
+  .playbook-page .play-picker .play-btn small { display: block; font-size: .85rem; }
   .coach-page .sideline-plays {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
     scrollbar-width: none;
   }
-  .coach-page .sideline-plays .play-btn { flex: 0 0 150px; }
+  .coach-page .sideline-plays .play-btn { flex: 0 0 200px; min-width: 200px; min-height: 72px; }
 }
