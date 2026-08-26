@@ -1728,7 +1728,7 @@ body.half-drill-page { padding-bottom: 16px; }
   background: #0b3522;
 }
 .proof-pane img {
-  max-height: 28vh;
+  max-height: 112px;
   object-fit: contain;
   background: #111;
 }
@@ -2067,7 +2067,7 @@ body.playbook-page .play-strip .btn-grid {
   display: flex;
   gap: 8px;
   margin: 0;
-  padding: 8px 12px 10px;
+  padding: 6px 12px 6px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -2110,7 +2110,7 @@ body.playbook-page .play-teacher {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  min-height: 52dvh;
+  min-height: 0;
   position: relative;
   margin: 0;
   padding: 0;
@@ -2134,6 +2134,10 @@ body.playbook-page .proof-live-pane .sim-svg {
   height: 100% !important;
   min-height: 0 !important;
   display: block;
+}
+body.playbook-page .proof-live-pane .sim-root {
+  padding-bottom: 48px;
+  box-sizing: border-box;
 }
 body.playbook-page .proof-live-pane .sim-beat,
 body.playbook-page .proof-live-pane .sim-cue {
@@ -2211,7 +2215,7 @@ body.playbook-page .proof-photo-pane img {
 
 body.playbook-page .jobs-strip {
   flex: 0 0 auto;
-  max-height: 28vh;
+  max-height: 112px;
   padding: 8px 10px 6px;
   background: #071018;
   border-top: 1px solid rgba(255,255,255,.08);
@@ -2226,8 +2230,8 @@ body.playbook-page .jobs-strip .assignment-board {
 }
 body.playbook-page .jobs-strip .assignment-board::-webkit-scrollbar { display: none; }
 body.playbook-page .jobs-strip .assignment-card {
-  flex: 0 0 168px;
-  min-height: 92px;
+  flex: 0 0 150px;
+  min-height: 78px;
   margin: 0;
 }
 
