@@ -66,7 +66,7 @@
         off("lt", "T", WHT, 328, 452, "Climb to the left LB. Eyes up. Two-point."),
         off("lg", "G", WHT, 412, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("c", "C", YEL, 500, 452, "Snap, then curve left through the A-gap. Head out.", { role: "SNAP" }),
-        off("rg", "G", PUR, 588, 452, "Block the right DT. Stay square."),
+        off("rg", "G", PUR, 588, 452, "Block the nose. Stay square."),
         off("rt", "T", PUR, 672, 452, "Climb to the right LB. Head out."),
         off("rb-lead", "RB", PUR, 430, 538, "Lead around the right tackle. Point at the right DE.", { role: "LEAD" }),
         off("rb-ball", "RB", GOLD, 545, 602, "Catch the snap. Hit the A-gap right (C–RG). One cut. North. Cut off the linebacker. Watch the Safety.", { role: "RUN", stroke: RED })
@@ -77,6 +77,7 @@
         blk("rg", "dt-l"), blk("rt", "lb-r"), blk("rb-lead", "de-r")
       ],
       routes: [
+        rte("lg", [{ x: 412, y: 452 }, { x: 350, y: 300 }, { x: 400, y: 170 }, { x: 480, y: 140 }]),
         rte("c", [{ x: 500, y: 452 }, { x: 455, y: 390 }, { x: 390, y: 250 }]),
         rte("rb-lead", [{ x: 430, y: 538 }, { x: 620, y: 500 }, { x: 740, y: 400 }, { x: 770, y: 330 }]),
         rte("rb-ball", [{ x: 545, y: 602 }, { x: 530, y: 500 }, { x: 545, y: 400 }, { x: 545, y: 250 }, { x: 640, y: 230 }, { x: 655, y: 80 }], "dashed", RED)
@@ -93,9 +94,9 @@
       cue: "Gold RB takes the snap and follows the lead through the left tackle gap.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Climb to the left LB. Head out."),
-        off("lg", "G", GRY, 412, 452, "Block the left DT. Hands inside."),
+        off("lg", "G", GRY, 412, 452, "Block the nose. Hands inside."),
         off("c", "C", YEL, 500, 452, "Snap, then curve left. Head out.", { role: "SNAP" }),
-        off("rg", "G", PUR, 588, 452, "Block the right DT. Stay home."),
+        off("rg", "G", PUR, 588, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("rt", "T", PUR, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 772, 468, "Block the right DE. Hands inside."),
         off("rb-lead", "RB", PUR, 575, 530, "Lead left. Point at the left DE.", { role: "LEAD" }),
@@ -107,6 +108,7 @@
         blk("rt", "lb-r"), blk("w", "de-r"), blk("rb-lead", "de-l")
       ],
       routes: [
+        rte("rg", [{ x: 588, y: 452 }, { x: 650, y: 300 }, { x: 600, y: 170 }, { x: 520, y: 140 }]),
         rte("c", [{ x: 500, y: 452 }, { x: 450, y: 385 }, { x: 360, y: 250 }]),
         rte("rb-lead", [{ x: 575, y: 530 }, { x: 430, y: 500 }, { x: 280, y: 400 }, { x: 240, y: 330 }]),
         rte("rb-ball", [{ x: 455, y: 605 }, { x: 370, y: 500 }, { x: 300, y: 380 }, { x: 210, y: 250 }, { x: 195, y: 80 }], "dashed", RED)
@@ -123,9 +125,9 @@
       cue: "Snap to the Gold RB. Fake left to the Wing. Sweep right behind the lead RB.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE. Head out."),
-        off("lg", "G", GRY, 412, 452, "Block the left DT. Hands inside."),
+        off("lg", "G", GRY, 412, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("c", "C", YEL, 500, 452, "Snap, then climb to the left LB.", { role: "SNAP" }),
-        off("rg", "G", PUR, 588, 452, "Block the right DT."),
+        off("rg", "G", PUR, 588, 452, "Block the nose. Stay square."),
         off("rt", "T", PUR, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 355, 545, "Sell the fake left. Eyes up.", { role: "FAKE" }),
         off("rb-ball", "RB", GOLD, 500, 575, "Catch it. Sweep right. Follow the lead.", { role: "RUN", stroke: RED }),
@@ -137,6 +139,7 @@
         blk("rg", "dt-l"), blk("rt", "lb-r"), blk("rb-lead", "de-r")
       ],
       routes: [
+        rte("lg", [{ x: 412, y: 452 }, { x: 350, y: 300 }, { x: 400, y: 170 }, { x: 480, y: 140 }]),
         rte("w", [{ x: 355, y: 545 }, { x: 250, y: 560 }, { x: 130, y: 480 }, { x: 90, y: 300 }], "dashed", "#111111"),
         rte("rb-lead", [{ x: 595, y: 538 }, { x: 700, y: 430 }, { x: 775, y: 340 }]),
         rte("rb-ball", [{ x: 500, y: 575 }, { x: 620, y: 590 }, { x: 760, y: 520 }, { x: 860, y: 360 }, { x: 860, y: 80 }], "dashed", RED)
@@ -153,9 +156,9 @@
       cue: "Snap to the Gold RB. Fake right. Sweep left behind the Wing.",
       offense: [
         off("lt", "T", WHT, 328, 452, "Block the left DE. Head out."),
-        off("lg", "G", WHT, 412, 452, "Block the left DT. Hands inside."),
+        off("lg", "G", WHT, 412, 452, "Block the nose. Hands inside."),
         off("c", "C", YEL, 500, 452, "Snap, then climb left. Head out.", { role: "SNAP" }),
-        off("rg", "G", BLU, 588, 452, "Block the right DT."),
+        off("rg", "G", BLU, 588, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("rt", "T", BLU, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 360, 545, "Stay home, then open the left edge.", { role: "LEAD" }),
         off("rb-ball", "RB", GOLD, 500, 575, "Catch it. Sweep left. One cut. North. Cut off the linebacker. Watch the Safety.", { role: "RUN", stroke: RED }),
@@ -167,6 +170,7 @@
         blk("rg", "s"), blk("rt", "lb-r"), blk("rb-fake", "de-r")
       ],
       routes: [
+        rte("rg", [{ x: 588, y: 452 }, { x: 650, y: 300 }, { x: 600, y: 170 }, { x: 520, y: 140 }]),
         rte("rb-fake", [{ x: 595, y: 538 }, { x: 720, y: 560 }, { x: 860, y: 470 }, { x: 900, y: 300 }], "dashed", "#111111"),
         rte("w", [{ x: 360, y: 545 }, { x: 250, y: 430 }, { x: 180, y: 300 }]),
         rte("rb-ball", [{ x: 500, y: 575 }, { x: 360, y: 590 }, { x: 200, y: 500 }, { x: 110, y: 360 }, { x: 110, y: 80 }], "dashed", RED)
@@ -183,10 +187,10 @@
       cue: "Snap to the Gold RB. Roll right. Throw to the Wing on the deep right.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE. Head out."),
-        off("lg", "G", GRY, 412, 452, "Block the left DT. Hands inside."),
+        off("lg", "G", GRY, 412, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("c", "C", YEL, 500, 452, "Snap, then climb to the left LB.", { role: "SNAP" }),
-        off("rg", "G", PUR, 588, 452, "Block the right DT."),
-        off("rt", "T", PUR, 672, 452, "Block the right DE. Protect the roll."),
+        off("rg", "G", PUR, 588, 452, "Block the nose. Stay square."),
+        off("rt", "T", PUR, 672, 452, "Climb to the right LB. Protect the roll."),
         off("w", "W", GRY, 810, 460, "Take one step back, then go deep right. Eyes up.", { role: "CATCH" }),
         off("rb-ball", "RB", GOLD, 500, 575, "Catch the snap. Roll right. Throw to the Wing.", { role: "PASS", stroke: RED }),
         off("rb-lead", "RB", PUR, 595, 545, "Protect the roll. Point at the right DE.", { role: "LEAD" })
@@ -194,9 +198,10 @@
       defense: front({ deR: 800, cbR: 940 }),
       blocks: [
         blk("lt", "de-l"), blk("lg", "s"), blk("c", "lb-l"),
-        blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "de-r")
+        blk("rg", "dt-l"), blk("rt", "lb-r"), blk("rb-lead", "de-r")
       ],
       routes: [
+        rte("lg", [{ x: 412, y: 452 }, { x: 350, y: 300 }, { x: 400, y: 170 }, { x: 480, y: 140 }]),
         rte("w", [{ x: 810, y: 460 }, { x: 760, y: 540 }, { x: 820, y: 380 }, { x: 880, y: 180 }, { x: 910, y: 70 }], "dashed", "#111111"),
         rte("rb-ball", [{ x: 500, y: 575 }, { x: 560, y: 530 }, { x: 680, y: 510 }, { x: 760, y: 490 }], "dashed", RED),
         rte("rb-lead", [{ x: 595, y: 545 }, { x: 700, y: 430 }, { x: 790, y: 340 }])
@@ -218,9 +223,9 @@
       offense: [
         off("w", "W", GRY, 210, 470, "Come back for the pitch, then sweep left.", { role: "RUN" }),
         off("lt", "T", GRY, 328, 452, "Climb to the left LB. Head out."),
-        off("lg", "G", GRY, 412, 452, "Block the left DT."),
+        off("lg", "G", GRY, 412, 452, "Block the nose. Stay square."),
         off("c", "C", YEL, 500, 452, "Snap, then climb to the right LB.", { role: "SNAP" }),
-        off("rg", "G", PUR, 588, 452, "Block the right DT."),
+        off("rg", "G", PUR, 588, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("rt", "T", PUR, 672, 452, "Block the right DE."),
         off("rb-lead", "RB", PUR, 360, 545, "Lead the left DE. Head out.", { role: "LEAD" }),
         off("rb-ball", "RB", GOLD, 500, 575, "Catch it. Pitch left to the Wing.", { role: "PITCH", stroke: RED })
@@ -231,6 +236,7 @@
         blk("rg", "s"), blk("rt", "de-r"), blk("rb-lead", "de-l")
       ],
       routes: [
+        rte("rg", [{ x: 588, y: 452 }, { x: 650, y: 300 }, { x: 600, y: 170 }, { x: 520, y: 140 }]),
         rte("w", [{ x: 210, y: 470 }, { x: 300, y: 560 }, { x: 250, y: 600 }, { x: 120, y: 480 }, { x: 120, y: 400 }, { x: 120, y: 80 }], "dashed", "#111111"),
         rte("rb-lead", [{ x: 360, y: 545 }, { x: 260, y: 430 }, { x: 200, y: 340 }]),
         rte("rb-ball", [{ x: 500, y: 575 }, { x: 430, y: 560 }])
@@ -251,9 +257,9 @@
       cue: "Gold RB through the C–RG gap. Blue RB leads. Line stays square.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE. Head out."),
-        off("lg", "G", GRY, 412, 452, "Block the left DT. Hands inside."),
+        off("lg", "G", GRY, 412, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("c", "C", YEL, 500, 452, "Snap, then curve to the left LB.", { role: "SNAP" }),
-        off("rg", "G", PUR, 588, 452, "Block the right DT. Own that jersey."),
+        off("rg", "G", PUR, 588, 452, "Block the nose. Own that jersey."),
         off("rt", "T", PUR, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 772, 468, "Block the right DE. Hands inside."),
         off("rb-ball", "RB", GOLD, 430, 575, "Catch it. Hit the A-gap right. North.", { role: "RUN", stroke: RED }),
@@ -268,6 +274,7 @@
         blk("rg", "dt-l"), blk("rt", "lb-r"), blk("w", "de-r")
       ],
       routes: [
+        rte("lg", [{ x: 412, y: 452 }, { x: 350, y: 300 }, { x: 400, y: 170 }, { x: 480, y: 140 }]),
         rte("c", [{ x: 500, y: 452 }, { x: 455, y: 380 }, { x: 350, y: 230 }]),
         rte("rb-lead", [{ x: 588, y: 545 }, { x: 588, y: 400 }, { x: 600, y: 280 }]),
         rte("rb-ball", [{ x: 430, y: 575 }, { x: 500, y: 500 }, { x: 545, y: 400 }, { x: 545, y: 250 }, { x: 640, y: 230 }, { x: 655, y: 80 }], "dashed", RED)
@@ -285,9 +292,9 @@
       offense: [
         off("w", "W", GRY, 228, 452, "Block the left DE. Head out."),
         off("lt", "T", PUR, 328, 452, "Climb to the left LB."),
-        off("lg", "G", PUR, 412, 452, "Block the left DT. Hands inside."),
+        off("lg", "G", PUR, 412, 452, "Block the nose. Hands inside."),
         off("c", "C", YEL, 500, 452, "Snap, then curve to the right LB.", { role: "SNAP" }),
-        off("rg", "G", WHT, 588, 452, "Block the right DT. Stay home."),
+        off("rg", "G", WHT, 588, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("rt", "T", WHT, 672, 452, "Block the right DE."),
         off("rb-lead", "RB", PUR, 430, 538, "Lead straight through the C–LG A-gap.", { role: "LEAD" }),
         off("rb-ball", "RB", GOLD, 530, 590, "Catch it. A-gap left. One cut. North. Cut off the linebacker. Watch the Safety.", { role: "RUN", stroke: RED })
@@ -302,6 +309,7 @@
         blk("rg", "s"), blk("rt", "de-r")
       ],
       routes: [
+        rte("rg", [{ x: 588, y: 452 }, { x: 650, y: 300 }, { x: 600, y: 170 }, { x: 520, y: 140 }]),
         rte("c", [{ x: 500, y: 452 }, { x: 545, y: 380 }, { x: 650, y: 230 }]),
         rte("rb-lead", [{ x: 430, y: 538 }, { x: 445, y: 400 }, { x: 450, y: 250 }]),
         rte("rb-ball", [{ x: 530, y: 590 }, { x: 480, y: 500 }, { x: 455, y: 400 }, { x: 455, y: 250 }, { x: 360, y: 230 }, { x: 345, y: 80 }], "dashed", RED)
@@ -332,6 +340,7 @@
         blk("rt", "lb-r"), blk("w", "de-r"), blk("rb-lead", "cb-r")
       ],
       routes: [
+        rte("lg", [{ x: 412, y: 452 }, { x: 350, y: 300 }, { x: 400, y: 170 }, { x: 480, y: 140 }]),
         rte("c", [{ x: 500, y: 452 }, { x: 440, y: 380 }, { x: 340, y: 250 }]),
         rte("rb-lead", [{ x: 500, y: 530 }, { x: 680, y: 520 }, { x: 820, y: 400 }, { x: 900, y: 280 }]),
         rte("rb-ball", [{ x: 500, y: 610 }, { x: 700, y: 580 }, { x: 860, y: 450 }, { x: 860, y: 80 }], "dashed", RED)
@@ -349,9 +358,9 @@
       offense: [
         off("w", "W", GRY, 228, 460, "Block the left DE. Seal the edge."),
         off("lt", "T", WHT, 328, 452, "Climb to the left LB."),
-        off("lg", "G", WHT, 412, 452, "Block the left DT."),
+        off("lg", "G", WHT, 412, 452, "Block the nose. Stay square."),
         off("c", "C", YEL, 500, 452, "Snap, then curve to the right LB.", { role: "SNAP" }),
-        off("rg", "G", BLU, 588, 452, "Block the right DT."),
+        off("rg", "G", BLU, 588, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("rt", "T", BLU, 672, 452, "Block the right DE."),
         off("rb-lead", "RB", BLU, 430, 545, "Lead wide left. Point at the left CB.", { role: "LEAD" }),
         off("rb-ball", "RB", GOLD, 545, 610, "Catch it. Sweep left. Follow the lead.", { role: "RUN", stroke: RED })
@@ -362,6 +371,7 @@
         blk("c", "lb-r"), blk("rg", "s"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
       ],
       routes: [
+        rte("rg", [{ x: 588, y: 452 }, { x: 650, y: 300 }, { x: 600, y: 170 }, { x: 520, y: 140 }]),
         rte("c", [{ x: 500, y: 452 }, { x: 560, y: 370 }, { x: 640, y: 230 }]),
         rte("rb-lead", [{ x: 430, y: 545 }, { x: 260, y: 500 }, { x: 130, y: 380 }, { x: 80, y: 260 }]),
         rte("rb-ball", [{ x: 545, y: 610 }, { x: 360, y: 590 }, { x: 160, y: 470 }, { x: 160, y: 400 }, { x: 160, y: 80 }], "dashed", RED)
@@ -378,22 +388,23 @@
       cue: "Snap to the Gold RB. Keep right. Wing and backside RB lead the edge.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE. Head out."),
-        off("lg", "G", GRY, 412, 452, "Block the left DT."),
+        off("lg", "G", GRY, 412, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("c", "C", YEL, 500, 452, "Snap, then curve to the left LB.", { role: "SNAP" }),
-        off("rg", "G", PUR, 588, 452, "Block the right DT."),
-        off("rt", "T", PUR, 672, 452, "Block the right DE. Head out."),
-        off("w", "W", GRY, 760, 530, "Get outside right. Lead the edge.", { role: "LEAD" }),
+        off("rg", "G", PUR, 588, 452, "Block the nose. Stay square."),
+        off("rt", "T", PUR, 672, 452, "Climb to the right LB. Head out."),
+        off("w", "W", GRY, 760, 530, "Block the right DE. Seal the edge.", { role: "LEAD" }),
         off("rb-lead", "RB", PUR, 340, 575, "Cross right. Point at the right Corner.", { role: "LEAD" }),
         off("rb-ball", "RB", GOLD, 500, 575, "Catch it. Keep right. Follow the Wing.", { role: "RUN", stroke: RED })
       ],
       defense: front({ deR: 790 }),
       blocks: [
         blk("lt", "de-l"), blk("lg", "s"), blk("c", "lb-l"),
-        blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "cb-r")
+        blk("rg", "dt-l"), blk("rt", "lb-r"), blk("w", "de-r"), blk("rb-lead", "cb-r")
       ],
       routes: [
+        rte("lg", [{ x: 412, y: 452 }, { x: 350, y: 300 }, { x: 400, y: 170 }, { x: 480, y: 140 }]),
         rte("c", [{ x: 500, y: 452 }, { x: 440, y: 380 }, { x: 340, y: 230 }]),
-        rte("rt", [{ x: 672, y: 452 }, { x: 750, y: 400 }, { x: 790, y: 340 }]),
+        rte("rt", [{ x: 672, y: 452 }, { x: 670, y: 340 }, { x: 670, y: 250 }]),
         rte("w", [{ x: 760, y: 530 }, { x: 820, y: 400 }, { x: 850, y: 300 }]),
         rte("rb-lead", [{ x: 340, y: 575 }, { x: 560, y: 540 }, { x: 780, y: 400 }, { x: 900, y: 260 }]),
         rte("rb-ball", [{ x: 500, y: 575 }, { x: 640, y: 540 }, { x: 780, y: 430 }, { x: 780, y: 80 }], "dashed", RED)
@@ -410,9 +421,9 @@
       cue: "Gold RB sweeps left behind the Wing. Purple RB crosses as the lead.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Climb to the left LB. Head out."),
-        off("lg", "G", GRY, 412, 452, "Block the left DT."),
+        off("lg", "G", GRY, 412, 452, "Block the nose. Stay square."),
         off("c", "C", YEL, 500, 452, "Snap, then climb to the right LB.", { role: "SNAP" }),
-        off("rg", "G", PUR, 588, 452, "Block the right DT."),
+        off("rg", "G", PUR, 588, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("rt", "T", PUR, 672, 452, "Block the right DE."),
         off("w", "W", GRY, 330, 545, "Block the left DE. Seal the edge.", { role: "LEAD" }),
         off("rb-lead", "RB", PUR, 590, 555, "Cross left. Lead the left Corner.", { role: "LEAD" }),
@@ -424,6 +435,7 @@
         blk("c", "lb-r"), blk("rg", "s"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
       ],
       routes: [
+        rte("rg", [{ x: 588, y: 452 }, { x: 650, y: 300 }, { x: 600, y: 170 }, { x: 520, y: 140 }]),
         rte("c", [{ x: 500, y: 452 }, { x: 560, y: 370 }, { x: 660, y: 230 }]),
         rte("w", [{ x: 330, y: 545 }, { x: 250, y: 430 }, { x: 210, y: 340 }]),
         rte("lt", [{ x: 328, y: 452 }, { x: 330, y: 340 }, { x: 330, y: 230 }]),
@@ -442,9 +454,9 @@
       cue: "Gold RB sweeps wide right. Blue RB leads to the corner. Wing seals the DE.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE. Head out."),
-        off("lg", "G", GRY, 412, 452, "Block the left DT."),
+        off("lg", "G", GRY, 412, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("c", "C", YEL, 500, 452, "Snap, then curve to the left LB.", { role: "SNAP" }),
-        off("rg", "G", BLU, 588, 452, "Block the right DT."),
+        off("rg", "G", BLU, 588, 452, "Block the nose. Stay square."),
         off("rt", "T", BLU, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 772, 468, "Block the right DE. Seal the edge."),
         off("rb-ball", "RB", GOLD, 455, 575, "Catch it. Sweep wide right. Outside everyone.", { role: "RUN", stroke: RED }),
@@ -456,6 +468,7 @@
         blk("rg", "dt-l"), blk("rt", "lb-r"), blk("w", "de-r"), blk("rb-lead", "cb-r")
       ],
       routes: [
+        rte("lg", [{ x: 412, y: 452 }, { x: 350, y: 300 }, { x: 400, y: 170 }, { x: 480, y: 140 }]),
         rte("c", [{ x: 500, y: 452 }, { x: 440, y: 380 }, { x: 340, y: 230 }]),
         rte("rb-lead", [{ x: 545, y: 575 }, { x: 720, y: 540 }, { x: 860, y: 400 }, { x: 920, y: 260 }]),
         rte("rb-ball", [{ x: 455, y: 575 }, { x: 620, y: 620 }, { x: 820, y: 560 }, { x: 900, y: 380 }, { x: 900, y: 80 }], "dashed", RED)
@@ -473,9 +486,9 @@
       offense: [
         off("w", "W", GRY, 228, 460, "Block the left DE. Seal the edge."),
         off("lt", "T", GRY, 328, 452, "Climb to the left LB."),
-        off("lg", "G", GRY, 412, 452, "Block the left DT."),
+        off("lg", "G", GRY, 412, 452, "Block the nose. Stay square."),
         off("c", "C", YEL, 500, 452, "Snap, then curve to the right LB.", { role: "SNAP" }),
-        off("rg", "G", BLU, 588, 452, "Block the right DT."),
+        off("rg", "G", BLU, 588, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("rt", "T", BLU, 672, 452, "Block the right DE."),
         off("rb-lead", "RB", BLU, 380, 555, "Lead wide left. Point at the left CB.", { role: "LEAD" }),
         off("rb-ball", "RB", GOLD, 470, 585, "Catch it. Sweep left outside the Wing.", { role: "RUN", stroke: RED })
@@ -486,6 +499,7 @@
         blk("c", "lb-r"), blk("rg", "s"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
       ],
       routes: [
+        rte("rg", [{ x: 588, y: 452 }, { x: 650, y: 300 }, { x: 600, y: 170 }, { x: 520, y: 140 }]),
         rte("c", [{ x: 500, y: 452 }, { x: 560, y: 370 }, { x: 650, y: 230 }]),
         rte("rb-lead", [{ x: 380, y: 555 }, { x: 230, y: 500 }, { x: 110, y: 360 }, { x: 70, y: 240 }]),
         rte("rb-ball", [{ x: 470, y: 585 }, { x: 280, y: 590 }, { x: 130, y: 470 }, { x: 130, y: 400 }, { x: 130, y: 80 }], "dashed", RED)
