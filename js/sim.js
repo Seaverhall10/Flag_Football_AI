@@ -156,7 +156,7 @@
     if (isCarrier(play, id)) return "ball";
     var p = findOff(play, id);
     if (p && p.role === "FAKE") return "fake";
-    if (p && p.role === "LEAD") return "lead";
+    if (p && p.role === "LEAD") return p.pace === "block" ? "block" : "lead";
     if (p && (p.role === "BLOCK" || p.role === "SNAP" || p.role === "CATCH")) return "block";
     if (blockFor(play, id)) return "block";
     var r = routeFor(play, id);
@@ -231,11 +231,12 @@
       routed[route.from] = true;
       var from = findOff(play, route.from);
       if (!from) return;
+      var color = route.color || "#111111";
+      var isBall = color.toLowerCase() === "#dc2626" || color === "red";
+      if (isBall) return;
       var pts = route.points.slice();
       if (pts[0].x !== from.x || pts[0].y !== from.y) pts.unshift({ x: from.x, y: from.y });
       var dashed = route.style === "dashed";
-      var color = route.color || "#111111";
-      var isBall = color.toLowerCase() === "#dc2626" || color === "red";
       var path = el("path", {
         d: dFromPoints(shorten(pts, 18, 8)),
         fill: "none",

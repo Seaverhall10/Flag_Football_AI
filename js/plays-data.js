@@ -63,8 +63,8 @@
       cue: "Snap to the Gold RB. Hit the A-gap between Center and right Guard. Head out. Hands inside.",
       offense: [
         off("w", "W", GRY, 228, 452, "Block the left DE. Head out. Hands inside."),
-        off("lt", "T", WHT, 328, 452, "Climb to the left LB. Eyes up. Two-point."),
-        off("lg", "G", WHT, 412, 452, "Climb to the Safety. Eyes up. Flag only."),
+        off("lt", "T", GRY, 328, 452, "Climb to the left LB. Eyes up. Two-point."),
+        off("lg", "G", GRY, 412, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("c", "C", YEL, 500, 452, "Snap, then curve left through the A-gap. Head out.", { role: "SNAP" }),
         off("rg", "G", PUR, 588, 452, "Block the nose. Stay square."),
         off("rt", "T", PUR, 672, 452, "Climb to the right LB. Head out."),
@@ -155,8 +155,8 @@
       photo: "plays/play-04.jpg",
       cue: "Snap to the Gold RB. Fake right. Sweep left behind the Wing.",
       offense: [
-        off("lt", "T", WHT, 328, 452, "Block the left DE. Head out."),
-        off("lg", "G", WHT, 412, 452, "Block the nose. Hands inside."),
+        off("lt", "T", GRY, 328, 452, "Block the left DE. Head out."),
+        off("lg", "G", GRY, 412, 452, "Block the nose. Hands inside."),
         off("c", "C", YEL, 500, 452, "Snap, then climb left. Head out.", { role: "SNAP" }),
         off("rg", "G", BLU, 588, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("rt", "T", BLU, 672, 452, "Climb to the right LB."),
@@ -259,11 +259,11 @@
         off("lt", "T", GRY, 328, 452, "Block the left DE. Head out."),
         off("lg", "G", GRY, 412, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("c", "C", YEL, 500, 452, "Snap, then curve to the left LB.", { role: "SNAP" }),
-        off("rg", "G", PUR, 588, 452, "Block the nose. Own that jersey."),
-        off("rt", "T", PUR, 672, 452, "Climb to the right LB."),
+        off("rg", "G", BLU, 588, 452, "Block the nose. Own that jersey."),
+        off("rt", "T", BLU, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 772, 468, "Block the right DE. Hands inside."),
         off("rb-ball", "RB", GOLD, 430, 575, "Catch it. Hit the A-gap right. North.", { role: "RUN", stroke: RED }),
-        off("rb-lead", "RB", BLU, 588, 545, "Lead straight up inside the right guard.", { role: "LEAD" })
+        off("rb-lead", "RB", BLU, 588, 545, "Lead straight up inside the right guard.", { role: "LEAD", pace: "block" })
       ],
       defense: front({
         deR: 800,
@@ -294,9 +294,9 @@
         off("lt", "T", PUR, 328, 452, "Climb to the left LB."),
         off("lg", "G", PUR, 412, 452, "Block the nose. Hands inside."),
         off("c", "C", YEL, 500, 452, "Snap, then curve to the right LB.", { role: "SNAP" }),
-        off("rg", "G", WHT, 588, 452, "Climb to the Safety. Eyes up. Flag only."),
-        off("rt", "T", WHT, 672, 452, "Block the right DE."),
-        off("rb-lead", "RB", PUR, 430, 538, "Lead straight through the C–LG A-gap.", { role: "LEAD" }),
+        off("rg", "G", GRY, 588, 452, "Climb to the Safety. Eyes up. Flag only."),
+        off("rt", "T", GRY, 672, 452, "Block the right DE."),
+        off("rb-lead", "RB", PUR, 430, 538, "Lead straight through the C–LG A-gap.", { role: "LEAD", pace: "block" }),
         off("rb-ball", "RB", GOLD, 530, 590, "Catch it. A-gap left. One cut. North. Cut off the linebacker. Watch the Safety.", { role: "RUN", stroke: RED })
       ],
       defense: front({
@@ -357,8 +357,8 @@
       cue: "Gold RB sweeps left. Blue RB leads to the corner. Wing seals the DE.",
       offense: [
         off("w", "W", GRY, 228, 460, "Block the left DE. Seal the edge."),
-        off("lt", "T", WHT, 328, 452, "Climb to the left LB."),
-        off("lg", "G", WHT, 412, 452, "Block the nose. Stay square."),
+        off("lt", "T", GRY, 328, 452, "Climb to the left LB."),
+        off("lg", "G", GRY, 412, 452, "Block the nose. Stay square."),
         off("c", "C", YEL, 500, 452, "Snap, then curve to the right LB.", { role: "SNAP" }),
         off("rg", "G", BLU, 588, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("rt", "T", BLU, 672, 452, "Block the right DE."),
@@ -442,7 +442,7 @@
         rte("rb-lead", [{ x: 590, y: 555 }, { x: 300, y: 520 }, { x: 140, y: 380 }, { x: 80, y: 260 }]),
         rte("rb-ball", [{ x: 500, y: 585 }, { x: 330, y: 580 }, { x: 160, y: 470 }, { x: 160, y: 400 }, { x: 160, y: 80 }], "dashed", RED)
       ],
-      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 500, y: 570 }, { x: 330, y: 580 }, { x: 160, y: 470 }, { x: 160, y: 400 }, { x: 160, y: 80 }], icons: [{ x: 70, y: 90 }] }
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 500, y: 570 }, { x: 330, y: 580 }, { x: 160, y: 470 }, { x: 160, y: 400 }, { x: 160, y: 80 }] }
     },
 
     /* 13. Wide Sweep Right — split backs; blue RB leads to CB; red RB wider. */
