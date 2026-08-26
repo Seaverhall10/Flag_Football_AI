@@ -14,7 +14,7 @@
     { name: "SNAP", cue: "Center snaps. Ball goes to the Gold RB. See it. Catch it. Tuck it." },
     { name: "FIRST STEP", cue: "First step on your arrow. Head out. Hands inside." },
     { name: "FIT", cue: "Arrive under control. Open hands inside. No holding." },
-    { name: "LANE", cue: "Ball follows the red dashed path. Blockers stay on their man." },
+    { name: "LANE", cue: "Lane is there. Blockers are set. Hit it." },
     { name: "CUT", cue: "Plant. One cut. Safety is the last flag." },
     { name: "FINISH", cue: "North. Flag only — no tackling, no blocks in the back." }
   ];
@@ -108,29 +108,57 @@
     return { x: points[points.length - 1].x, y: points[points.length - 1].y };
   }
 
+  function isCarrier(play, id) {
+    if (play.ball && play.ball.carrierId === id) return true;
+    var p = findOff(play, id);
+    return isBallBack(p);
+  }
+
   function motionAmount(kind, beat) {
+    beat = Number(beat);
     if (kind === "block") {
-      if (beat < 2) return 0;
-      if (beat === 2) return 0.38;
-      if (beat === 3) return 0.78;
+      if (beat <= 0) return 0;
+      if (beat === 1) return 0.08;
+      if (beat === 2) return 0.64;
+      if (beat === 3) return 1;
+      return 1;
+    }
+    if (kind === "ball") {
+      if (beat <= 0) return 0;
+      if (beat === 1) return 0.12;
+      if (beat === 2) return 0.22;
+      if (beat === 3) return 0.36;
+      if (beat === 4) return 0.58;
+      if (beat === 5) return 0.82;
+      return 1;
+    }
+    if (kind === "fake") {
+      if (beat <= 1) return 0;
+      if (beat === 2) return 0.32;
+      if (beat === 3) return 0.7;
       return 1;
     }
     if (kind === "slide") {
       if (beat < 4) return 0;
-      return (beat - 3) / 3;
+      return clamp((beat - 3) / 3, 0, 1);
     }
     return clamp(beat / 6, 0, 1);
   }
 
   function kindFor(play, id) {
     if (findDef(play, id) && findDef(play, id).slide) return "slide";
-    if (routeFor(play, id)) {
-      var r = routeFor(play, id);
-      if (r.style === "dashed" && r.color && r.color.toLowerCase() !== "#dc2626" && r.color !== "red") return "route";
-      return "route";
-    }
+    if (isCarrier(play, id)) return "ball";
+    var p = findOff(play, id);
+    if (p && p.role === "FAKE") return "fake";
+    if (p && (p.role === "LEAD" || p.role === "BLOCK" || p.role === "SNAP" || p.role === "CATCH")) return "block";
     if (blockFor(play, id)) return "block";
-    return "route";
+    var r = routeFor(play, id);
+    if (r) {
+      var color = String(r.color || "").toLowerCase();
+      if (color === "#dc2626" || color === "red") return "ball";
+      return "block";
+    }
+    return "block";
   }
 
   function poseAtBeat(beat) {
@@ -415,7 +443,9 @@
       var c = findOff(play, "c") || play.offense[0];
       return { x: c.x, y: c.y };
     }
-    return samplePath(pts, clamp(t / 6, 0, 1));
+    var lo = Math.floor(t), hi = Math.min(6, lo + 1), u = ease(t - lo);
+    var amt = lerp(motionAmount("ball", lo), motionAmount("ball", hi), u);
+    return samplePath(pts, clamp(amt, 0, 1));
   }
 
   function shortRole(p) {
