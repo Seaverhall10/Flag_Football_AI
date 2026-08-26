@@ -2,7 +2,7 @@
  * Cy-Fair K/1 Lions — 14 coach-sheet plays.
  * Source of truth: photographed binder pages in /plays (play-01.jpg … play-14.jpg).
  * Labels match the sheet plus a deep Safety: C, G, T, W, RB, DT, DE, LB, CB, S. Circles = offense, squares = defense.
- * Defense is 3-2-2-1 (single nose DT, two LB, two CB, one S). Both guards double the nose.
+ * Defense is 3-2-2-1 (single nose DT, two LB, two CB, one S). Playside G takes the nose. Backside G climbs to the Safety.
  */
 (function (root) {
   "use strict";
@@ -318,9 +318,9 @@
       cue: "Gold RB sweeps right. Purple RB leads to the corner. Wing seals the DE.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Climb to the left LB. Head out."),
-        off("lg", "G", GRY, 412, 452, "Block the left DT."),
+        off("lg", "G", GRY, 412, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("c", "C", YEL, 500, 452, "Snap, then curve left (backside). Head out.", { role: "SNAP" }),
-        off("rg", "G", PUR, 588, 452, "Block the right DT."),
+        off("rg", "G", PUR, 588, 452, "Block the nose. Stay square."),
         off("rt", "T", PUR, 672, 452, "Climb to the right LB."),
         off("w", "W", GRY, 772, 468, "Block the right DE. Seal the edge."),
         off("rb-lead", "RB", PUR, 500, 530, "Lead wide right. Point at the right CB.", { role: "LEAD" }),
@@ -328,7 +328,7 @@
       ],
       defense: front({ deR: 800, lbL: 300, lbR: 700 }),
       blocks: [
-        blk("lt", "lb-l"), blk("lg", "dt-l"), blk("rg", "s"),
+        blk("lt", "lb-l"), blk("lg", "s"), blk("rg", "dt-l"),
         blk("rt", "lb-r"), blk("w", "de-r"), blk("rb-lead", "cb-r")
       ],
       routes: [
@@ -383,13 +383,13 @@
         off("rg", "G", PUR, 588, 452, "Block the right DT."),
         off("rt", "T", PUR, 672, 452, "Block the right DE. Head out."),
         off("w", "W", GRY, 760, 530, "Get outside right. Lead the edge.", { role: "LEAD" }),
-        off("rb-lead", "RB", PUR, 340, 575, "Cross right as the lead. Do not take the Corner.", { role: "LEAD" }),
+        off("rb-lead", "RB", PUR, 340, 575, "Cross right. Point at the right Corner.", { role: "LEAD" }),
         off("rb-ball", "RB", GOLD, 500, 575, "Catch it. Keep right. Follow the Wing.", { role: "RUN", stroke: RED })
       ],
       defense: front({ deR: 790 }),
       blocks: [
         blk("lt", "de-l"), blk("lg", "s"), blk("c", "lb-l"),
-        blk("rg", "dt-l"), blk("rt", "de-r")
+        blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "cb-r")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 440, y: 380 }, { x: 340, y: 230 }]),
