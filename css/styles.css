@@ -1957,3 +1957,39 @@ body.playbook-page .wrap,
   }
 }
 /* === field-hud-controls: end === */
+
+/* === field-hud-readouts: start === */
+.playbook-page .proof-live-pane .sim-beat,
+.playbook-page .proof-live-pane .sim-cue {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  z-index: 6;
+  margin: 0;
+  pointer-events: none;
+}
+.playbook-page .proof-live-pane .sim-beat {
+  top: 8px;
+  min-height: 0;
+  padding: 4px 8px;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  background: rgba(7,16,24,0.62);
+  border-radius: 8px;
+  color: #f6c344;
+  text-align: center;
+}
+.playbook-page .proof-live-pane .sim-cue {
+  top: 34px;
+  min-height: 0;
+  padding: 6px 8px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  background: rgba(7,16,24,0.62);
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+}
+.playbook-page .play-teacher > .sim-beat,
+.playbook-page .play-teacher > .sim-cue { display: none; }
+/* === field-hud-readouts: end === */

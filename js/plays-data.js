@@ -64,7 +64,7 @@
       offense: [
         off("w", "W", GRY, 228, 452, "Block the left DE. Head out. Hands inside."),
         off("lt", "T", WHT, 328, 452, "Climb to the left LB. Eyes up. Two-point."),
-        off("lg", "G", WHT, 412, 452, "Block the left DT. Hands inside."),
+        off("lg", "G", WHT, 412, 452, "Climb to the Safety. Eyes up. Flag only."),
         off("c", "C", YEL, 500, 452, "Snap, then curve left through the A-gap. Head out.", { role: "SNAP" }),
         off("rg", "G", PUR, 588, 452, "Block the right DT. Stay square."),
         off("rt", "T", PUR, 672, 452, "Climb to the right LB. Head out."),
@@ -73,7 +73,7 @@
       ],
       defense: front({ deL: 175, deR: 760, lbL: 300, lbR: 640 }),
       blocks: [
-        blk("w", "de-l"), blk("lt", "lb-l"), blk("lg", "dt-l"),
+        blk("w", "de-l"), blk("lt", "lb-l"), blk("lg", "s"),
         blk("rg", "dt-l"), blk("rt", "lb-r"), blk("rb-lead", "de-r")
       ],
       routes: [
@@ -103,7 +103,7 @@
       ],
       defense: front({ deL: 250, deR: 790, lbL: 290, lbR: 680, hand: "L" }),
       blocks: [
-        blk("lt", "lb-l"), blk("lg", "dt-l"), blk("rg", "dt-l"),
+        blk("lt", "lb-l"), blk("lg", "dt-l"), blk("rg", "s"),
         blk("rt", "lb-r"), blk("w", "de-r"), blk("rb-lead", "de-l")
       ],
       routes: [
@@ -133,7 +133,7 @@
       ],
       defense: front(),
       blocks: [
-        blk("lt", "de-l"), blk("lg", "dt-l"), blk("c", "lb-l"),
+        blk("lt", "de-l"), blk("lg", "s"), blk("c", "lb-l"),
         blk("rg", "dt-l"), blk("rt", "lb-r"), blk("rb-lead", "de-r")
       ],
       routes: [
@@ -164,7 +164,7 @@
       defense: front({ hand: "L" }),
       blocks: [
         blk("lt", "de-l"), blk("lg", "dt-l"), blk("c", "lb-l"),
-        blk("rg", "dt-l"), blk("rt", "lb-r"), blk("rb-fake", "de-r")
+        blk("rg", "s"), blk("rt", "lb-r"), blk("rb-fake", "de-r")
       ],
       routes: [
         rte("rb-fake", [{ x: 595, y: 538 }, { x: 720, y: 560 }, { x: 860, y: 470 }, { x: 900, y: 300 }], "dashed", "#111111"),
@@ -193,7 +193,7 @@
       ],
       defense: front({ deR: 800, cbR: 940 }),
       blocks: [
-        blk("lt", "de-l"), blk("lg", "dt-l"), blk("c", "lb-l"),
+        blk("lt", "de-l"), blk("lg", "s"), blk("c", "lb-l"),
         blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "de-r")
       ],
       routes: [
@@ -228,7 +228,7 @@
       defense: front({ deL: 175, lbL: 310, lbR: 620, hand: "L" }),
       blocks: [
         blk("lt", "lb-l"), blk("lg", "dt-l"), blk("c", "lb-r"),
-        blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "de-l")
+        blk("rg", "s"), blk("rt", "de-r"), blk("rb-lead", "de-l")
       ],
       routes: [
         rte("w", [{ x: 210, y: 470 }, { x: 300, y: 560 }, { x: 250, y: 600 }, { x: 120, y: 480 }, { x: 120, y: 400 }, { x: 120, y: 80 }], "dashed", "#111111"),
@@ -264,7 +264,7 @@
         cbRSlide: [{ x: 922, y: 300 }, { x: 760, y: 250 }, { x: 640, y: 230 }]
       }),
       blocks: [
-        blk("lt", "de-l"), blk("lg", "dt-l"), blk("c", "lb-l"),
+        blk("lt", "de-l"), blk("lg", "s"), blk("c", "lb-l"),
         blk("rg", "dt-l"), blk("rt", "lb-r"), blk("w", "de-r")
       ],
       routes: [
@@ -299,7 +299,7 @@
       }),
       blocks: [
         blk("w", "de-l"), blk("lt", "lb-l"), blk("lg", "dt-l"),
-        blk("rg", "dt-l"), blk("rt", "de-r")
+        blk("rg", "s"), blk("rt", "de-r")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 545, y: 380 }, { x: 650, y: 230 }]),
@@ -328,7 +328,7 @@
       ],
       defense: front({ deR: 800, lbL: 300, lbR: 700 }),
       blocks: [
-        blk("lt", "lb-l"), blk("lg", "dt-l"), blk("rg", "dt-l"),
+        blk("lt", "lb-l"), blk("lg", "dt-l"), blk("rg", "s"),
         blk("rt", "lb-r"), blk("w", "de-r"), blk("rb-lead", "cb-r")
       ],
       routes: [
@@ -359,7 +359,7 @@
       defense: front({ deL: 175, lbL: 300, lbR: 560, hand: "L" }),
       blocks: [
         blk("w", "de-l"), blk("lt", "lb-l"), blk("lg", "dt-l"),
-        blk("c", "lb-r"), blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
+        blk("c", "lb-r"), blk("rg", "s"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 560, y: 370 }, { x: 640, y: 230 }]),
@@ -388,7 +388,7 @@
       ],
       defense: front({ deR: 790 }),
       blocks: [
-        blk("lt", "de-l"), blk("lg", "dt-l"), blk("c", "lb-l"),
+        blk("lt", "de-l"), blk("lg", "s"), blk("c", "lb-l"),
         blk("rg", "dt-l"), blk("rt", "de-r")
       ],
       routes: [
@@ -421,7 +421,7 @@
       defense: front({ hand: "L" }),
       blocks: [
         blk("w", "de-l"), blk("lt", "lb-l"), blk("lg", "dt-l"),
-        blk("c", "lb-r"), blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
+        blk("c", "lb-r"), blk("rg", "s"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 560, y: 370 }, { x: 660, y: 230 }]),
@@ -452,7 +452,7 @@
       ],
       defense: front({ deR: 800 }),
       blocks: [
-        blk("lt", "de-l"), blk("lg", "dt-l"), blk("c", "lb-l"),
+        blk("lt", "de-l"), blk("lg", "s"), blk("c", "lb-l"),
         blk("rg", "dt-l"), blk("rt", "lb-r"), blk("w", "de-r"), blk("rb-lead", "cb-r")
       ],
       routes: [
@@ -483,7 +483,7 @@
       defense: front({ deL: 175, lbL: 300, lbR: 560, hand: "L" }),
       blocks: [
         blk("w", "de-l"), blk("lt", "lb-l"), blk("lg", "dt-l"),
-        blk("c", "lb-r"), blk("rg", "dt-l"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
+        blk("c", "lb-r"), blk("rg", "s"), blk("rt", "de-r"), blk("rb-lead", "cb-l")
       ],
       routes: [
         rte("c", [{ x: 500, y: 452 }, { x: 560, y: 370 }, { x: 650, y: 230 }]),

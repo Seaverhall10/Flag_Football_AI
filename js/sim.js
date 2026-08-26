@@ -116,6 +116,12 @@
 
   function motionAmount(kind, beat) {
     beat = Number(beat);
+    if (kind === "lead") {
+      if (beat <= 0) return 0;
+      if (beat === 1) return 0.22;
+      if (beat === 2) return 0.92;
+      return 1;
+    }
     if (kind === "block") {
       if (beat <= 0) return 0;
       if (beat === 1) return 0.08;
@@ -127,8 +133,8 @@
       if (beat <= 0) return 0;
       if (beat === 1) return 0.12;
       if (beat === 2) return 0.22;
-      if (beat === 3) return 0.36;
-      if (beat === 4) return 0.58;
+      if (beat === 3) return 0.28;
+      if (beat === 4) return 0.52;
       if (beat === 5) return 0.82;
       return 1;
     }
@@ -150,7 +156,8 @@
     if (isCarrier(play, id)) return "ball";
     var p = findOff(play, id);
     if (p && p.role === "FAKE") return "fake";
-    if (p && (p.role === "LEAD" || p.role === "BLOCK" || p.role === "SNAP" || p.role === "CATCH")) return "block";
+    if (p && p.role === "LEAD") return "lead";
+    if (p && (p.role === "BLOCK" || p.role === "SNAP" || p.role === "CATCH")) return "block";
     if (blockFor(play, id)) return "block";
     var r = routeFor(play, id);
     if (r) {
@@ -501,19 +508,22 @@
     var play = currentPlay();
     var board = document.getElementById("sim-assignments");
     if (!board) return;
-    board.innerHTML = play.offense.map(function (p) {
-      var role = assignmentRole(p);
-      var title = positionTitle(p);
-      var fill = tokenFill(p) || "#d0d4da";
-      var ring = isBallBack(p) ? GOLD_RB_STROKE : "#111111";
+    function cardFor(p, kind) {
+      var role = kind === "D" ? (p.letter === "S" ? "FIT" : "HOME") : assignmentRole(p);
+      var title = kind === "D" ? p.letter : positionTitle(p);
+      var fill = kind === "D" ? "#f8fafc" : (tokenFill(p) || "#d0d4da");
+      var ring = kind === "D" ? "#111111" : (isBallBack(p) ? GOLD_RB_STROKE : "#111111");
       var cls = "assignment-card role-" + String(role).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      var job = p.job || (kind === "D" ? (p.letter === "S" ? "Stay deep. Hash to hash. Fit the run after the cut. Flag only." : "Stay home, then flag. No tackling.") : "");
       return '<button type="button" class="' + cls + '" data-assignment-player="' + p.id + '">' +
         '<span class="assignment-head">' +
         '<span class="assignment-swatch" style="background:' + fill + ";border-color:" + ring + '"></span>' +
         '<span class="assignment-position">' + title + "</span></span>" +
         '<span class="assignment-role">' + role + "</span>" +
-        '<span class="assignment-task">' + (p.job || "") + "</span></button>";
-    }).join("");
+        '<span class="assignment-task">' + job + "</span></button>";
+    }
+    board.innerHTML = play.offense.map(function (p) { return cardFor(p, "O"); }).join("") +
+      play.defense.map(function (d) { return cardFor(d, "D"); }).join("");
     board.querySelectorAll("[data-assignment-player]").forEach(function (card) {
       card.addEventListener("click", function () { selectPlayer(card.getAttribute("data-assignment-player")); });
     });
@@ -532,7 +542,7 @@
   function pause() {
     state.playing = false;
     if (state.raf) cancelAnimationFrame(state.raf);
-    if (playButton) playButton.textContent = "PLAY SLOW";
+    if (playButton) playButton.textContent = "PLAY";
   }
   function setBeat(value) { pause(); setT(clamp(value, 0, 6)); }
   function tick(now) {
@@ -542,7 +552,7 @@
     var progress = duration <= 0 ? 1 : clamp((now - state.startedAt) / duration, 0, 1);
     setT(state.startT + remaining * progress);
     if (progress < 1 && state.playing) state.raf = requestAnimationFrame(tick);
-    else { state.playing = false; setT(6); if (playButton) playButton.textContent = "PLAY AGAIN"; }
+    else { state.playing = false; setT(6); if (playButton) playButton.textContent = "PLAY"; }
   }
   function play() {
     if (state.playing) { pause(); return; }
