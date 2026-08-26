@@ -572,6 +572,55 @@
     document.querySelectorAll("[data-assignment-player]").forEach(function (card) { card.classList.remove("is-selected"); });
   }
 
+  function gifSlug(text) {
+    return String(text || "play").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  }
+
+  function exportGif() {
+    var api = window.LIONS_GIF;
+    var btn = document.getElementById("sim-gif");
+    if (!svg || !api) return;
+    if (btn && btn.getAttribute("aria-busy") === "true") return;
+    pause();
+    var savedT = state.t;
+    var play = currentPlay();
+    var width = 420;
+    var height = 378;
+    var count = 24;
+    if (btn) {
+      btn.setAttribute("aria-busy", "true");
+      btn.disabled = true;
+      btn.textContent = "GIF…";
+    }
+    var frames = [];
+    function finish(ok) {
+      setT(savedT);
+      if (btn) {
+        btn.removeAttribute("aria-busy");
+        btn.disabled = false;
+        btn.textContent = ok ? "GIF" : "GIF";
+      }
+    }
+    function step(i) {
+      if (i >= count) {
+        try {
+          var bytes = api.encodeGif(frames, width, height, 9);
+          api.downloadBytes(bytes, "Lions-" + gifSlug(play.name) + "-" + gifSlug(play.call) + ".gif");
+          finish(true);
+        } catch (err) {
+          finish(false);
+        }
+        return;
+      }
+      setT(count === 1 ? 0 : (i / (count - 1)) * 6);
+      api.svgFrame(svg, width, height).then(function (idx) {
+        frames.push(idx);
+        step(i + 1);
+      }).catch(function () { finish(false); });
+    }
+    step(0);
+  }
+
   function setRun(key) {
     if (!playMap()[key]) return;
     pause();
@@ -618,6 +667,8 @@
     if (back) back.addEventListener("click", function () { setBeat(Math.round(state.t) - 1); });
     if (next) next.addEventListener("click", function () { setBeat(Math.round(state.t) + 1); });
     if (rst) rst.addEventListener("click", reset);
+    var gifBtn = document.getElementById("sim-gif");
+    if (gifBtn) gifBtn.addEventListener("click", exportGif);
     if (slider) slider.addEventListener("input", function () { pause(); setT(Number(slider.value)); });
     document.querySelectorAll("[data-sim-speed]").forEach(function (button) {
       button.addEventListener("click", function () {
