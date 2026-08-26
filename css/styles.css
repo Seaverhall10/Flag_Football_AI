@@ -1993,3 +1993,269 @@ body.playbook-page .wrap,
 .playbook-page .play-teacher > .sim-beat,
 .playbook-page .play-teacher > .sim-cue { display: none; }
 /* === field-hud-readouts: end === */
+
+
+/* === lions-sideline-app: start === */
+body.playbook-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: #071018;
+  padding-bottom: 0 !important;
+}
+body.playbook-page .mobile-page-title,
+body.playbook-page .sim-key,
+body.playbook-page .foot,
+body.playbook-page .play-teacher .panel-header { display: none !important; }
+
+body.playbook-page .playbook-stage {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding-bottom: calc(58px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+body.playbook-page .mobile-appbar {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  min-height: 44px;
+  background: #071018;
+  border-bottom: 1px solid rgba(246,195,68,.28);
+}
+body.playbook-page .mobile-appbar a {
+  color: #f6c344;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+body.playbook-page .mobile-appbar strong {
+  flex: 1;
+  text-align: center;
+  color: #fff;
+  font-size: .95rem;
+  font-weight: 800;
+  letter-spacing: .01em;
+}
+body.playbook-page .sheet-toggle {
+  appearance: none;
+  border: 1px solid rgba(246,195,68,.5);
+  background: transparent;
+  color: #f6c344;
+  font: inherit;
+  font-size: .7rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  padding: 6px 10px;
+  border-radius: 999px;
+  min-height: 32px;
+}
+body.playbook-page .sheet-toggle.is-on {
+  background: #f6c344;
+  color: #071018;
+  border-color: #f6c344;
+}
+
+body.playbook-page .play-strip {
+  flex: 0 0 auto;
+  background: #071018;
+}
+body.playbook-page .play-strip .btn-grid {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 12px 10px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+body.playbook-page .play-strip .btn-grid::-webkit-scrollbar { display: none; }
+body.playbook-page .play-strip .play-btn,
+body.playbook-page .play-strip .play-btn.run-red,
+body.playbook-page .play-strip .play-btn.run-blue {
+  flex: 0 0 44px;
+  width: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  background: #12202c;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  scroll-snap-align: start;
+  box-shadow: none;
+}
+body.playbook-page .play-strip .play-btn::before { display: none !important; }
+body.playbook-page .play-strip .play-btn .btn-title {
+  font-size: .92rem;
+  font-weight: 800;
+  color: inherit;
+}
+body.playbook-page .play-strip .play-btn small { display: none; }
+body.playbook-page .play-strip .play-btn.is-active,
+body.playbook-page .play-strip .play-btn.active {
+  background: #f6c344;
+  border-color: #f6c344;
+  color: #071018;
+}
+
+body.playbook-page .play-teacher {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 52dvh;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  background: #0d3b24;
+  border: 0;
+  border-radius: 0;
+}
+body.playbook-page .proof-row { display: contents; }
+body.playbook-page .proof-live-pane {
+  flex: 1 1 auto;
+  position: relative;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  min-height: 0;
+  background: #0d3b24;
+}
+body.playbook-page .proof-live-pane .sim-root,
+body.playbook-page .proof-live-pane .sim-svg {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  display: block;
+}
+body.playbook-page .proof-live-pane .sim-beat,
+body.playbook-page .proof-live-pane .sim-cue {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  z-index: 6;
+  margin: 0;
+  pointer-events: none;
+  background: rgba(7,16,24,.62);
+  border: 0;
+  border-radius: 8px;
+}
+body.playbook-page .proof-live-pane .sim-beat {
+  top: 8px;
+  padding: 4px 8px;
+  font-size: .7rem;
+  letter-spacing: .08em;
+  color: #f6c344;
+  text-align: center;
+}
+body.playbook-page .proof-live-pane .sim-cue {
+  top: 34px;
+  padding: 6px 8px;
+  font-size: .8rem;
+  font-weight: 800;
+  color: #fff;
+}
+body.playbook-page .proof-live-pane .sim-controls {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  z-index: 6;
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 5px;
+  background: rgba(7,16,24,.62);
+  border-radius: 10px;
+}
+body.playbook-page .proof-live-pane .sim-controls .btn {
+  flex: 1;
+  min-height: 34px;
+  padding: 0 2px;
+  font-size: .66rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  border-radius: 8px;
+}
+
+body.playbook-page .proof-photo-pane {
+  display: none;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+}
+body.playbook-page.show-sheet .proof-photo-pane {
+  display: flex;
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  align-items: center;
+  justify-content: center;
+}
+body.playbook-page .proof-photo-pane img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  background: #000;
+}
+
+body.playbook-page .jobs-strip {
+  flex: 0 0 auto;
+  max-height: 28vh;
+  padding: 8px 10px 6px;
+  background: #071018;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+body.playbook-page .jobs-strip .assignment-board {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+  grid-template-columns: none;
+}
+body.playbook-page .jobs-strip .assignment-board::-webkit-scrollbar { display: none; }
+body.playbook-page .jobs-strip .assignment-card {
+  flex: 0 0 168px;
+  min-height: 92px;
+  margin: 0;
+}
+
+body.playbook-page .playbook-coach-controls {
+  margin: 0 10px 8px;
+  border-color: rgba(255,255,255,.1);
+}
+body.playbook-page .playbook-coach-controls > summary {
+  min-height: 40px;
+  font-size: .78rem;
+  color: #9aa4b2;
+}
+
+@media (min-width: 800px) {
+  body.playbook-page .mobile-appbar { display: flex !important; }
+  body.playbook-page .mast { display: none !important; }
+  body.playbook-page .tabbar { display: grid !important; }
+}
+@media (min-width: 900px) {
+  body.playbook-page .play-teacher { flex-direction: row; }
+  body.playbook-page .proof-live-pane { flex: 1 1 58%; }
+  body.playbook-page .proof-photo-pane {
+    display: flex;
+    position: static;
+    flex: 0 0 42%;
+    align-items: stretch;
+  }
+  body.playbook-page .proof-photo-pane img { width: 100%; height: 100%; object-fit: contain; }
+  body.playbook-page.show-sheet .proof-photo-pane { position: static; }
+}
+/* === lions-sideline-app: end === */

@@ -341,7 +341,8 @@
       }
       return;
     }
-    textEl.appendChild(document.createTextNode(shortRole(p)));
+    var caption = shortRole(p);
+    if (caption && caption !== "BLOCK") textEl.appendChild(document.createTextNode(caption));
   }
 
   function tokenOffense(p) {
@@ -404,7 +405,7 @@
   }
 
   function buildField() {
-    svg = el("svg", { viewBox: "0 0 " + W + " " + H, preserveAspectRatio: "xMidYMid meet", class: "sim-svg full-team-svg", role: "img", "aria-label": "Coach-sheet recreation" });
+    svg = el("svg", { viewBox: "0 40 1000 700", preserveAspectRatio: "xMidYMid meet", class: "sim-svg full-team-svg", role: "img", "aria-label": "Coach-sheet recreation" });
     var defs = el("defs", {});
     defs.innerHTML =
       '<marker id="ballArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>' +
@@ -629,9 +630,11 @@
     state.t = 0;
     var play = currentPlay();
     var nameEl = document.getElementById("sim-play-name");
-    if (nameEl) nameEl.textContent = play.name + " · " + play.call;
+    if (nameEl) nameEl.textContent = play.name;
     var badge = document.getElementById("sim-play-badge");
-    if (badge) { badge.textContent = play.call; badge.style.borderColor = ""; badge.style.color = ""; }
+    if (badge) badge.textContent = play.call;
+    var appPlay = document.getElementById("appbar-play");
+    if (appPlay) appPlay.textContent = play.call;
     if (photoEl) {
       photoEl.src = play.photo;
       photoEl.alt = "Coach sheet for " + play.name + " " + play.call;
@@ -639,6 +642,7 @@
     document.querySelectorAll(".play-btn").forEach(function (button) {
       var active = button.getAttribute("data-run-key") === key;
       button.classList.toggle("is-active", active);
+      button.classList.toggle("active", active);
       button.setAttribute("aria-pressed", String(active));
     });
     rebuildTokens();

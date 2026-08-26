@@ -45,8 +45,22 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!document.querySelector(".mobile-appbar")) {
     const appbar = document.createElement("header");
     appbar.className = "mobile-appbar no-print";
-    appbar.innerHTML = `<a href="index.html" aria-label="Lions home">LIONS</a><strong>${pageNames[currentPath] || "Coach"}</strong>`;
+    if (currentPath === "playbook.html") {
+      const call = (document.getElementById("sim-play-badge") && document.getElementById("sim-play-badge").textContent) || "A-Gap Right";
+      appbar.innerHTML = `<a href="index.html" aria-label="Lions home">LIONS</a><strong id="appbar-play">${call}</strong><button type="button" class="sheet-toggle" id="sheet-toggle">SHEET</button>`;
+    } else {
+      appbar.innerHTML = `<a href="index.html" aria-label="Lions home">LIONS</a><strong>${pageNames[currentPath] || "Coach"}</strong>`;
+    }
     document.body.insertBefore(appbar, document.querySelector("main") || document.body.firstChild);
+    const sheetBtn = document.getElementById("sheet-toggle");
+    if (sheetBtn) {
+      sheetBtn.addEventListener("click", () => {
+        document.body.classList.toggle("show-sheet");
+        const on = document.body.classList.contains("show-sheet");
+        sheetBtn.classList.toggle("is-on", on);
+        sheetBtn.textContent = on ? "LIVE" : "SHEET";
+      });
+    }
   }
 
   if (!document.querySelector(".tabbar")) {

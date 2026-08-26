@@ -2,155 +2,76 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="js/gate.js?v=gif-20260826"></script>
-  <title>Interactive Playbook — Cy-Fair K/1 Lions</title>
-  <meta name="description" content="Fourteen coach-sheet plays for the Cy-Fair K/1 Lions. Photo next to a slow-motion recreation.">
-  <link rel="stylesheet" href="css/styles.css?v=gif-20260826">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <script src="js/gate.js?v=app-20260826"></script>
+  <title>Plays — Cy-Fair K/1 Lions</title>
+  <meta name="description" content="Fourteen coach-sheet plays for the Cy-Fair K/1 Lions.">
+  <link rel="stylesheet" href="css/styles.css?v=app-20260826">
 </head>
 <body class="playbook-page">
   <a class="skip-link" href="#main">Skip to content</a>
+  <header class="mast"></header>
 
-  <header class="mast">
-    <div class="mast-inner">
-      <a href="index.html" class="brand-group">
-        <div class="mark" aria-label="Cy-Fair Lions Crest">
-          <svg class="lion-logo" viewBox="0 0 36 36" fill="#f59e0b" aria-hidden="true">
-            <path d="M18 3 C13 3 9 6 8 11 C7 15 9 18 9 20 C7 20 5 22 5 25 C5 29 9 32 14 32 C15 32 16 34 18 34 C20 34 21 32 22 32 C27 32 31 29 31 25 C31 22 29 20 27 20 C27 18 29 15 28 11 C27 6 23 3 18 3 Z M13 15 C14.1 15 15 15.9 15 17 C15 18.1 14.1 19 13 19 C11.9 19 11 18.1 11 17 C11 15.9 11.9 15 13 15 Z M23 15 C24.1 15 25 15.9 25 17 C25 18.1 24.1 19 23 19 C21.9 19 21 18.1 21 17 C21 15.9 21.9 15 23 15 Z M18 26 C15.5 26 14 24.5 14 23.5 L22 23.5 C22 24.5 20.5 26 18 26 Z"/>
-          </svg>
-        </div>
-        <div class="brand-text">
-          <h1>Cy-Fair K/1 Lions</h1>
-          <p>8-on-8 CFSA Flag Football · One Pride</p>
-        </div>
-      </a>
-
-      <nav class="nav" aria-label="Coach navigation">
-        <a href="playbook.html" class="active">📖 Playbook</a>
-        <a href="roster.html">👥 Roster</a>
-        <a href="drills.html">⏱️ Drills</a>
-        <a href="notes.html">📝 Notes</a>
-        <a class="ghost" href="app.html">⚡ Sideline</a>
-        <a class="ghost" href="sideline.html">🖨️ Print</a>
-      </nav>
-    </div>
-  </header>
-
-  <main id="main" class="wrap">
-    <section class="mobile-page-title">
-      <p class="eyebrow">Slow-motion teaching</p>
-      <h1>Playbook</h1>
-      <p>Pick a play. Match the coach sheet. Watch every job.</p>
-    </section>
-
-    <section class="panel play-picker">
-      <div class="panel-header">
-        <h2>1. Pick the play</h2>
-        <span class="tiny">Swipe or tap</span>
-      </div>
+  <main id="main" class="playbook-stage">
+    <nav class="play-strip" aria-label="Choose a play">
       <div class="btn-grid">
-        <button class="play-btn run-red active" type="button" data-run-key="play-01" aria-pressed="true"><div class="btn-title">Play 1</div><small>A-Gap Right</small></button>
-        <button class="play-btn run-blue" type="button" data-run-key="play-02"><div class="btn-title">Play 2</div><small>Off-Tackle Left</small></button>
-        <button class="play-btn run-gold" type="button" data-run-key="play-03"><div class="btn-title">Play 3</div><small>Sweep Right</small></button>
-        <button class="play-btn run-green" type="button" data-run-key="play-04"><div class="btn-title">Play 4</div><small>Sweep Left</small></button>
-        <button class="play-btn run-orange" type="button" data-run-key="play-05"><div class="btn-title">Play 5</div><small>Wing Pass Right</small></button>
-        <button class="play-btn run-purple" type="button" data-run-key="play-06"><div class="btn-title">Play 6</div><small>Reverse Left</small></button>
-        <button class="play-btn run-red" type="button" data-run-key="play-07"><div class="btn-title">Play 7</div><small>A-Gap Right</small></button>
-        <button class="play-btn run-blue" type="button" data-run-key="play-08"><div class="btn-title">Play 8</div><small>A-Gap Left</small></button>
-        <button class="play-btn run-gold" type="button" data-run-key="play-09"><div class="btn-title">Play 9</div><small>Toss Right</small></button>
-        <button class="play-btn run-green" type="button" data-run-key="play-10"><div class="btn-title">Play 10</div><small>Toss Left</small></button>
-        <button class="play-btn run-orange" type="button" data-run-key="play-11"><div class="btn-title">Play 11</div><small>Boot Right</small></button>
-        <button class="play-btn run-purple" type="button" data-run-key="play-12"><div class="btn-title">Play 12</div><small>Sweep Left</small></button>
-        <button class="play-btn run-red" type="button" data-run-key="play-13"><div class="btn-title">Play 13</div><small>Wide Sweep Right</small></button>
-        <button class="play-btn run-blue" type="button" data-run-key="play-14"><div class="btn-title">Play 14</div><small>Wide Sweep Left</small></button>
+        <button class="play-btn is-active active" type="button" data-run-key="play-01" aria-pressed="true" aria-label="Play 1 A-Gap Right"><span class="btn-title">1</span></button>
+        <button class="play-btn" type="button" data-run-key="play-02" aria-pressed="false" aria-label="Play 2 Off-Tackle Left"><span class="btn-title">2</span></button>
+        <button class="play-btn" type="button" data-run-key="play-03" aria-pressed="false" aria-label="Play 3 Sweep Right"><span class="btn-title">3</span></button>
+        <button class="play-btn" type="button" data-run-key="play-04" aria-pressed="false" aria-label="Play 4 Sweep Left"><span class="btn-title">4</span></button>
+        <button class="play-btn" type="button" data-run-key="play-05" aria-pressed="false" aria-label="Play 5 Wing Pass Right"><span class="btn-title">5</span></button>
+        <button class="play-btn" type="button" data-run-key="play-06" aria-pressed="false" aria-label="Play 6 Reverse Left"><span class="btn-title">6</span></button>
+        <button class="play-btn" type="button" data-run-key="play-07" aria-pressed="false" aria-label="Play 7 A-Gap Right"><span class="btn-title">7</span></button>
+        <button class="play-btn" type="button" data-run-key="play-08" aria-pressed="false" aria-label="Play 8 A-Gap Left"><span class="btn-title">8</span></button>
+        <button class="play-btn" type="button" data-run-key="play-09" aria-pressed="false" aria-label="Play 9 Toss Right"><span class="btn-title">9</span></button>
+        <button class="play-btn" type="button" data-run-key="play-10" aria-pressed="false" aria-label="Play 10 Toss Left"><span class="btn-title">10</span></button>
+        <button class="play-btn" type="button" data-run-key="play-11" aria-pressed="false" aria-label="Play 11 Boot Right"><span class="btn-title">11</span></button>
+        <button class="play-btn" type="button" data-run-key="play-12" aria-pressed="false" aria-label="Play 12 Sweep Left"><span class="btn-title">12</span></button>
+        <button class="play-btn" type="button" data-run-key="play-13" aria-pressed="false" aria-label="Play 13 Wide Sweep Right"><span class="btn-title">13</span></button>
+        <button class="play-btn" type="button" data-run-key="play-14" aria-pressed="false" aria-label="Play 14 Wide Sweep Left"><span class="btn-title">14</span></button>
       </div>
+    </nav>
+
+    <section class="play-teacher">
+      <figure class="proof-pane proof-live-pane">
+        <div id="sim-root" class="sim-root"></div>
+        <p id="sim-beat" class="timer-label sim-beat">LINE UP · 1 OF 7</p>
+        <p id="sim-cue" class="sim-cue" aria-live="polite">Find your circle. Two-point stance. Eyes up.</p>
+        <div class="sim-controls">
+          <button type="button" class="btn btn-primary" id="sim-play">PLAY</button>
+          <button type="button" class="btn btn-secondary" id="sim-back">BACK</button>
+          <button type="button" class="btn btn-secondary" id="sim-next">NEXT</button>
+          <button type="button" class="btn btn-danger" id="sim-reset">RESET</button>
+          <button type="button" class="btn btn-secondary" id="sim-gif">GIF</button>
+        </div>
+      </figure>
+      <figure class="proof-pane proof-photo-pane" id="sheet-pane">
+        <img id="coach-sheet-photo" src="plays/play-01.jpg" alt="Coach sheet for Play 1 A-Gap Right">
+      </figure>
+      <span id="sim-play-name" hidden>Play 1</span>
+      <span id="sim-play-badge" hidden>A-Gap Right</span>
     </section>
 
-    <section class="panel play-teacher">
-      <div class="panel-header">
-        <div>
-          <div class="tiny">2. Coach sheet + live picture</div>
-          <h2 id="sim-play-name">Play 1 · Off-Tackle Right</h2>
-        </div>
-        <span class="play-call-badge" id="sim-play-badge">A-Gap Right</span>
-      </div>
-      <div class="sim-key" aria-label="Route colors">
-        <span><i class="key-runner key-ball"></i>Ball path</span>
-        <span><i class="key-block"></i>Block / lead</span>
-        <span><i class="key-fake"></i>Fake</span>
-      </div>
-
-      <div class="proof-row">
-        <figure class="proof-pane proof-photo-pane">
-          <img id="coach-sheet-photo" src="plays/play-01.jpg" alt="Coach sheet for Play 1 A-Gap Right">
-          <figcaption>Coach sheet</figcaption>
-        </figure>
-                <figure class="proof-pane proof-live-pane">
-          <div id="sim-root" class="sim-root"></div>
-                    <p id="sim-beat" class="timer-label sim-beat">LINE UP � 1 OF 7</p>
-          <p id="sim-cue" class="sim-cue" aria-live="polite">Find your circle. Two-point stance. Eyes up.</p>
-          <div class="sim-controls">
-            <button type="button" class="btn btn-primary" id="sim-play">PLAY</button>
-            <button type="button" class="btn btn-secondary" id="sim-back">BACK</button>
-            <button type="button" class="btn btn-secondary" id="sim-next">NEXT</button>
-            <button type="button" class="btn btn-danger" id="sim-reset">RESET</button>
-            <button type="button" class="btn btn-secondary" id="sim-gif">GIF</button>
-          </div>
-        </figure>
-      </div>
-
-      <details class="playbook-more playbook-coach-controls">
-        <summary>Coach controls</summary>
-        <div class="look-toggle" role="group" aria-label="Speed">
-          <button type="button" class="btn btn-secondary is-active" data-sim-speed="slow" aria-pressed="true">Slow-Mo</button>
-          <button type="button" class="btn btn-secondary" data-sim-speed="normal" aria-pressed="false">Normal</button>
-          <button type="button" class="btn btn-secondary" data-sim-speed="fast" aria-pressed="false">Fast</button>
-        </div>
-        <label class="tiny sim-scrub">Scrub through the play
-          <input id="sim-slider" type="range" min="0" max="6" value="0" step="0.02" aria-label="Scrub through play">
-        </label>
-        <div class="grid5-dots" aria-hidden="true">
-          <span data-sim-dot="0" class="is-on"></span><span data-sim-dot="1"></span><span data-sim-dot="2"></span><span data-sim-dot="3"></span><span data-sim-dot="4"></span><span data-sim-dot="5"></span><span data-sim-dot="6"></span>
-        </div>
-      </details>
+    <section class="jobs-strip" aria-label="Jobs">
+      <div id="sim-assignments" class="assignment-board"></div>
     </section>
 
-    <details class="playbook-more" open>
-      <summary>3. Find my job</summary>
-      <section class="panel">
-        <div class="panel-header">
-          <h2>Tap a position</h2>
-          <span class="tiny">Highlights that player</span>
-        </div>
-        <div id="sim-assignments" class="assignment-board"></div>
-      </section>
-    </details>
-
-    <details class="playbook-more" open>
-      <summary>Coaching words</summary>
-      <section class="panel">
-        <div class="cue-grid">
-          <div class="cue"><strong>OL</strong>Two-point. Eyes up. Head out. Hands inside.</div>
-          <div class="cue"><strong>RB</strong>See it. Catch it. Tuck it. Follow the red path.</div>
-          <div class="cue"><strong>W</strong>Your arrow is your job. Stay on it.</div>
-          <div class="cue"><strong>Front</strong>Stay home, then flag. No tackling.</div>
-          <div class="cue"><strong>CB</strong>Nothing outside. Force in.</div>
-          <div class="cue"><strong>S</strong>Deep middle. Hash to hash. Fit the run after the cut. Flag only.</div>
-        </div>
-      </section>
+    <details class="playbook-more playbook-coach-controls">
+      <summary>Speed</summary>
+      <div class="look-toggle" role="group" aria-label="Speed">
+        <button type="button" class="btn btn-secondary is-active" data-sim-speed="slow" aria-pressed="true">Slow-Mo</button>
+        <button type="button" class="btn btn-secondary" data-sim-speed="normal" aria-pressed="false">Normal</button>
+        <button type="button" class="btn btn-secondary" data-sim-speed="fast" aria-pressed="false">Fast</button>
+      </div>
+      <label class="tiny sim-scrub">Scrub
+        <input id="sim-slider" type="range" min="0" max="6" value="0" step="0.02" aria-label="Scrub through play">
+      </label>
     </details>
   </main>
 
-  <footer class="foot">
-    <div class="foot-inner">
-      <div>Cy-Fair K/1 Lions · 8-on-8 CFSA Flag Football</div>
-      <div><a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></div>
-    </div>
-  </footer>
-
-  <script src="js/play-gif.js?v=gif-20260826"></script>
-  <script src="js/plays-data.js?v=gif-20260826"></script>
-  <script src="js/sim.js?v=gif-20260826"></script>
-  <script src="js/app.js?v=gif-20260826"></script>
+  <script src="js/play-gif.js?v=app-20260826"></script>
+  <script src="js/plays-data.js?v=app-20260826"></script>
+  <script src="js/sim.js?v=app-20260826"></script>
+  <script src="js/app.js?v=app-20260826"></script>
 </body>
 </html>
