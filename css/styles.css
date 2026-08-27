@@ -2000,74 +2000,89 @@ body.playbook-page {
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  background: #071018;
+  background: #05080c;
+  color: #f4f6f8;
   padding-bottom: 0 !important;
 }
 body.playbook-page .mobile-page-title,
 body.playbook-page .sim-key,
 body.playbook-page .foot,
-body.playbook-page .play-teacher .panel-header { display: none !important; }
+body.playbook-page .mast,
+body.playbook-page .play-teacher .panel-header,
+body.playbook-page .jobs-strip,
+body.playbook-page .playbook-coach-controls { display: none !important; }
 
 body.playbook-page .playbook-stage {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   min-height: 0;
-  padding-bottom: calc(58px + env(safe-area-inset-bottom));
+  padding-bottom: calc(52px + env(safe-area-inset-bottom));
   box-sizing: border-box;
 }
 
 body.playbook-page .mobile-appbar {
   display: flex !important;
   align-items: center;
-  gap: 10px;
-  padding: 6px 10px;
-  min-height: 44px;
-  background: #071018;
-  border-bottom: 1px solid rgba(246,195,68,.28);
+  gap: 12px;
+  padding: 8px 14px;
+  min-height: 48px;
+  background: #05080c;
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
 body.playbook-page .mobile-appbar a {
-  color: #f6c344;
-  font-size: .78rem;
-  font-weight: 900;
-  letter-spacing: .14em;
+  color: rgba(255,255,255,.55);
+  font-size: .8rem;
+  font-weight: 650;
+  letter-spacing: .04em;
+  text-transform: uppercase;
 }
 body.playbook-page .mobile-appbar strong {
   flex: 1;
   text-align: center;
   color: #fff;
-  font-size: .95rem;
-  font-weight: 800;
-  letter-spacing: .01em;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0;
 }
 body.playbook-page .sheet-toggle {
   appearance: none;
-  border: 1px solid rgba(246,195,68,.5);
+  border: 0;
   background: transparent;
-  color: #f6c344;
+  color: rgba(255,255,255,.7);
   font: inherit;
-  font-size: .7rem;
-  font-weight: 900;
-  letter-spacing: .08em;
-  padding: 6px 10px;
-  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 650;
+  padding: 6px 4px;
   min-height: 32px;
 }
-body.playbook-page .sheet-toggle.is-on {
-  background: #f6c344;
-  color: #071018;
-  border-color: #f6c344;
+body.playbook-page .sheet-toggle.is-on { color: #f6c344; }
+
+body.playbook-page .tabbar {
+  background: #05080c;
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 0 0 env(safe-area-inset-bottom);
 }
+body.playbook-page .tabbar a {
+  min-height: 48px;
+  font-size: .68rem;
+  font-weight: 650;
+  letter-spacing: .02em;
+  color: rgba(255,255,255,.45);
+}
+body.playbook-page .tabbar a.active,
+body.playbook-page .tabbar a:hover { color: #fff; }
+body.playbook-page .tabbar a.active::before { display: none; }
 
 body.playbook-page .play-strip {
   flex: 0 0 auto;
-  background: #071018;
+  background: #05080c;
 }
 body.playbook-page .play-strip .btn-grid {
   display: flex;
   gap: 8px;
   margin: 0;
-  padding: 6px 12px 6px;
+  padding: 8px 14px 10px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -2077,34 +2092,41 @@ body.playbook-page .play-strip .btn-grid::-webkit-scrollbar { display: none; }
 body.playbook-page .play-strip .play-btn,
 body.playbook-page .play-strip .play-btn.run-red,
 body.playbook-page .play-strip .play-btn.run-blue {
-  flex: 0 0 44px;
-  width: 44px;
-  min-width: 44px;
-  min-height: 44px;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 0;
+  min-height: 36px;
   margin: 0;
-  padding: 0;
+  padding: 6px 12px;
   border: 1px solid rgba(255,255,255,.12);
   border-radius: 999px;
-  background: #12202c;
-  color: #fff;
-  display: grid;
-  place-items: center;
+  background: transparent;
+  color: rgba(255,255,255,.78);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
   scroll-snap-align: start;
   box-shadow: none;
 }
 body.playbook-page .play-strip .play-btn::before { display: none !important; }
-body.playbook-page .play-strip .play-btn .btn-title {
-  font-size: .92rem;
-  font-weight: 800;
-  color: inherit;
+body.playbook-page .play-strip .play-btn .btn-num {
+  font-size: .72rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.4);
+}
+body.playbook-page .play-strip .play-btn .btn-call {
+  font-size: .82rem;
+  font-weight: 650;
 }
 body.playbook-page .play-strip .play-btn small { display: none; }
 body.playbook-page .play-strip .play-btn.is-active,
 body.playbook-page .play-strip .play-btn.active {
-  background: #f6c344;
-  border-color: #f6c344;
-  color: #071018;
+  background: #fff;
+  border-color: #fff;
+  color: #05080c;
 }
+body.playbook-page .play-strip .play-btn.is-active .btn-num,
+body.playbook-page .play-strip .play-btn.active .btn-num { color: rgba(5,8,12,.45); }
 
 body.playbook-page .play-teacher {
   flex: 1 1 auto;
@@ -2114,7 +2136,7 @@ body.playbook-page .play-teacher {
   position: relative;
   margin: 0;
   padding: 0;
-  background: #0d3b24;
+  background: #0c3a22;
   border: 0;
   border-radius: 0;
 }
@@ -2126,7 +2148,7 @@ body.playbook-page .proof-live-pane {
   border: 0;
   border-radius: 0;
   min-height: 0;
-  background: #0d3b24;
+  background: #0c3a22;
 }
 body.playbook-page .proof-live-pane .sim-root,
 body.playbook-page .proof-live-pane .sim-svg {
@@ -2136,58 +2158,106 @@ body.playbook-page .proof-live-pane .sim-svg {
   display: block;
 }
 body.playbook-page .proof-live-pane .sim-root {
-  padding-bottom: 48px;
+  padding-bottom: 72px;
   box-sizing: border-box;
 }
-body.playbook-page .proof-live-pane .sim-beat,
+
+body.playbook-page .proof-live-pane .sim-beats {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  z-index: 7;
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  pointer-events: auto;
+  padding: 2px;
+  background: rgba(5,8,12,.4);
+  border-radius: 10px;
+}
+body.playbook-page .proof-live-pane .sim-beats::-webkit-scrollbar { display: none; }
+body.playbook-page .sim-beat-chip {
+  flex: 1 1 0;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: rgba(255,255,255,.7);
+  font: inherit;
+  font-size: .6rem;
+  font-weight: 650;
+  letter-spacing: .02em;
+  padding: 7px 4px;
+  border-radius: 8px;
+  min-height: 30px;
+  white-space: nowrap;
+}
+body.playbook-page .sim-beat-chip.is-on {
+  background: #fff;
+  color: #05080c;
+}
+
 body.playbook-page .proof-live-pane .sim-cue {
   position: absolute;
-  left: 8px;
-  right: 8px;
+  left: 12px;
+  right: 12px;
+  bottom: 64px;
+  top: auto;
   z-index: 6;
   margin: 0;
   pointer-events: none;
-  background: rgba(7,16,24,.62);
+  background: transparent;
   border: 0;
-  border-radius: 8px;
-}
-body.playbook-page .proof-live-pane .sim-beat {
-  top: 8px;
-  padding: 4px 8px;
-  font-size: .7rem;
-  letter-spacing: .08em;
-  color: #f6c344;
+  padding: 0;
+  font-size: .78rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.88);
   text-align: center;
+  text-shadow: 0 1px 8px rgba(0,0,0,.7);
 }
-body.playbook-page .proof-live-pane .sim-cue {
-  top: 34px;
-  padding: 6px 8px;
-  font-size: .8rem;
-  font-weight: 800;
-  color: #fff;
-}
+
 body.playbook-page .proof-live-pane .sim-controls {
   position: absolute;
-  left: 6px;
-  right: 6px;
-  bottom: 6px;
+  left: 0;
+  right: 0;
+  bottom: 10px;
   z-index: 6;
   display: flex;
-  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
   margin: 0;
-  padding: 5px;
-  background: rgba(7,16,24,.62);
-  border-radius: 10px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
 }
-body.playbook-page .proof-live-pane .sim-controls .btn {
-  flex: 1;
-  min-height: 34px;
-  padding: 0 2px;
-  font-size: .66rem;
+body.playbook-page .hud-play {
+  appearance: none;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 0;
+  background: #f6c344;
+  color: #05080c;
+  font: inherit;
+  font-size: .85rem;
   font-weight: 800;
   letter-spacing: .04em;
-  border-radius: 8px;
+  text-transform: uppercase;
 }
+body.playbook-page .hud-ghost {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: rgba(255,255,255,.75);
+  font: inherit;
+  font-size: .72rem;
+  font-weight: 650;
+  min-width: 48px;
+  padding: 8px;
+}
+body.playbook-page .proof-live-pane .sim-controls .btn { display: none; }
 
 body.playbook-page .proof-photo-pane {
   display: none;
@@ -2213,38 +2283,6 @@ body.playbook-page .proof-photo-pane img {
   background: #000;
 }
 
-body.playbook-page .jobs-strip {
-  flex: 0 0 auto;
-  max-height: 112px;
-  padding: 8px 10px 6px;
-  background: #071018;
-  border-top: 1px solid rgba(255,255,255,.08);
-}
-body.playbook-page .jobs-strip .assignment-board {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  scrollbar-width: none;
-  grid-template-columns: none;
-}
-body.playbook-page .jobs-strip .assignment-board::-webkit-scrollbar { display: none; }
-body.playbook-page .jobs-strip .assignment-card {
-  flex: 0 0 150px;
-  min-height: 78px;
-  margin: 0;
-}
-
-body.playbook-page .playbook-coach-controls {
-  margin: 0 10px 8px;
-  border-color: rgba(255,255,255,.1);
-}
-body.playbook-page .playbook-coach-controls > summary {
-  min-height: 40px;
-  font-size: .78rem;
-  color: #9aa4b2;
-}
-
 @media (min-width: 800px) {
   body.playbook-page .mobile-appbar { display: flex !important; }
   body.playbook-page .mast { display: none !important; }
@@ -2263,56 +2301,5 @@ body.playbook-page .playbook-coach-controls > summary {
   body.playbook-page.show-sheet .proof-photo-pane { position: static; }
 }
 
-body.playbook-page .proof-live-pane .sim-beats {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  right: 8px;
-  z-index: 7;
-  display: flex;
-  gap: 4px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  pointer-events: auto;
-  padding: 3px;
-  background: rgba(7,16,24,.55);
-  border-radius: 10px;
-}
-body.playbook-page .proof-live-pane .sim-beats::-webkit-scrollbar { display: none; }
-body.playbook-page .sim-beat-chip {
-  flex: 1 0 auto;
-  appearance: none;
-  border: 0;
-  background: transparent;
-  color: rgba(255,255,255,.72);
-  font: inherit;
-  font-size: .58rem;
-  font-weight: 800;
-  letter-spacing: .04em;
-  padding: 6px 7px;
-  border-radius: 7px;
-  min-height: 28px;
-  white-space: nowrap;
-}
-body.playbook-page .sim-beat-chip.is-on {
-  background: #f6c344;
-  color: #071018;
-}
-body.playbook-page .proof-live-pane .sim-cue {
-  top: 44px;
-}
-body.playbook-page .proof-live-pane .sim-controls .btn-danger,
-body.playbook-page .proof-live-pane .sim-controls #sim-reset {
-  background: transparent;
-  color: #fff;
-  border-color: rgba(255,255,255,.25);
-}
-body.playbook-page .jobs-strip .assignment-task { display: none; }
-body.playbook-page .jobs-strip .assignment-card {
-  flex: 0 0 108px;
-  min-height: 64px;
-  padding: 8px;
-}
-body.playbook-page .playbook-coach-controls { display: none; }
-
 /* === lions-sideline-app: end === */
+

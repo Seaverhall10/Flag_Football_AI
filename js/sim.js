@@ -549,7 +549,7 @@
   function pause() {
     state.playing = false;
     if (state.raf) cancelAnimationFrame(state.raf);
-    if (playButton) playButton.textContent = "PLAY";
+    if (playButton) playButton.textContent = "Play";
   }
   function setBeat(value) { pause(); setT(clamp(value, 0, 6)); }
   function tick(now) {
@@ -559,7 +559,7 @@
     var progress = duration <= 0 ? 1 : clamp((now - state.startedAt) / duration, 0, 1);
     setT(state.startT + remaining * progress);
     if (progress < 1 && state.playing) state.raf = requestAnimationFrame(tick);
-    else { state.playing = false; setT(6); if (playButton) playButton.textContent = "PLAY"; }
+    else { state.playing = false; setT(6); if (playButton) playButton.textContent = "Play"; }
   }
   function play() {
     if (state.playing) { pause(); return; }
@@ -568,7 +568,7 @@
     state.playing = true;
     state.startT = state.t;
     state.startedAt = performance.now();
-    if (playButton) playButton.textContent = "PAUSE";
+    if (playButton) playButton.textContent = "Pause";
     state.raf = requestAnimationFrame(tick);
   }
   function reset() {
