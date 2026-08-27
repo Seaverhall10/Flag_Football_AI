@@ -348,19 +348,19 @@
   function tokenOffense(p) {
     var fill = tokenFill(p);
     var g = el("g", { class: "sim-player", "data-player": p.id, tabindex: "0", role: "button", "aria-label": positionTitle(p) });
-    g.appendChild(el("circle", { r: "32", fill: "transparent" }));
-    var selected = el("circle", { r: "30", fill: "none", stroke: "#fff", "stroke-width": "2.6", opacity: "0" });
+    g.appendChild(el("circle", { r: "38", fill: "transparent" }));
+    var selected = el("circle", { r: "36", fill: "none", stroke: "#fff", "stroke-width": "2.6", opacity: "0" });
     var stroke = isBallBack(p) ? GOLD_RB_STROKE : (p.stroke || "#1a1a1a");
     var sw = (isBallBack(p) || p.stroke) ? "3.6" : "2.4";
-    var disc = el("circle", { r: "24", fill: fill, stroke: stroke, "stroke-width": sw });
+    var disc = el("circle", { r: "28", fill: fill, stroke: stroke, "stroke-width": sw });
     var label = el("text", {
       x: "0", y: "6",
       fill: darkFill(fill) ? "#fff" : "#111",
-      "font-size": "16", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none"
+      "font-size": "18", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none"
     });
     label.textContent = p.letter;
     var role = el("text", {
-      x: "0", y: "40", fill: "#f6c344", "font-size": "11", "font-weight": "800",
+      x: "0", y: "46", fill: "#f6c344", "font-size": "12", "font-weight": "800",
       "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "3.4", "pointer-events": "none"
     });
     g.appendChild(selected); g.appendChild(disc); g.appendChild(label); g.appendChild(role);
@@ -404,18 +404,34 @@
     if (ball && ball.parentNode) svg.appendChild(ball);
   }
 
+  function fitViewBox() {
+    if (!svg) return;
+    var root = document.getElementById("sim-root");
+    var box = root ? root.getBoundingClientRect() : { width: 390, height: 640 };
+    var w = Math.max(1, box.width);
+    var h = Math.max(1, box.height);
+    var vbW = 1000;
+    var vbH = vbW * (h / w);
+    var cx = 500;
+    var cy = 360;
+    var x = cx - vbW / 2;
+    var y = cy - vbH / 2;
+    svg.setAttribute("viewBox", x + " " + y + " " + vbW + " " + vbH);
+  }
+
   function buildField() {
-    svg = el("svg", { viewBox: "0 60 1000 630", preserveAspectRatio: "xMidYMid meet", class: "sim-svg full-team-svg", role: "img", "aria-label": "Coach-sheet recreation" });
+    svg = el("svg", { viewBox: "0 -200 1000 1600", preserveAspectRatio: "xMidYMid meet", class: "sim-svg full-team-svg", role: "img", "aria-label": "Coach-sheet recreation" });
     var defs = el("defs", {});
     defs.innerHTML =
       '<marker id="ballArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>' +
       '<marker id="blockArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111111"/></marker>' +
-      '<radialGradient id="fieldGlow" cx="50%" cy="65%" r="85%"><stop offset="0%" stop-color="#14532d"/><stop offset="100%" stop-color="#0b3522"/></radialGradient>';
+      '<radialGradient id="fieldGlow" cx="50%" cy="40%" r="90%"><stop offset="0%" stop-color="#14532d"/><stop offset="100%" stop-color="#0b3522"/></radialGradient>';
     svg.appendChild(defs);
-    svg.appendChild(el("rect", { width: String(W), height: String(H), fill: "url(#fieldGlow)" }));
-    [90, 190, 290, 520, 640, 760, 850].forEach(function (y) {
-      svg.appendChild(el("line", { x1: "30", y1: String(y), x2: String(W - 30), y2: String(y), stroke: "rgba(255,255,255,.13)", "stroke-width": "2" }));
-    });
+    svg.appendChild(el("rect", { x: "-400", y: "-800", width: "1800", height: "2800", fill: "url(#fieldGlow)" }));
+    var y;
+    for (y = -700; y <= 1800; y += 100) {
+      svg.appendChild(el("line", { x1: "20", y1: String(y), x2: String(W - 20), y2: String(y), stroke: "rgba(255,255,255,.12)", "stroke-width": "2" }));
+    }
     svg.appendChild(el("line", { x1: "26", y1: String(LOS), x2: String(W - 26), y2: String(LOS), stroke: "#f6c344", "stroke-width": "3" }));
     var los = el("text", { x: "38", y: String(LOS - 10), fill: "#f6c344", "font-size": "11", "font-weight": "800" });
     los.textContent = "LOS";
@@ -681,6 +697,11 @@
     if (!root || !plays().length) return;
     root.innerHTML = "";
     root.appendChild(buildField());
+    fitViewBox();
+    window.addEventListener("resize", fitViewBox);
+    if (window.ResizeObserver) {
+      new ResizeObserver(fitViewBox).observe(root);
+    }
     document.querySelectorAll(".play-btn[data-run-key]").forEach(function (button) {
       button.addEventListener("click", function () { setRun(button.getAttribute("data-run-key")); });
     });

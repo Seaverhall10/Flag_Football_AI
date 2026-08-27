@@ -2077,6 +2077,15 @@ body.playbook-page .tabbar a.active::before { display: none; }
 body.playbook-page .play-strip {
   flex: 0 0 auto;
   background: #05080c;
+  position: relative;
+}
+body.playbook-page .play-strip::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 28px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, #05080c);
 }
 body.playbook-page .play-strip .btn-grid {
   display: flex;
@@ -2150,16 +2159,22 @@ body.playbook-page .proof-live-pane {
   min-height: 0;
   background: #0c3a22;
 }
-body.playbook-page .proof-live-pane .sim-root,
+body.playbook-page .proof-live-pane .sim-root {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 0;
+  overflow: hidden;
+}
 body.playbook-page .proof-live-pane .sim-svg {
+  position: absolute;
+  inset: 0;
   width: 100% !important;
   height: 100% !important;
   min-height: 0 !important;
   display: block;
-}
-body.playbook-page .proof-live-pane .sim-root {
-  padding-bottom: 72px;
-  box-sizing: border-box;
 }
 
 body.playbook-page .proof-live-pane .sim-beats {
@@ -2174,7 +2189,7 @@ body.playbook-page .proof-live-pane .sim-beats {
   scrollbar-width: none;
   pointer-events: auto;
   padding: 2px;
-  background: rgba(5,8,12,.4);
+  background: rgba(5,8,12,.82);
   border-radius: 10px;
 }
 body.playbook-page .proof-live-pane .sim-beats::-webkit-scrollbar { display: none; }
