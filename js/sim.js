@@ -20,7 +20,7 @@
   ];
 
   var state = { runKey: "play-01", t: 0, playing: false, speed: 11000, startedAt: 0, startT: 0, raf: 0, selected: null, players: {} };
-  var svg, ball, routeLayer, blockLayer, iconLayer, cueEl, beatEl, slider, playButton, photoEl;
+  var svg, ball, routeLayer, blockLayer, iconLayer, cueEl, beatEl, beatsEl, slider, playButton, photoEl;
 
   function plays() { return window.LIONS_PLAYS || []; }
   function playMap() { return window.LIONS_PLAY_MAP || {}; }
@@ -489,6 +489,11 @@
     ball.setAttribute("transform", "translate(" + bp.x + "," + bp.y + ")");
     var shown = clamp(Math.round(state.t), 0, 6);
     if (beatEl) beatEl.textContent = BEATS[shown].name + " · " + (shown + 1) + " OF 7";
+    if (beatsEl) {
+      beatsEl.querySelectorAll("[data-beat]").forEach(function (chip) {
+        chip.classList.toggle("is-on", Number(chip.getAttribute("data-beat")) === shown);
+      });
+    }
     if (cueEl && !state.selected) cueEl.textContent = play.cue || BEATS[shown].cue;
     if (slider) slider.value = String(state.t);
     document.querySelectorAll("[data-sim-dot]").forEach(function (dot) {
@@ -622,6 +627,20 @@
     step(0);
   }
 
+
+  function renderBeatChips() {
+    beatsEl = document.getElementById("sim-beats");
+    if (!beatsEl) return;
+    beatsEl.innerHTML = BEATS.map(function (beat, i) {
+      return '<button type="button" class="sim-beat-chip" role="tab" data-beat="' + i + '">' + beat.name + "</button>";
+    }).join("");
+    beatsEl.querySelectorAll("[data-beat]").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        setBeat(Number(chip.getAttribute("data-beat")));
+      });
+    });
+  }
+
   function setRun(key) {
     if (!playMap()[key]) return;
     pause();
@@ -655,6 +674,7 @@
     var root = document.getElementById("sim-root");
     cueEl = document.getElementById("sim-cue");
     beatEl = document.getElementById("sim-beat");
+    renderBeatChips();
     slider = document.getElementById("sim-slider");
     playButton = document.getElementById("sim-play");
     photoEl = document.getElementById("coach-sheet-photo");
