@@ -19,7 +19,7 @@
     { name: "FINISH", cue: "North. Flag only — no tackling, no blocks in the back." }
   ];
 
-  var state = { runKey: "play-01", t: 0, playing: false, speed: 11000, startedAt: 0, startT: 0, raf: 0, selected: null, players: {} };
+  var state = { runKey: "play-01", t: 0, playing: false, speed: 4800, startedAt: 0, startT: 0, raf: 0, selected: null, players: {} };
   var svg, ball, routeLayer, blockLayer, iconLayer, cueEl, beatEl, beatsEl, slider, playButton, photoEl;
 
   function plays() { return window.LIONS_PLAYS || []; }
@@ -241,7 +241,7 @@
         d: dFromPoints(shorten(pts, 18, 8)),
         fill: "none",
         stroke: isBall ? "#dc2626" : color,
-        "stroke-width": isBall ? "3.2" : "2.8",
+        "stroke-width": isBall ? "6" : "4.2",
         "stroke-linecap": "round",
         "stroke-linejoin": "round",
         "marker-end": isBall ? "url(#ballArrow)" : "url(#blockArrow)",
@@ -260,7 +260,7 @@
         d: dFromPoints(pts),
         fill: "none",
         stroke: "#111111",
-        "stroke-width": "2.8",
+        "stroke-width": "4.2",
         "stroke-linecap": "round",
         "marker-end": "url(#blockArrow)",
         "data-route-owner": block.from
@@ -272,7 +272,7 @@
         d: dFromPoints(ballPts),
         fill: "none",
         stroke: "#dc2626",
-        "stroke-width": "3.1",
+        "stroke-width": "6",
         "stroke-dasharray": "9 7",
         "stroke-linecap": "round",
         "stroke-linejoin": "round",
@@ -352,11 +352,11 @@
     var selected = el("circle", { r: "36", fill: "none", stroke: "#fff", "stroke-width": "2.6", opacity: "0" });
     var stroke = isBallBack(p) ? GOLD_RB_STROKE : (p.stroke || "#1a1a1a");
     var sw = (isBallBack(p) || p.stroke) ? "3.6" : "2.4";
-    var disc = el("circle", { r: "28", fill: fill, stroke: stroke, "stroke-width": sw });
+    var disc = el("circle", { r: "34", fill: fill, stroke: stroke, "stroke-width": sw });
     var label = el("text", {
       x: "0", y: "6",
       fill: darkFill(fill) ? "#fff" : "#111",
-      "font-size": "18", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none"
+      "font-size": "20", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none"
     });
     label.textContent = p.letter;
     var role = el("text", {
@@ -376,9 +376,9 @@
     var g = el("g", { class: "sim-player", "data-player": d.id, tabindex: "0", role: "button", "aria-label": d.letter });
     g.appendChild(el("circle", { r: "34", fill: "transparent" }));
     var selected = el("circle", { r: "32", fill: "none", stroke: "#fff", "stroke-width": "2.6", opacity: "0" });
-    var sq = el("rect", { x: "-18", y: "-18", width: "36", height: "36", rx: "4", fill: "#f8fafc", stroke: "#111", "stroke-width": "2.4" });
+    var sq = el("rect", { x: "-22", y: "-22", width: "44", height: "44", rx: "4", fill: "#f8fafc", stroke: "#111", "stroke-width": "2.4" });
     var label = el("text", {
-      x: "0", y: "6", fill: "#111", "font-size": "14", "font-weight": "800",
+      x: "0", y: "6", fill: "#111", "font-size": "16", "font-weight": "800",
       "text-anchor": "middle", "pointer-events": "none"
     });
     label.textContent = d.letter;
@@ -407,16 +407,20 @@
   function fitViewBox() {
     if (!svg) return;
     var root = document.getElementById("sim-root");
-    var box = root ? root.getBoundingClientRect() : { width: 390, height: 640 };
-    var w = Math.max(1, box.width);
-    var h = Math.max(1, box.height);
-    var vbW = 1000;
-    var vbH = vbW * (h / w);
-    var cx = 500;
-    var cy = 360;
-    var x = cx - vbW / 2;
-    var y = cy - vbH / 2;
-    svg.setAttribute("viewBox", x + " " + y + " " + vbW + " " + vbH);
+    var box = root ? root.getBoundingClientRect() : { width: 390, height: 520 };
+    var w = Math.max(160, box.width);
+    var h = Math.max(160, box.height);
+    var aspect = h / w;
+    var bp = ballPosAt(state.t);
+    var u = clamp(state.t / 6, 0, 1);
+    var zoom = clamp((u - 0.06) / 0.4, 0, 1);
+    var vbW = lerp(760, 540, zoom);
+    var vbH = vbW * aspect;
+    var cx = lerp(500, bp.x, zoom * 0.85);
+    var cy = lerp(390, bp.y, zoom * 0.85);
+    svg.setAttribute("viewBox",
+      (cx - vbW / 2).toFixed(1) + " " + (cy - vbH / 2).toFixed(1) + " " +
+      vbW.toFixed(1) + " " + vbH.toFixed(1));
   }
 
   function buildField() {
@@ -443,7 +447,7 @@
     svg.appendChild(routeLayer);
     svg.appendChild(iconLayer);
     ball = el("g", { class: "sim-ball" });
-    ball.appendChild(el("ellipse", { rx: "14", ry: "10", fill: "#f8fafc", stroke: "#3f2b1d", "stroke-width": "2.6" }));
+    ball.appendChild(el("ellipse", { rx: "20", ry: "14", fill: "#f8fafc", stroke: "#3f2b1d", "stroke-width": "3" }));
     ball.appendChild(el("line", { x1: "-7", y1: "0", x2: "7", y2: "0", stroke: "#9f1239", "stroke-width": "1.8" }));
     svg.appendChild(ball);
     return svg;
@@ -516,6 +520,7 @@
       dot.classList.toggle("is-on", Number(dot.getAttribute("data-sim-dot")) === shown);
     });
     applyFocus();
+    fitViewBox();
   }
 
   function jobFor(id) {
@@ -579,7 +584,6 @@
   }
   function play() {
     if (state.playing) { pause(); return; }
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setT(6); return; }
     if (state.t >= 5.99) setT(0);
     state.playing = true;
     state.startT = state.t;

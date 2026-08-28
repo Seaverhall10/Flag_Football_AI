@@ -2233,6 +2233,8 @@ body.playbook-page .proof-live-pane .sim-cue {
 }
 
 body.playbook-page .proof-live-pane .sim-controls {
+  z-index: 20;
+  pointer-events: auto;
   position: absolute;
   left: 0;
   right: 0;
@@ -2248,6 +2250,8 @@ body.playbook-page .proof-live-pane .sim-controls {
   border-radius: 0;
 }
 body.playbook-page .hud-play {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   appearance: none;
   width: 72px;
   height: 72px;
