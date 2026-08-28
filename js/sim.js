@@ -406,21 +406,35 @@
 
   function fitViewBox() {
     if (!svg) return;
+    var play = currentPlay();
+    var xs = [60, 940];
+    var ys = [110, 620];
+    function add(x, y) { xs.push(Number(x)); ys.push(Number(y)); }
+    (play.offense || []).forEach(function (p) { add(p.x, p.y); });
+    (play.defense || []).forEach(function (d) { add(d.x, d.y); });
+    (play.routes || []).forEach(function (r) {
+      (r.points || []).forEach(function (pt) { add(pt.x, pt.y); });
+    });
+    if (play.ball && play.ball.points) {
+      play.ball.points.forEach(function (pt) { add(pt.x, pt.y); });
+    }
+    var pad = 80;
+    var minX = Math.min.apply(null, xs) - pad;
+    var maxX = Math.max.apply(null, xs) + pad;
+    var minY = Math.min.apply(null, ys) - 50;
+    var maxY = Math.max.apply(null, ys) + 70;
+    var vbW = Math.max(100, maxX - minX);
+    var vbH = Math.max(100, maxY - minY);
     var root = document.getElementById("sim-root");
     var box = root ? root.getBoundingClientRect() : { width: 390, height: 520 };
     var w = Math.max(160, box.width);
     var h = Math.max(160, box.height);
-    var aspect = h / w;
-    var bp = ballPosAt(state.t);
-    var u = clamp(state.t / 6, 0, 1);
-    var zoom = clamp((u - 0.06) / 0.4, 0, 1);
-    var vbW = lerp(760, 540, zoom);
-    var vbH = vbW * aspect;
-    var cx = lerp(500, bp.x, zoom * 0.85);
-    var cy = lerp(390, bp.y, zoom * 0.85);
-    svg.setAttribute("viewBox",
-      (cx - vbW / 2).toFixed(1) + " " + (cy - vbH / 2).toFixed(1) + " " +
-      vbW.toFixed(1) + " " + vbH.toFixed(1));
+    var needH = vbW * (h / w);
+    if (needH > vbH) {
+      minY -= (needH - vbH) * 0.28;
+      vbH = needH;
+    }
+    svg.setAttribute("viewBox", minX.toFixed(1) + " " + minY.toFixed(1) + " " + vbW.toFixed(1) + " " + vbH.toFixed(1));
   }
 
   function buildField() {
@@ -520,7 +534,6 @@
       dot.classList.toggle("is-on", Number(dot.getAttribute("data-sim-dot")) === shown);
     });
     applyFocus();
-    fitViewBox();
   }
 
   function jobFor(id) {
@@ -688,6 +701,7 @@
     drawStaticRoutes();
     updateAssignments();
     applyPoses();
+    fitViewBox();
   }
 
   document.addEventListener("DOMContentLoaded", function () {

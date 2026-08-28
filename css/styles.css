@@ -63,7 +63,7 @@ body {
   line-height: 1.4;
   display: flex;
   flex-direction: column;
-  padding-bottom: 64px;
+  padding-bottom: 96px;
 }
 
 a { color: var(--gold); text-decoration: none; font-weight: 600; }
@@ -2217,7 +2217,7 @@ body.playbook-page .proof-live-pane .sim-cue {
   position: absolute;
   left: 12px;
   right: 12px;
-  bottom: 64px;
+  bottom: 96px;
   top: auto;
   z-index: 6;
   margin: 0;
@@ -2253,8 +2253,8 @@ body.playbook-page .hud-play {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   appearance: none;
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   border: 0;
   background: #f6c344;
