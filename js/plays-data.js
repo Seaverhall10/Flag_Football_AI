@@ -47,7 +47,7 @@
   var PLAYS = [
 
     {
-      id: "play-01", name: "Play 1", call: "Pass Right", photo: "plays/play-01.jpg",
+      id: "play-01", name: "Play 1", call: "Pass Right", photo: "plays/play-01.jpg?v=flip1",
       cue: "Red RB snaps. Pitch/pass right to the Wing. Blue RB dives the B-gap.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE."),
@@ -70,7 +70,7 @@
     },
 
     {
-      id: "play-02", name: "Play 2", call: "Pass Left", photo: "plays/play-02.jpg",
+      id: "play-02", name: "Play 2", call: "Pass Left", photo: "plays/play-02.jpg?v=flip1",
       cue: "Red RB snaps. Pass/pitch left to the Wing. Blue RB works left.",
       offense: [
         off("w", "W", GRY, 210, 468, "Catch it outside left. Run north.", { role: "CATCH" }),
@@ -93,7 +93,7 @@
     },
 
     {
-      id: "play-03", name: "Play 3", call: "Wingback Left Sweep", photo: "plays/play-03.jpg",
+      id: "play-03", name: "Play 3", call: "Wingback Left Sweep", photo: "plays/play-03.jpg?v=flip1",
       cue: "Red RB sweeps left. Blue RB and Wing sell right.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE."),
@@ -116,7 +116,7 @@
     },
 
     {
-      id: "play-04", name: "Play 4", call: "Wingback Right Sweep", photo: "plays/play-04.jpg",
+      id: "play-04", name: "Play 4", call: "Wingback Right Sweep", photo: "plays/play-04.jpg?v=flip1",
       cue: "Red RB sweeps right. Guard and Center pull. Blue RB leads.",
       offense: [
         off("w", "W", GRY, 228, 468, "Block the left DE.", { role: "FAKE" }),
@@ -140,7 +140,7 @@
     },
 
     {
-      id: "play-05", name: "Play 5", call: "RB Dive Left", photo: "plays/play-05.jpg",
+      id: "play-05", name: "Play 5", call: "RB Dive Left", photo: "plays/play-05.jpg?v=flip1",
       cue: "Red RB dives left A-gap (C–LG). Center climbs to the LB.",
       offense: [
         off("lt", "T", GRY, 328, 452, "Block the left DE."),
@@ -163,7 +163,7 @@
     },
 
     {
-      id: "play-06", name: "Play 6", call: "RB Dive Right", photo: "plays/play-06.jpg",
+      id: "play-06", name: "Play 6", call: "RB Dive Right", photo: "plays/play-06.jpg?v=flip1",
       cue: "Red RB dives right A-gap (C–RG). Center climbs to the LB.",
       offense: [
         off("w", "W", GRY, 228, 468, "Block the left DE."),
@@ -186,7 +186,7 @@
     },
 
     {
-      id: "play-07", name: "Play 7", call: "Fake Handoff Left Sweep", photo: "plays/play-07.jpg",
+      id: "play-07", name: "Play 7", call: "Fake Handoff Left Sweep", photo: "plays/play-07.jpg?v=flip1",
       cue: "Fake left. Red RB sweeps right. Blue RB sells the fake.",
       offense: [
         off("lt", "T", BLU, 328, 452, "Block the left DE."),
@@ -208,7 +208,7 @@
     },
 
     {
-      id: "play-08", name: "Play 8", call: "Fake Handoff Right Sweep", photo: "plays/play-08.jpg",
+      id: "play-08", name: "Play 8", call: "Fake Handoff Right Sweep", photo: "plays/play-08.jpg?v=flip1",
       cue: "Fake right. Red RB sweeps left. Blue RB sells the fake.",
       offense: [
         off("w", "W", GRY, 228, 468, "Block the left DE."),
@@ -230,7 +230,7 @@
     },
 
     {
-      id: "play-09", name: "Play 9", call: "Handoff Weak Left Sweep", photo: "plays/play-09.jpg",
+      id: "play-09", name: "Play 9", call: "Handoff Weak Left Sweep", photo: "plays/play-09.jpg?v=flip1",
       cue: "Blue RB takes it and sweeps left. Red RB sells right.",
       offense: [
         off("w", "W", GRY, 228, 468, "Block the left DE."),
@@ -252,7 +252,7 @@
     },
 
     {
-      id: "play-10", name: "Play 10", call: "Handoff Weak Right Sweep", photo: "plays/play-10.jpg",
+      id: "play-10", name: "Play 10", call: "Handoff Weak Right Sweep", photo: "plays/play-10.jpg?v=flip1",
       cue: "Blue RB takes it and sweeps right. Red RB sells left.",
       offense: [
         off("lt", "T", BLU, 328, 452, "Block the left DE."),
@@ -274,7 +274,7 @@
     },
 
     {
-      id: "play-11", name: "Play 11", call: "RB Left Sweep", photo: "plays/play-11.jpg",
+      id: "play-11", name: "Play 11", call: "RB Left Sweep", photo: "plays/play-11.jpg?v=flip1",
       cue: "Red RB sweeps left. Center climbs to the LB. Blue RB leads.",
       offense: [
         off("lt", "T", BLU, 328, 452, "Block the left DE."),
@@ -297,7 +297,7 @@
     },
 
     {
-      id: "play-12", name: "Play 12", call: "RB Right Sweep", photo: "plays/play-12.jpg",
+      id: "play-12", name: "Play 12", call: "RB Right Sweep", photo: "plays/play-12.jpg?v=flip1",
       cue: "Red RB sweeps right. Wing and Tackle seal the edge.",
       offense: [
         off("w", "W", GRY, 228, 468, "Block the left DE."),
