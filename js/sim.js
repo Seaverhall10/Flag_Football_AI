@@ -19,7 +19,7 @@
     { name: "FINISH", cue: "North. Flag only — no tackling, no blocks in the back." }
   ];
 
-  var state = { runKey: "play-01", t: 0, playing: false, speed: 4800, startedAt: 0, startT: 0, raf: 0, selected: null, players: {} };
+  var state = { runKey: "play-01", t: 0, playing: false, speed: 11000, startedAt: 0, startT: 0, raf: 0, selected: null, players: {} };
   var svg, ball, routeLayer, blockLayer, iconLayer, cueEl, beatEl, beatsEl, slider, playButton, photoEl;
 
   function isCustomTeam() {
@@ -127,25 +127,54 @@
     return { x: points[points.length - 1].x, y: points[points.length - 1].y };
   }
 
+  function pathPrefixToPoint(points, target) {
+    if (!points || !points.length) return [];
+    if (points.length === 1 || !target) return points.slice(0, 1);
+    var best = { distance: Infinity, segment: 0, point: points[0] };
+    for (var i = 0; i < points.length - 1; i++) {
+      var a = points[i], b = points[i + 1];
+      var dx = b.x - a.x, dy = b.y - a.y;
+      var len2 = dx * dx + dy * dy || 1;
+      var amount = clamp(((target.x - a.x) * dx + (target.y - a.y) * dy) / len2, 0, 1);
+      var projected = { x: a.x + dx * amount, y: a.y + dy * amount };
+      var distance = Math.hypot(projected.x - target.x, projected.y - target.y);
+      if (distance < best.distance) best = { distance: distance, segment: i, point: projected };
+    }
+    var prefix = points.slice(0, best.segment + 1);
+    prefix.push(best.point);
+    return prefix;
+  }
+
+  function possessionBeat(play) {
+    var carrier = play && play.ball ? findOff(play, play.ball.carrierId) : null;
+    return carrier && carrier.role === "CATCH" ? 3 : 1;
+  }
+
+  function carrierMotionAmount(play, beat) {
+    var start = possessionBeat(play);
+    if (beat <= start) return 0;
+    return ease(clamp((beat - start) / Math.max(1, 6 - start), 0, 1));
+  }
+
   function isCarrier(play, id) {
-    if (play.ball && play.ball.carrierId === id) return true;
-    var p = findOff(play, id);
-    return isBallBack(p);
+    return Boolean(play && play.ball && play.ball.carrierId === id);
   }
 
   function motionAmount(kind, beat) {
     beat = Number(beat);
     if (kind === "lead") {
       if (beat <= 0) return 0;
-      if (beat === 1) return 0.22;
-      if (beat === 2) return 0.92;
+      if (beat === 1) return 0.06;
+      if (beat === 2) return 0.24;
+      if (beat === 3) return 0.52;
+      if (beat === 4) return 0.78;
       return 1;
     }
     if (kind === "block") {
       if (beat <= 0) return 0;
-      if (beat === 1) return 0.08;
-      if (beat === 2) return 0.64;
-      if (beat === 3) return 1;
+      if (beat === 1) return 0.1;
+      if (beat === 2) return 0.48;
+      if (beat === 3) return 0.86;
       return 1;
     }
     if (kind === "ball") {
@@ -158,9 +187,11 @@
       return 1;
     }
     if (kind === "fake") {
-      if (beat <= 1) return 0;
-      if (beat === 2) return 0.32;
-      if (beat === 3) return 0.7;
+      if (beat <= 0) return 0;
+      if (beat === 1) return 0.04;
+      if (beat === 2) return 0.2;
+      if (beat === 3) return 0.52;
+      if (beat === 4) return 0.82;
       return 1;
     }
     if (kind === "slide") {
@@ -174,6 +205,7 @@
     if (findDef(play, id) && findDef(play, id).slide) return "slide";
     if (isCarrier(play, id)) return "ball";
     var p = findOff(play, id);
+    if (p && (p.role === "PASS" || p.role === "PITCH")) return "passer";
     if (p && p.role === "FAKE") return "fake";
     if (p && p.role === "LEAD") return p.pace === "block" ? "block" : "lead";
     if (p && (p.role === "BLOCK" || p.role === "SNAP" || p.role === "CATCH")) return "block";
@@ -192,9 +224,12 @@
     var poses = {};
     play.offense.forEach(function (p) {
       var pts = pathPoints(play, p.id);
-      var amt = motionAmount(kindFor(play, p.id), beat);
+      var kind = kindFor(play, p.id);
+      var amt = kind === "ball" ? carrierMotionAmount(play, beat) : motionAmount(kind, beat);
       if (p.role === "SNAP" && beat === 1) {
         poses[p.id] = { x: p.x, y: p.y + 8 };
+      } else if (kind === "passer") {
+        poses[p.id] = { x: p.x, y: p.y };
       } else {
         poses[p.id] = samplePath(pts, amt);
       }
@@ -259,10 +294,11 @@
       var path = el("path", {
         d: dFromPoints(shorten(pts, 18, 8)),
         fill: "none",
-        stroke: isBall ? "#dc2626" : color,
-        "stroke-width": isBall ? "6" : "4.2",
+        stroke: isBall ? "#dc2626" : "#e7eef7",
+        "stroke-width": isBall ? "4" : "2.8",
         "stroke-linecap": "round",
         "stroke-linejoin": "round",
+        opacity: isBall ? ".9" : ".72",
         "marker-end": isBall ? "url(#ballArrow)" : "url(#blockArrow)",
         "data-route-owner": route.from
       });
@@ -278,9 +314,10 @@
       blockLayer.appendChild(el("path", {
         d: dFromPoints(pts),
         fill: "none",
-        stroke: "#111111",
-        "stroke-width": "4.2",
+        stroke: "#e7eef7",
+        "stroke-width": "2.8",
         "stroke-linecap": "round",
+        opacity: ".78",
         "marker-end": "url(#blockArrow)",
         "data-route-owner": block.from
       }));
@@ -291,10 +328,11 @@
         d: dFromPoints(ballPts),
         fill: "none",
         stroke: "#dc2626",
-        "stroke-width": "6",
-        "stroke-dasharray": "9 7",
+        "stroke-width": "4",
+        "stroke-dasharray": "10 8",
         "stroke-linecap": "round",
         "stroke-linejoin": "round",
+        opacity: ".9",
         "marker-end": "url(#ballArrow)",
         "data-route-owner": play.ball.carrierId || ""
       });
@@ -317,15 +355,14 @@
   }
   function isBallBack(p) {
     if (!p) return false;
-    if (p.id === "rb-ball") return true;
-    if (!isRb(p)) return false;
-    return p.role === "RUN" || p.role === "PASS" || p.role === "PITCH";
+    var play = currentPlay();
+    return Boolean(play && play.ball && play.ball.carrierId === p.id);
   }
   function rbColorKey(p) {
     if (!isRb(p)) return "";
-    if (isBallBack(p)) return "GOLD";
     var c = String(p.color || "").toLowerCase();
     if (c === BLUE_RB_FILL) return "BLUE";
+    if (c === GOLD_RB_FILL) return "GOLD";
     return "PURPLE";
   }
   function positionTitle(p) {
@@ -343,7 +380,6 @@
     return p.role || "BLOCK";
   }
   function tokenFill(p) {
-    if (isBallBack(p)) return GOLD_RB_FILL;
     return p.color;
   }
   function setRoleCaption(textEl, p) {
@@ -456,7 +492,7 @@
     if (play.ball && play.ball.points) {
       play.ball.points.forEach(function (pt) { add(pt.x, pt.y); });
     }
-    var pad = 80;
+    var pad = 54;
     var minX = Math.min.apply(null, xs) - pad;
     var maxX = Math.max.apply(null, xs) + pad;
     var minY = Math.min.apply(null, ys) - 50;
@@ -479,8 +515,8 @@
     svg = el("svg", { viewBox: "0 -200 1000 1600", preserveAspectRatio: "xMidYMid meet", class: "sim-svg full-team-svg", role: "img", "aria-label": "Coach-sheet recreation" });
     var defs = el("defs", {});
     defs.innerHTML =
-      '<marker id="ballArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker>' +
-      '<marker id="blockArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#111111"/></marker>' +
+      '<marker id="ballArrow" markerUnits="userSpaceOnUse" viewBox="0 0 14 14" refX="11.5" refY="7" markerWidth="14" markerHeight="14" orient="auto"><path d="M1,1 L12,7 L1,13 z" fill="#dc2626"/></marker>' +
+      '<marker id="blockArrow" markerUnits="userSpaceOnUse" viewBox="0 0 14 14" refX="11.5" refY="7" markerWidth="14" markerHeight="14" orient="auto"><path d="M1,1 L12,7 L1,13 z" fill="#e7eef7"/></marker>' +
       '<radialGradient id="fieldGlow" cx="50%" cy="40%" r="90%"><stop offset="0%" stop-color="#14532d"/><stop offset="100%" stop-color="#0b3522"/></radialGradient>';
     svg.appendChild(defs);
     svg.appendChild(el("rect", { x: "-400", y: "-800", width: "1800", height: "2800", fill: "url(#fieldGlow)" }));
@@ -498,9 +534,9 @@
     svg.appendChild(blockLayer);
     svg.appendChild(routeLayer);
     svg.appendChild(iconLayer);
-    ball = el("g", { class: "sim-ball" });
-    ball.appendChild(el("ellipse", { rx: "20", ry: "14", fill: "#f8fafc", stroke: "#3f2b1d", "stroke-width": "3" }));
-    ball.appendChild(el("line", { x1: "-7", y1: "0", x2: "7", y2: "0", stroke: "#9f1239", "stroke-width": "1.8" }));
+    ball = el("g", { class: "sim-ball", "data-possession": "in-flight" });
+    ball.appendChild(el("ellipse", { rx: "14", ry: "9", fill: "#7c3f20", stroke: "#fff7df", "stroke-width": "3" }));
+    ball.appendChild(el("line", { x1: "-5", y1: "0", x2: "5", y2: "0", stroke: "#fff7df", "stroke-width": "1.8" }));
     svg.appendChild(ball);
     return svg;
   }
@@ -517,16 +553,35 @@
     });
   }
 
-  function ballPosAt(t) {
+  function ballPosAt(t, poses) {
     var play = currentPlay();
     var pts = play.ball && play.ball.points ? play.ball.points : [];
     if (!pts.length) {
       var c = findOff(play, "c") || play.offense[0];
       return { x: c.x, y: c.y };
     }
-    var lo = Math.floor(t), hi = Math.min(6, lo + 1), u = ease(t - lo);
-    var amt = lerp(motionAmount("ball", lo), motionAmount("ball", hi), u);
-    return samplePath(pts, clamp(amt, 0, 1));
+    var carrierId = play.ball.carrierId;
+    var carrier = findOff(play, carrierId);
+    var acquireAt = possessionBeat(play);
+    if (!carrier || t < acquireAt) {
+      var transfer = pathPrefixToPoint(pts, carrier || pts[pts.length - 1]);
+      var transferAmount = ease(clamp(t / Math.max(0.01, acquireAt), 0, 1));
+      var flight = samplePath(transfer, transferAmount);
+      flight.attached = false;
+      flight.carrierId = carrierId || "";
+      return flight;
+    }
+    var carrierPos = poses && poses[carrierId] ? poses[carrierId] : { x: carrier.x, y: carrier.y };
+    var route = routeFor(play, carrierId);
+    var next = route && route.points && route.points[1] ? route.points[1] : carrierPos;
+    var direction = next.x < carrier.x ? -1 : 1;
+    var settle = ease(clamp((t - acquireAt) / 0.4, 0, 1));
+    return {
+      x: carrierPos.x + direction * 18 * settle,
+      y: carrierPos.y - 12 * settle,
+      attached: true,
+      carrierId: carrierId
+    };
   }
 
   function shortRole(p) {
@@ -557,8 +612,13 @@
       if (player.kind === "O") setRoleCaption(player.role, player.spec);
       else player.role.textContent = "";
     });
-    var bp = ballPosAt(state.t);
+    var bp = ballPosAt(state.t, poses);
     ball.setAttribute("transform", "translate(" + bp.x + "," + bp.y + ")");
+    ball.setAttribute("data-possession", bp.attached ? "attached" : "in-flight");
+    ball.setAttribute("data-carrier", bp.carrierId || "");
+    Object.keys(state.players).forEach(function (id) {
+      state.players[id].g.classList.toggle("has-possession", Boolean(bp.attached && id === bp.carrierId));
+    });
     var shown = clamp(Math.round(state.t), 0, 6);
     if (beatEl) beatEl.textContent = BEATS[shown].name + " · " + (shown + 1) + " OF 7";
     if (beatsEl) {
@@ -869,11 +929,8 @@
     
     var sheetPane = document.getElementById("sheet-pane");
     if (sheetPane) {
-      if (isCustomTeam() || !play.photo) {
-        sheetPane.style.display = "none";
-      } else {
-        sheetPane.style.display = "block";
-      }
+      sheetPane.hidden = Boolean(isCustomTeam() || !play.photo);
+      sheetPane.style.removeProperty("display");
     }
     if (photoEl && play.photo) {
       photoEl.src = play.photo;

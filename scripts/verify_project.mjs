@@ -85,6 +85,15 @@ pass("playbook does not load replacement field simulator", !/src=["']js\/field-d
 const playsData = fs.existsSync(path.join(root, "js/plays-data.js")) ? read("js/plays-data.js") : "";
 pass("plays-data defines 14 plays", expectedKeys.every((key) => playsData.includes(`id: "${key}"`) || playsData.includes(`id: '${key}'`)), "missing play ids in js/plays-data.js");
 pass("sim or plays-data lists all 14 plays", expectedKeys.every((key) => sim.includes(key) || playsData.includes(key)));
+pass("playbook lineup tools are collapsed behind one tap", /<details\s+class=["'][^"']*quick-squad-bar/i.test(playbook));
+pass("playbook keeps live field primary on phones", /\.play-teacher\s*\{[\s\S]*?100dvh\s*-\s*198px/i.test(styles));
+pass("ball possession uses the explicit carrier id", sim.includes("play.ball.carrierId === id") && !sim.includes("return isBallBack(p);"));
+pass("ball attaches to the carrier after the exchange", /data-possession/.test(sim) && /has-possession/.test(sim) && /ballPosAt\(state\.t, poses\)/.test(sim));
+pass("playbook arrows use compact fixed-size markers", /markerUnits=["']userSpaceOnUse["']/.test(sim) && /markerWidth=["']14["']/.test(sim));
+pass("coach sheet does not force itself over the phone field", /sheetPane\.style\.removeProperty\(["']display["']\)/.test(sim) && !/sheetPane\.style\.display\s*=\s*["']block["']/.test(sim));
+pass("Back and Next Beat are visible teaching controls", !/<button[^>]+id=["']sim-(?:back|next)["'][^>]*\shidden(?:\s|>)/i.test(playbook));
+pass("speed scrub and GIF remain available as secondary controls", /playbook-coach-controls/.test(playbook) && /id=["']sim-slider["']/.test(playbook) && /id=["']sim-gif["']/.test(playbook) && !/\.playbook-coach-controls\s*\{\s*display:\s*none/i.test(styles));
+pass("Slow-Mo is the real default animation speed", /speed:\s*11000/.test(sim) && /slow:\s*11000/.test(sim));
 
 for (const id of ["sim-root", "sim-play", "sim-back", "sim-next", "sim-reset", "sim-slider", "sim-assignments"]) {
   pass(`playbook control #${id}`, new RegExp(`id=["']${id}["']`).test(playbook));

@@ -2009,8 +2009,7 @@ body.playbook-page .sim-key,
 body.playbook-page .foot,
 body.playbook-page .mast,
 body.playbook-page .play-teacher .panel-header,
-body.playbook-page .jobs-strip,
-body.playbook-page .playbook-coach-controls { display: none !important; }
+body.playbook-page .jobs-strip { display: none !important; }
 
 body.playbook-page .playbook-stage {
   flex: 1 1 auto;
@@ -2488,7 +2487,91 @@ body.playbook-page .proof-photo-pane img {
   color: #fff;
 }
 
+/* Playbook motion pass: keep the field primary and the teaching marks quiet. */
+body.playbook-page .quick-squad-bar {
+  display: block;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  border-width: 1px 0;
+  border-radius: 0;
+  background: #0b1727;
+}
+body.playbook-page .quick-squad-bar > summary {
+  min-height: 44px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  cursor: pointer;
+  list-style: none;
+  touch-action: manipulation;
+}
+body.playbook-page .quick-squad-bar > summary::-webkit-details-marker { display: none; }
+body.playbook-page .quick-squad-bar > summary::after {
+  content: "+";
+  margin-left: auto;
+  color: rgba(255,255,255,.62);
+  font-size: 1.2rem;
+  line-height: 1;
+}
+body.playbook-page .quick-squad-bar[open] > summary::after { content: "−"; }
+body.playbook-page .quick-squad-summary {
+  overflow: hidden;
+  color: rgba(255,255,255,.66);
+  font-size: .76rem;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body.playbook-page .quick-squad-panel {
+  display: grid;
+  gap: 8px;
+  padding: 4px 14px 12px;
+}
+body.playbook-page .sim-block-routes path,
+body.playbook-page .sim-skill-routes path {
+  transition: opacity .18s ease, filter .18s ease;
+}
+body.playbook-page .sim-ball {
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.8)) drop-shadow(0 0 4px rgba(246,195,68,.72));
+}
+body.playbook-page .sim-player.has-possession {
+  filter: drop-shadow(0 0 7px rgba(246,195,68,.95));
+}
+body.playbook-page .proof-photo-pane[hidden] { display: none !important; }
+body.playbook-page .sim-beat-chip { min-height: 44px; }
+body.playbook-page .hud-ghost {
+  min-width: 52px;
+  min-height: 44px;
+}
+body.playbook-page .proof-live-pane .sim-controls { gap: 8px; }
+
+@media (max-width: 899px) {
+  body.playbook-page .play-teacher {
+    flex: 0 0 max(500px, calc(100dvh - 198px - env(safe-area-inset-bottom)));
+    min-height: max(500px, calc(100dvh - 198px - env(safe-area-inset-bottom)));
+  }
+  body.playbook-page .proof-live-pane .sim-beats {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+  }
+  body.playbook-page .sim-beat-chip {
+    min-width: 46px;
+    padding: 7px 2px;
+    font-size: .56rem;
+  }
+  body.playbook-page .proof-live-pane .sim-cue {
+    left: 18px;
+    right: 18px;
+    bottom: 88px;
+  }
+}
+
+@media (min-width: 900px) {
+  body.playbook-page .play-teacher { min-height: 620px; }
+}
+
 /* === lions-sideline-app: end === */
-
-
-
