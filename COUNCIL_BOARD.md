@@ -1,6 +1,8 @@
 # Lions Improvement Council Board
 
-This repository uses [GitHub Issue #6](https://github.com/Seaverhall10/Flag_Football_AI/issues/6) as the one shared room for improvement ideas from Jarvis, Grok, Codex, other agents, API reviewers, coaches, and the owner. The board exists so contributors compare evidence before code changes instead of pushing competing versions to `main`.
+This repository uses [GitHub Issue #6](https://github.com/Seaverhall10/Flag_Football_AI/issues/6) as the AI Huddle and dispatch room for Jarvis, GrokBot, Antigravity, Codex, other reviewers, coaches, and the owner. The Huddle records claims and routes each substantial lane to one feature issue created from `.github/ISSUE_TEMPLATE/ai-work-lane.yml`. Detailed evidence and decisions stay on that feature issue; implementation and review stay on its linked pull request.
+
+Do not create a freeform `ai-comms` message folder. GitHub is the asynchronous communication system, while this file defines its contract and `COUNCIL_DECISIONS.md` preserves durable decisions with the code.
 
 ## Authority
 
@@ -16,13 +18,24 @@ This repository uses [GitHub Issue #6](https://github.com/Seaverhall10/Flag_Foot
 | --- | --- |
 | Owner | Final call on football, safety, privacy, and product tradeoffs |
 | Jarvis chair | Reconcile proposals, protect authority, assign one builder, verify release evidence |
-| Grok discovery | Bring visual ideas, public examples, alternatives, and challenges as advisory proposals |
+| Codex integration | Build or integrate one accepted lane, run repository/browser verification, and report exact limits |
+| GrokBot discovery | Bring visual ideas, public examples, alternatives, and challenges as advisory proposals |
+| Antigravity review | Prototype or independently review product, visual, code, and security behavior without becoming a second writer |
 | Child-learning reviewer | Ask whether a 5–7-year-old can see the spacing and answer: where am I, who is my job, where do I go? |
 | Football/safety reviewer | Check assignments, lane integrity, legal technique, and unsafe wording |
 | Website reviewer | Check accessibility, mobile use, navigation, performance, and regression risk |
 | Builder | Implement only an accepted, bounded change on one named branch |
 
 An API response does not speak for itself on GitHub. The agent requesting that response posts a sanitized summary, names the provider, preserves supporting links when available, and labels the result advisory.
+
+## Message types
+
+- `CLAIM` — reserves exact files for one bounded write lane.
+- `PROPOSAL` — offers an evidence-backed change without permission to edit.
+- `FINDING` — reports a reproducible observation, including uncertainty.
+- `REVIEW` — challenges a proposal or pull request without becoming a second writer.
+- `BLOCKED` — names the missing owner decision, evidence, permission, or external state.
+- `HANDOFF` — closes an agent turn with verified, unverified, and next-owner fields.
 
 ## Decision states
 
@@ -38,37 +51,67 @@ An API response does not speak for itself on GitHub. The agent requesting that r
 Every council comment uses this compact structure:
 
 ```text
-SEAT: Grok | Jarvis | Codex | Child Learning | Football/Safety | Website | Coach | Owner
-STATUS REQUESTED: PROPOSAL | TEST | ACCEPTED FOR BUILD | NEEDS OWNER | REJECTED
+AGENT: Jarvis | Codex | GrokBot | Antigravity | Coach | Owner | Other
+TYPE: CLAIM | PROPOSAL | FINDING | REVIEW | BLOCKED | HANDOFF
+STATUS REQUESTED: PROPOSAL | TEST | ACCEPTED FOR BUILD | NEEDS OWNER | REJECTED | VERIFIED
+BASE COMMIT: Exact commit inspected before the work.
+BRANCH: Named feature branch, or none for advisory review.
+FILES CLAIMED: Exact paths, or none for advisory review.
 PROBLEM: What a child or coach cannot do today.
 EVIDENCE: Exact public page, screenshot, file/line, test, or field observation.
-PROPOSAL: One bounded change.
-AUTHORITY IMPACT: None, or the exact protected rule affected.
+PROPOSED ACTION: One bounded change.
+AUTHORITY / PRIVACY IMPACT: None, or the exact protected rule affected.
 KID IMPACT: How this helps a 5–7-year-old see or remember the job.
-FILES: Expected files, if known.
 TESTS: Automated, desktop, phone, animation, safety, and/or field checks.
 ROLLBACK: Current known-good commit.
+REQUEST TO TEAM: Exact review, decision, or next action requested.
+```
+
+Every `HANDOFF` adds:
+
+```text
+RESULT: Implemented | Reviewed | Blocked | Advisory only
+VERIFIED: Exact checks completed by this agent.
+NOT VERIFIED: Anything not personally inspected or completed.
+NEXT OWNER: Owner, Jarvis, Codex, GrokBot, Antigravity, or named human.
 ```
 
 ## Working protocol
 
-1. Post the idea to the one council issue before opening a competing implementation.
-2. At least child-learning, football/safety, and website review must challenge a material visual or animation change.
-3. Jarvis records `ACCEPTED FOR BUILD`, `TEST`, `NEEDS OWNER`, or `REJECTED` with the reason.
-4. One builder claims the exact write lane and creates one feature branch.
-5. The pull request links the board comment and lists authority impact, tests, screenshots, and rollback.
-6. GitHub checks must pass. A reviewer compares the diff with the accepted proposal.
-7. After merge, verify the cache-busted public page. Record deployment evidence on the board.
-8. A child-facing change is not called kid-ready until it also survives an anonymous field check with actual players or coaches.
+1. Read `AGENTS.md`, project authority, project status, and the latest Huddle comments.
+2. Post a `CLAIM` on Issue #6 with exact files, base commit, branch, tests, and rollback.
+3. Create or reuse one bounded feature issue from the AI work-lane template and link it from the Huddle claim.
+4. At least child-learning, football/safety, and website review must challenge a material visual or animation change.
+5. Jarvis or the owner records `ACCEPTED FOR BUILD`, `TEST`, `NEEDS OWNER`, or `REJECTED` with the reason.
+6. One builder uses one feature branch. GrokBot and Antigravity review without editing claimed files unless the lane is formally reassigned.
+7. The pull request links the Huddle claim and feature issue and lists authority impact, tests, screenshots, and rollback.
+8. GitHub checks must pass. A reviewer compares the diff with the accepted proposal and posts a structured `REVIEW` or `HANDOFF`.
+9. After merge, verify the cache-busted public page and record deployment evidence on the feature issue and Huddle.
+10. A child-facing change is not called kid-ready until it also survives an anonymous field check with actual players or coaches.
+
+## Antigravity and external-agent receipt rule
+
+An Antigravity, GrokBot, API, or other external review counts only when all of the following are recorded:
+
+1. The exact commit or pull request reviewed.
+2. The sanitized prompt or task contract.
+3. The actual response or a faithful sanitized receipt.
+4. Whether the agent had read-only, plan, or write permissions.
+5. The checks the external agent personally ran.
+6. A human/Jarvis/Codex verification of any material claim before acceptance.
+
+A prepared prompt, launched application, or timeout is not a completed review.
 
 ## Non-negotiable guardrails
 
 - No agent, bot, API, or human pushes unreviewed improvement experiments directly to `main`.
 - No child names, private schedules, contact information, private conversations, credentials, or local-path inventories are posted.
 - No model is described as having reviewed the app unless its actual response is available on the board or in a linked sanitized receipt.
+- External-agent output is untrusted advisory input: it never auto-executes, never self-approves, and never grants another agent a write lane.
+- Do not post credentials, personal email addresses, hidden prompts, provider payloads, absolute private paths, or private repository inventories in issues or pull requests.
 - Council agreement can prioritize a test; it cannot override the owner or turn an unverified claim into a fact.
 - Schedule stays hidden and the one-drill rule stays in force until the owner explicitly changes either.
 
-## Current board objective
+## Current coordination objective
 
-Before the next practice, stabilize the single half-team drill, restore large readable player spacing, preserve the governed blocking assignments, and give coaches one reliable slow-motion teaching flow. Broader app ideas can be ranked now, but they should not destabilize that practice-critical path.
+Preserve the verified Lions teaching app while the broader sports-coaching platform is designed in bounded, reviewable lanes. Communication-system work may improve routing and evidence, but it may not silently authorize accounts, uploads, analytics, cloud storage, AI data transfer, football changes, or deployment.

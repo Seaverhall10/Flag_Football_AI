@@ -1,0 +1,137 @@
+name: AI work lane
+description: Route one bounded Jarvis, Codex, GrokBot, Antigravity, human, or external-agent task.
+title: "[AI lane] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use one issue for one bounded outcome. Post the exact file claim on Huddle Issue #6 before editing. AI output remains advisory until the owner or Jarvis records an accepted decision and one writer.
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Agent
+      options:
+        - Jarvis
+        - Codex
+        - GrokBot
+        - Antigravity
+        - Human
+        - Other external reviewer
+    validations:
+      required: true
+  - type: dropdown
+    id: message_type
+    attributes:
+      label: Message type
+      options:
+        - CLAIM
+        - PROPOSAL
+        - FINDING
+        - REVIEW
+        - BLOCKED
+        - HANDOFF
+    validations:
+      required: true
+  - type: dropdown
+    id: status_requested
+    attributes:
+      label: Status requested
+      options:
+        - PROPOSAL
+        - TEST
+        - ACCEPTED FOR BUILD
+        - NEEDS OWNER
+        - REJECTED
+        - VERIFIED
+    validations:
+      required: true
+  - type: input
+    id: base_commit
+    attributes:
+      label: Base commit
+      description: Exact commit inspected before this work.
+      placeholder: 40-character commit SHA
+    validations:
+      required: true
+  - type: input
+    id: branch
+    attributes:
+      label: Branch
+      description: Named feature branch, or advisory-only.
+      placeholder: codex/example-lane
+    validations:
+      required: true
+  - type: textarea
+    id: files_claimed
+    attributes:
+      label: Files claimed
+      description: Exact repository paths, or none for a read-only review.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What a child or coach cannot do today.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Exact page, screenshot, file and line, test, or field observation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_action
+    attributes:
+      label: Proposed action
+      description: One bounded change or review.
+    validations:
+      required: true
+  - type: textarea
+    id: authority_privacy
+    attributes:
+      label: Authority and privacy impact
+      description: State none, or name the protected rule, data flow, cost, or owner decision affected.
+    validations:
+      required: true
+  - type: textarea
+    id: kid_impact
+    attributes:
+      label: Kid impact
+      description: Explain the effect on a 5-7-year-old, or state not child-facing.
+    validations:
+      required: true
+  - type: textarea
+    id: tests
+    attributes:
+      label: Tests
+      description: Automated, browser, mobile, animation, privacy, safety, and field checks required.
+    validations:
+      required: true
+  - type: input
+    id: rollback
+    attributes:
+      label: Rollback
+      description: Current known-good commit.
+    validations:
+      required: true
+  - type: textarea
+    id: request_to_team
+    attributes:
+      label: Request to team
+      description: Exact review, decision, or next owner requested.
+    validations:
+      required: true
+  - type: checkboxes
+    id: guardrails
+    attributes:
+      label: Guardrails
+      options:
+        - label: I posted or will post the exact file claim on Huddle Issue #6 before editing.
+          required: true
+        - label: This issue contains no child data, contact details, credentials, private paths, or private inventories.
+          required: true
+        - label: External-agent output will remain advisory until independently verified.
+          required: true

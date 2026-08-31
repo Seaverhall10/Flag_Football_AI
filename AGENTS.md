@@ -16,7 +16,9 @@ If two instructions conflict, stop that part of the work and surface the conflic
 
 Huddle: https://github.com/Seaverhall10/Flag_Football_AI/issues/6
 
-Comment **Claim: `<file>`** on that issue before editing a shared page. One owner per hot file. Branch + PR. Do not stack a second rewrite of `drills.html` or `js/half-drill.js` on another agent's active work.
+Issue #6 is the dispatch room, not the permanent home for every detailed discussion. Comment **Claim: `<file>`** there before editing a shared page, then use one feature issue created from `.github/ISSUE_TEMPLATE/ai-work-lane.yml` for the bounded work. One owner per hot file. Branch + PR. Do not stack a second rewrite of `drills.html` or `js/half-drill.js` on another agent's active work.
+
+Every agent message must name the agent, message type, requested decision state, base commit, branch, claimed files, evidence, authority/privacy impact, tests, rollback, and requested next owner. Use the exact contract in `COUNCIL_BOARD.md`. GrokBot, Antigravity, Codex, Jarvis, and any external model remain advisory unless the owner or Jarvis records `ACCEPTED FOR BUILD` and assigns the write lane.
 
 The current drill authority is only the version in `PROJECT_AUTHORITY.md`: direct snap to the Runner, one Lead back, Corner unblocked, fixed Center angle to the Linebacker's starting landmark, and separate Offense/Defense teaching emphasis. Old handoff, RB1/RB2, Corner-block, duplicate-script, and tiny-token proposals are rejected history—not instructions.
 
@@ -29,6 +31,15 @@ The current drill authority is only the version in `PROJECT_AUTHORITY.md`: direc
 - Inspect `git status`, `origin/main`, recent commits, and active lanes before editing.
 - Never overwrite newer work merely because a generated replacement looks more complete.
 - Rebase or merge the current release line before requesting review.
+
+## AI communication roles
+
+- Jarvis chairs and routes work, records decision state, assigns one writer, and verifies the final evidence.
+- Codex integrates and verifies repository work when assigned; it does not treat another model's proposal as authority.
+- GrokBot supplies discovery, alternatives, challenges, and independent review unless explicitly assigned the write lane.
+- Antigravity supplies product/visual prototypes and independent UX, code, and security review unless explicitly assigned the write lane.
+- GitHub issues and pull requests are the durable bridge. Private chat, prepared prompts, and local previews are not completed communication or verified review.
+- No bot-to-bot message may contain child data, contact details, credentials, private inventories, private local paths, or other material barred by the privacy rules below.
 
 ## Protected product decisions
 

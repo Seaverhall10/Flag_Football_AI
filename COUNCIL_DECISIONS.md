@@ -2,6 +2,15 @@
 
 This file mirrors durable decisions from the GitHub council issue. The GitHub issue is the conversation room; this ledger is the repository record that travels with the code.
 
+## 2026-08-31 AI Huddle expansion
+
+| Proposal or observed change | State | Evidence and reason |
+| --- | --- | --- |
+| Use Issue #6 as the Huddle and one feature issue per substantial AI work lane | OWNER OVERRIDE — ACCEPTED FOR BUILD | Owner instruction on 2026-08-31; keeps claims visible while preventing one unbounded issue from becoming the detailed record for every feature |
+| Use structured `CLAIM`, `PROPOSAL`, `FINDING`, `REVIEW`, `BLOCKED`, and `HANDOFF` messages | OWNER OVERRIDE — ACCEPTED FOR BUILD | Gives Jarvis, Codex, GrokBot, Antigravity, coaches, and the owner the same evidence and next-owner contract |
+| Treat external-agent output as advisory until independently verified | ACCEPTED FOR BUILD | Prevents a prepared prompt, generated answer, local preview, or model agreement from becoming authority or release proof |
+| Create a freeform `ai-comms` message folder | REJECTED | GitHub issues and pull requests already provide timestamped, reviewable, linkable communication; a second message archive would drift and create competing current state |
+
 ## 2026-08-24 practice-readiness review
 
 Rollback baseline before council repair: `90bd722` (current incoming `main`). Last fully verified public baseline: `304d853`, which records release commit `b3192ed`.
