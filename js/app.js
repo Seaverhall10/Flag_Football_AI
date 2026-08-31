@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Cy-Fair K/1 Lions — Core Application Utilities
  * Features: 1-Tap GPS Field navigation, .ics Calendar generator, JSON Team Data Backup/Restore, checklist sync.
  */
@@ -31,12 +31,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return `<a href="${item.href}"${active}>${item.label}</a>`;
   }).join("");
 
+  const activeTeam = (window.TeamManager && window.TeamManager.getActiveTeam()) || { shortName: "LIONS", division: "Practice tools", name: "Cy-Fair K/1 Lions" };
+
+  const introEyebrow = document.querySelector(".home-intro .eyebrow");
+  if (introEyebrow && activeTeam && activeTeam.name) {
+    introEyebrow.textContent = activeTeam.name;
+  }
+
   const mast = document.querySelector(".mast");
   if (mast) {
     mast.innerHTML = `
       <div class="mast-inner">
-        <a href="index.html" class="brand-group" aria-label="Lions home">
-          <div class="brand-text"><h1>LIONS</h1><p>Practice tools</p></div>
+        <a href="index.html" class="brand-group" aria-label="${activeTeam.name} home">
+          <div class="brand-text"><h1>${activeTeam.shortName.toUpperCase()}</h1><p>${activeTeam.division || 'Practice tools'}</p></div>
         </a>
         <nav class="nav" aria-label="Primary navigation">${linkMarkup}</nav>
       </div>`;
@@ -47,9 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
     appbar.className = "mobile-appbar no-print";
     if (currentPath === "playbook.html") {
       const call = (document.getElementById("sim-play-badge") && document.getElementById("sim-play-badge").textContent) || "A-Gap Right";
-      appbar.innerHTML = `<a href="index.html" aria-label="Lions home">LIONS</a><strong id="appbar-play">${call}</strong><button type="button" class="sheet-toggle" id="sheet-toggle">SHEET</button>`;
+      appbar.innerHTML = `<a href="index.html" aria-label="${activeTeam.name} home">${activeTeam.shortName.toUpperCase()}</a><strong id="appbar-play">${call}</strong><button type="button" class="sheet-toggle" id="sheet-toggle">SHEET</button>`;
     } else {
-      appbar.innerHTML = `<a href="index.html" aria-label="Lions home">LIONS</a><strong>${pageNames[currentPath] || "Coach"}</strong>`;
+      appbar.innerHTML = `<a href="index.html" aria-label="${activeTeam.name} home">${activeTeam.shortName.toUpperCase()}</a><strong>${pageNames[currentPath] || "Coach"}</strong>`;
     }
     document.body.insertBefore(appbar, document.querySelector("main") || document.body.firstChild);
     const sheetBtn = document.getElementById("sheet-toggle");
@@ -70,6 +77,90 @@ document.addEventListener("DOMContentLoaded", () => {
     tabbar.innerHTML = linkMarkup;
     document.body.appendChild(tabbar);
   }
+
+  // Multi-Sport Team Switcher Modal Dialog
+  window.openTeamSwitcher = function () {
+    if (!window.TeamManager) return;
+    const teams = window.TeamManager.getTeams();
+    const activeId = window.TeamManager.getActiveTeamId();
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay no-print";
+    overlay.id = "team-modal-overlay";
+
+    const sportRegistry = window.SPORTS_REGISTRY || {};
+    const teamItemsHtml = teams.map(t => {
+      const isSel = t.id === activeId ? " is-active" : "";
+      const sportName = (sportRegistry[t.sportId] && sportRegistry[t.sportId].name) || t.sportId;
+      return `
+        <div class="team-item${isSel}" data-team-id="${t.id}">
+          <div>
+            <strong>${t.name}</strong>
+            <span>${sportName} · ${t.division || 'Rec'}</span>
+          </div>
+          ${t.id === activeId ? '<span class="sport-badge">ACTIVE</span>' : '<button type="button" class="btn btn-secondary" style="padding:4px 10px;font-size:0.75rem">Switch</button>'}
+        </div>`;
+    }).join("");
+
+    overlay.innerHTML = `
+      <div class="modal-card">
+        <h2>Teams &amp; Sports</h2>
+        <p class="tiny" style="margin-top:-4px">Switch team workspace or add a new sport.</p>
+        <div class="team-list" style="margin:16px 0">${teamItemsHtml}</div>
+        <details style="margin-top:12px">
+          <summary class="btn btn-secondary" style="display:inline-block;padding:8px 14px;cursor:pointer">+ Add New Team / Sport</summary>
+          <form id="new-team-form" style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+            <label class="tiny">Team Name
+              <input type="text" id="new-team-name" placeholder="e.g. Tigers U8 Soccer" required style="width:100%;padding:8px;border:1px solid var(--line-strong);border-radius:6px;background:var(--navy-light);color:#fff">
+            </label>
+            <label class="tiny">Sport
+              <select id="new-team-sport" style="width:100%;padding:8px;border:1px solid var(--line-strong);border-radius:6px;background:var(--navy-light);color:#fff">
+                <option value="flag-football-8v8">Flag Football (8v8 CFSA)</option>
+                <option value="flag-football-5v5">Flag Football (5v5 NFL Flag)</option>
+                <option value="soccer-7v7">Soccer (7v7 U9/U10)</option>
+                <option value="soccer-4v4">Soccer (4v4 U6/U8)</option>
+                <option value="basketball-5v5">Basketball (5v5)</option>
+                <option value="baseball-youth">Baseball / T-Ball</option>
+                <option value="custom-sport">Custom / Freeform Board</option>
+              </select>
+            </label>
+            <button type="submit" class="btn btn-primary" style="margin-top:4px">Create Team</button>
+          </form>
+        </details>
+        <div style="text-align:right;margin-top:16px">
+          <button type="button" class="btn btn-secondary" id="close-team-modal">Close</button>
+        </div>
+      </div>`;
+
+    document.body.appendChild(overlay);
+
+    overlay.querySelectorAll(".team-item").forEach(item => {
+      item.addEventListener("click", () => {
+        const id = item.getAttribute("data-team-id");
+        if (id && id !== activeId) {
+          window.TeamManager.setActiveTeam(id);
+          location.reload();
+        }
+      });
+    });
+
+    document.getElementById("close-team-modal")?.addEventListener("click", () => {
+      overlay.remove();
+    });
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) overlay.remove();
+    });
+
+    document.getElementById("new-team-form")?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("new-team-name")?.value.trim();
+      const sportId = document.getElementById("new-team-sport")?.value;
+      if (name && sportId) {
+        window.TeamManager.createTeam({ name: name, sportId: sportId });
+        location.reload();
+      }
+    });
+  };
 
   // Highlight any remaining page-specific navigation.
   const navLinks = document.querySelectorAll(".nav a");

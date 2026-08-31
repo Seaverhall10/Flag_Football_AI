@@ -5,6 +5,10 @@
 
   function isOpen() {
     try {
+      if (typeof window !== "undefined" && window.location.search && window.location.search.indexOf("join=") !== -1) {
+        rememberOpen();
+        return true;
+      }
       return sessionStorage.getItem(STORAGE_KEY) === "1";
     } catch (err) {
       return false;
@@ -49,6 +53,22 @@
     if (panel && panel.parentNode) panel.parentNode.removeChild(panel);
   }
 
+  function getGateTitle() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var teamFromUrl = params.get("team");
+      if (teamFromUrl) return teamFromUrl;
+      var activeId = localStorage.getItem("coach_active_team_id");
+      var indexRaw = localStorage.getItem("coach_teams_index");
+      if (indexRaw && activeId) {
+        var teams = JSON.parse(indexRaw);
+        var active = teams.find(function (t) { return t.id === activeId; });
+        if (active && active.name) return active.name;
+      }
+    } catch (e) {}
+    return "Cy-Fair K/1 Lions";
+  }
+
   function showPanel() {
     if (document.getElementById("lions-gate") || isOpen()) return;
     var panel = document.createElement("div");
@@ -63,7 +83,7 @@
             '<path d="M18 3 C13 3 9 6 8 11 C7 15 9 18 9 20 C7 20 5 22 5 25 C5 29 9 32 14 32 C15 32 16 34 18 34 C20 34 21 32 22 32 C27 32 31 29 31 25 C31 22 29 20 27 20 C27 18 29 15 28 11 C27 6 23 3 18 3 Z M13 15 C14.1 15 15 15.9 15 17 C15 18.1 14.1 19 13 19 C11.9 19 11 18.1 11 17 C11 15.9 11.9 15 13 15 Z M23 15 C24.1 15 25 15.9 25 17 C25 18.1 24.1 19 23 19 C21.9 19 21 18.1 21 17 C21 15.9 21.9 15 23 15 Z M18 26 C15.5 26 14 24.5 14 23.5 L22 23.5 C22 24.5 20.5 26 18 26 Z"/>' +
           "</svg>" +
         "</div>" +
-        '<h1 id="lions-gate-title">Cy-Fair K/1 Lions</h1>' +
+        '<h1 id="lions-gate-title">' + getGateTitle() + '</h1>' +
         "<form>" +
           '<input type="password" name="team" autocomplete="current-password" placeholder="Password" aria-label="Password">' +
           '<button type="submit">GO</button>' +

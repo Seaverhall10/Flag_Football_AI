@@ -405,6 +405,31 @@
     document.querySelectorAll("[data-half-dot]").forEach((dot) => dot.classList.toggle("is-on", Number(dot.getAttribute("data-half-dot")) === shown));
     applyFocus();
   }
+  function drillPlayerName(id) {
+    if (!window.LineupManager) return "";
+    if (id === "C") {
+      const p = window.LineupManager.getPlayerForPos("c");
+      return p ? `#${p.number} ${p.name}` : "";
+    }
+    if (id === "G") {
+      const p = window.LineupManager.getPlayerForPos(state.side === "left" ? "lg" : "rg");
+      return p ? `#${p.number} ${p.name}` : "";
+    }
+    if (id === "T") {
+      const p = window.LineupManager.getPlayerForPos(state.side === "left" ? "lt" : "rt");
+      return p ? `#${p.number} ${p.name}` : "";
+    }
+    if (id === "RUN") {
+      const p = window.LineupManager.getPlayerForPos("rb-ball");
+      return p ? `#${p.number} ${p.name}` : "";
+    }
+    if (id === "LEAD") {
+      const p = window.LineupManager.getPlayerForPos("rb-lead");
+      return p ? `#${p.number} ${p.name}` : "";
+    }
+    return "";
+  }
+
   function updateJobs() {
     const h = homes(), a = assignments(), d = defenseTasks();
     document.getElementById("half-offense-jobs").innerHTML = OFFENSE.map((id) => {
@@ -413,7 +438,9 @@
           : id === "C" ? "BLOCK LINEBACKER"
             : id === "T" && state.front === "two-lb" ? "HELP ON D-LINE"
               : id === "G" ? gHipLabel() : "BLOCK";
-      return `<button type="button" class="assignment-card role-${offenseRole(id).toLowerCase().replace(" ", "-")}" data-half-job="${id}"><span class="assignment-position">${h[id].label}</span><span class="assignment-role">${role}</span><span class="assignment-task">${a[id].task}</span></button>`;
+      const pName = drillPlayerName(id);
+      const displayTitle = pName ? `${pName} · ${h[id].label}` : h[id].label;
+      return `<button type="button" class="assignment-card role-${offenseRole(id).toLowerCase().replace(" ", "-")}" data-half-job="${id}"><span class="assignment-position">${displayTitle}</span><span class="assignment-role">${role}</span><span class="assignment-task">${a[id].task}</span></button>`;
     }).join("");
     document.getElementById("half-defense-jobs").innerHTML = DEFENSE.map((id) => `<button type="button" class="assignment-card defense-job" data-half-job="${id}"><span class="assignment-position">${h[id].label}</span><span class="assignment-role">LANE INTEGRITY</span><span class="assignment-task">${d[id]}</span></button>`).join("");
     document.querySelectorAll("[data-half-job]").forEach((card) => card.addEventListener("click", function () { selectPlayer(card.getAttribute("data-half-job")); }));
@@ -427,10 +454,12 @@
       spotlightEl.innerHTML = "<strong>TAP A PLAYER</strong><span>See that player's starting spot, job, target, and path.</span>";
       return;
     }
+    const pName = drillPlayerName(id);
+    const displayTitle = pName ? `${pName} (${homes()[id].label})` : homes()[id].label;
     const task = OFFENSE.includes(id) ? assignments()[id].task : defenseTasks()[id];
-    cueEl.textContent = `${homes()[id].label}: ${task}`;
+    cueEl.textContent = `${displayTitle}: ${task}`;
     spotlightEl.classList.remove("is-empty");
-    spotlightEl.innerHTML = `<strong>${homes()[id].label}</strong><span>LINE UP HERE → ${task}</span>`;
+    spotlightEl.innerHTML = `<strong>${displayTitle}</strong><span>LINE UP HERE → ${task}</span>`;
   }
   function updateUi() {
     [["half-lane", state.lane], ["half-side", state.side], ["half-front", state.front]].forEach(([group, value]) => document.querySelectorAll(`[data-${group}]`).forEach((button) => { const active = button.getAttribute(`data-${group}`) === value; button.classList.toggle("is-active", active); button.setAttribute("aria-pressed", String(active)); }));
@@ -509,6 +538,9 @@
       document.querySelectorAll("[data-half-speed]").forEach((item) => { const active = item === button; item.classList.toggle("is-active", active); item.setAttribute("aria-pressed", String(active)); });
     }));
     window.addEventListener("resize", updateViewBox);
+    window.addEventListener("lineup:changed", function () {
+      renderChoice();
+    });
     renderChoice();
   });
 })();

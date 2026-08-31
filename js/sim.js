@@ -22,9 +22,28 @@
   var state = { runKey: "play-01", t: 0, playing: false, speed: 4800, startedAt: 0, startT: 0, raf: 0, selected: null, players: {} };
   var svg, ball, routeLayer, blockLayer, iconLayer, cueEl, beatEl, beatsEl, slider, playButton, photoEl;
 
-  function plays() { return window.LIONS_PLAYS || []; }
-  function playMap() { return window.LIONS_PLAY_MAP || {}; }
-  function currentPlay() { return playMap()[state.runKey] || plays()[0]; }
+  function isCustomTeam() {
+    return Boolean(window.TeamManager && window.TeamManager.getActiveTeamId() !== "lions-k1-flag");
+  }
+
+  function plays() {
+    if (isCustomTeam() && window.CustomPlaybook) {
+      return window.CustomPlaybook.getTeamPlays();
+    }
+    return window.LIONS_PLAYS || [];
+  }
+
+  function playMap() {
+    var list = plays();
+    var map = {};
+    list.forEach(function (p) { map[p.id] = p; });
+    return map;
+  }
+
+  function currentPlay() {
+    var pList = plays();
+    return playMap()[state.runKey] || pList[0] || (window.LIONS_PLAYS && window.LIONS_PLAYS[0]);
+  }
   function el(name, attrs) {
     var node = document.createElementNS(NS, name);
     Object.keys(attrs || {}).forEach(function (key) { node.setAttribute(key, attrs[key]); });
@@ -347,29 +366,48 @@
 
   function tokenOffense(p) {
     var fill = tokenFill(p);
-    var g = el("g", { class: "sim-player", "data-player": p.id, tabindex: "0", role: "button", "aria-label": positionTitle(p) });
+    var assigned = window.LineupManager ? window.LineupManager.getPlayerForPos(p.id) : null;
+    var playerLabel = assigned ? ("#" + assigned.number + " " + assigned.name + " (" + positionTitle(p) + ")") : positionTitle(p);
+
+    var g = el("g", { class: "sim-player", "data-player": p.id, tabindex: "0", role: "button", "aria-label": playerLabel });
     g.appendChild(el("circle", { r: "38", fill: "transparent" }));
     var selected = el("circle", { r: "36", fill: "none", stroke: "#fff", "stroke-width": "2.6", opacity: "0" });
     var stroke = isBallBack(p) ? GOLD_RB_STROKE : (p.stroke || "#1a1a1a");
     var sw = (isBallBack(p) || p.stroke) ? "3.6" : "2.4";
     var disc = el("circle", { r: "34", fill: fill, stroke: stroke, "stroke-width": sw });
+    
     var label = el("text", {
-      x: "0", y: "6",
+      x: "0", y: assigned ? "0" : "6",
       fill: darkFill(fill) ? "#fff" : "#111",
-      "font-size": "20", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none"
+      "font-size": assigned ? "16" : "20", "font-weight": "800", "text-anchor": "middle", "pointer-events": "none"
     });
     label.textContent = p.letter;
+
+    var numSub = null;
+    if (assigned && assigned.number) {
+      numSub = el("text", {
+        x: "0", y: "17",
+        fill: darkFill(fill) ? "#f6c344" : "#111",
+        "font-size": "13", "font-weight": "900", "text-anchor": "middle", "pointer-events": "none"
+      });
+      numSub.textContent = "#" + assigned.number;
+    }
+
     var role = el("text", {
       x: "0", y: "46", fill: "#f6c344", "font-size": "12", "font-weight": "800",
       "text-anchor": "middle", "paint-order": "stroke", stroke: "#0d3b24", "stroke-width": "3.4", "pointer-events": "none"
     });
-    g.appendChild(selected); g.appendChild(disc); g.appendChild(label); g.appendChild(role);
+
+    g.appendChild(selected); g.appendChild(disc); g.appendChild(label);
+    if (numSub) g.appendChild(numSub);
+    g.appendChild(role);
+
     g.addEventListener("click", function () { selectPlayer(p.id); });
     g.addEventListener("keydown", function (event) {
       if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selectPlayer(p.id); }
     });
     svg.appendChild(g);
-    state.players[p.id] = { g: g, selected: selected, role: role, kind: "O", spec: p };
+    state.players[p.id] = { g: g, selected: selected, role: role, kind: "O", spec: p, assigned: assigned };
   }
 
   function tokenDefense(d) {
@@ -539,10 +577,78 @@
   function jobFor(id) {
     var play = currentPlay();
     var o = findOff(play, id);
-    if (o) return positionTitle(o) + ": " + (o.job || shortRole(o));
+    if (o) {
+      var assigned = window.LineupManager ? window.LineupManager.getPlayerForPos(o.id) : null;
+      var namePrefix = assigned ? ("#" + assigned.number + " " + assigned.name + " (" + positionTitle(o) + "): ") : (positionTitle(o) + ": ");
+      return namePrefix + (o.job || shortRole(o));
+    }
     var d = findDef(play, id);
     if (d) return d.letter + ": " + (d.job || "stay home, then flag. No tackling.");
     return "";
+  }
+
+  function openQuickSwapModal(posId) {
+    if (!window.LineupManager) return;
+    var roster = window.LineupManager.getRoster();
+    var current = window.LineupManager.getPlayerForPos(posId);
+    
+    var overlay = document.createElement("div");
+    overlay.className = "modal-overlay no-print";
+    overlay.id = "swap-modal-overlay";
+
+    var itemsHtml = roster.map(function (p) {
+      var isCurrent = current && String(current.number) === String(p.number);
+      return '<button type="button" class="team-item' + (isCurrent ? ' is-active' : '') + '" data-player-num="' + p.number + '" style="width:100%;text-align:left;cursor:pointer">' +
+        '<div><strong>#' + p.number + ' ' + p.name + '</strong>' +
+        '<span>' + (p.offensePos || 'Offense') + '</span></div>' +
+        (isCurrent ? '<span class="sport-badge">IN SPOT</span>' : '<span style="font-size:0.8rem;color:var(--gold)">Assign ➔</span>') +
+        '</button>';
+    }).join("");
+
+    overlay.innerHTML = '<div class="modal-card">' +
+      '<h2>Quick Assign Player</h2>' +
+      '<p class="tiny" style="margin-top:-4px">Choose which child is playing this spot right now:</p>' +
+      '<div style="display:flex;flex-direction:column;gap:6px;margin:16px 0;max-height:50vh;overflow-y:auto">' + itemsHtml + '</div>' +
+      '<div style="text-align:right"><button type="button" class="btn btn-secondary" id="close-swap-modal">Cancel</button></div>' +
+      '</div>';
+
+    document.body.appendChild(overlay);
+
+    overlay.querySelectorAll("[data-player-num]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var num = btn.getAttribute("data-player-num");
+        var match = roster.find(function (p) { return String(p.number) === String(num); });
+        if (match) {
+          window.LineupManager.assignPlayer(posId, match);
+        }
+        overlay.remove();
+      });
+    });
+
+    document.getElementById("close-swap-modal")?.addEventListener("click", function () { overlay.remove(); });
+    overlay.addEventListener("click", function (e) { if (e.target === overlay) overlay.remove(); });
+  }
+
+  function renderQuickLineupBar() {
+    var container = document.getElementById("squad-starters-list");
+    if (!container || !window.LineupManager) return;
+    var positions = window.LineupManager.DEFAULT_POSITIONS_8V8;
+    var lineup = window.LineupManager.getLineup();
+
+    container.innerHTML = positions.map(function (pos) {
+      var assigned = lineup[pos.id];
+      var numName = assigned ? ("#" + assigned.number + " " + assigned.name.split(" ")[0]) : "--";
+      return '<button type="button" class="starter-chip" data-pos-id="' + pos.id + '" aria-label="Assign ' + pos.name + '">' +
+        '<span class="pos-tag">' + pos.letter + ':</span>' +
+        '<span class="player-tag">' + numName + '</span>' +
+        '</button>';
+    }).join("");
+
+    container.querySelectorAll("[data-pos-id]").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        openQuickSwapModal(chip.getAttribute("data-pos-id"));
+      });
+    });
   }
 
   function updateAssignments() {
@@ -551,7 +657,8 @@
     if (!board) return;
     function cardFor(p, kind) {
       var role = kind === "D" ? (p.letter === "S" ? "FIT" : "HOME") : assignmentRole(p);
-      var title = kind === "D" ? p.letter : positionTitle(p);
+      var assigned = (kind === "O" && window.LineupManager) ? window.LineupManager.getPlayerForPos(p.id) : null;
+      var title = kind === "D" ? p.letter : (assigned ? ("#" + assigned.number + " " + assigned.name + " (" + positionTitle(p) + ")") : positionTitle(p));
       var fill = kind === "D" ? "#f8fafc" : (tokenFill(p) || "#d0d4da");
       var ring = kind === "D" ? "#111111" : (isBallBack(p) ? GOLD_RB_STROKE : "#111111");
       var cls = "assignment-card role-" + String(role).toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -674,20 +781,101 @@
     });
   }
 
+  function renderCustomPlayPicker() {
+    if (!isCustomTeam()) return;
+    var grid = document.querySelector(".play-strip .btn-grid");
+    if (!grid) return;
+
+    var pList = plays();
+    if (!pList.length) {
+      grid.innerHTML = '<div style="display:flex;align-items:center;gap:12px;padding:8px">' +
+        '<span style="font-size:0.85rem;color:var(--muted)">No custom plays loaded.</span>' +
+        '<button type="button" class="btn btn-secondary btn-sm" id="btn-restore-generic">Load 6 Starter Plays</button>' +
+        '</div>';
+      var restoreBtn = document.getElementById("btn-restore-generic");
+      if (restoreBtn) {
+        restoreBtn.addEventListener("click", function () {
+          if (window.CustomPlaybook) {
+            window.CustomPlaybook.resetToStarter();
+            renderCustomPlayPicker();
+            setRun(plays()[0] ? plays()[0].id : "gen-01");
+          }
+        });
+      }
+      return;
+    }
+
+    grid.innerHTML = pList.map(function (p, i) {
+      var num = i + 1;
+      var active = p.id === state.runKey;
+      return '<button class="play-btn' + (active ? ' is-active active' : '') + '" type="button" data-run-key="' + p.id + '" aria-pressed="' + String(active) + '" aria-label="' + p.name + ' ' + p.call + '">' +
+        '<span class="btn-num">' + num + '</span>' +
+        '<span class="btn-call">' + p.call + '</span>' +
+        '</button>';
+    }).join("") +
+    '<div class="custom-play-actions" style="display:flex;align-items:center;gap:6px;margin-left:auto">' +
+    '<button type="button" class="btn-squad" id="btn-clear-plays" title="Clear example plays to build your own">🗑 Clear</button>' +
+    '<button type="button" class="btn-squad" id="btn-reset-plays" title="Reset to 6 starter plays">🔄 Starters</button>' +
+    '</div>';
+
+    grid.querySelectorAll(".play-btn[data-run-key]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        setRun(button.getAttribute("data-run-key"));
+      });
+    });
+
+    var clearBtn = document.getElementById("btn-clear-plays");
+    if (clearBtn) {
+      clearBtn.addEventListener("click", function () {
+        if (confirm("Clear example plays to build your custom playbook?")) {
+          if (window.CustomPlaybook) {
+            window.CustomPlaybook.clearExamplePlays();
+            renderCustomPlayPicker();
+          }
+        }
+      });
+    }
+
+    var resetBtn = document.getElementById("btn-reset-plays");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", function () {
+        if (window.CustomPlaybook) {
+          window.CustomPlaybook.resetToStarter();
+          renderCustomPlayPicker();
+          setRun(plays()[0] ? plays()[0].id : "gen-01");
+        }
+      });
+    }
+  }
+
   function setRun(key) {
-    if (!playMap()[key]) return;
+    if (!playMap()[key]) {
+      var first = plays()[0];
+      if (!first) return;
+      key = first.id;
+    }
     pause();
     state.runKey = key;
     state.selected = null;
     state.t = 0;
     var play = currentPlay();
+    if (!play) return;
     var nameEl = document.getElementById("sim-play-name");
     if (nameEl) nameEl.textContent = play.name;
     var badge = document.getElementById("sim-play-badge");
     if (badge) badge.textContent = play.call;
     var appPlay = document.getElementById("appbar-play");
     if (appPlay) appPlay.textContent = play.call;
-    if (photoEl) {
+    
+    var sheetPane = document.getElementById("sheet-pane");
+    if (sheetPane) {
+      if (isCustomTeam() || !play.photo) {
+        sheetPane.style.display = "none";
+      } else {
+        sheetPane.style.display = "block";
+      }
+    }
+    if (photoEl && play.photo) {
       photoEl.src = play.photo;
       photoEl.alt = "Coach sheet for " + play.name + " " + play.call;
     }
@@ -720,6 +908,7 @@
     if (window.ResizeObserver) {
       new ResizeObserver(fitViewBox).observe(root);
     }
+    renderCustomPlayPicker();
     document.querySelectorAll(".play-btn[data-run-key]").forEach(function (button) {
       button.addEventListener("click", function () { setRun(button.getAttribute("data-run-key")); });
     });
@@ -744,6 +933,20 @@
         });
       });
     });
-    setRun("play-01");
+    var initialKey = isCustomTeam() ? ((plays()[0] && plays()[0].id) || "gen-01") : "play-01";
+    setRun(initialKey);
+    renderQuickLineupBar();
+
+    window.addEventListener("playbook:changed", function () {
+      renderCustomPlayPicker();
+      setRun(plays()[0] ? plays()[0].id : "gen-01");
+    });
+
+    window.addEventListener("lineup:changed", function () {
+      rebuildTokens();
+      updateAssignments();
+      renderQuickLineupBar();
+      applyPoses();
+    });
   });
 })();
