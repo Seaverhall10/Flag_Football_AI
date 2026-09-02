@@ -12,7 +12,7 @@ Help young youth players answer three questions without reading a coach manual:
 
 The app teaches one visual decision at a time. It does not add complexity merely because software can display it.
 
-The current client-side password screen is a demo gate, not account security. Do not describe the app as private, signup-ready, or secure until real Firebase authentication, membership rules, and invitation tests pass.
+The current entry screen is a public-demo notice, not account security. Do not describe the app as private, signup-ready, or secure until real Firebase authentication, membership rules, and invitation tests pass.
 
 ## Team identity — owner correction 2026-09-01
 
@@ -21,7 +21,7 @@ The current client-side password screen is a demo gate, not account security. Do
 - Former Cy-Fair K/1 Lions branding and CFSA-specific public claims are retired.
 - Owner-confirmed age group: 5–6-year-old players.
 - Exact Seahawks league, roster size, blocking rules, and game format are not yet confirmed in this repository.
-- Until those facts are supplied, use `Youth Flag Football` in public branding and label the current football system as carried-forward teaching content rather than Seahawks league authority.
+- Until those facts are supplied, use `Ages 5–6 Flag Football` in public branding and label the current football system as carried-forward teaching content rather than Seahawks league authority.
 
 ## Current carried-forward play library
 

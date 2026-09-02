@@ -44,7 +44,7 @@ The current drill authority is only the version in `PROJECT_AUTHORITY.md`: direc
 ## Protected product decisions
 
 - The owner redirected the existing app to Seth's Seahawks on 2026-09-01. Use this repository, Firebase project `coach-ai-assist`, and the single approved integration PR. Do not create a replacement app, repository, Firebase project, or competing product branch.
-- Former Lions and CFSA branding is retired. The exact Seahawks league, age group, and rules remain unconfirmed; do not silently treat old Lions/CFSA assumptions as Seahawks authority.
+- Former Lions and CFSA branding is retired. The Seahawks players are owner-confirmed as ages 5–6; the exact league, format, roster size, and rules remain unconfirmed. Do not silently treat old Lions/CFSA assumptions as Seahawks authority.
 
 - The current carried-forward playbook source is the 14 binder photos in `/plays` (play-01.jpg … play-14.jpg), not the old six QB-wing keepers. Preserve them as seed content until Seth's Seahawks playbook is confirmed. Recreate each sheet: circles with the letters on that page (`C`, `G`, `T`, `W`, `RB`), squares for defense, red dashed ball path, solid black arrows for blocks/leads.
 - Every playbook view must show the offense and defense tokens drawn on that sheet (usually eight and eight).

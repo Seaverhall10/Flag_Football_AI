@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Team Access Setup — Seahawks Coach</title>
+  <script src="js/gate.js?v=seahawks-20260901b"></script>
+  <title>Team Access Paused — Seahawks Coach</title>
   <meta name="description" content="Status of secure team access for Seahawks Coach.">
-  <link rel="stylesheet" href="css/styles.css?v=seahawks-20260901">
+  <link rel="stylesheet" href="css/styles.css?v=seahawks-20260901b">
 </head>
 <body class="coach-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -14,180 +15,33 @@
   <main id="main" class="wrap">
     <section class="mobile-page-title">
       <p class="eyebrow">Seahawks Coach</p>
-      <h1>Secure team access</h1>
-      <p>Invitations are paused until Firebase authentication and membership rules pass review.</p>
+      <h1>Team access is not live</h1>
+      <p>This demo does not create accounts, accept invitations, or assign team roles.</p>
     </section>
 
-    <!-- Invite Generator Card -->
-    <section class="panel" style="margin-bottom:16px">
+    <section class="panel" aria-labelledby="access-status-title">
       <div class="panel-header">
-        <h2>Invitation setup</h2>
-        <span class="sport-badge">NOT YET LIVE</span>
+        <h2 id="access-status-title">Secure setup required</h2>
+        <span class="sport-badge">NOT SIGNUP-READY</span>
       </div>
-
-      <form id="invite-form" style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
-        <label class="tiny">Coach / Recipient Email
-          <input type="email" id="invite-email" value="" placeholder="coach@example.com" disabled style="width:100%;padding:12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--navy-light);color:#fff;font-size:1rem">
-        </label>
-
-        <label class="tiny">Team Name
-          <input type="text" id="invite-team-name" value="Seahawks" placeholder="e.g. Seahawks 5v5" style="width:100%;padding:12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--navy-light);color:#fff;font-size:1rem">
-        </label>
-
-        <label class="tiny">User Role &amp; Access Level
-          <select id="invite-role" style="width:100%;padding:12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--navy-light);color:#fff;font-size:1rem">
-            <option value="HEAD_COACH">👑 Head Coach (Full Admin, Play Creator, AI Ingest, Staff Manager)</option>
-            <option value="ASSISTANT_COACH">📋 Assistant Coach (Sideline Play Caller, Lineup Rotator, Drill Staff)</option>
-            <option value="PARENT_PLAYER">👨‍👩‍👧 Parent / Player (Family Kid View: Watch Plays, Safe Stances, Schedules)</option>
-          </select>
-        </label>
-
-        <label class="tiny">Sport / Division
-          <select id="invite-sport" style="width:100%;padding:12px;border:1px solid var(--line-strong);border-radius:8px;background:var(--navy-light);color:#fff;font-size:1rem">
-            <option value="flag-football-5v5">Flag Football (5v5 NFL Flag)</option>
-            <option value="flag-football-8v8">Flag Football (8v8 Rec)</option>
-            <option value="soccer-7v7">Soccer (7v7)</option>
-            <option value="soccer-4v4">Soccer (4v4)</option>
-            <option value="basketball-5v5">Basketball (5v5)</option>
-            <option value="baseball-youth">Baseball / T-Ball</option>
-            <option value="custom-sport">Custom / Freeform Board</option>
-          </select>
-        </label>
-
-        <!-- Live Invitation Preview Card -->
-        <div style="background:rgba(0,0,0,0.35);border:1px solid var(--line-strong);border-radius:10px;padding:16px;margin:8px 0;text-align:left">
-          <div style="font-size:0.75rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Live Preview for Recipient:</div>
-          <div id="preview-team-title" style="font-size:1.15rem;font-weight:800;color:#fff;margin-bottom:4px">🏈 Welcome to the Seahawks!</div>
-          <div id="preview-role-desc" style="font-size:0.85rem;color:var(--muted);line-height:1.4;margin-bottom:12px">
-            You've been invited as <strong>Head Coach</strong> with full administrative access to the interactive playbook, AI play scanner, 5v4 blocking drills, and practice management tools.
-          </div>
-          <div style="background:var(--navy-light);border:1px dashed var(--line);border-radius:6px;padding:8px 12px;font-size:0.78rem;color:#93c5fd;word-break:break-all" id="preview-link-text">
-            Secure invitation links are not enabled.
-          </div>
-        </div>
-
-        <!-- 1-Click Send Actions -->
-        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:6px">
-          <button type="button" class="btn btn-primary" id="btn-copy-invite" disabled style="padding:12px 18px;font-weight:800">
-            📋 Copy Direct Link
-          </button>
-          <button type="button" class="btn btn-secondary" id="btn-sms-invite" disabled style="padding:12px 18px;font-weight:700">
-            📱 Text via SMS
-          </button>
-          <button type="button" class="btn btn-secondary" id="btn-email-draft" disabled style="padding:12px 18px;font-weight:700">
-            ✉️ Email Draft
-          </button>
-          <button type="button" class="btn btn-secondary" disabled style="padding:12px 18px;font-weight:700">Test Recipient View</button>
-        </div>
-        <p id="invite-feedback" class="tiny" style="color:var(--gold);font-weight:700;margin-top:6px;font-size:0.95rem">No invitation links are generated or accepted in this build.</p>
-      </form>
-    </section>
-
-    <!-- Incoming Invite Acceptance Banner -->
-    <section class="panel" id="incoming-invite-panel" style="display:none;border-left:4px solid var(--green)">
-      <div class="panel-header">
-        <h2>🎉 You're Invited!</h2>
-      </div>
-      <p id="incoming-invite-desc">Joining team workspace...</p>
-      <div style="margin-top:12px">
-        <a href="playbook.html" class="btn btn-primary" style="display:inline-block">Open Team Playbook ➔</a>
+      <p>Before another coach can be invited, the app needs verified Firebase Authentication, server-enforced Seahawks membership, expiring one-use invitations, least-privilege roles, and privacy tests.</p>
+      <p class="tiny">No email address, phone number, invitation, or role is collected on this page.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px">
+        <a href="app.html" class="btn btn-primary" style="text-decoration:none">Return to Coach</a>
+        <a href="index.html" class="btn btn-secondary" style="text-decoration:none">Practice Home</a>
       </div>
     </section>
-
-    <!-- What New Coaches Receive -->
-    <details class="coach-more" open>
-      <summary>What other coaches receive</summary>
-      <section class="panel" style="margin-top:8px">
-        <p class="tiny">Planned behavior: each verified coach receives a team-scoped workspace. This will not be enabled until authenticated membership and invitation rules are tested.</p>
-      </section>
-    </details>
   </main>
 
   <footer class="foot">
     <div class="foot-inner">
-      <div>Coach Onboarding &amp; Staff Invitations</div>
-      <div><a href="index.html">Back to Practice Home</a></div>
+      <div>Seahawks Coach · Secure access pending</div>
+      <div>Public demo · No signup</div>
     </div>
   </footer>
 
   <script src="js/sports/sport-registry.js"></script>
   <script src="js/engine/team-manager.js"></script>
-  <script src="js/engine/auth-guard.js"></script>
-  <script src="js/engine/firebase-auth.js"></script>
-  <script src="js/engine/invite-manager.js"></script>
-  <script src="js/engine/email-service.js"></script>
-  <script src="js/app.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Check if incoming join link
-      const incoming = window.InviteManager.checkIncomingInvite();
-      if (incoming) {
-        const panel = document.getElementById("incoming-invite-panel");
-        const desc = document.getElementById("incoming-invite-desc");
-        if (panel && desc) {
-          panel.style.display = "block";
-          desc.textContent = "You've successfully joined " + incoming.teamName + " (" + incoming.sportId + ")! Your private team playbook, roster, and drills are ready.";
-        }
-      }
-
-      function getFormOpts() {
-        return {
-          email: document.getElementById("invite-email").value.trim(),
-          teamName: document.getElementById("invite-team-name").value.trim() || "Seahawks",
-          sportId: document.getElementById("invite-sport").value,
-          role: document.getElementById("invite-role").value
-        };
-      }
-
-      function updatePreview() {
-        const opts = getFormOpts();
-        const link = window.InviteManager.generateInviteLink(opts);
-        const titleEl = document.getElementById("preview-team-title");
-        const descEl = document.getElementById("preview-role-desc");
-        const linkEl = document.getElementById("preview-link-text");
-        const testBtn = document.getElementById("btn-test-direct");
-
-        if (titleEl) titleEl.textContent = "🏈 Welcome to the " + opts.teamName + "!";
-        if (descEl) {
-          const roleMap = {
-            "HEAD_COACH": "Head Coach with full administrative access to the interactive playbook, AI play scanner, 5v4 blocking drills, and practice management tools.",
-            "ASSISTANT_COACH": "Assistant Coach with practice access, sideline play caller, 5v4 blocking drills, and squad rotation tools.",
-            "PARENT_PLAYER": "Parent / Player with clean Family Kid View to watch play routes, safe stance guides, and practice schedules."
-          };
-          descEl.innerHTML = "You've been invited as <strong>" + opts.role.replace("_", " ") + "</strong>: " + (roleMap[opts.role] || "");
-        }
-        if (linkEl) linkEl.textContent = link || "Secure invitation links are not enabled.";
-        if (testBtn) testBtn.href = link;
-      }
-
-      document.querySelectorAll("#invite-form input, #invite-form select").forEach(el => {
-        el.addEventListener("input", updatePreview);
-        el.addEventListener("change", updatePreview);
-      });
-      updatePreview();
-
-      // Copy Link
-      document.getElementById("btn-copy-invite")?.addEventListener("click", function () {
-        const link = window.InviteManager.generateInviteLink(getFormOpts());
-        navigator.clipboard.writeText(link).then(function () {
-          const fb = document.getElementById("invite-feedback");
-          if (fb) {
-            fb.style.color = "var(--gold)";
-            fb.textContent = "✓ Direct invitation link copied! Paste it into a text message or email to Seth.";
-          }
-        });
-      });
-
-      // SMS Share
-      document.getElementById("btn-sms-invite")?.addEventListener("click", function () {
-        window.InviteManager.shareViaSms(getFormOpts());
-      });
-
-      // Email Draft
-      document.getElementById("btn-email-draft")?.addEventListener("click", function () {
-        window.InviteManager.shareViaEmail(getFormOpts());
-      });
-    });
-  </script>
+  <script src="js/app.js?v=seahawks-20260901b"></script>
 </body>
 </html>

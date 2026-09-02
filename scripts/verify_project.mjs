@@ -65,13 +65,16 @@ const firebaseAuth = read("js/engine/firebase-auth.js");
 const inviteManager = read("js/engine/invite-manager.js");
 const invitePage = read("invite.html");
 const emailService = read("js/engine/email-service.js");
+const creatorPage = read("creator.html");
+const aiIngest = read("js/engine/ai-ingest.js");
+const aiCoach = read("js/engine/ai-coach.js");
 const schedule = read("js/schedule.js");
 
 const primaryPublicPages = [
   "index.html", "playbook.html", "drills.html", "app.html", "notes.html",
   "roster.html", "parent.html", "runner.html", "runner-guide.html",
   "flashcards.html", "sideline.html", "wristbands.html", "tracker.html",
-  "schedule.html", "invite.html"
+  "schedule.html", "invite.html", "creator.html"
 ];
 pass("public pages use Seahawks identity",
   primaryPublicPages.every((file) => /Seahawks/i.test(read(file))),
@@ -94,13 +97,22 @@ pass("Firebase auth has no simulated account fallback or personal-email prompt",
   !/prompt\s*\(|provider:\s*["'](?:demo|local|simulated)["']|setRole\s*\(|sethharrison|seaverhall@gmail/i.test(firebaseAuth));
 pass("secure invitations stay disabled until backend enforcement exists",
   /Secure team invitations are not available yet/i.test(inviteManager) &&
-  /disabled/i.test(invitePage) &&
+  /does not create accounts, accept invitations, or assign team roles/i.test(invitePage) &&
+  !/<form|type=["']email["']|navigator\.clipboard|mailto:|sms:/i.test(invitePage) &&
   !/URLSearchParams|location\.search/.test(inviteManager));
 pass("invite email service performs no external data transfer",
   /not available yet/i.test(emailService) &&
   !/formsubmit|fetch\s*\(|XMLHttpRequest|navigator\.sendBeacon/i.test(emailService));
 pass("public source contains no seeded personal email address",
   !/sethharrison|seaverhall@gmail/i.test([...primaryPublicPages.map(read), firebaseAuth, inviteManager, emailService].join("\n")));
+pass("public play creator accepts no key, file, upload, or external-AI request",
+  /Play creator paused/i.test(creatorPage) &&
+  !/<form|type=["'](?:file|password)["']|ai-ingest\.js|ai-coach\.js/i.test(creatorPage) &&
+  !/fetch\s*\(|XMLHttpRequest|FileReader|localStorage|generativelanguage|API_KEY/i.test(`${aiIngest}\n${aiCoach}`));
+pass("playbook exposes no unreviewed AI or upload path",
+  !/creator\.html|ai-ingest\.js|ai-coach\.js|openAiCoachModal|Create \/ Ingest/i.test(playbook));
+pass("public Seahawks app exposes no team-creation switcher",
+  !/openTeamSwitcher|Add New Team|Create Team|new-team-form/i.test(`${read("app.html")}\n${appShell}`));
 pass("schedule ships empty until Seahawks details are confirmed",
   /const DEFAULT_SCHEDULE\s*=\s*\[\s*\]/.test(schedule) &&
   !/Cy-Fair|CFSA/i.test(schedule));

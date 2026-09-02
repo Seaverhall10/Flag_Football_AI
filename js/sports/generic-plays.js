@@ -1,5 +1,5 @@
 /**
- * Generic Youth Football Starter Plays (6 Core Plays)
+ * Generic Youth Football Example Plays (6 Core Plays)
  * Clean, standard diagrams with zero team-specific branding or photos.
  * 1. Sweep Right  2. Sweep Left  3. Off-Tackle Right  4. Off-Tackle Left  5. Inside Right  6. Inside Left
  */
@@ -182,5 +182,5 @@
     }
   ];
 
-  root.GENERIC_STARTER_PLAYS = GENERIC_PLAYS;
+  root.GENERIC_EXAMPLE_PLAYS = GENERIC_PLAYS;
 })(typeof window !== "undefined" ? window : globalThis);

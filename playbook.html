@@ -42,8 +42,6 @@
           <button type="button" class="btn-squad is-active" id="squad-preset-a" onclick="if(window.LineupManager){window.LineupManager.applySquadPreset('A');}">Squad A</button>
           <button type="button" class="btn-squad" id="squad-preset-b" onclick="if(window.LineupManager){window.LineupManager.applySquadPreset('B');}">Squad B</button>
           <button type="button" class="btn-squad-rotate" id="squad-rotate-btn" onclick="if(window.LineupManager){window.LineupManager.rotateLineup();}">🔄 Rotate +1</button>
-          <a href="creator.html" class="btn-squad" style="text-decoration:none;background:rgba(47,111,224,0.25);border-color:#2f6fe0;color:#93c5fd">✨ Create / Ingest Play</a>
-          <button type="button" class="btn-squad" onclick="if(window.AiCoach){window.AiCoach.openAiCoachModal();}">🤖 AI Coach</button>
         </div>
         <div class="squad-rotation-scroll" id="squad-rotation-list">
           <!-- Rendered dynamically by sim.js / LineupManager -->
@@ -103,19 +101,15 @@
   </main>
 
   <script src="js/sports/sport-registry.js"></script>
-  <script src="js/sports/generic-plays.js"></script>
+  <script src="js/sports/generic-plays.js?v=seahawks-20260901b"></script>
   <script src="js/engine/team-manager.js"></script>
   <script src="js/engine/auth-guard.js"></script>
-  <script src="js/engine/firebase-auth.js"></script>
   <script src="js/engine/lineup-manager.js"></script>
-  <script src="js/engine/custom-playbook.js"></script>
-  <script src="js/engine/invite-manager.js"></script>
-  <script src="js/engine/ai-ingest.js"></script>
-  <script src="js/engine/ai-coach.js"></script>
+  <script src="js/engine/custom-playbook.js?v=seahawks-20260901b"></script>
   <script src="js/engine/board-engine.js"></script>
   <script src="js/play-gif.js?v=flip-20260828"></script>
   <script src="js/plays-data.js?v=motion-20260831"></script>
-  <script src="js/sim.js?v=motion-20260831"></script>
-  <script src="js/app.js?v=seahawks-20260901"></script>
+  <script src="js/sim.js?v=seahawks-20260901b"></script>
+  <script src="js/app.js?v=seahawks-20260901b"></script>
 </body>
 </html>

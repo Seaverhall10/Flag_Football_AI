@@ -29,22 +29,33 @@
 ## Current verification
 
 - `node scripts/verify_ai_comms.mjs`: 38/38 passed.
-- `node scripts/verify_project.mjs`: 351/351 passed.
+- `node scripts/verify_project.mjs`: 338/338 passed after removing the public AI/upload, signup-preview, and team-creation surfaces.
 - Browser: 16 players, eight offense plus eight defense jobs, compact 14×14 arrow markers, ball/carrier transforms matched after the catch, and no console errors.
 - Browser rotation QA: assignment saved in place, survived reload, and displayed correctly at desktop and 390×844.
+- Public upload/API-key and Coach AI entry points are removed. Direct creator access is an honest privacy-hold page with no form or file input.
+- Public invitation/signup previews are removed. Direct access is an honest not-signup-ready page with no email field, role selector, or invitation action.
 - This branch is not deployed. The Firebase URL continues to show the older build until an authorized merge and exact-commit deployment.
+
+## Firebase release audit — 2026-09-01
+
+- Existing Firebase CLI authorization can access project `coach-ai-assist`; no new Firebase project was created.
+- The canonical default Hosting site is `coach-ai-assist` at `https://coach-ai-assist.web.app/`.
+- Two extra user-created Hosting sites exist but currently return HTTP 404. They are not release targets and should be removed only after the canonical deployment is verified.
+- Two web-app registrations exist; one is attached to an empty extra Hosting site.
+- Firestore exists and anonymous document reads were previously denied.
+- A live Identity Toolkit provider probe returned `OPERATION_NOT_ALLOWED`: Google sign-in is not configured. Secure signup therefore remains unavailable by design.
 
 ## Unknown
 
 - Seth's current league, roster size, game format, and rule packet. The owner confirmed the players are ages 5–6.
 - Whether the current 14 play sheets and 5-on-4 drill should become the Seahawks' official system or be replaced.
-- Which Google account owns Firebase project `coach-ai-assist`.
-- Real Firebase Auth provider status, membership schema, invitation rules, and deploy authority.
+- The intended owner identity for future coach-account bootstrap and membership administration.
+- Membership schema, invitation rules, and an owner-approved authentication provider.
 - Field acceptance with Seahawks coaches and players.
 
 ## Next
 
-1. Review and merge PR #17 once the owner accepts the Seahawks direction and provisional football content.
+1. Review and merge PR #17, then deploy its exact merge commit to the canonical default Hosting site.
 2. Obtain Seth's current league packet and approved Seahawks playbook before changing football assignments.
-3. Authenticate the Firebase owner account, then implement and test real authentication and least-privilege team invitations.
-4. Deploy the exact reviewed commit once and verify the live phone application.
+3. Design and review real authentication, server-backed membership, and least-privilege team invitations before enabling signup.
+4. Verify the live phone application, then remove only the confirmed-empty duplicate Hosting resources.

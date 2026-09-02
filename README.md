@@ -10,7 +10,7 @@ One mobile-first coaching application for Seth's Seahawks. The owner redirected 
 
 ## Current product boundary
 
-- Public identity: Seahawks Coach / Youth Flag Football.
+- Public identity: Seahawks Coach / Ages 5–6 Flag Football.
 - Primary phone destinations: Home, Plays, Drill, Coach.
 - Current play library: 14 owner-provided coach sheets carried forward as provisional Seahawks seed content.
 - Current drill: one 5-on-4 half-team teaching animation carried forward until Seahawks-specific material is approved.
@@ -19,7 +19,9 @@ One mobile-first coaching application for Seth's Seahawks. The owner redirected 
 
 ## Security status
 
-The public site is a hosted demo, not a verified private team service. Secure signup, cross-device team sharing, and invitations remain disabled until Firebase owner access, real authentication, membership rules, privacy tests, and public-browser verification are complete. Never describe the client-side password screen as real security.
+The public site is a hosted demo, not a verified private team service. Secure signup, cross-device team sharing, and invitations remain disabled until real authentication, membership rules, privacy tests, and public-browser verification are complete. The entry notice is not an account or privacy boundary.
+
+The public build also accepts no browser API key, playbook photo, PDF, upload, or external-AI coaching request. Play authoring and staff invitations show an explicit paused status until a private reviewed backend exists.
 
 ## Governance
 

@@ -72,7 +72,6 @@
             <button type="button" class="btn ${this.mode === 'game' ? 'btn-primary' : 'btn-secondary'}" id="btn-mode-game" style="font-weight:800;padding:10px 18px;">🏈 Live Game Play Counter</button>
             <button type="button" class="btn ${this.mode === 'practice' ? 'btn-primary' : 'btn-secondary'}" id="btn-mode-practice" style="font-weight:700;padding:10px 18px;">📋 Practice 5-of-6 Matrix</button>
           </div>
-          <div class="google-auth-container"></div>
         </div>
       `;
 
@@ -85,9 +84,6 @@
       this.container.innerHTML = html;
       this.attachListeners();
 
-      if (root.FirebaseAuthManager) {
-        root.FirebaseAuthManager.updateAuthUi();
-      }
     }
 
     renderGameMode() {

@@ -3,155 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tactical Play &amp; Drill Creator | AI Coach Ingestion</title>
-  <meta name="description" content="Draw, customize, or AI-ingest custom plays and drills for your team.">
-  <link rel="stylesheet" href="css/styles.css?v=seahawks-20260901">
+  <script src="js/gate.js?v=seahawks-20260901b"></script>
+  <title>Play Creator Paused — Seahawks Coach</title>
+  <meta name="description" content="Status of the private Seahawks play-authoring workflow.">
+  <link rel="stylesheet" href="css/styles.css?v=seahawks-20260901b">
 </head>
 <body class="coach-page">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="mast"></header>
 
-  <main id="main" class="wrap" style="padding-top:12px">
-    <section class="mobile-page-title" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-      <div>
-        <p class="eyebrow">Tactical Board</p>
-        <h1 style="margin:0">Play &amp; Drill Creator</h1>
-      </div>
-      <div style="display:flex;gap:8px">
-        <button type="button" class="btn btn-secondary btn-sm" id="btn-api-settings">🔑 API Settings</button>
-        <button type="button" class="btn btn-secondary btn-sm" id="btn-open-ai-coach">🤖 AI Coach</button>
-        <a href="playbook.html" class="btn btn-secondary btn-sm">📖 Playbook</a>
-      </div>
+  <main id="main" class="wrap">
+    <section class="mobile-page-title">
+      <p class="eyebrow">Coach tools</p>
+      <h1>Play creator paused</h1>
+      <p>The reviewed Seahawks playbook remains the only active teaching source.</p>
     </section>
 
-    <!-- Play Details & Ingestion Toolbar -->
-    <section class="panel" style="margin-bottom:12px;padding:12px">
-      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
-        <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:260px">
-          <input type="text" id="play-name-input" value="Custom Sweep Right" placeholder="Play Name" style="font-size:1.1rem;font-weight:700;padding:6px 10px;border:1px solid var(--line-strong);border-radius:6px;background:var(--navy-light);color:#fff;width:100%">
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <label class="btn btn-secondary" style="cursor:pointer;margin:0;display:inline-flex;align-items:center;gap:6px">
-            📸 Ingest Photo / PDF
-            <input type="file" id="ai-file-input" accept="image/*,.pdf" style="display:none">
-          </label>
-          <button type="button" class="btn btn-primary" id="btn-save-play">💾 Save Play</button>
-        </div>
+    <section class="panel" aria-labelledby="creator-status-title">
+      <div class="panel-header">
+        <h2 id="creator-status-title">Why this is not available</h2>
+        <span class="sport-badge">PRIVACY HOLD</span>
       </div>
-      <div id="ingest-status" class="tiny" style="color:var(--gold);font-weight:700;margin-top:6px;display:none"></div>
+      <p>This public build does not accept API keys, photos, PDFs, uploads, or external-AI requests. Those features require a private authenticated coach workspace, an approved data-retention policy, and a child-privacy review.</p>
+      <p class="tiny">No file selected here is read, stored, or transmitted. No play can silently replace the 14 reviewed coach sheets.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px">
+        <a href="playbook.html" class="btn btn-primary" style="text-decoration:none">Return to Plays</a>
+        <a href="app.html" class="btn btn-secondary" style="text-decoration:none">Coach Home</a>
+      </div>
     </section>
-
-    <!-- Canvas Area -->
-    <figure class="proof-pane proof-live-pane" style="position:relative;background:#0f2316;border-radius:12px;overflow:hidden;border:1px solid var(--line-strong)">
-      <div id="creator-canvas" style="width:100%;aspect-ratio:10/9;max-height:600px"></div>
-    </figure>
-
-    <!-- Instructions & Help -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding:0 4px">
-      <span class="tiny" style="color:var(--muted)">💡 <strong>Tip:</strong> Drag offense circles or defense squares to set their starting locations.</span>
-    </div>
   </main>
-
-  <!-- API Key Modal -->
-  <div class="modal-overlay no-print" id="api-modal-overlay" style="display:none">
-    <div class="modal-card">
-      <h2>🔑 Gemini Vision API Setup</h2>
-      <p class="tiny" style="margin-top:-4px">Enter your Google Gemini API key to enable instant AI diagram scanning from photos, whiteboard sketches, and PDFs.</p>
-      <div style="margin:16px 0">
-        <label class="tiny">Gemini API Key
-          <input type="password" id="gemini-key-input" placeholder="AIzaSy..." style="width:100%;padding:10px;border:1px solid var(--line-strong);border-radius:8px;background:var(--navy-light);color:#fff;font-size:1rem;margin-top:4px">
-        </label>
-        <p class="tiny" style="color:var(--muted);margin-top:6px">Your key is stored strictly in your browser's private local storage.</p>
-      </div>
-      <div style="display:flex;justify-content:flex-end;gap:8px">
-        <button type="button" class="btn btn-secondary" id="btn-cancel-api">Cancel</button>
-        <button type="button" class="btn btn-primary" id="btn-save-api">Save Key</button>
-      </div>
-    </div>
-  </div>
 
   <footer class="foot">
     <div class="foot-inner">
-      <div>Tactical Play &amp; Drill Creator</div>
-      <div><a href="playbook.html">Back to Playbook</a></div>
+      <div>Seahawks Coach · Ages 5–6</div>
+      <div>Public demo · No uploads</div>
     </div>
   </footer>
 
   <script src="js/sports/sport-registry.js"></script>
-  <script src="js/sports/generic-plays.js"></script>
   <script src="js/engine/team-manager.js"></script>
-  <script src="js/engine/auth-guard.js"></script>
-  <script src="js/engine/lineup-manager.js"></script>
-  <script src="js/engine/custom-playbook.js"></script>
-  <script src="js/engine/ai-ingest.js"></script>
-  <script src="js/engine/ai-coach.js"></script>
-  <script src="js/engine/play-creator.js"></script>
-  <script src="js/app.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var creator = new window.PlayCreator("creator-canvas");
-
-      // AI Ingestion
-      var fileInput = document.getElementById("ai-file-input");
-      var statusEl = document.getElementById("ingest-status");
-
-      fileInput?.addEventListener("change", async function (e) {
-        var file = e.target.files && e.target.files[0];
-        if (!file) return;
-
-        statusEl.style.display = "block";
-        statusEl.textContent = "Analyzing " + file.name + " with Gemini Multimodal Vision API...";
-
-        try {
-          var parsedPlay = await window.AiIngest.ingestPlayFromImage(file);
-          creator.loadPlay(parsedPlay);
-          document.getElementById("play-name-input").value = parsedPlay.name || parsedPlay.call || "Ingested Play";
-          statusEl.textContent = "✓ Ingested successfully! Fine-tune player positions or save directly to playbook.";
-        } catch (err) {
-          statusEl.textContent = "Notice: " + err.message + " (Loaded template diagram for manual adjustment).";
-        }
-      });
-
-      // Save play
-      document.getElementById("btn-save-play")?.addEventListener("click", function () {
-        var name = document.getElementById("play-name-input").value.trim() || "Custom Play";
-        creator.playData.name = name;
-        creator.playData.call = name;
-        var saved = creator.savePlayToPlaybook();
-        if (saved) {
-          statusEl.style.display = "block";
-          statusEl.textContent = "✓ Play '" + name + "' saved to your team playbook!";
-          setTimeout(function () {
-            window.location.href = "playbook.html";
-          }, 800);
-        }
-      });
-
-      // API Key Modal
-      var apiModal = document.getElementById("api-modal-overlay");
-      var keyInput = document.getElementById("gemini-key-input");
-
-      document.getElementById("btn-api-settings")?.addEventListener("click", function () {
-        keyInput.value = window.AiIngest.getApiKey();
-        apiModal.style.display = "flex";
-      });
-
-      document.getElementById("btn-cancel-api")?.addEventListener("click", function () {
-        apiModal.style.display = "none";
-      });
-
-      document.getElementById("btn-save-api")?.addEventListener("click", function () {
-        window.AiIngest.setApiKey(keyInput.value);
-        apiModal.style.display = "none";
-        statusEl.style.display = "block";
-        statusEl.textContent = "✓ API Key saved successfully.";
-      });
-
-      // AI Coach
-      document.getElementById("btn-open-ai-coach")?.addEventListener("click", function () {
-        window.AiCoach.openAiCoachModal();
-      });
-    });
-  </script>
+  <script src="js/app.js?v=seahawks-20260901b"></script>
 </body>
 </html>

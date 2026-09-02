@@ -1,6 +1,6 @@
 /**
  * Custom Playbook Manager
- * Supports isolated custom playbooks per team, generic starter plays for new
+ * Supports isolated custom playbooks per team and generic example plays for new
  * teams, and preservation of the current Seahawks seed play library.
  */
 (function (root) {
@@ -35,9 +35,9 @@
       } catch (e) {}
     }
 
-    // Default to the 6 generic starter plays for any new team
-    var starter = root.GENERIC_STARTER_PLAYS || [];
-    var initial = JSON.parse(JSON.stringify(starter));
+    // Default to the 6 generic example plays for any new local workspace.
+    var examples = root.GENERIC_EXAMPLE_PLAYS || [];
+    var initial = JSON.parse(JSON.stringify(examples));
     localStorage.setItem(key, JSON.stringify(initial));
     return initial;
   }
@@ -73,9 +73,9 @@
     return [];
   }
 
-  function resetToStarter() {
-    var starter = root.GENERIC_STARTER_PLAYS || [];
-    var fresh = JSON.parse(JSON.stringify(starter));
+  function resetToExamples() {
+    var examples = root.GENERIC_EXAMPLE_PLAYS || [];
+    var fresh = JSON.parse(JSON.stringify(examples));
     saveTeamPlays(null, fresh);
     return fresh;
   }
@@ -86,6 +86,6 @@
     addPlay: addPlay,
     deletePlay: deletePlay,
     clearExamplePlays: clearExamplePlays,
-    resetToStarter: resetToStarter
+    resetToExamples: resetToExamples
   };
 })(typeof window !== "undefined" ? window : globalThis);

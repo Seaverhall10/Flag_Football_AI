@@ -859,7 +859,7 @@
       if (restoreBtn) {
         restoreBtn.addEventListener("click", function () {
           if (window.CustomPlaybook) {
-            window.CustomPlaybook.resetToStarter();
+            window.CustomPlaybook.resetToExamples();
             renderCustomPlayPicker();
             setRun(plays()[0] ? plays()[0].id : "gen-01");
           }
@@ -903,7 +903,7 @@
     if (resetBtn) {
       resetBtn.addEventListener("click", function () {
         if (window.CustomPlaybook) {
-          window.CustomPlaybook.resetToStarter();
+          window.CustomPlaybook.resetToExamples();
           renderCustomPlayPicker();
           setRun(plays()[0] ? plays()[0].id : "gen-01");
         }
