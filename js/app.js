@@ -1,5 +1,5 @@
-﻿/**
- * Cy-Fair K/1 Lions — Core Application Utilities
+/**
+ * Seahawks Coach — Core Application Utilities
  * Features: 1-Tap GPS Field navigation, .ics Calendar generator, JSON Team Data Backup/Restore, checklist sync.
  */
 
@@ -31,12 +31,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return `<a href="${item.href}"${active}>${item.label}</a>`;
   }).join("");
 
+  const activeTeam = (window.TeamManager && window.TeamManager.getActiveTeam()) || { shortName: "SEAHAWKS", division: "Youth Flag Football", name: "Seahawks" };
+
+  const introEyebrow = document.querySelector(".home-intro .eyebrow");
+  if (introEyebrow && activeTeam && activeTeam.name) {
+    introEyebrow.textContent = activeTeam.name;
+  }
+
   const mast = document.querySelector(".mast");
   if (mast) {
     mast.innerHTML = `
       <div class="mast-inner">
-        <a href="index.html" class="brand-group" aria-label="Lions home">
-          <div class="brand-text"><h1>LIONS</h1><p>Practice tools</p></div>
+        <a href="index.html" class="brand-group" aria-label="${activeTeam.name} home">
+          <div class="brand-text"><h1>${activeTeam.shortName.toUpperCase()}</h1><p>${activeTeam.division || 'Practice tools'}</p></div>
         </a>
         <nav class="nav" aria-label="Primary navigation">${linkMarkup}</nav>
       </div>`;
@@ -47,9 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
     appbar.className = "mobile-appbar no-print";
     if (currentPath === "playbook.html") {
       const call = (document.getElementById("sim-play-badge") && document.getElementById("sim-play-badge").textContent) || "A-Gap Right";
-      appbar.innerHTML = `<a href="index.html" aria-label="Lions home">LIONS</a><strong id="appbar-play">${call}</strong><button type="button" class="sheet-toggle" id="sheet-toggle">SHEET</button>`;
+      appbar.innerHTML = `<a href="index.html" aria-label="${activeTeam.name} home">${activeTeam.shortName.toUpperCase()}</a><strong id="appbar-play">${call}</strong><button type="button" class="sheet-toggle" id="sheet-toggle">SHEET</button>`;
     } else {
-      appbar.innerHTML = `<a href="index.html" aria-label="Lions home">LIONS</a><strong>${pageNames[currentPath] || "Coach"}</strong>`;
+      appbar.innerHTML = `<a href="index.html" aria-label="${activeTeam.name} home">${activeTeam.shortName.toUpperCase()}</a><strong>${pageNames[currentPath] || "Coach"}</strong>`;
     }
     document.body.insertBefore(appbar, document.querySelector("main") || document.body.firstChild);
     const sheetBtn = document.getElementById("sheet-toggle");
@@ -142,19 +149,19 @@ document.addEventListener("DOMContentLoaded", () => {
  * 1-Click Calendar (.ics) Generator for Events
  */
 function downloadIcsCalendar(eventTitle, eventDate, eventTime, location, description) {
-  const cleanTitle = encodeURIComponent(eventTitle || "Cy-Fair Lions Flag Football");
-  const cleanLoc = encodeURIComponent(location || "CFSA Complex");
-  const cleanDesc = encodeURIComponent(description || "Cy-Fair K/1 Lions Flag Football 8-on-8");
+  const cleanTitle = encodeURIComponent(eventTitle || "Seahawks Flag Football");
+  const cleanLoc = encodeURIComponent(location || "Practice field");
+  const cleanDesc = encodeURIComponent(description || "Seahawks Youth Flag Football");
 
   // Simple ICS string
   const icsData = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Cy-Fair Lions Flag Football//EN",
+    "PRODID:-//Seahawks Flag Football//EN",
     "BEGIN:VEVENT",
-    `SUMMARY:${eventTitle || 'Lions Flag Football'}`,
-    `DESCRIPTION:${description || 'Cy-Fair K/1 Lions'}`,
-    `LOCATION:${location || 'CFSA Complex'}`,
+    `SUMMARY:${eventTitle || 'Seahawks Flag Football'}`,
+    `DESCRIPTION:${description || 'Seahawks Youth Flag Football'}`,
+    `LOCATION:${location || 'Practice field'}`,
     `DTSTART:${new Date().toISOString().replace(/-|:|\.\d\d\d/g, "")}`,
     `DTEND:${new Date(Date.now() + 3600000).toISOString().replace(/-|:|\.\d\d\d/g, "")}`,
     "STATUS:CONFIRMED",
@@ -189,7 +196,7 @@ function exportTeamBackup() {
   const jsonStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup, null, 2));
   const downloadAnchor = document.createElement("a");
   downloadAnchor.setAttribute("href", jsonStr);
-  downloadAnchor.setAttribute("download", `Lions_Flag_Football_Backup_${new Date().toISOString().slice(0,10)}.json`);
+  downloadAnchor.setAttribute("download", `Seahawks_Coach_Backup_${new Date().toISOString().slice(0,10)}.json`);
   document.body.appendChild(downloadAnchor);
   downloadAnchor.click();
   downloadAnchor.remove();

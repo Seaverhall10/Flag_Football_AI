@@ -1,5 +1,5 @@
 /**
- * Compact GIF89a writer for the Lions play sim. 3-3-2 palette, 256 colors.
+ * Compact GIF89a writer for the Coach AI play sim. 3-3-2 palette, 256 colors.
  */
 (function (root) {
   "use strict";

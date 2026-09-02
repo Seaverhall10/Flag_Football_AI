@@ -1,60 +1,61 @@
 # Project Status
 
-## Latest owner corrections
+## Latest owner direction — 2026-09-01
 
-- The current six-play offense is QB direct snap: QB catches the snap and runs.
-- The other two backs are WING-L and WING-R, with both spread and tight spacing.
-- The animation must give young players enough room to see every route, block, and lane.
-- The public app has one drill only: five-player half offense versus four-player half defense.
-- The drill opens in an edge-to-edge Kid View with separate OFFENSE and DEFENSE teaching views.
-- The Center takes one fixed angle to the Linebacker's starting landmark, makes a short controlled push, then stops while the defender separates.
-- The whole public site must work as one organized mobile coaching app, not a collection of desktop pages that merely shrink.
-- The four primary destinations are Home, Plays, Drill, and Coach. Schedule remains hidden.
+- The app no longer focuses on the former Lions team.
+- The one existing repository, Firebase project, and integration PR now serve Seth's Seahawks.
+- Do not create a second app, repository, Firebase project, or competing implementation lane.
 
-## Verified locally
+## Verified before the Seahawks migration
 
-- A 390×844 live-site audit measured the pre-change playbook at 3.3 screens, notes at 3.2 screens, and roster at 4.9 screens; the drill had no visible route back to the rest of the app.
-- The rebuilt Home screen leads with exactly two practice actions: Run the blocking drill and Watch a play.
-- Every interactive page receives the same four-destination app shell. The current destination is identified in both the compact phone header and bottom navigation.
-- The playbook uses a swipeable compact play picker, two compact wing-spacing choices, the full 16-player animation, and four primary rep controls. Speed, scrubber, job cards, and general cues are secondary phone disclosures.
-- Notes no longer duplicates the six-play sideline caller. Notes, rep tracker, backup, and printables are separated by task; roster views collapse independently on phones.
-- Phone browser journeys passed all 12 playbook cases (six runs × two Wing spacings) with 16 players and eight jobs, and all eight drill setups with nine players, five offensive jobs, and four defensive jobs.
-- Tablet, laptop, and desktop checks covered Home, Plays, Drill, Coach, Notes, and Roster: 18 of 18 page/viewport cases had four primary destinations, no horizontal overflow, and no browser errors.
-- `node scripts/verify_project.mjs` passes 251 of 251 checks for this mobile information-architecture release candidate.
+- Draft PR #17 contains the preserved owner multi-team workspace, governed AI Huddle protocol, and possession-aware motion/UI correction.
+- The playbook correction passed 344/344 repository checks and a 14-play browser sweep with 16 visible players and 16 job cards per play.
+- The ball attaches to the explicit carrier after the exchange; mobile and desktop layouts were checked.
+- Firebase Hosting exists at `https://coach-ai-assist.web.app/`, but it was deployed from an uncommitted workspace rather than a reviewed Git commit.
+- The hosted product is a demo, not secure multi-user software. Simulated sign-in and client-generated invitations are not accepted production behavior.
 
-- The full-team field is now 940 visual units tall instead of 640.
-- Spread Wings start at x=160 and x=840; Tight Wings start at x=395 and x=605 beside the QB.
-- All six calls were tested in both Wing formations: 12 of 12 cases show 16 players and eight offensive jobs.
-- QB owns the direct snap and run on every call; play-side Wing leads and backside Wing fakes.
-- Tapping a job dims the other 15 players and isolates the selected route or block.
-- The single half-team drill contains Center, Guard, Tackle, Runner, and Lead RB versus DL, LB, CB, and a selectable DL/LB.
-- All 16 teaching cases were tested: Inside/Outside × Left/Right × Two-DL/Two-LB × Offense/Defense view.
-- The drill shows five offensive jobs and four defensive-integrity jobs; tapping one isolates the matchup.
-- Teaching views change visual emphasis only; a browser check at the controlled-push beat confirmed all nine player coordinates remain identical when switching views.
-- All responsibility paths are solid and direct. Phones use an edge-to-edge single column. Laptops and desktops use a 620-pixel field beside a compact teaching-control column so the complete rep and primary controls remain visible together.
-- Speed, scrubber, and beat dots are collapsed under Coach Controls. The four primary controls remain immediately visible.
-- The Center and Linebacker follow independent fixed waypoints. Browser checks confirmed Center/LB positions at all seven exact beats, including visible fit, short push, separation, and pursuit.
-- Four official NFL/NFL Play Football clips are linked below the drill: offensive contact, game blocking technique, defensive shedding, and a real run-lane example.
-- Both animations advance slowly to Direct Snap after 1.2 seconds rather than jumping to the finish.
-- Complete local user journeys passed at 390×844 phone, 768×1024 tablet, 1280×720 laptop, and 1440×900 desktop sizes with no horizontal overflow or console errors.
-- At every audited size, all nine players, the full field, cue, and Play/Back/Next/Reset were visible together. Defense view preserved coordinates; Next/Back/Reset landed on exact beats; player spotlight, Coach Controls, setup changes, and all four official clip links worked.
-- Legacy `drill.html`, `stations.html`, `practice.html`, and `js/grid5v4.js` are removed.
-- `node scripts/verify_project.mjs` passes 240 of 240 checks for the current release candidate.
-- Pull request #4 merged as release commit `b3192ed`.
-- GitHub Pages deployment `32749342671` passed verification and deployment.
-- The cache-busted public playbook passed all 12 QB/Wing cases, with 16 players and eight jobs in every case.
-- The cache-busted public drill passed all eight lane/side/front cases, with nine players, five offensive jobs, and four defensive jobs in every case.
-- Public slow motion advanced only to Direct Snap after 1.2 seconds on both pages; neither animation jumped to the finish.
-- Public desktop and 390×844 phone checks found no overflow or browser errors.
-- Public legacy URLs `drill.html`, `stations.html`, and `practice.html` return HTTP 404.
+## Seahawks migration verified on the review branch
+
+- Public/default identity is Seahawks Coach for 5–6-year-old players.
+- Existing local browser data is preserved through legacy-key compatibility; no roster or notes are uploaded.
+- The former Lions/CFSA brand and rules are not Seahawks authority.
+- The 14 coach-sheet plays and one drill remain provisional carried-forward teaching content until Seth's current playbook and league rules are confirmed.
+- Public personal-email defaults and insecure invitation behavior are removed or disabled in the reviewed branch.
+- The coach rotation planner has no starter ranking or bench label. It uses anonymous labels, Position Rotation, and Next Rotation; changes save only on that device.
+- Roster/rotation is removed from primary navigation and remains a secondary Coach tool with an explicit privacy warning.
+- At 390×844, player rotations render as two-by-two quarter cards with 44-pixel controls and no page overflow.
+- Asset versions were advanced so deployed phones do not retain the pre-Seahawks stylesheet and scripts.
+
+## Current verification
+
+- `node scripts/verify_ai_comms.mjs`: 38/38 passed.
+- `node scripts/verify_project.mjs`: 338/338 passed after removing the public AI/upload, signup-preview, and team-creation surfaces.
+- Browser: 16 players, eight offense plus eight defense jobs, compact 14×14 arrow markers, ball/carrier transforms matched after the catch, and no console errors.
+- Browser rotation QA: assignment saved in place, survived reload, and displayed correctly at desktop and 390×844.
+- Public upload/API-key and Coach AI entry points are removed. Direct creator access is an honest privacy-hold page with no form or file input.
+- Public invitation/signup previews are removed. Direct access is an honest not-signup-ready page with no email field, role selector, or invitation action.
+- This branch is not deployed. The Firebase URL continues to show the older build until an authorized merge and exact-commit deployment.
+
+## Firebase release audit — 2026-09-01
+
+- Existing Firebase CLI authorization can access project `coach-ai-assist`; no new Firebase project was created.
+- The canonical default Hosting site is `coach-ai-assist` at `https://coach-ai-assist.web.app/`.
+- Two extra user-created Hosting sites exist but currently return HTTP 404. They are not release targets and should be removed only after the canonical deployment is verified.
+- Two web-app registrations exist; one is attached to an empty extra Hosting site.
+- Firestore exists and anonymous document reads were previously denied.
+- A live Identity Toolkit provider probe returned `OPERATION_NOT_ALLOWED`: Google sign-in is not configured. Secure signup therefore remains unavailable by design.
 
 ## Unknown
 
-- The exact current-season Edge/DE alignment interpretation until the league or officials confirm it.
-- Field acceptance with actual 5–7-year-old players has not yet occurred.
+- Seth's current league, roster size, game format, and rule packet. The owner confirmed the players are ages 5–6.
+- Whether the current 14 play sheets and 5-on-4 drill should become the Seahawks' official system or be replaced.
+- The intended owner identity for future coach-account bootstrap and membership administration.
+- Membership schema, invitation rules, and an owner-approved authentication provider.
+- Field acceptance with Seahawks coaches and players.
 
 ## Next
 
-1. Run an anonymous field-acceptance session with coaches and 5–7-year-old players.
-2. Confirm the current-season Edge/DE interpretation with the league before changing that alignment.
-3. Keep all removed drill systems out unless the owner explicitly changes the one-drill rule.
+1. Review and merge PR #17, then deploy its exact merge commit to the canonical default Hosting site.
+2. Obtain Seth's current league packet and approved Seahawks playbook before changing football assignments.
+3. Design and review real authentication, server-backed membership, and least-privilege team invitations before enabling signup.
+4. Verify the live phone application, then remove only the confirmed-empty duplicate Hosting resources.

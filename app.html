@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="js/gate.js?v=gate-20260825"></script>
-  <title>Sideline Command Center — Cy-Fair K/1 Lions</title>
-  <meta name="description" content="Live play caller for the 14 Cy-Fair K/1 Lions coach-sheet plays.">
-  <link rel="stylesheet" href="css/styles.css?v=gate-20260825">
+  <script src="js/gate.js?v=seahawks-20260901"></script>
+  <title>Sideline Command Center — Seahawks Coach</title>
+  <meta name="description" content="Live play caller for the 14 carried-forward Seahawks coach-sheet plays.">
+  <link rel="stylesheet" href="css/styles.css?v=seahawks-20260901">
 </head>
 <body class="coach-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -14,20 +14,19 @@
   <header class="mast">
     <div class="mast-inner">
             <a href="index.html" class="brand-group">
-        <div class="mark" aria-label="Cy-Fair Lions Crest">
+        <div class="mark" aria-label="Seahawks Coach mark">
           <svg class="lion-logo" viewBox="0 0 36 36" fill="#f59e0b" aria-hidden="true">
             <path d="M18 3 C13 3 9 6 8 11 C7 15 9 18 9 20 C7 20 5 22 5 25 C5 29 9 32 14 32 C15 32 16 34 18 34 C20 34 21 32 22 32 C27 32 31 29 31 25 C31 22 29 20 27 20 C27 18 29 15 28 11 C27 6 23 3 18 3 Z M13 15 C14.1 15 15 15.9 15 17 C15 18.1 14.1 19 13 19 C11.9 19 11 18.1 11 17 C11 15.9 11.9 15 13 15 Z M23 15 C24.1 15 25 15.9 25 17 C25 18.1 24.1 19 23 19 C21.9 19 21 18.1 21 17 C21 15.9 21.9 15 23 15 Z M18 26 C15.5 26 14 24.5 14 23.5 L22 23.5 C22 24.5 20.5 26 18 26 Z"/>
           </svg>
         </div>
         <div class="brand-text">
-          <h1>Cy-Fair K/1 Lions</h1>
-          <p>8-on-8 CFSA Flag Football · One Pride</p>
+          <h1>Seahawks</h1>
+          <p>Ages 5–6 · One Team</p>
         </div>
       </a>
 
       <nav class="nav" aria-label="Coach navigation">
         <a href="playbook.html">📖 Playbook</a>
-        <a href="roster.html">👥 Roster</a>
         <a href="drills.html">⏱️ Drills</a>
         <a href="notes.html">📝 Notes</a>
         <a class="ghost" href="app.html">⚡ Sideline</a>
@@ -39,7 +38,10 @@
 
   <main id="main" class="wrap">
     <section class="mobile-page-title">
-      <p class="eyebrow">Sideline</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <p class="eyebrow" style="margin:0">Sideline</p>
+        <span class="team-switcher-trigger" aria-label="Active team"><span class="team-dot"></span><span id="active-team-label">Seahawks</span></span>
+      </div>
       <h1>Coach</h1>
       <p>Call the play, then get back to the kids.</p>
     </section>
@@ -48,6 +50,18 @@
       <span>TAP A PLAY TO CALL</span>
       <span class="live-call-sub" id="call-sub">Fourteen coach-sheet plays</span>
     </div>
+
+    <section class="quick-squad-bar no-print" aria-label="Quick squad assignment" style="margin:12px 0">
+      <div class="squad-actions">
+        <span class="squad-label">Current Game Group:</span>
+        <button type="button" class="btn-squad is-active" id="squad-preset-a" onclick="if(window.LineupManager){window.LineupManager.applySquadPreset('A');}">Squad A</button>
+        <button type="button" class="btn-squad" id="squad-preset-b" onclick="if(window.LineupManager){window.LineupManager.applySquadPreset('B');}">Squad B</button>
+        <button type="button" class="btn-squad-rotate" id="squad-rotate-btn" onclick="if(window.LineupManager){window.LineupManager.rotateLineup();}">🔄 Rotate +1</button>
+      </div>
+      <div class="squad-rotation-scroll" id="squad-rotation-list">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
 
     <div class="cue-strip">
       <span>OL · Two-point · Head Out · Hands Inside</span>
@@ -100,7 +114,7 @@
           <span>→</span>
         </a>
         <a href="roster.html" class="link-card">
-          <span>Roster and depth chart</span>
+          <span>Coach game rotation</span>
           <span>→</span>
         </a>
         <a href="sideline.html" class="link-card">
@@ -113,14 +127,18 @@
 
   <footer class="foot">
     <div class="foot-inner">
-      <div>Cy-Fair K/1 Lions · Sideline Command Center</div>
+      <div>Seahawks Coach · Sideline Command Center</div>
       <div><a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></div>
     </div>
   </footer>
 
+  <script src="js/sports/sport-registry.js"></script>
+  <script src="js/engine/team-manager.js"></script>
+  <script src="js/engine/auth-guard.js"></script>
+  <script src="js/engine/lineup-manager.js"></script>
   <script src="js/backup.js"></script>
   <script src="js/timers.js"></script>
-  <script src="js/app.js?v=coach-plays-20260825"></script>
+  <script src="js/app.js?v=seahawks-20260901b"></script>
   <script>
     (function () {
       const KEY = "lions_sunlight_mode";
@@ -128,8 +146,26 @@
         if (localStorage.getItem(KEY) === "1") document.body.classList.add("sunlight-mode");
         else document.body.classList.remove("sunlight-mode");
       }
+      function renderLineupChips() {
+        const container = document.getElementById("squad-rotation-list");
+        if (!container || !window.LineupManager) return;
+        const positions = window.LineupManager.DEFAULT_POSITIONS_8V8;
+        const lineup = window.LineupManager.getLineup();
+        container.innerHTML = positions.map(pos => {
+          const assigned = lineup[pos.id];
+          const numName = assigned ? (`#${assigned.number} ${assigned.name.split(" ")[0]}`) : "--";
+          return `<span class="rotation-chip"><strong class="pos-tag">${pos.letter}:</strong><span class="player-tag">${numName}</span></span>`;
+        }).join("");
+      }
       document.addEventListener("DOMContentLoaded", () => {
         apply();
+        if (window.TeamManager) {
+          const t = window.TeamManager.getActiveTeam();
+          const lbl = document.getElementById("active-team-label");
+          if (lbl) lbl.textContent = t.shortName || t.name;
+        }
+        renderLineupChips();
+        window.addEventListener("lineup:changed", renderLineupChips);
         document.getElementById("sunlight-toggle")?.addEventListener("click", () => {
           const on = document.body.classList.toggle("sunlight-mode");
           localStorage.setItem(KEY, on ? "1" : "0");

@@ -59,6 +59,63 @@ const appShell = read("js/app.js");
 const home = read("index.html");
 const notes = read("notes.html");
 const rosterPage = read("roster.html");
+const teamManager = read("js/engine/team-manager.js");
+const gate = read("js/gate.js");
+const firebaseAuth = read("js/engine/firebase-auth.js");
+const inviteManager = read("js/engine/invite-manager.js");
+const invitePage = read("invite.html");
+const emailService = read("js/engine/email-service.js");
+const creatorPage = read("creator.html");
+const aiIngest = read("js/engine/ai-ingest.js");
+const aiCoach = read("js/engine/ai-coach.js");
+const schedule = read("js/schedule.js");
+
+const primaryPublicPages = [
+  "index.html", "playbook.html", "drills.html", "app.html", "notes.html",
+  "roster.html", "parent.html", "runner.html", "runner-guide.html",
+  "flashcards.html", "sideline.html", "wristbands.html", "tracker.html",
+  "schedule.html", "invite.html", "creator.html"
+];
+pass("public pages use Seahawks identity",
+  primaryPublicPages.every((file) => /Seahawks/i.test(read(file))),
+  primaryPublicPages.filter((file) => !/Seahawks/i.test(read(file))).join(", "));
+pass("former Lions and CFSA branding is absent from public pages",
+  primaryPublicPages.every((file) => !/Cy-Fair|CFSA|K\/1 Lions|Lions Coach/i.test(read(file))),
+  primaryPublicPages.filter((file) => /Cy-Fair|CFSA|K\/1 Lions|Lions Coach/i.test(read(file))).join(", "));
+pass("Seahawks is the default team",
+  /DEFAULT_TEAM_ID\s*=\s*["']seahawks-youth-flag["']/.test(teamManager) &&
+  /name:\s*["']Seahawks["']/.test(teamManager));
+pass("legacy team metadata migrates without deleting browser data",
+  /LEGACY_TEAM_ID\s*=\s*["']lions-k1-flag["']/.test(teamManager) &&
+  /migrateFormerDefault/.test(teamManager) &&
+  !/removeItem\(/.test(teamManager));
+pass("public gate is an honest demo, not a shared password",
+  /Public demo/i.test(gate) && /Open demo/i.test(gate) &&
+  !/TEAM_PASS|type=["']password["']|URLSearchParams|[?&]join=/i.test(gate));
+pass("Firebase auth has no simulated account fallback or personal-email prompt",
+  /Secure sign-in setup is pending Firebase owner access/i.test(firebaseAuth) &&
+  !/prompt\s*\(|provider:\s*["'](?:demo|local|simulated)["']|setRole\s*\(|sethharrison|seaverhall@gmail/i.test(firebaseAuth));
+pass("secure invitations stay disabled until backend enforcement exists",
+  /Secure team invitations are not available yet/i.test(inviteManager) &&
+  /does not create accounts, accept invitations, or assign team roles/i.test(invitePage) &&
+  !/<form|type=["']email["']|navigator\.clipboard|mailto:|sms:/i.test(invitePage) &&
+  !/URLSearchParams|location\.search/.test(inviteManager));
+pass("invite email service performs no external data transfer",
+  /not available yet/i.test(emailService) &&
+  !/formsubmit|fetch\s*\(|XMLHttpRequest|navigator\.sendBeacon/i.test(emailService));
+pass("public source contains no seeded personal email address",
+  !/sethharrison|seaverhall@gmail/i.test([...primaryPublicPages.map(read), firebaseAuth, inviteManager, emailService].join("\n")));
+pass("public play creator accepts no key, file, upload, or external-AI request",
+  /Play creator paused/i.test(creatorPage) &&
+  !/<form|type=["'](?:file|password)["']|ai-ingest\.js|ai-coach\.js/i.test(creatorPage) &&
+  !/fetch\s*\(|XMLHttpRequest|FileReader|localStorage|generativelanguage|API_KEY/i.test(`${aiIngest}\n${aiCoach}`));
+pass("playbook exposes no unreviewed AI or upload path",
+  !/creator\.html|ai-ingest\.js|ai-coach\.js|openAiCoachModal|Create \/ Ingest/i.test(playbook));
+pass("public Seahawks app exposes no team-creation switcher",
+  !/openTeamSwitcher|Add New Team|Create Team|new-team-form/i.test(`${read("app.html")}\n${appShell}`));
+pass("schedule ships empty until Seahawks details are confirmed",
+  /const DEFAULT_SCHEDULE\s*=\s*\[\s*\]/.test(schedule) &&
+  !/Cy-Fair|CFSA/i.test(schedule));
 
 pass("shared mobile shell has four primary destinations",
   ["index.html", "playbook.html", "drills.html", "app.html"].every((href) => appShell.includes(`href: "${href}"`)) &&
@@ -74,6 +131,18 @@ pass("playbook coach controls are secondary", /<details\s+class=["'][^"']*playbo
 pass("notes does not duplicate the sideline play caller", !/class=["'][^"']*play-btn/i.test(notes) && !/id=["']call["']/.test(notes));
 pass("notes separates secondary tools", (notes.match(/<details\s+class=["'][^"']*coach-more/g) || []).length === 3);
 pass("roster views collapse independently on phones", (rosterPage.match(/<details\s+class=["'][^"']*mobile-collapse/g) || []).length === 3 && /querySelectorAll\(["']\.mobile-collapse["']\)/.test(appShell));
+pass("roster is a secondary Coach tool, not primary navigation",
+  [...html.entries()].every(([file, source]) => file === "app.html" || !/href=["']roster\.html["']/i.test(source)) &&
+  /More coach tools[\s\S]*href=["']roster\.html["']/i.test(read("app.html")));
+pass("game rotation UI has no starter ranking labels",
+  !/\bstarter(?:s)?\b|second string|2nd string|first string/i.test(`${rosterPage}\n${read("app.html")}\n${playbook}\n${sim}`));
+pass("rotation planner uses child-positive Next Rotation language",
+  /Next Rotation/.test(rosterPage) && /Next Rotation/.test(roster) && !/>\s*Bench(?:\s|<)/i.test(`${rosterPage}\n${roster}`));
+pass("rotation planner states local-only privacy and save behavior",
+  /Coach-only and local to this device/i.test(rosterPage) &&
+  /Saved automatically on this device/i.test(rosterPage) &&
+  /localStorage\.setItem/.test(roster));
+pass("owner-confirmed Seahawks age is recorded", /5[–-]6-year-old players/i.test(authority));
 
 const runKeys = [...playbook.matchAll(/data-run-key=["']([^"']+)["']/g)].map((match) => match[1]);
 const expectedKeys = Array.from({ length: 14 }, (_, i) => `play-${String(i + 1).padStart(2, "0")}`);
@@ -85,6 +154,15 @@ pass("playbook does not load replacement field simulator", !/src=["']js\/field-d
 const playsData = fs.existsSync(path.join(root, "js/plays-data.js")) ? read("js/plays-data.js") : "";
 pass("plays-data defines 14 plays", expectedKeys.every((key) => playsData.includes(`id: "${key}"`) || playsData.includes(`id: '${key}'`)), "missing play ids in js/plays-data.js");
 pass("sim or plays-data lists all 14 plays", expectedKeys.every((key) => sim.includes(key) || playsData.includes(key)));
+pass("playbook lineup tools are collapsed behind one tap", /<details\s+class=["'][^"']*quick-squad-bar/i.test(playbook));
+pass("playbook keeps live field primary on phones", /\.play-teacher\s*\{[\s\S]*?100dvh\s*-\s*198px/i.test(styles));
+pass("ball possession uses the explicit carrier id", sim.includes("play.ball.carrierId === id") && !sim.includes("return isBallBack(p);"));
+pass("ball attaches to the carrier after the exchange", /data-possession/.test(sim) && /has-possession/.test(sim) && /ballPosAt\(state\.t, poses\)/.test(sim));
+pass("playbook arrows use compact fixed-size markers", /markerUnits=["']userSpaceOnUse["']/.test(sim) && /markerWidth=["']14["']/.test(sim));
+pass("coach sheet does not force itself over the phone field", /sheetPane\.style\.removeProperty\(["']display["']\)/.test(sim) && !/sheetPane\.style\.display\s*=\s*["']block["']/.test(sim));
+pass("Back and Next Beat are visible teaching controls", !/<button[^>]+id=["']sim-(?:back|next)["'][^>]*\shidden(?:\s|>)/i.test(playbook));
+pass("speed scrub and GIF remain available as secondary controls", /playbook-coach-controls/.test(playbook) && /id=["']sim-slider["']/.test(playbook) && /id=["']sim-gif["']/.test(playbook) && !/\.playbook-coach-controls\s*\{\s*display:\s*none/i.test(styles));
+pass("Slow-Mo is the real default animation speed", /speed:\s*11000/.test(sim) && /slow:\s*11000/.test(sim));
 
 for (const id of ["sim-root", "sim-play", "sim-back", "sim-next", "sim-reset", "sim-slider", "sim-assignments"]) {
   pass(`playbook control #${id}`, new RegExp(`id=["']${id}["']`).test(playbook));
@@ -120,7 +198,7 @@ for (const id of ["C", "G", "T", "RUN", "LEAD", "DL", "LB", "CB", "FLEX"]) {
 for (const id of ["half-drill-root", "half-play", "half-back", "half-next", "half-reset", "half-slider", "half-offense-jobs", "half-defense-jobs"]) {
   pass(`single drill control #${id}`, new RegExp(`id=["']${id}["']`).test(drills));
 }
-pass("authority locks one half-team drill", /The public teaching app has one drill: half offense versus half defense/i.test(authority));
+pass("authority preserves one carried-forward half-team drill", /one carried-forward drill: half offense versus half defense/i.test(authority));
 pass("drill keeps Corner unblocked", /CB:\s*`Unblocked contain/i.test(halfDrill) && !/target:\s*["']CB["']/.test(halfDrill));
 pass("drill sends Center directly to Linebacker", /C:\s*\{\s*target:\s*["']LB["']/i.test(halfDrill));
 pass("two-DL Lead escorts lane and two-LB Lead blocks outside LB", /LEAD:\s*\{\s*target:\s*["']LANE["']/i.test(halfDrill) && /LEAD:\s*\{\s*target:\s*["']FLEX["']/i.test(halfDrill));
