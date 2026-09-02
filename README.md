@@ -1,4 +1,4 @@
-# Seahawks Coach AI
+# Coaching AI App — Seahawks Pilot
 
 > Live Firebase demo: https://coach-ai-assist.web.app/
 >
@@ -6,7 +6,7 @@
 >
 > Repository: https://github.com/Seaverhall10/Flag_Football_AI
 
-One mobile-first coaching application for Seth's Seahawks. The owner redirected the existing Lions project to the Seahawks on 2026-09-01; this repository and Firebase project remain the single product. Do not create another app or Firebase project.
+One mobile-first coaching product designed to expand across teams and sports. Seth's Seahawks is the first active pilot and current public workspace. This repository and Firebase project remain the single product; do not create another app or Firebase project for each team.
 
 ## Current product boundary
 
@@ -28,8 +28,10 @@ The public build also accepts no browser API key, playbook photo, PDF, upload, o
 - `PROJECT_AUTHORITY.md` — current team, football, safety, privacy, and uncertainty boundaries.
 - `AGENTS.md` — rules for human and AI contributors.
 - `AI_CHANGE_PROTOCOL.md` — one writer, branch, review, testing, release, and rollback.
+- `AI_TRUTH_AND_EVIDENCE.md` — evidence labels, disputed-claim handling, citation honesty, and uncertainty.
 - `COUNCIL_BOARD.md` — GitHub Huddle communication contract.
 - `PROJECT_STATUS.md` — verified state and next actions.
+- `.github/ISSUE_TEMPLATE/ai-audit-enhancement.yml` — structured audit, bug, research, and enhancement tickets.
 
 ## Main files
 

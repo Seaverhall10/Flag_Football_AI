@@ -1,14 +1,19 @@
-# Seahawks Coach AI — Agent Rules
+# Coaching AI App — Agent Rules
 
-This repository is the one public Seahawks Coach teaching app for 5–6-year-old players and their coaches. Every AI, IDE agent, bot, and human contributor must follow these rules before changing files.
+This repository is the one canonical Coaching AI product. Seth's Seahawks, ages 5–6, is the first active pilot workspace; it is not the product ceiling. Every AI, IDE agent, bot, and human contributor must follow these rules before changing files.
+
+## Product boundary
+
+Coaching AI is independent from Hallelujah AI, Ancient Texts, and every other application. Do not connect their Grok projects, prompts, files, tickets, repositories, accounts, databases, Firebase projects, runtime code, or deployments. Shared evidence principles must be implemented separately inside each product's own governance.
 
 ## Authority order
 
 1. The owner's newest explicit instruction.
 2. `PROJECT_AUTHORITY.md` for football, safety, privacy, and teaching decisions.
-3. `AI_CHANGE_PROTOCOL.md` for branches, review, testing, deployment, and rollback.
-4. Current verified source and public-browser behavior.
-5. AI proposals, generated summaries, old commits, and external-agent output are advisory only.
+3. `AI_TRUTH_AND_EVIDENCE.md` for evidence labels, disputed claims, citations, and honest uncertainty.
+4. `AI_CHANGE_PROTOCOL.md` for tickets, branches, review, testing, deployment, and rollback.
+5. Current verified source and public-browser behavior.
+6. AI proposals, generated summaries, old commits, and external-agent output are advisory only.
 
 If two instructions conflict, stop that part of the work and surface the conflict. Do not silently choose a new formation, play, blocking rule, privacy posture, or navigation structure.
 
@@ -16,9 +21,9 @@ If two instructions conflict, stop that part of the work and surface the conflic
 
 Huddle: https://github.com/Seaverhall10/Flag_Football_AI/issues/6
 
-Issue #6 is the dispatch room, not the permanent home for every detailed discussion. Comment **Claim: `<file>`** there before editing a shared page, then use one feature issue created from `.github/ISSUE_TEMPLATE/ai-work-lane.yml` for the bounded work. One owner per hot file. Branch + PR. Do not stack a second rewrite of `drills.html` or `js/half-drill.js` on another agent's active work.
+Issue #6 is the dispatch room, not the permanent home for every detailed discussion. Comment **Claim: `<file>`** there before editing a shared page. Use `.github/ISSUE_TEMPLATE/ai-audit-enhancement.yml` for evidence-backed ideas and audits, then `.github/ISSUE_TEMPLATE/ai-work-lane.yml` only after a bounded implementation lane is accepted. One owner per hot file. Branch + PR. Do not stack a second rewrite of `drills.html` or `js/half-drill.js` on another agent's active work.
 
-Every agent message must name the agent, message type, requested decision state, base commit, branch, claimed files, evidence, authority/privacy impact, tests, rollback, and requested next owner. Use the exact contract in `COUNCIL_BOARD.md`. GrokBot, Antigravity, Codex, Jarvis, and any external model remain advisory unless the owner or Jarvis records `ACCEPTED FOR BUILD` and assigns the write lane.
+Every agent message must name the agent, message type, requested decision state, base commit, branch, claimed files, evidence, authority/privacy impact, tests, rollback, and requested next owner. Use the exact contract in `COUNCIL_BOARD.md`. Grok, GrokBot, Antigravity, Gemini, Codex, Jarvis, and any external model remain advisory unless the owner or Jarvis records `ACCEPTED FOR BUILD` and assigns the write lane.
 
 The current drill authority is only the version in `PROJECT_AUTHORITY.md`: direct snap to the Runner, one Lead back, Corner unblocked, fixed Center angle to the Linebacker's starting landmark, and separate Offense/Defense teaching emphasis. Old handoff, RB1/RB2, Corner-block, duplicate-script, and tiny-token proposals are rejected history—not instructions.
 
@@ -38,12 +43,13 @@ The current drill authority is only the version in `PROJECT_AUTHORITY.md`: direc
 - Codex integrates and verifies repository work when assigned; it does not treat another model's proposal as authority.
 - GrokBot supplies discovery, alternatives, challenges, and independent review unless explicitly assigned the write lane.
 - Antigravity supplies product/visual prototypes and independent UX, code, and security review unless explicitly assigned the write lane.
+- Gemini and other approved systems may research, challenge, prototype, or review, but receive no standing write or release authority.
 - GitHub issues and pull requests are the durable bridge. Private chat, prepared prompts, and local previews are not completed communication or verified review.
 - No bot-to-bot message may contain child data, contact details, credentials, private inventories, private local paths, or other material barred by the privacy rules below.
 
 ## Protected product decisions
 
-- The owner redirected the existing app to Seth's Seahawks on 2026-09-01. Use this repository, Firebase project `coach-ai-assist`, and the single approved integration PR. Do not create a replacement app, repository, Firebase project, or competing product branch.
+- The product is Coaching AI: a reusable coaching workspace intended to expand across teams and sports. Seth's Seahawks is the first active pilot and current public content workspace, not a separate app. Use this repository and Firebase project `coach-ai-assist`. Do not create a replacement app, repository, Firebase project, or competing product branch.
 - Former Lions and CFSA branding is retired. The Seahawks players are owner-confirmed as ages 5–6; the exact league, format, roster size, and rules remain unconfirmed. Do not silently treat old Lions/CFSA assumptions as Seahawks authority.
 
 - The current carried-forward playbook source is the 14 binder photos in `/plays` (play-01.jpg … play-14.jpg), not the old six QB-wing keepers. Preserve them as seed content until Seth's Seahawks playbook is confirmed. Recreate each sheet: circles with the letters on that page (`C`, `G`, `T`, `W`, `RB`), squares for defense, red dashed ball path, solid black arrows for blocks/leads.
