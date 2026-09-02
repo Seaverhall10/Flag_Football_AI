@@ -1,0 +1,147 @@
+name: AI audit or enhancement ticket
+description: Submit one evidence-backed audit, bug, research gap, or enhancement proposal for owner review.
+title: "[AI ticket] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This ticket proposes work; it does not authorize implementation. Use public, sanitized evidence only. The owner or Jarvis must record `ACCEPTED FOR BUILD`, one writer, exact files, tests, and rollback before code changes.
+  - type: dropdown
+    id: submitted_by
+    attributes:
+      label: Submitted by
+      options:
+        - Owner or human
+        - Jarvis
+        - Codex
+        - Grok or GrokBot
+        - Antigravity
+        - Gemini
+        - Claude
+        - Other approved reviewer
+    validations:
+      required: true
+  - type: dropdown
+    id: ticket_type
+    attributes:
+      label: Ticket type
+      options:
+        - Product enhancement
+        - UI or accessibility audit
+        - Bug or regression
+        - Security or privacy review
+        - Research or truth-quality review
+        - Football or safety question requiring owner evidence
+        - Release verification
+    validations:
+      required: true
+  - type: dropdown
+    id: requested_state
+    attributes:
+      label: Requested decision state
+      options:
+        - PROPOSAL
+        - NEEDS OWNER
+        - TEST
+        - ACCEPTED FOR BUILD
+        - REJECTED
+        - VERIFIED
+    validations:
+      required: true
+  - type: input
+    id: base_commit
+    attributes:
+      label: Exact base commit or live release
+      description: Use a 40-character SHA, exact public URL, or both.
+    validations:
+      required: true
+  - type: textarea
+    id: bottom_line
+    attributes:
+      label: Bottom line
+      description: State the problem and recommendation in plain language.
+    validations:
+      required: true
+  - type: textarea
+    id: user_outcome
+    attributes:
+      label: User outcome
+      description: What should a coach, child, parent, administrator, or future sport user be able to do?
+    validations:
+      required: true
+  - type: textarea
+    id: verified_evidence
+    attributes:
+      label: Verified evidence
+      description: Exact page, route, file and line, screenshot, log, test, primary source, or field observation personally checked.
+    validations:
+      required: true
+  - type: textarea
+    id: interpretation
+    attributes:
+      label: Interpretation or hypothesis
+      description: Reasoning beyond direct evidence. State assumptions and a falsifier.
+    validations:
+      required: true
+  - type: textarea
+    id: contrary_evidence
+    attributes:
+      label: Strongest contrary evidence or alternative
+      description: Give the most serious challenge to the recommendation, or explain why none was found.
+    validations:
+      required: true
+  - type: textarea
+    id: unknowns
+    attributes:
+      label: Unknowns and untested claims
+      description: Missing rules, data, access, device checks, source gaps, or user research.
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_lane
+    attributes:
+      label: Smallest safe implementation lane
+      description: Proposed files and bounded change. Write `advisory-only` when no implementation is requested.
+    validations:
+      required: true
+  - type: textarea
+    id: authority_privacy_cost
+    attributes:
+      label: Authority, privacy, security, and cost impact
+      description: State `none` or identify every owner decision, data flow, permission, paid service, or protected rule affected.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_tests
+    attributes:
+      label: Acceptance tests
+      description: Automated, browser, mobile, accessibility, animation, privacy, security, safety, and field checks needed.
+    validations:
+      required: true
+  - type: input
+    id: rollback
+    attributes:
+      label: Rollback point
+      description: Known-good commit or `not applicable - advisory only`.
+    validations:
+      required: true
+  - type: textarea
+    id: requested_owner_action
+    attributes:
+      label: Requested owner or Jarvis action
+      description: The exact approve, reject, clarify, test, or assign decision requested.
+    validations:
+      required: true
+  - type: checkboxes
+    id: guardrails
+    attributes:
+      label: Submission guardrails
+      options:
+        - label: I separated verified evidence, interpretation, contrary evidence, and unknowns under `AI_TRUTH_AND_EVIDENCE.md`.
+          required: true
+        - label: This ticket contains no child identity, contact detail, credential, medical information, private rotation, or private local path.
+          required: true
+        - label: I understand this ticket does not authorize edits, pushes, merges, deployments, infrastructure, spending, or data sharing.
+          required: true
+        - label: An external AI will draft this ticket in chat and post it only after an explicit owner instruction.
+          required: true
