@@ -15,19 +15,33 @@
   }
 
   GameTracker.prototype.getDefaultRoster = function () {
+    var rawRoster = [];
     if (root.LineupManager) {
-      return root.LineupManager.getRoster(this.teamId);
+      rawRoster = root.LineupManager.getRoster(this.teamId) || [];
     }
-    return [
-      { id: "p1", name: "Player #1", num: "#10", defaultPos: "C" },
-      { id: "p2", name: "Player #2", num: "#2", defaultPos: "G" },
-      { id: "p3", name: "Player #3", num: "#14", defaultPos: "T" },
-      { id: "p4", name: "Player #4", num: "#7", defaultPos: "W" },
-      { id: "p5", name: "Player #5", num: "#9", defaultPos: "RB" },
-      { id: "p6", name: "Player #6", num: "#4", defaultPos: "C" },
-      { id: "p7", name: "Player #7", num: "#11", defaultPos: "G" },
-      { id: "p8", name: "Player #8", num: "#5", defaultPos: "T" }
-    ];
+    if (!rawRoster || rawRoster.length === 0) {
+      rawRoster = [
+        { id: "p1", name: "Player #1", num: "#10", defaultPos: "C" },
+        { id: "p2", name: "Player #2", num: "#2", defaultPos: "G" },
+        { id: "p3", name: "Player #3", num: "#14", defaultPos: "T" },
+        { id: "p4", name: "Player #4", num: "#7", defaultPos: "W" },
+        { id: "p5", name: "Player #5", num: "#9", defaultPos: "RB" },
+        { id: "p6", name: "Player #6", num: "#4", defaultPos: "C" },
+        { id: "p7", name: "Player #7", num: "#11", defaultPos: "G" },
+        { id: "p8", name: "Player #8", num: "#5", defaultPos: "T" }
+      ];
+    }
+    return rawRoster.map(function (p, idx) {
+      var numStr = p.num || (p.number ? ('#' + String(p.number).replace(/^#/, '')) : ('#' + (idx + 1)));
+      var nameStr = p.name || ('Player ' + numStr);
+      return {
+        id: p.id != null ? p.id : ('p' + (idx + 1)),
+        num: numStr,
+        number: numStr.replace(/^#/, ''),
+        name: nameStr,
+        defaultPos: p.defaultPos || p.pos || "FLEX"
+      };
+    });
   };
 
   GameTracker.prototype.loadState = function () {

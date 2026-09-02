@@ -97,30 +97,54 @@
 
       var positionsList = ["C", "G", "T", "W", "RB"];
 
+      function formatNum(p) {
+        if (!p) return "#--";
+        if (p.num) return p.num.startsWith("#") ? p.num : "#" + p.num;
+        if (p.number) return "#" + String(p.number).replace(/^#/, "");
+        return "#" + (p.id || "--");
+      }
+
+      function formatName(p) {
+        if (!p) return "Unassigned";
+        if (p.name && !p.name.includes("undefined")) return p.name;
+        return "Player " + formatNum(p);
+      }
+
+      function matchPlayer(p, id) {
+        if (!p || id == null) return false;
+        return String(p.id) === String(id);
+      }
+
       var fieldCardsHtml = positionsList.map(function (pos) {
         var pId = activeLineup[pos];
-        var player = roster.find(function (p) { return p.id === pId; }) || { name: "Unassigned", num: "#--" };
-        var pStats = state.playerStats[pId] || { totalPlays: 0, quota: state.quotaTarget };
+        var player = roster.find(function (p) { return matchPlayer(p, pId); }) || { name: "Unassigned", num: "#--" };
+        var playerNum = formatNum(player);
+        var playerName = formatName(player);
+        var pStats = (pId && state.playerStats[pId]) || { totalPlays: 0, quota: state.quotaTarget };
         var quotaPct = Math.min(100, Math.round((pStats.totalPlays / pStats.quota) * 100));
         var badgeColor = pStats.totalPlays >= pStats.quota ? "#4ade80" : (pStats.totalPlays >= pStats.quota * 0.5 ? "#facc15" : "#f87171");
 
         return `
           <div class="game-pos-card" data-pos="${pos}" style="background:var(--navy-light);border:2px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px;cursor:pointer;flex:1;min-width:110px;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,0.3);">
             <div style="font-size:0.75rem;font-weight:800;color:var(--gold);text-transform:uppercase;">${pos}</div>
-            <div style="font-size:1.15rem;font-weight:800;color:#fff;margin:4px 0 2px;">${player.num}</div>
-            <div style="font-size:0.85rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${player.name}</div>
+            <div style="font-size:1.15rem;font-weight:800;color:#fff;margin:4px 0 2px;">${playerNum}</div>
+            <div style="font-size:0.85rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${playerName}</div>
             <div style="margin-top:6px;font-size:0.75rem;font-weight:800;color:${badgeColor};">${pStats.totalPlays}/${pStats.quota} reps</div>
           </div>
         `;
       }).join("");
 
-      var nextRotationHtml = roster.filter(function (p) { return activeIds.indexOf(p.id) === -1; }).map(function (p) {
+      var nextRotationHtml = roster.filter(function (p) {
+        return !activeIds.some(function (aid) { return matchPlayer(p, aid); });
+      }).map(function (p) {
         var pStats = state.playerStats[p.id] || { totalPlays: 0, quota: state.quotaTarget };
         var badge = pStats.totalPlays >= pStats.quota ? "🟢" : (pStats.totalPlays >= pStats.quota * 0.5 ? "🟡" : "🔴");
+        var playerNum = formatNum(p);
+        var playerName = formatName(p);
         return `
           <button type="button" class="btn-next-rotation-player" data-player-id="${p.id}" style="background:rgba(255,255,255,0.06);border:1px solid var(--line-strong);border-radius:8px;padding:8px 12px;color:#fff;font-size:0.85rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
             <span>${badge}</span>
-            <strong>${p.num} ${p.name}</strong>
+            <strong>${playerNum} ${playerName}</strong>
             <span style="color:var(--muted);font-size:0.75rem;">(${pStats.totalPlays} reps)</span>
           </button>
         `;
@@ -131,10 +155,12 @@
         var pct = Math.min(100, Math.round((pStats.totalPlays / pStats.quota) * 100));
         var barColor = pct >= 100 ? "#4ade80" : (pct >= 50 ? "#facc15" : "#f87171");
         var statusLabel = pct >= 100 ? "✓ Quota Met" : `Needs ${pStats.quota - pStats.totalPlays} more`;
+        var playerNum = formatNum(p);
+        var playerName = formatName(p);
 
         return `
           <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:0.85rem;">
-            <div style="width:140px;font-weight:700;color:#fff;">${p.num} ${p.name}</div>
+            <div style="width:140px;font-weight:700;color:#fff;">${playerNum} ${playerName}</div>
             <div style="flex:1;background:rgba(255,255,255,0.1);border-radius:6px;height:12px;overflow:hidden;">
               <div style="background:${barColor};width:${pct}%;height:100%;transition:width 0.3s ease;"></div>
             </div>
@@ -343,7 +369,11 @@
         card.addEventListener("click", function () {
           var pos = card.getAttribute("data-pos");
           var roster = self.gameTracker.getDefaultRoster();
-          var pNames = roster.map(function (p, idx) { return (idx + 1) + ". " + p.num + " " + p.name; }).join("\n");
+          var pNames = roster.map(function (p, idx) {
+            var numStr = p.num || (p.number ? ('#' + String(p.number).replace(/^#/, '')) : ('#' + (idx + 1)));
+            var nameStr = p.name || ('Player ' + numStr);
+            return (idx + 1) + ". " + numStr + " " + nameStr;
+          }).join("\n");
           var choice = prompt("Sub into " + pos + " (Enter player # 1-" + roster.length + "):\n" + pNames);
           var idx = parseInt(choice, 10) - 1;
           if (roster[idx]) {
