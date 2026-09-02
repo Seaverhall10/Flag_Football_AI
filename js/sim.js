@@ -520,15 +520,23 @@
     defs.innerHTML =
       '<marker id="ballArrow" markerUnits="userSpaceOnUse" viewBox="0 0 14 14" refX="11.5" refY="7" markerWidth="14" markerHeight="14" orient="auto"><path d="M1,1 L12,7 L1,13 z" fill="#dc2626"/></marker>' +
       '<marker id="blockArrow" markerUnits="userSpaceOnUse" viewBox="0 0 14 14" refX="11.5" refY="7" markerWidth="14" markerHeight="14" orient="auto"><path d="M1,1 L12,7 L1,13 z" fill="#e7eef7"/></marker>' +
-      '<radialGradient id="fieldGlow" cx="50%" cy="40%" r="90%"><stop offset="0%" stop-color="#14532d"/><stop offset="100%" stop-color="#0b3522"/></radialGradient>';
+      '<radialGradient id="fieldGlow" cx="50%" cy="40%" r="90%"><stop offset="0%" stop-color="#155832"/><stop offset="100%" stop-color="#0a2e1d"/></radialGradient>' +
+      '<filter id="ballGlow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#f6c344" flood-opacity="0.6"/></filter>';
     svg.appendChild(defs);
     svg.appendChild(el("rect", { x: "-400", y: "-800", width: "1800", height: "2800", fill: "url(#fieldGlow)" }));
     var y;
     for (y = -700; y <= 1800; y += 100) {
-      svg.appendChild(el("line", { x1: "20", y1: String(y), x2: String(W - 20), y2: String(y), stroke: "rgba(255,255,255,.12)", "stroke-width": "2" }));
+      svg.appendChild(el("line", { x1: "20", y1: String(y), x2: String(W - 20), y2: String(y), stroke: "rgba(255,255,255,.14)", "stroke-width": "2" }));
+      // Inset hash marks at x=360 and x=640
+      svg.appendChild(el("line", { x1: "360", y1: String(y - 8), x2: "360", y2: String(y + 8), stroke: "rgba(255,255,255,.28)", "stroke-width": "2" }));
+      svg.appendChild(el("line", { x1: "640", y1: String(y - 8), x2: "640", y2: String(y + 8), stroke: "rgba(255,255,255,.28)", "stroke-width": "2" }));
     }
-    svg.appendChild(el("line", { x1: "26", y1: String(LOS), x2: String(W - 26), y2: String(LOS), stroke: "#f6c344", "stroke-width": "3" }));
-    var los = el("text", { x: "38", y: String(LOS - 10), fill: "#f6c344", "font-size": "11", "font-weight": "800" });
+    // Sideline boundaries
+    svg.appendChild(el("line", { x1: "20", y1: "-700", x2: "20", y2: "1800", stroke: "rgba(255,255,255,.32)", "stroke-width": "3" }));
+    svg.appendChild(el("line", { x1: String(W - 20), y1: "-700", x2: String(W - 20), y2: "1800", stroke: "rgba(255,255,255,.32)", "stroke-width": "3" }));
+    // Line of Scrimmage
+    svg.appendChild(el("line", { x1: "20", y1: String(LOS), x2: String(W - 20), y2: String(LOS), stroke: "#f6c344", "stroke-width": "3.5" }));
+    var los = el("text", { x: "32", y: String(LOS - 8), fill: "#f6c344", "font-size": "12", "font-weight": "900", "letter-spacing": "0.06em" });
     los.textContent = "LOS";
     svg.appendChild(los);
     blockLayer = el("g", { class: "sim-block-routes" });
@@ -538,7 +546,7 @@
     svg.appendChild(routeLayer);
     svg.appendChild(iconLayer);
     ball = el("g", { class: "sim-ball", "data-possession": "in-flight" });
-    ball.appendChild(el("ellipse", { rx: "14", ry: "9", fill: "#7c3f20", stroke: "#fff7df", "stroke-width": "3" }));
+    ball.appendChild(el("ellipse", { rx: "14", ry: "9", fill: "#7c3f20", stroke: "#fff7df", "stroke-width": "2.8", filter: "url(#ballGlow)" }));
     ball.appendChild(el("line", { x1: "-5", y1: "0", x2: "5", y2: "0", stroke: "#fff7df", "stroke-width": "1.8" }));
     svg.appendChild(ball);
     return svg;
