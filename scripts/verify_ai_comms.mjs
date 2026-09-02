@@ -22,6 +22,7 @@ const requiredFiles = [
   "AI_CHANGE_PROTOCOL.md",
   "AI_TRUTH_AND_EVIDENCE.md",
   "COUNCIL_DECISIONS.md",
+  ".grok/config.toml",
   ".github/ISSUE_TEMPLATE/ai-audit-enhancement.yml",
   ".github/ISSUE_TEMPLATE/ai-work-lane.yml",
   ".github/pull_request_template.md"
@@ -36,6 +37,7 @@ const board = read("COUNCIL_BOARD.md");
 const protocol = read("AI_CHANGE_PROTOCOL.md");
 const truthStandard = read("AI_TRUTH_AND_EVIDENCE.md");
 const decisions = read("COUNCIL_DECISIONS.md");
+const grokConfig = read(".grok/config.toml");
 const auditTemplate = read(".github/ISSUE_TEMPLATE/ai-audit-enhancement.yml");
 const issueTemplate = read(".github/ISSUE_TEMPLATE/ai-work-lane.yml");
 const prTemplate = read(".github/pull_request_template.md");
@@ -83,6 +85,10 @@ for (const label of ["VERIFIED", "SUPPORTED", "DISPUTED", "HYPOTHESIS", "INTERPR
 check("truth standard does not auto-dismiss conspiracy claims", /Do not dismiss a claim because it is socially stigmatized/i.test(truthStandard));
 check("truth standard requires contrary evidence", /Contrary evidence/i.test(truthStandard) && /contrary_evidence/.test(auditTemplate));
 check("Coaching AI remains separate from Hallelujah AI", /independent from Hallelujah AI/i.test(agents) && /does not govern, import, connect to, or share runtime data with Hallelujah AI/i.test(truthStandard));
+check("Grok Build can inspect and run governed checks", /action = "allow"[^\n]*tool = "read"/i.test(grokConfig) && /node scripts\/verify_\*\.mjs/i.test(grokConfig));
+for (const blocked of ["git push", "git merge", "git reset", "gh pr merge", "firebase deploy", "Remove-Item"]) {
+  check(`Grok Build denies ${blocked}`, grokConfig.includes(`action = "deny", tool = "bash", pattern = "${blocked}`));
+}
 check("external AI drafts before posting", /drafts?[^\n]*posts? only after explicit owner instruction/i.test(joined));
 check("ticket remains non-authorizing", /does not authorize implementation/i.test(auditTemplate));
 

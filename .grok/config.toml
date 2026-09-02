@@ -1,0 +1,27 @@
+# Grok Build runs inside this canonical repository. These rules grant routine
+# inspection and verification only. Local edits, commits, GitHub writes, and
+# other commands still require the normal interactive approval flow.
+
+[permission]
+rules = [
+  { action = "allow", tool = "read" },
+  { action = "allow", tool = "grep" },
+  { action = "allow", tool = "bash", pattern = "git status*" },
+  { action = "allow", tool = "bash", pattern = "git diff*" },
+  { action = "allow", tool = "bash", pattern = "git log*" },
+  { action = "allow", tool = "bash", pattern = "git rev-parse*" },
+  { action = "allow", tool = "bash", pattern = "git branch --show-current*" },
+  { action = "allow", tool = "bash", pattern = "node scripts/verify_*.mjs" },
+
+  { action = "deny", tool = "bash", pattern = "git push*" },
+  { action = "deny", tool = "bash", pattern = "git merge*" },
+  { action = "deny", tool = "bash", pattern = "git rebase*" },
+  { action = "deny", tool = "bash", pattern = "git reset*" },
+  { action = "deny", tool = "bash", pattern = "git clean*" },
+  { action = "deny", tool = "bash", pattern = "gh pr merge*" },
+  { action = "deny", tool = "bash", pattern = "firebase deploy*" },
+  { action = "deny", tool = "bash", pattern = "npx firebase*deploy*" },
+  { action = "deny", tool = "bash", pattern = "rm *" },
+  { action = "deny", tool = "bash", pattern = "rmdir *" },
+  { action = "deny", tool = "bash", pattern = "Remove-Item *" },
+]
