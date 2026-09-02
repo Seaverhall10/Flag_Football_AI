@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return `<a href="${item.href}"${active}>${item.label}</a>`;
   }).join("");
 
-  const activeTeam = (window.TeamManager && window.TeamManager.getActiveTeam()) || { shortName: "SEAHAWKS", division: "Youth Flag Football", name: "Seahawks" };
+  const activeTeam = (window.TeamManager && window.TeamManager.getActiveTeam()) || { shortName: "Seahawks", division: "Ages 5–6 Flag Football", name: "Seahawks" };
 
   const introEyebrow = document.querySelector(".home-intro .eyebrow");
   if (introEyebrow && activeTeam && activeTeam.name) {
@@ -42,8 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (mast) {
     mast.innerHTML = `
       <div class="mast-inner">
-        <a href="index.html" class="brand-group" aria-label="${activeTeam.name} home">
-          <div class="brand-text"><h1>${activeTeam.shortName.toUpperCase()}</h1><p>${activeTeam.division || 'Practice tools'}</p></div>
+        <a href="index.html" class="brand-group" aria-label="${activeTeam.name} - Coaching AI">
+          <div class="brand-text">
+            <span class="brand-kicker">COACHING AI</span>
+            <h1>${activeTeam.shortName.toUpperCase()}</h1>
+            <p>${activeTeam.division || 'Ages 5–6 Flag Football'}</p>
+          </div>
         </a>
         <nav class="nav" aria-label="Primary navigation">${linkMarkup}</nav>
       </div>`;
