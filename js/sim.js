@@ -1,5 +1,5 @@
 /**
- * Lions K/1 slow-motion teacher — data-driven from js/plays-data.js.
+ * Seahawks slow-motion teacher — data-driven from js/plays-data.js.
  * Recreates the 14 coach-sheet diagrams. No QB-wing keeper model.
  */
 (function () {
@@ -23,14 +23,16 @@
   var svg, ball, routeLayer, blockLayer, iconLayer, cueEl, beatEl, beatsEl, slider, playButton, photoEl;
 
   function isCustomTeam() {
-    return Boolean(window.TeamManager && window.TeamManager.getActiveTeamId() !== "lions-k1-flag");
+    if (!window.TeamManager) return false;
+    var teamId = window.TeamManager.getActiveTeamId();
+    return teamId !== "seahawks-youth-flag" && teamId !== "lions-k1-flag";
   }
 
   function plays() {
     if (isCustomTeam() && window.CustomPlaybook) {
       return window.CustomPlaybook.getTeamPlays();
     }
-    return window.LIONS_PLAYS || [];
+    return window.SEAHAWKS_PLAYS || window.COACH_PLAYS || window.LIONS_PLAYS || [];
   }
 
   function playMap() {
@@ -42,7 +44,8 @@
 
   function currentPlay() {
     var pList = plays();
-    return playMap()[state.runKey] || pList[0] || (window.LIONS_PLAYS && window.LIONS_PLAYS[0]);
+    var seed = window.SEAHAWKS_PLAYS || window.COACH_PLAYS || window.LIONS_PLAYS || [];
+    return playMap()[state.runKey] || pList[0] || seed[0];
   }
   function el(name, attrs) {
     var node = document.createElementNS(NS, name);
@@ -690,7 +693,7 @@
   }
 
   function renderQuickLineupBar() {
-    var container = document.getElementById("squad-starters-list");
+    var container = document.getElementById("squad-rotation-list");
     if (!container || !window.LineupManager) return;
     var positions = window.LineupManager.DEFAULT_POSITIONS_8V8;
     var lineup = window.LineupManager.getLineup();
@@ -698,7 +701,7 @@
     container.innerHTML = positions.map(function (pos) {
       var assigned = lineup[pos.id];
       var numName = assigned ? ("#" + assigned.number + " " + assigned.name.split(" ")[0]) : "--";
-      return '<button type="button" class="starter-chip" data-pos-id="' + pos.id + '" aria-label="Assign ' + pos.name + '">' +
+      return '<button type="button" class="rotation-chip" data-pos-id="' + pos.id + '" aria-label="Assign ' + pos.name + '">' +
         '<span class="pos-tag">' + pos.letter + ':</span>' +
         '<span class="player-tag">' + numName + '</span>' +
         '</button>';
@@ -811,7 +814,7 @@
       if (i >= count) {
         try {
           var bytes = api.encodeGif(frames, width, height, 9);
-          api.downloadBytes(bytes, "Lions-" + gifSlug(play.name) + "-" + gifSlug(play.call) + ".gif");
+          api.downloadBytes(bytes, "Seahawks-" + gifSlug(play.name) + "-" + gifSlug(play.call) + ".gif");
           finish(true);
         } catch (err) {
           finish(false);
@@ -850,7 +853,7 @@
     if (!pList.length) {
       grid.innerHTML = '<div style="display:flex;align-items:center;gap:12px;padding:8px">' +
         '<span style="font-size:0.85rem;color:var(--muted)">No custom plays loaded.</span>' +
-        '<button type="button" class="btn btn-secondary btn-sm" id="btn-restore-generic">Load 6 Starter Plays</button>' +
+        '<button type="button" class="btn btn-secondary btn-sm" id="btn-restore-generic">Load 6 Example Plays</button>' +
         '</div>';
       var restoreBtn = document.getElementById("btn-restore-generic");
       if (restoreBtn) {
@@ -875,7 +878,7 @@
     }).join("") +
     '<div class="custom-play-actions" style="display:flex;align-items:center;gap:6px;margin-left:auto">' +
     '<button type="button" class="btn-squad" id="btn-clear-plays" title="Clear example plays to build your own">🗑 Clear</button>' +
-    '<button type="button" class="btn-squad" id="btn-reset-plays" title="Reset to 6 starter plays">🔄 Starters</button>' +
+    '<button type="button" class="btn-squad" id="btn-reset-plays" title="Reset to 6 example plays">🔄 Examples</button>' +
     '</div>';
 
     grid.querySelectorAll(".play-btn[data-run-key]").forEach(function (button) {

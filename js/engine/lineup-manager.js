@@ -19,7 +19,7 @@
   ];
 
   function getStorageKey() {
-    var teamId = (root.TeamManager && root.TeamManager.getActiveTeamId()) || "lions-k1-flag";
+    var teamId = (root.TeamManager && root.TeamManager.getActiveTeamId()) || "seahawks-youth-flag";
     return LINEUP_STORAGE_KEY_PREFIX + teamId;
   }
 

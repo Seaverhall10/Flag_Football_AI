@@ -1,20 +1,20 @@
-/* Cy-Fair K/1 Lions — phone-first sideline tool */
+/* Seahawks Coach — phone-first sideline tool */
 
 :root {
   --ink: #f4f6f8;
   --ink-soft: #c5ccd6;
   --muted: #8b95a5;
-  --paper: #071018;
-  --panel: #122036;
-  --line: #24344c;
-  --line-strong: #3a4d68;
-  --navy: #0A1628;
-  --navy-light: #15263c;
-  --navy-accent: #D4A017;
-  --gold: #D4A017;
-  --gold-bright: #e8b423;
-  --gold-bg: #2a2208;
-  --gold-text: #f5d47a;
+  --paper: #00111f;
+  --panel: #08283d;
+  --line: #1e465e;
+  --line-strong: #3c6277;
+  --navy: #001a2d;
+  --navy-light: #0b2d42;
+  --navy-accent: #69be28;
+  --gold: #69be28;
+  --gold-bright: #8eea4c;
+  --gold-bg: #17320b;
+  --gold-text: #c8f7aa;
   --turf: #0d2a18;
   --red: #d32f2f;
   --red-bg: #2a1214;
@@ -2454,14 +2454,14 @@ body.playbook-page .proof-photo-pane img {
   background: #2f6fe0;
   color: #fff;
 }
-.squad-starters-scroll {
+.squad-rotation-scroll {
   display: flex;
   gap: 6px;
   overflow-x: auto;
   padding-bottom: 4px;
   -webkit-overflow-scrolling: touch;
 }
-.starter-chip {
+.rotation-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -2475,16 +2475,78 @@ body.playbook-page .proof-photo-pane img {
   touch-action: manipulation;
   transition: border-color 0.15s ease;
 }
-.starter-chip:hover {
+.rotation-chip:hover {
   border-color: var(--gold);
 }
-.starter-chip .pos-tag {
+.rotation-chip .pos-tag {
   font-weight: 800;
   color: var(--gold);
 }
-.starter-chip .player-tag {
+.rotation-chip .player-tag {
   font-weight: 600;
   color: #fff;
+}
+
+.rotation-table-wrap {
+  overflow-x: auto;
+}
+
+.rotation-select {
+  min-height: 44px;
+  min-width: 112px;
+}
+
+@media (max-width: 720px) {
+  .rotation-table-wrap {
+    overflow: visible;
+  }
+  .rotation-table thead {
+    display: none;
+  }
+  .rotation-table,
+  .rotation-table tbody,
+  .rotation-table tr,
+  .rotation-table td {
+    display: block;
+    width: 100%;
+  }
+  .rotation-table tbody {
+    display: grid;
+    gap: 12px;
+  }
+  .rotation-table tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.035);
+  }
+  .rotation-table tbody td {
+    border: 0;
+    padding: 0;
+  }
+  .rotation-table tbody td:first-child {
+    grid-column: 1 / -1;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .rotation-table tbody td[data-quarter]::before {
+    content: attr(data-quarter);
+    display: block;
+    margin-bottom: 5px;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .rotation-table .rotation-select {
+    width: 100%;
+    min-width: 0;
+    font-size: 0.86rem;
+  }
 }
 
 /* Playbook motion pass: keep the field primary and the teaching marks quiet. */

@@ -1,14 +1,9 @@
-const MAPS_URL = "https://maps.google.com/?q=Cy-Fair+Sports+Association+Cypress+TX";
+const MAPS_URL = "https://maps.google.com/?q=youth+flag+football+field";
 const SCHEDULE_KEY = "lions_season_schedule";
 
-const DEFAULT_SCHEDULE = [
-  { type: "Practice", date: "Week 1 - Tue", time: "5:30 PM - 6:30 PM", loc: "CFSA Complex Field #2", notes: "Arrival & 5v4 intro" },
-  { type: "Practice", date: "Week 1 - Thu", time: "5:30 PM - 6:30 PM", loc: "CFSA Complex Field #2", notes: "6-run cycle" },
-  { type: "Game", date: "Week 1 - Sat", time: "9:00 AM", loc: "CFSA Main Complex Field #1", notes: "Arrive 8:40 AM", jersey: "Home Navy" },
-  { type: "Practice", date: "Week 2 - Tue", time: "5:30 PM - 6:30 PM", loc: "CFSA Complex Field #2", notes: "Snap station" },
-  { type: "Practice", date: "Week 2 - Thu", time: "5:30 PM - 6:30 PM", loc: "CFSA Complex Field #2", notes: "Tracker session" },
-  { type: "Game", date: "Week 2 - Sat", time: "10:15 AM", loc: "CFSA Main Complex Field #3", notes: "Gold Star / Green Triangle", jersey: "Home Navy" }
-];
+// The Seahawks league and season schedule have not been supplied. Never ship
+// another team's dates or locations as if they belong to this team.
+const DEFAULT_SCHEDULE = [];
 
 function loadSchedule() {
   const saved = localStorage.getItem(SCHEDULE_KEY);
@@ -51,20 +46,20 @@ function downloadIcs(idx) {
   if (!evt) return;
   const start = parseEventStart(evt);
   const end = new Date(start.getTime() + 60 * 60 * 1000);
-  const uid = "lions-" + idx + "-" + Date.now() + "@cyfair-k1-lions";
-  const loc = (evt.loc || "Cy-Fair Sports Association Cypress TX").replace(/\n/g, " ");
+  const uid = "seahawks-" + idx + "-" + Date.now() + "@coach-ai-assist";
+  const loc = (evt.loc || "Youth flag football field").replace(/\n/g, " ");
   const desc = (evt.notes || "").replace(/\n/g, " ");
   const ics = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Cy-Fair K/1 Lions//Schedule//EN",
+    "PRODID:-//Seahawks Coach//Schedule//EN",
     "CALSCALE:GREGORIAN",
     "BEGIN:VEVENT",
     "UID:" + uid,
     "DTSTAMP:" + icsStamp(new Date()),
     "DTSTART:" + icsStamp(start),
     "DTEND:" + icsStamp(end),
-    "SUMMARY:Cy-Fair K/1 Lions",
+    "SUMMARY:Seahawks " + (evt.type || "Team Event"),
     "LOCATION:" + loc,
     "DESCRIPTION:" + (evt.type || "Event") + " " + desc,
     "END:VEVENT",
@@ -73,7 +68,7 @@ function downloadIcs(idx) {
   const blob = new Blob([ics], { type: "text/calendar" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "cy-fair-k1-lions.ics";
+  a.download = "seahawks-team-event.ics";
   a.click();
   URL.revokeObjectURL(a.href);
 }

@@ -59,6 +59,51 @@ const appShell = read("js/app.js");
 const home = read("index.html");
 const notes = read("notes.html");
 const rosterPage = read("roster.html");
+const teamManager = read("js/engine/team-manager.js");
+const gate = read("js/gate.js");
+const firebaseAuth = read("js/engine/firebase-auth.js");
+const inviteManager = read("js/engine/invite-manager.js");
+const invitePage = read("invite.html");
+const emailService = read("js/engine/email-service.js");
+const schedule = read("js/schedule.js");
+
+const primaryPublicPages = [
+  "index.html", "playbook.html", "drills.html", "app.html", "notes.html",
+  "roster.html", "parent.html", "runner.html", "runner-guide.html",
+  "flashcards.html", "sideline.html", "wristbands.html", "tracker.html",
+  "schedule.html", "invite.html"
+];
+pass("public pages use Seahawks identity",
+  primaryPublicPages.every((file) => /Seahawks/i.test(read(file))),
+  primaryPublicPages.filter((file) => !/Seahawks/i.test(read(file))).join(", "));
+pass("former Lions and CFSA branding is absent from public pages",
+  primaryPublicPages.every((file) => !/Cy-Fair|CFSA|K\/1 Lions|Lions Coach/i.test(read(file))),
+  primaryPublicPages.filter((file) => /Cy-Fair|CFSA|K\/1 Lions|Lions Coach/i.test(read(file))).join(", "));
+pass("Seahawks is the default team",
+  /DEFAULT_TEAM_ID\s*=\s*["']seahawks-youth-flag["']/.test(teamManager) &&
+  /name:\s*["']Seahawks["']/.test(teamManager));
+pass("legacy team metadata migrates without deleting browser data",
+  /LEGACY_TEAM_ID\s*=\s*["']lions-k1-flag["']/.test(teamManager) &&
+  /migrateFormerDefault/.test(teamManager) &&
+  !/removeItem\(/.test(teamManager));
+pass("public gate is an honest demo, not a shared password",
+  /Public demo/i.test(gate) && /Open demo/i.test(gate) &&
+  !/TEAM_PASS|type=["']password["']|URLSearchParams|[?&]join=/i.test(gate));
+pass("Firebase auth has no simulated account fallback or personal-email prompt",
+  /Secure sign-in setup is pending Firebase owner access/i.test(firebaseAuth) &&
+  !/prompt\s*\(|provider:\s*["'](?:demo|local|simulated)["']|setRole\s*\(|sethharrison|seaverhall@gmail/i.test(firebaseAuth));
+pass("secure invitations stay disabled until backend enforcement exists",
+  /Secure team invitations are not available yet/i.test(inviteManager) &&
+  /disabled/i.test(invitePage) &&
+  !/URLSearchParams|location\.search/.test(inviteManager));
+pass("invite email service performs no external data transfer",
+  /not available yet/i.test(emailService) &&
+  !/formsubmit|fetch\s*\(|XMLHttpRequest|navigator\.sendBeacon/i.test(emailService));
+pass("public source contains no seeded personal email address",
+  !/sethharrison|seaverhall@gmail/i.test([...primaryPublicPages.map(read), firebaseAuth, inviteManager, emailService].join("\n")));
+pass("schedule ships empty until Seahawks details are confirmed",
+  /const DEFAULT_SCHEDULE\s*=\s*\[\s*\]/.test(schedule) &&
+  !/Cy-Fair|CFSA/i.test(schedule));
 
 pass("shared mobile shell has four primary destinations",
   ["index.html", "playbook.html", "drills.html", "app.html"].every((href) => appShell.includes(`href: "${href}"`)) &&
@@ -74,6 +119,18 @@ pass("playbook coach controls are secondary", /<details\s+class=["'][^"']*playbo
 pass("notes does not duplicate the sideline play caller", !/class=["'][^"']*play-btn/i.test(notes) && !/id=["']call["']/.test(notes));
 pass("notes separates secondary tools", (notes.match(/<details\s+class=["'][^"']*coach-more/g) || []).length === 3);
 pass("roster views collapse independently on phones", (rosterPage.match(/<details\s+class=["'][^"']*mobile-collapse/g) || []).length === 3 && /querySelectorAll\(["']\.mobile-collapse["']\)/.test(appShell));
+pass("roster is a secondary Coach tool, not primary navigation",
+  [...html.entries()].every(([file, source]) => file === "app.html" || !/href=["']roster\.html["']/i.test(source)) &&
+  /More coach tools[\s\S]*href=["']roster\.html["']/i.test(read("app.html")));
+pass("game rotation UI has no starter ranking labels",
+  !/\bstarter(?:s)?\b|second string|2nd string|first string/i.test(`${rosterPage}\n${read("app.html")}\n${playbook}\n${sim}`));
+pass("rotation planner uses child-positive Next Rotation language",
+  /Next Rotation/.test(rosterPage) && /Next Rotation/.test(roster) && !/>\s*Bench(?:\s|<)/i.test(`${rosterPage}\n${roster}`));
+pass("rotation planner states local-only privacy and save behavior",
+  /Coach-only and local to this device/i.test(rosterPage) &&
+  /Saved automatically on this device/i.test(rosterPage) &&
+  /localStorage\.setItem/.test(roster));
+pass("owner-confirmed Seahawks age is recorded", /5[–-]6-year-old players/i.test(authority));
 
 const runKeys = [...playbook.matchAll(/data-run-key=["']([^"']+)["']/g)].map((match) => match[1]);
 const expectedKeys = Array.from({ length: 14 }, (_, i) => `play-${String(i + 1).padStart(2, "0")}`);
@@ -129,7 +186,7 @@ for (const id of ["C", "G", "T", "RUN", "LEAD", "DL", "LB", "CB", "FLEX"]) {
 for (const id of ["half-drill-root", "half-play", "half-back", "half-next", "half-reset", "half-slider", "half-offense-jobs", "half-defense-jobs"]) {
   pass(`single drill control #${id}`, new RegExp(`id=["']${id}["']`).test(drills));
 }
-pass("authority locks one half-team drill", /The public teaching app has one drill: half offense versus half defense/i.test(authority));
+pass("authority preserves one carried-forward half-team drill", /one carried-forward drill: half offense versus half defense/i.test(authority));
 pass("drill keeps Corner unblocked", /CB:\s*`Unblocked contain/i.test(halfDrill) && !/target:\s*["']CB["']/.test(halfDrill));
 pass("drill sends Center directly to Linebacker", /C:\s*\{\s*target:\s*["']LB["']/i.test(halfDrill));
 pass("two-DL Lead escorts lane and two-LB Lead blocks outside LB", /LEAD:\s*\{\s*target:\s*["']LANE["']/i.test(halfDrill) && /LEAD:\s*\{\s*target:\s*["']FLEX["']/i.test(halfDrill));

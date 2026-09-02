@@ -1,17 +1,18 @@
 /**
  * Custom Playbook Manager
- * Supports isolated custom playbooks per team, generic starter plays for new teams, and full Lions playbook preservation.
+ * Supports isolated custom playbooks per team, generic starter plays for new
+ * teams, and preservation of the current Seahawks seed play library.
  */
 (function (root) {
   "use strict";
 
   function getActiveTeamId() {
-    return (root.TeamManager && root.TeamManager.getActiveTeamId()) || "lions-k1-flag";
+    return (root.TeamManager && root.TeamManager.getActiveTeamId()) || "seahawks-youth-flag";
   }
 
   function getTeamStorageKey(teamId) {
     teamId = teamId || getActiveTeamId();
-    if (teamId === "lions-k1-flag") {
+    if (teamId === "seahawks-youth-flag" || teamId === "lions-k1-flag") {
       return "lions_custom_plays";
     }
     return "team_" + teamId + "_custom_plays";
@@ -19,9 +20,10 @@
 
   function getTeamPlays(teamId) {
     teamId = teamId || getActiveTeamId();
-    // Lions K/1 team always loads the governed 14-play authority
-    if (teamId === "lions-k1-flag") {
-      return root.LIONS_PLAYS || [];
+    // The primary Seahawks workspace carries forward the 14 owner-provided
+    // sheets until its replacement playbook is explicitly approved.
+    if (teamId === "seahawks-youth-flag" || teamId === "lions-k1-flag") {
+      return root.SEAHAWKS_PLAYS || root.COACH_PLAYS || root.LIONS_PLAYS || [];
     }
 
     var key = getTeamStorageKey(teamId);
@@ -42,7 +44,7 @@
 
   function saveTeamPlays(teamId, plays) {
     teamId = teamId || getActiveTeamId();
-    if (teamId === "lions-k1-flag") return; // Keep Lions locked
+    if (teamId === "seahawks-youth-flag" || teamId === "lions-k1-flag") return;
     var key = getTeamStorageKey(teamId);
     localStorage.setItem(key, JSON.stringify(plays));
     if (typeof window !== "undefined") {

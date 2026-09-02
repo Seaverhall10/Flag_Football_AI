@@ -1,5 +1,5 @@
 /**
- * Cy-Fair K/1 Lions — Core Application Utilities
+ * Seahawks Coach — Core Application Utilities
  * Features: 1-Tap GPS Field navigation, .ics Calendar generator, JSON Team Data Backup/Restore, checklist sync.
  */
 
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return `<a href="${item.href}"${active}>${item.label}</a>`;
   }).join("");
 
-  const activeTeam = (window.TeamManager && window.TeamManager.getActiveTeam()) || { shortName: "LIONS", division: "Practice tools", name: "Cy-Fair K/1 Lions" };
+  const activeTeam = (window.TeamManager && window.TeamManager.getActiveTeam()) || { shortName: "SEAHAWKS", division: "Youth Flag Football", name: "Seahawks" };
 
   const introEyebrow = document.querySelector(".home-intro .eyebrow");
   if (introEyebrow && activeTeam && activeTeam.name) {
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </label>
             <label class="tiny">Sport
               <select id="new-team-sport" style="width:100%;padding:8px;border:1px solid var(--line-strong);border-radius:6px;background:var(--navy-light);color:#fff">
-                <option value="flag-football-8v8">Flag Football (8v8 CFSA)</option>
+                <option value="flag-football-8v8">Flag Football (8v8)</option>
                 <option value="flag-football-5v5">Flag Football (5v5 NFL Flag)</option>
                 <option value="soccer-7v7">Soccer (7v7 U9/U10)</option>
                 <option value="soccer-4v4">Soccer (4v4 U6/U8)</option>
@@ -233,19 +233,19 @@ document.addEventListener("DOMContentLoaded", () => {
  * 1-Click Calendar (.ics) Generator for Events
  */
 function downloadIcsCalendar(eventTitle, eventDate, eventTime, location, description) {
-  const cleanTitle = encodeURIComponent(eventTitle || "Cy-Fair Lions Flag Football");
-  const cleanLoc = encodeURIComponent(location || "CFSA Complex");
-  const cleanDesc = encodeURIComponent(description || "Cy-Fair K/1 Lions Flag Football 8-on-8");
+  const cleanTitle = encodeURIComponent(eventTitle || "Seahawks Flag Football");
+  const cleanLoc = encodeURIComponent(location || "Practice field");
+  const cleanDesc = encodeURIComponent(description || "Seahawks Youth Flag Football");
 
   // Simple ICS string
   const icsData = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Cy-Fair Lions Flag Football//EN",
+    "PRODID:-//Seahawks Flag Football//EN",
     "BEGIN:VEVENT",
-    `SUMMARY:${eventTitle || 'Lions Flag Football'}`,
-    `DESCRIPTION:${description || 'Cy-Fair K/1 Lions'}`,
-    `LOCATION:${location || 'CFSA Complex'}`,
+    `SUMMARY:${eventTitle || 'Seahawks Flag Football'}`,
+    `DESCRIPTION:${description || 'Seahawks Youth Flag Football'}`,
+    `LOCATION:${location || 'Practice field'}`,
     `DTSTART:${new Date().toISOString().replace(/-|:|\.\d\d\d/g, "")}`,
     `DTEND:${new Date(Date.now() + 3600000).toISOString().replace(/-|:|\.\d\d\d/g, "")}`,
     "STATUS:CONFIRMED",
@@ -280,7 +280,7 @@ function exportTeamBackup() {
   const jsonStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup, null, 2));
   const downloadAnchor = document.createElement("a");
   downloadAnchor.setAttribute("href", jsonStr);
-  downloadAnchor.setAttribute("download", `Lions_Flag_Football_Backup_${new Date().toISOString().slice(0,10)}.json`);
+  downloadAnchor.setAttribute("download", `Seahawks_Coach_Backup_${new Date().toISOString().slice(0,10)}.json`);
   document.body.appendChild(downloadAnchor);
   downloadAnchor.click();
   downloadAnchor.remove();

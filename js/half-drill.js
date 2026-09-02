@@ -1,4 +1,4 @@
-/** Lions single drill: 5-player half offense vs 4-player half defense. */
+/** Seahawks Coach seed drill: 5-player half offense vs 4-player half defense. */
 (function () {
   "use strict";
   const NS = "http://www.w3.org/2000/svg";

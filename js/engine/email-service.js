@@ -1,6 +1,7 @@
 /**
- * Automated Cloud Email Delivery Engine
- * Automatically dispatches professional, branded HTML invite emails directly to inboxes.
+ * Invitation email boundary.
+ * Network delivery stays disabled until secure invitations and an approved
+ * email service have passed privacy review.
  */
 (function (root) {
   "use strict";
@@ -28,58 +29,7 @@
   }
 
   async function sendAutomatedInvite(opts) {
-    var email = (opts.email || "").trim();
-    if (!email || email.indexOf("@") === -1) {
-      throw new Error("Please provide a valid recipient email address.");
-    }
-
-    var teamName = opts.teamName || "Our Team";
-    var role = opts.role || "HEAD_COACH";
-    var roleTitle = role === "HEAD_COACH" ? "👑 Head Coach (Full Admin)" : (role === "ASSISTANT_COACH" ? "📋 Assistant Coach" : "👨‍👩‍👧 Parent / Player");
-    var inviteUrl = opts.inviteUrl || (root.InviteManager && root.InviteManager.generateInviteLink(opts));
-
-    var subject = "🏈 Coaching App Invite for " + teamName + " (" + roleTitle + ")";
-    var htmlContent = buildEmailHtml({
-      teamName: teamName,
-      roleTitle: roleTitle,
-      inviteUrl: inviteUrl
-    });
-
-    // Cloud email dispatch endpoint
-    // Uses FormSubmit / Cloud Email Relay with automatic JSON payload
-    var endpoint = "https://formsubmit.co/ajax/" + encodeURIComponent(email);
-
-    var response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({
-        _subject: subject,
-        _template: "box",
-        team: teamName,
-        role: roleTitle,
-        invite_link: inviteUrl,
-        message: "You have been invited to join " + teamName + " as " + roleTitle + " on Coach AI Assist. Tap the invite link above to open your private playbook and drills!"
-      })
-    });
-
-    var result = {};
-    try {
-      result = await response.json();
-    } catch (e) {
-      result = { success: "true" };
-    }
-
-    return {
-      success: true,
-      email: email,
-      teamName: teamName,
-      roleTitle: roleTitle,
-      inviteUrl: inviteUrl,
-      result: result
-    };
+    throw new Error("Secure invitation email delivery is not available yet.");
   }
 
   root.EmailService = {

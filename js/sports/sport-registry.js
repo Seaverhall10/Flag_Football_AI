@@ -1,6 +1,6 @@
 /**
  * Universal Sports Registry & Schema Definitions
- * Supports: Flag Football (8v8 CFSA & 5v5 NFL Flag), Soccer (4v4 & 7v7), Basketball (3v3 & 5v5), Baseball/T-Ball, Custom.
+ * Supports: Flag Football (8v8 & 5v5), Soccer (4v4 & 7v7), Basketball (3v3 & 5v5), Baseball/T-Ball, Custom.
  */
 (function (root) {
   "use strict";
@@ -8,7 +8,7 @@
   var SPORTS = {
     "flag-football-8v8": {
       id: "flag-football-8v8",
-      name: "Flag Football (8v8 CFSA)",
+      name: "Flag Football (8v8)",
       category: "football",
       defaultPlayers: { offense: 8, defense: 8 },
       periods: { type: "quarters", count: 4, label: "Quarter" },

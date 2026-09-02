@@ -1,5 +1,5 @@
 /**
- * Team backup: export/import localStorage keys used by the Lions app.
+ * Team backup: export/import legacy localStorage keys used by Seahawks Coach.
  */
 (function () {
   const BACKUP_KEYS = [
@@ -14,7 +14,7 @@
 
   function exportTeamBackup() {
     const data = {
-      team: "Cy-Fair K/1 Lions",
+      team: "Seahawks",
       exportedAt: new Date().toISOString(),
       keys: {}
     };
@@ -25,7 +25,7 @@
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "cy-fair-k1-lions-team-backup.json";
+    a.download = "seahawks-coach-team-backup.json";
     a.click();
     URL.revokeObjectURL(a.href);
   }

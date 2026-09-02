@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="js/gate.js?v=gate-20260825"></script>
-  <title>Roster & Depth Chart — Cy-Fair K/1 Lions</title>
-  <meta name="description" content="Cy-Fair K/1 Lions Flag Football team roster, 8-on-8 depth chart, and fair-play quarter rotation tracker.">
-  <link rel="stylesheet" href="css/styles.css?v=gate-20260825">
+  <script src="js/gate.js?v=seahawks-20260901"></script>
+  <title>Game Rotation Planner — Seahawks Coach</title>
+  <meta name="description" content="Coach-only, local-device Seahawks game rotation and position planning.">
+  <link rel="stylesheet" href="css/styles.css?v=seahawks-20260901">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -14,20 +14,19 @@
   <header class="mast">
     <div class="mast-inner">
       <a href="index.html" class="brand-group">
-        <div class="mark" aria-label="Cy-Fair Lions Crest">
+        <div class="mark" aria-label="Seahawks Coach mark">
           <svg class="lion-logo" viewBox="0 0 36 36" fill="#f59e0b" aria-hidden="true">
             <path d="M18 3 C13 3 9 6 8 11 C7 15 9 18 9 20 C7 20 5 22 5 25 C5 29 9 32 14 32 C15 32 16 34 18 34 C20 34 21 32 22 32 C27 32 31 29 31 25 C31 22 29 20 27 20 C27 18 29 15 28 11 C27 6 23 3 18 3 Z M13 15 C14.1 15 15 15.9 15 17 C15 18.1 14.1 19 13 19 C11.9 19 11 18.1 11 17 C11 15.9 11.9 15 13 15 Z M23 15 C24.1 15 25 15.9 25 17 C25 18.1 24.1 19 23 19 C21.9 19 21 18.1 21 17 C21 15.9 21.9 15 23 15 Z M18 26 C15.5 26 14 24.5 14 23.5 L22 23.5 C22 24.5 20.5 26 18 26 Z"/>
           </svg>
         </div>
         <div class="brand-text">
-          <h1>Cy-Fair K/1 Lions</h1>
-          <p>8-on-8 CFSA Flag Football · One Pride</p>
+          <h1>Seahawks</h1>
+          <p>Ages 5–6 · One Team</p>
         </div>
       </a>
       
       <nav class="nav" aria-label="Coach navigation">
         <a href="playbook.html">📖 Playbook</a>
-        <a href="roster.html" class="active">👥 Roster</a>
         <a href="drills.html">⏱️ Drills</a>
         <a href="notes.html">📝 Notes</a>
         <a class="ghost" href="app.html">⚡ Sideline</a>
@@ -39,24 +38,31 @@
   <main id="main" class="wrap">
     <section class="mobile-page-title">
       <p class="eyebrow">Coach tools</p>
-      <h1>Roster</h1>
-      <p>Open the view you need. Keep public entries anonymous.</p>
+      <h1>Game rotation</h1>
+      <p>A coach-only plan for getting every 5–6-year-old involved.</p>
     </section>
+
+    <div class="stop-banner" role="note">
+      <strong>Coach-only and local to this device.</strong> Secure private accounts are not enabled yet. Use jersey numbers or anonymous labels—not full names—and do not share or print a private rotation plan.
+    </div>
 
     <!-- Printable Header -->
     <div class="print-header" style="display:none">
-      <h1 class="print-title">Cy-Fair K/1 Lions · Official Roster & Depth Chart</h1>
-      <p>8-on-8 CFSA Flag Football · Ages 5–6 · One Pride</p>
+      <h1 class="print-title">Seahawks · Coach Game Rotation</h1>
+      <p>Use jersey numbers or anonymous labels. Data stays in this browser.</p>
     </div>
 
-    <!-- Depth Chart View -->
+    <!-- Coach position plan -->
     <details class="coach-more mobile-collapse" open>
-      <summary>Depth chart</summary>
+      <summary>Coach position plan</summary>
       <section class="panel">
       <div class="panel-header">
-        <h2>8-on-8 Depth Chart</h2>
+        <div>
+          <h2>Position Rotation</h2>
+          <span class="tiny">No rankings—assign players to roles they will rotate through.</span>
+        </div>
         <div class="no-print">
-          <button class="btn btn-primary" onclick="window.print()">Print Roster Card</button>
+          <button class="btn btn-secondary" onclick="window.print()">Print Coach Copy</button>
         </div>
       </div>
       <div id="depth-chart-grid">
@@ -67,21 +73,21 @@
 
     <!-- Fair-Play Quarter Rotation Planner -->
     <details class="coach-more mobile-collapse" open>
-      <summary>Quarter rotations</summary>
+      <summary>Game rotation by quarter</summary>
       <section class="panel">
       <div class="panel-header">
         <div>
-          <h2>Quarter-by-Quarter Rotation Matrix</h2>
-          <span class="tiny">CFSA 50% Rule Enforcement</span>
+          <h2>Quarter-by-Quarter Game Rotation</h2>
+          <span class="tiny" id="roster-save-status" role="status">Saved automatically on this device</span>
         </div>
         <div id="compliance-status-badge" class="no-print">
           <!-- Rendered by js/roster.js -->
         </div>
       </div>
-      <p class="tiny no-print" style="margin-top:-6px">Select Offense / Defense / Bench per quarter. The validator automatically tracks active playing time.</p>
+      <p class="tiny no-print" style="margin-top:-6px">Choose Offense, Defense, or Next Rotation for each quarter. This is a coaching aid, not verified league compliance.</p>
 
-      <div style="overflow-x:auto">
-        <table>
+      <div class="rotation-table-wrap">
+        <table class="rotation-table">
           <thead>
             <tr>
               <th>Player & Active Qtrs</th>
@@ -101,10 +107,10 @@
 
     <!-- Full Player Roster & Carries Counter -->
     <details class="coach-more mobile-collapse" open>
-      <summary>Players and carries</summary>
+      <summary>Player labels and opportunities</summary>
       <section class="panel">
       <div class="panel-header">
-        <h2>Player Roster & Season Carries</h2>
+        <h2>Player Labels & Ball Opportunities</h2>
         <div class="no-print" style="display:flex;gap:8px">
           <button class="btn btn-secondary" id="btn-add-player">+ Add Player</button>
           <button class="btn btn-danger" id="btn-reset-roster" style="font-size:0.75rem;padding:6px 10px">Reset Defaults</button>
@@ -116,10 +122,10 @@
           <thead>
             <tr>
               <th style="width:70px;text-align:center">Jersey</th>
-              <th>Player Name / Initial</th>
-              <th>Primary Offense Role</th>
-              <th>Primary Defense Role</th>
-              <th class="no-print" style="text-align:center;width:110px">Season Carries</th>
+              <th>Anonymous Player Label</th>
+              <th>Offense Role Rotation</th>
+              <th>Defense Role Rotation</th>
+              <th class="no-print" style="text-align:center;width:110px">Ball Opportunities</th>
               <th class="no-print" style="width:60px;text-align:center">Action</th>
             </tr>
           </thead>
@@ -131,22 +137,22 @@
       </section>
     </details>
 
-    <!-- CFSA Fair Play Rules -->
+    <!-- Fair-play reminder; confirm the current Seahawks league rule. -->
     <div class="stop-banner">
-      <strong>CFSA K/1 Substitution & Carrying Rule:</strong> Every child plays a minimum of 2 full quarters. Rotate runners across games so every player experiences carrying the football!
+      <strong>Rotation reminder:</strong> Every child belongs in the game plan. Confirm the current Seahawks league participation rule, then rotate roles and opportunities deliberately.
     </div>
   </main>
 
   <footer class="foot">
     <div class="foot-inner">
-      <div>Cy-Fair K/1 Lions · Team Roster & Depth Chart</div>
+      <div>Seahawks Coach · Game Rotation Planner</div>
       <div><a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></div>
     </div>
   </footer>
 
   <script src="js/sports/sport-registry.js"></script>
   <script src="js/engine/team-manager.js"></script>
-  <script src="js/roster.js?v=jarvis-20260824"></script>
-  <script src="js/app.js?v=mobile-app-20260824"></script>
+  <script src="js/roster.js?v=seahawks-20260901"></script>
+  <script src="js/app.js?v=seahawks-20260901"></script>
 </body>
 </html>

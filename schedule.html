@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="js/gate.js?v=gate-20260825"></script>
-  <title>Season Schedule — Cy-Fair K/1 Lions</title>
-  <meta name="description" content="Cy-Fair K/1 Lions Flag Football practice and game schedule with 1-tap GPS directions and calendar sync.">
-  <link rel="stylesheet" href="css/styles.css?v=gate-20260825">
+  <script src="js/gate.js?v=seahawks-20260901"></script>
+  <title>Season Schedule — Seahawks Coach</title>
+  <meta name="description" content="Local-only Seahawks practice and game schedule with directions and calendar export.">
+  <link rel="stylesheet" href="css/styles.css?v=seahawks-20260901">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -14,20 +14,19 @@
   <header class="mast">
     <div class="mast-inner">
       <a href="index.html" class="brand-group">
-        <div class="mark" aria-label="Cy-Fair Lions Crest">
+        <div class="mark" aria-label="Seahawks Coach mark">
           <svg class="lion-logo" viewBox="0 0 36 36" fill="#f59e0b" aria-hidden="true">
             <path d="M18 3 C13 3 9 6 8 11 C7 15 9 18 9 20 C7 20 5 22 5 25 C5 29 9 32 14 32 C15 32 16 34 18 34 C20 34 21 32 22 32 C27 32 31 29 31 25 C31 22 29 20 27 20 C27 18 29 15 28 11 C27 6 23 3 18 3 Z M13 15 C14.1 15 15 15.9 15 17 C15 18.1 14.1 19 13 19 C11.9 19 11 18.1 11 17 C11 15.9 11.9 15 13 15 Z M23 15 C24.1 15 25 15.9 25 17 C25 18.1 24.1 19 23 19 C21.9 19 21 18.1 21 17 C21 15.9 21.9 15 23 15 Z M18 26 C15.5 26 14 24.5 14 23.5 L22 23.5 C22 24.5 20.5 26 18 26 Z"/>
           </svg>
         </div>
         <div class="brand-text">
-          <h1>Cy-Fair K/1 Lions</h1>
-          <p>8-on-8 CFSA Flag Football · One Pride</p>
+          <h1>Seahawks</h1>
+          <p>Ages 5–6 · One Team</p>
         </div>
       </a>
       
       <nav class="nav" aria-label="Coach navigation">
         <a href="playbook.html">📖 Playbook</a>
-        <a href="roster.html">👥 Roster</a>
         <a href="drills.html">⏱️ Drills</a>
         <a href="notes.html">📝 Notes</a>
         <a class="ghost" href="app.html">⚡ Sideline</a>
@@ -45,14 +44,14 @@
 
     <!-- Printable Header -->
     <div class="print-header" style="display:none">
-      <h1 class="print-title">Cy-Fair K/1 Lions · Official Season Schedule</h1>
-      <p>8-on-8 CFSA Flag Football · Ages 5–6 · One Pride</p>
+      <h1 class="print-title">Seahawks · Season Schedule</h1>
+      <p>Confirm all dates, locations, and league details before sharing.</p>
     </div>
 
     <!-- Schedule Panel -->
     <section class="panel">
       <div class="panel-header">
-        <h2>Lions Event Schedule</h2>
+        <h2>Seahawks Event Schedule</h2>
         <div class="no-print" style="display:flex;gap:8px">
           <button class="btn btn-secondary" id="btn-add-event">+ Add Event</button>
           <button class="btn btn-primary" onclick="window.print()">Print Schedule</button>
@@ -105,13 +104,13 @@
           <label style="font-weight:700;font-size:0.85rem">Jersey Color</label>
           <select id="evt-jersey" class="editable-cell" style="width:100%">
             <option value="Navy (Home)">Navy (Home Jersey)</option>
-            <option value="Gold/White (Away)">Gold/White (Away Jersey)</option>
+            <option value="White (Away)">White (Away Jersey)</option>
             <option value="Practice Shirt">Practice Shirt / Cleats</option>
           </select>
         </div>
         <div>
           <label style="font-weight:700;font-size:0.85rem">Location / Complex</label>
-          <input type="text" id="evt-loc" placeholder="e.g. CFSA Complex Field #2" class="editable-cell" style="width:100%" required>
+          <input type="text" id="evt-loc" placeholder="e.g. Community Field #2" class="editable-cell" style="width:100%" required>
         </div>
         <div>
           <label style="font-weight:700;font-size:0.85rem">Notes / Opponent</label>
@@ -142,7 +141,7 @@
           <h3>Sideline Discipline</h3>
           <ul class="checklist">
             <li class="checklist-item"><strong>One Adult Voice:</strong> Coaches call the plays clearly; parents cheer effort!</li>
-            <li class="checklist-item"><strong>Stick to the Six Runs:</strong> No new unpracticed plays on game day.</li>
+            <li class="checklist-item"><strong>Use the approved plan:</strong> No new unpracticed plays on game day.</li>
             <li class="checklist-item"><strong>Hydration:</strong> Water breaks after every quarter.</li>
           </ul>
         </div>
@@ -152,20 +151,13 @@
 
   <footer class="foot">
     <div class="foot-inner">
-      <div>Cy-Fair K/1 Lions · Season Schedule</div>
+      <div>Seahawks Coach · Season Schedule</div>
       <div><a href="https://seaverhall10.github.io/Flag_Football_AI/">seaverhall10.github.io/Flag_Football_AI</a></div>
     </div>
   </footer>
 
   <script>
-    const DEFAULT_SCHEDULE = [
-      { type: "Practice", date: "Week 1 - Tue", time: "5:30 PM – 6:30 PM", loc: "CFSA Complex Field #2, Cypress, TX", jersey: "Practice Shirt", notes: "Arrival & 5v4 Drill Intro" },
-      { type: "Practice", date: "Week 1 - Thu", time: "5:30 PM – 6:30 PM", loc: "CFSA Complex Field #2, Cypress, TX", jersey: "Practice Shirt", notes: "6-Run Cycle & Tracker Session A" },
-      { type: "Game", date: "Week 1 - Sat", time: "9:00 AM", loc: "CFSA Main Complex Field #1, Cypress, TX", jersey: "Navy (Home)", notes: "Season Opener vs Tigers (Arrive 8:40 AM)" },
-      { type: "Practice", date: "Week 2 - Tue", time: "5:30 PM – 6:30 PM", loc: "CFSA Complex Field #2, Cypress, TX", jersey: "Practice Shirt", notes: "Snap station & Reps" },
-      { type: "Practice", date: "Week 2 - Thu", time: "5:30 PM – 6:30 PM", loc: "CFSA Complex Field #2, Cypress, TX", jersey: "Practice Shirt", notes: "Tracker Session B (5-of-6 Target)" },
-      { type: "Game", date: "Week 2 - Sat", time: "10:15 AM", loc: "CFSA Main Complex Field #3, Cypress, TX", jersey: "Gold/White (Away)", notes: "Game 2 vs Bulldogs" }
-    ];
+    const DEFAULT_SCHEDULE = [];
 
     function loadSchedule() {
       const saved = localStorage.getItem("lions_season_schedule");
@@ -210,7 +202,7 @@
             <td>${evt.notes || '—'}</td>
             <td class="no-print">
               <div style="display:inline-flex;gap:6px">
-                <button class="btn btn-secondary" style="padding:4px 8px;font-size:0.75rem" onclick="downloadIcsCalendar('${evt.type}: ${evt.notes || 'Lions Flag Football'}', '${evt.date}', '${evt.time}', '${evt.loc}', '${evt.notes}')">
+                <button class="btn btn-secondary" style="padding:4px 8px;font-size:0.75rem" onclick="downloadIcsCalendar('${evt.type}: ${evt.notes || 'Seahawks Flag Football'}', '${evt.date}', '${evt.time}', '${evt.loc}', '${evt.notes}')">
                   📅 Sync
                 </button>
                 <button class="btn btn-danger" style="padding:4px 8px;font-size:0.75rem" onclick="deleteEvent(${idx})">

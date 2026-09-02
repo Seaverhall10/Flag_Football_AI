@@ -1,5 +1,6 @@
 /**
- * Cy-Fair K/1 Lions — 12 coach-sheet plays (Aug 27 binder).
+ * Seahawks Coach — 14 carried-forward coach-sheet plays.
+ * These are seed teaching content until Seth's current playbook is confirmed.
  * Source of truth: photographed pages in /plays (play-01.jpg … play-12.jpg).
  * Tap SHEET to see the original photo. Circles = offense, squares = defense.
  * Defense is 8-man: 2 DT, 2 DE, 2 LB, 2 CB (as drawn on the sheets).
@@ -366,7 +367,12 @@
     }
   ];
 
+  root.COACH_PLAYS = PLAYS;
+  root.SEAHAWKS_PLAYS = PLAYS;
+  root.SEAHAWKS_PLAY_MAP = {};
+  PLAYS.forEach(function (p) { root.SEAHAWKS_PLAY_MAP[p.id] = p; });
+
+  // Legacy aliases keep existing extensions and exported backups readable.
   root.LIONS_PLAYS = PLAYS;
-  root.LIONS_PLAY_MAP = {};
-  PLAYS.forEach(function (p) { root.LIONS_PLAY_MAP[p.id] = p; });
+  root.LIONS_PLAY_MAP = root.SEAHAWKS_PLAY_MAP;
 })(typeof window !== "undefined" ? window : globalThis);

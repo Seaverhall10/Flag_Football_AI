@@ -1,6 +1,6 @@
-# Lions Flag Football AI — Agent Rules
+# Seahawks Coach AI — Agent Rules
 
-This repository is a public teaching app for 5–7-year-old players and their coaches. Every AI, IDE agent, bot, and human contributor must follow these rules before changing files.
+This repository is the one public Seahawks Coach teaching app for 5–6-year-old players and their coaches. Every AI, IDE agent, bot, and human contributor must follow these rules before changing files.
 
 ## Authority order
 
@@ -43,7 +43,10 @@ The current drill authority is only the version in `PROJECT_AUTHORITY.md`: direc
 
 ## Protected product decisions
 
-- The playbook source of truth is the 14 binder photos in `/plays` (play-01.jpg … play-14.jpg), not the old six QB-wing keepers. Recreate each sheet: circles with the letters on that page (`C`, `G`, `T`, `W`, `RB`), squares for defense, red dashed ball path, solid black arrows for blocks/leads. Do not restore Inside Right / Off-Tackle / Wide QB keepers, spread/tight wing toggles, or Red Diamond six-call chrome.
+- The owner redirected the existing app to Seth's Seahawks on 2026-09-01. Use this repository, Firebase project `coach-ai-assist`, and the single approved integration PR. Do not create a replacement app, repository, Firebase project, or competing product branch.
+- Former Lions and CFSA branding is retired. The exact Seahawks league, age group, and rules remain unconfirmed; do not silently treat old Lions/CFSA assumptions as Seahawks authority.
+
+- The current carried-forward playbook source is the 14 binder photos in `/plays` (play-01.jpg … play-14.jpg), not the old six QB-wing keepers. Preserve them as seed content until Seth's Seahawks playbook is confirmed. Recreate each sheet: circles with the letters on that page (`C`, `G`, `T`, `W`, `RB`), squares for defense, red dashed ball path, solid black arrows for blocks/leads.
 - Every playbook view must show the offense and defense tokens drawn on that sheet (usually eight and eight).
 - Every lineman must have the defender that player's arrow points at on that photo.
 - Ball path, lead/fake routes, and block arrows must remain visually distinct and match that play.

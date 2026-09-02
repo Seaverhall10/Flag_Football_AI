@@ -1,4 +1,4 @@
-# Lions Improvement Council Board
+# Seahawks Coach Improvement Council Board
 
 This repository uses [GitHub Issue #6](https://github.com/Seaverhall10/Flag_Football_AI/issues/6) as the AI Huddle and dispatch room for Jarvis, GrokBot, Antigravity, Codex, other reviewers, coaches, and the owner. The Huddle records claims and routes each substantial lane to one feature issue created from `.github/ISSUE_TEMPLATE/ai-work-lane.yml`. Detailed evidence and decisions stay on that feature issue; implementation and review stay on its linked pull request.
 
@@ -114,4 +114,4 @@ A prepared prompt, launched application, or timeout is not a completed review.
 
 ## Current coordination objective
 
-Preserve the verified Lions teaching app while the broader sports-coaching platform is designed in bounded, reviewable lanes. Communication-system work may improve routing and evidence, but it may not silently authorize accounts, uploads, analytics, cloud storage, AI data transfer, football changes, or deployment.
+Preserve one verified Seahawks Coach application while the broader sports-coaching platform is designed in bounded, reviewable lanes. Communication-system work may improve routing and evidence, but it may not silently authorize accounts, uploads, analytics, cloud storage, AI data transfer, football changes, or deployment.

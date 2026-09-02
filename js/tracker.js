@@ -118,11 +118,11 @@
         `;
       }).join("");
 
-      var benchHtml = roster.filter(function (p) { return activeIds.indexOf(p.id) === -1; }).map(function (p) {
+      var nextRotationHtml = roster.filter(function (p) { return activeIds.indexOf(p.id) === -1; }).map(function (p) {
         var pStats = state.playerStats[p.id] || { totalPlays: 0, quota: state.quotaTarget };
         var badge = pStats.totalPlays >= pStats.quota ? "🟢" : (pStats.totalPlays >= pStats.quota * 0.5 ? "🟡" : "🔴");
         return `
-          <button type="button" class="btn-bench-player" data-player-id="${p.id}" style="background:rgba(255,255,255,0.06);border:1px solid var(--line-strong);border-radius:8px;padding:8px 12px;color:#fff;font-size:0.85rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
+          <button type="button" class="btn-next-rotation-player" data-player-id="${p.id}" style="background:rgba(255,255,255,0.06);border:1px solid var(--line-strong);border-radius:8px;padding:8px 12px;color:#fff;font-size:0.85rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px;">
             <span>${badge}</span>
             <strong>${p.num} ${p.name}</strong>
             <span style="color:var(--muted);font-size:0.75rem;">(${pStats.totalPlays} reps)</span>
@@ -181,19 +181,19 @@
           </button>
         </div>
 
-        <!-- Sideline Bench / Sub Pool -->
+        <!-- Next rotation group -->
         <div style="background:rgba(0,0,0,0.25);border:1px solid var(--line-strong);border-radius:10px;padding:14px;margin-bottom:20px;">
-          <div style="font-size:0.8rem;font-weight:800;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Sideline Bench Pool (Tap to swap into lineup):</div>
+          <div style="font-size:0.8rem;font-weight:800;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Next Rotation (Tap to move into the game group):</div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            ${benchHtml || '<span class="tiny" style="color:var(--muted)">All rostered players are active on the field.</span>'}
+            ${nextRotationHtml || '<span class="tiny" style="color:var(--muted)">All rostered players are in the current game group.</span>'}
           </div>
         </div>
 
-        <!-- Mandatory Play Quota Monitor -->
+        <!-- Coach playing-time check -->
         <div style="background:rgba(13,31,53,0.6);border:1px solid var(--line-strong);border-radius:12px;padding:16px;margin-bottom:16px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-            <h3 style="margin:0;color:#fff;font-size:1rem;">🏆 Mandatory Play Quota Monitor (Target: ${state.quotaTarget}+ Plays)</h3>
-            <span class="tiny" style="color:var(--muted)">League Rule Compliance</span>
+            <h3 style="margin:0;color:#fff;font-size:1rem;">Playing-Time Check (Coach target: ${state.quotaTarget}+ Plays)</h3>
+            <span class="tiny" style="color:var(--muted)">Not verified league compliance</span>
           </div>
           <div>${quotaRowsHtml}</div>
         </div>
@@ -357,8 +357,8 @@
         });
       });
 
-      // Bench tap to sub
-      this.container.querySelectorAll(".btn-bench-player").forEach(function (btn) {
+      // Move a child from the next-rotation group into the current game group.
+      this.container.querySelectorAll(".btn-next-rotation-player").forEach(function (btn) {
         btn.addEventListener("click", function () {
           var pId = btn.getAttribute("data-player-id");
           var pos = prompt("Sub this player into which position? (C, G, T, W, RB):", "C");

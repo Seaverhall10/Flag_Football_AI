@@ -34,11 +34,13 @@
       var raw = localStorage.getItem(ROLE_STORAGE_KEY);
       if (raw) return JSON.parse(raw);
     } catch (e) {}
-    // Default to HEAD_COACH for the primary device/browser
+    // Local demo capability only. This controls UI visibility and is not a
+    // security boundary; production roles require verified Firebase claims.
     return {
       role: ROLES.HEAD_COACH,
-      email: "headcoach@team.local",
-      teamId: (root.TeamManager && root.TeamManager.getActiveTeamId()) || "lions-k1-flag"
+      email: "",
+      teamId: (root.TeamManager && root.TeamManager.getActiveTeamId()) || "seahawks-youth-flag",
+      isLocalDemo: true
     };
   }
 
@@ -61,7 +63,7 @@
     var current = getSession();
     setSession({
       role: validRole,
-      teamId: teamId || current.teamId || "lions-k1-flag",
+      teamId: teamId || current.teamId || "seahawks-youth-flag",
       email: email || current.email || ""
     });
   }

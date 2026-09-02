@@ -1,5 +1,5 @@
 /**
- * Cy-Fair K/1 Lions — High-Performance Drill & Practice Command Center
+ * Seahawks Coach — Drill & Practice Command Center
  * Screen WakeLock, Audio Synthesizer, 18-Rep Visual Stepper, 60-Min Practice Tracker.
  */
 
@@ -128,7 +128,7 @@ const DRILL_REPS = [
   { rep: 15, runKey: 'wide-right', name: 'Wide Right', color: '#ea580c', colorName: 'Orange Square', hole: 'RT Outside Hip', cue: 'CB keep outside arm free · Force runner inside to pursuit' },
   { rep: 16, runKey: 'wide-left', name: 'Wide Left', color: '#9333ea', colorName: 'Purple Hexagon', hole: 'LT Outside Hip', cue: 'LT & LG reach block inside · Lead pull wide left · CB contain' },
   { rep: 17, runKey: 'wide-left', name: 'Wide Left', color: '#9333ea', colorName: 'Purple Hexagon', hole: 'LT Outside Hip', cue: 'Runner angle to outside cone · Plant hard · Accelerate north' },
-  { rep: 18, runKey: 'wide-left', name: 'Wide Left', color: '#9333ea', colorName: 'Purple Hexagon', hole: 'LT Outside Hip', cue: 'Final Rep! Clean snap · Perfect assignments · 1-2-3 LIONS!' }
+  { rep: 18, runKey: 'wide-left', name: 'Wide Left', color: '#9333ea', colorName: 'Purple Hexagon', hole: 'LT Outside Hip', cue: 'Final rep! Clean snap · Perfect assignments · 1-2-3 SEAHAWKS!' }
 ];
 
 /**
@@ -286,7 +286,7 @@ class PracticeTimer {
       { id: 4, startMin: 25, endMin: 40, name: '18-Rep 5v4 Tempo Drill', desc: '30-second next-ball tempo. Snap + assignment + landmark.' },
       { id: 5, startMin: 40, endMin: 52, name: 'Six-Run Cycle', desc: 'Full 8v8 team execution. Lead blocks hole first, then LB.' },
       { id: 6, startMin: 52, endMin: 58, name: 'Front 3 & CB Contain', desc: 'Front stay home, flag. CB keep outside arm free.' },
-      { id: 7, startMin: 58, endMin: 60, name: 'Huddle Close & 5-of-6 Tracker', desc: 'Water, 1-2-3 Lions breakdown, record clean reps on tracker.' }
+      { id: 7, startMin: 58, endMin: 60, name: 'Huddle Close & Rep Tracker', desc: 'Water, 1-2-3 Seahawks breakdown, record clean reps on tracker.' }
     ];
   }
 

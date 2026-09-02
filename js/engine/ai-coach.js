@@ -49,7 +49,7 @@
         "• **10–25m**: Station 1: Hand-offs & Ball Security ('See it, Catch it, Tuck it')\n" +
         "• **25–40m**: Station 2: 5v4 Blocking & Pursuit Drill (2-point stance, hands inside)\n" +
         "• **40–55m**: Team Scrimmage / Live Play Calls (3 plays offense, 3 plays defense)\n" +
-        "• **55–60m**: Team Huddle & 1-2-3 Lions Cheer!";
+        "• **55–60m**: Team Huddle & 1-2-3 Seahawks Cheer!";
     }
     if (lower.indexOf("flag") !== -1 || lower.indexOf("pull") !== -1) {
       return "🚩 **Top 3 Flag Pulling Cues for Kids:**\n\n" +

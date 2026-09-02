@@ -1,10 +1,10 @@
-# Lions Football Product Authority
+# Seahawks Coach Product Authority
 
-This file is the durable source of truth for the public app. It distills the owner-confirmed Lions system and the current Jarvis coaching record into rules that every contributor can inspect inside this repository.
+This file is the durable source of truth for the public app. The owner redirected the existing Coach AI product to Seth's Seahawks on 2026-09-01. The same repository, Firebase project, and release lane remain authoritative; contributors must not create another app.
 
 ## Product goal
 
-Help 5–7-year-olds answer three questions without reading a coach manual:
+Help young youth players answer three questions without reading a coach manual:
 
 1. Where do I line up?
 2. Who is my job?
@@ -12,13 +12,22 @@ Help 5–7-year-olds answer three questions without reading a coach manual:
 
 The app teaches one visual decision at a time. It does not add complexity merely because software can display it.
 
-The public Pages site is session-locked; coaches type the team password to open it.
+The current client-side password screen is a demo gate, not account security. Do not describe the app as private, signup-ready, or secure until real Firebase authentication, membership rules, and invitation tests pass.
 
-## Locked offense — owner correction 2026-08-25
+## Team identity — owner correction 2026-09-01
 
-The public playbook is the 14 coach-sheet plays photographed by the owner. Do not restore the old six QB-keeper runs.
+- Primary team: Seahawks.
+- Primary coach context: Seth; do not publish contact details or private roster information.
+- Former Cy-Fair K/1 Lions branding and CFSA-specific public claims are retired.
+- Owner-confirmed age group: 5–6-year-old players.
+- Exact Seahawks league, roster size, blocking rules, and game format are not yet confirmed in this repository.
+- Until those facts are supplied, use `Youth Flag Football` in public branding and label the current football system as carried-forward teaching content rather than Seahawks league authority.
 
-- Format: CFSA K/1, 8-on-8 flag.
+## Current carried-forward play library
+
+The public playbook currently preserves the 14 coach-sheet plays photographed by the owner. They remain the functional seed library while the Seahawks playbook is confirmed. Do not restore the old six QB-keeper runs, and do not claim the 14 sheets are official Seahawks calls without a new owner decision.
+
+- Current diagram format: 8-on-8 flag. Seahawks league applicability is unconfirmed.
 - Formation is the sheet: circles labeled `C`, `G`, `T`, `W`, `RB` as drawn. Two RBs are both labeled `RB` (color/outline distinguishes them).
 - Do not invent `QB`, `WING-L`, `WING-R`, `LT`, or `LG` unless that letter is actually on that photo.
 - Most plays are five on the line (`T G C G T`) plus `W` plus two backs. If a photo has 7 or 9 offense tokens, match that photo.
@@ -27,7 +36,7 @@ The public playbook is the 14 coach-sheet plays photographed by the owner. Do no
 - Each play's blocking map and ball path come from that photo. Do not reuse one blocking map for all 14 plays.
 - Spread/tight wing toggles and Red Diamond / Blue Circle / Gold Star six-call chrome are retired.
 
-## Fourteen coach-sheet calls
+## Fourteen carried-forward coach-sheet calls
 
 | Play | Call | What the sheet shows |
 | --- | --- | --- |
@@ -100,7 +109,7 @@ Never teach or depict head/neck contact, holding, wrapping, tackling, blocks in 
 
 ## The only current drill
 
-The public teaching app has one drill: half offense versus half defense.
+The public teaching app has one carried-forward drill: half offense versus half defense. Preserve it until the owner supplies Seahawks-specific replacements; do not call it an official Seahawks league drill.
 
 - Offense: Center, Guard, Tackle, QB/Runner receiving the direct snap, and one Lead Running Back.
 - Defense: defensive lineman, linebacker, cornerback, and a fourth defender selectable as either another defensive lineman or another linebacker.
@@ -116,4 +125,4 @@ The public teaching app has one drill: half offense versus half defense.
 
 ## Current uncertainty
 
-The public CFSA page identifies current rules, while the linked document inspected by Jarvis carried a 2025 filename/text. Current-season league or official interpretation controls. Before changing alignment, eligible-receiver, contact, equipment, or coach-on-field rules, obtain the current packet or direct league confirmation and record the evidence in a reviewed change.
+The Seahawks age group is owner-confirmed as 5–6. The league, roster size, field format, contact/blocking rules, eligible-receiver rules, equipment rules, and coach-on-field rules are not yet verified. Before changing the carried-forward 8-on-8 diagrams or teaching contact, obtain Seth's current league packet or direct league confirmation and record the evidence in a reviewed change.

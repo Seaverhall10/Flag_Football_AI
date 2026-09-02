@@ -1,40 +1,74 @@
 /**
  * Team Manager & Multi-Sport Workspace Orchestrator
- * Supports switching between teams/sports, persistent storage per team, and seamless migration of existing Lions data.
+ * Supports switching between teams/sports, persistent storage per team, and
+ * a non-destructive migration from the former Lions default to Seahawks.
  */
 (function (root) {
   "use strict";
 
   var ACTIVE_TEAM_KEY = "coach_active_team_id";
   var TEAMS_META_KEY = "coach_teams_index";
+  var DEFAULT_TEAM_ID = "seahawks-youth-flag";
+  var LEGACY_TEAM_ID = "lions-k1-flag";
 
-  var DEFAULT_LIONS_TEAM = {
-    id: "lions-k1-flag",
-    name: "Cy-Fair K/1 Lions",
-    shortName: "Lions",
+  var DEFAULT_SEAHAWKS_TEAM = {
+    id: DEFAULT_TEAM_ID,
+    name: "Seahawks",
+    shortName: "Seahawks",
     sportId: "flag-football-8v8",
-    division: "K/1 Flag Football",
-    logoColor: "#f59e0b",
-    createdAt: "2026-08-25T00:00:00.000Z",
+    division: "Ages 5–6 Flag Football",
+    logoColor: "#69be28",
+    createdAt: "2026-09-01T00:00:00.000Z",
     isDefault: true
   };
+
+  function migrateFormerDefault(teams) {
+    var changed = false;
+    var migrated = teams.map(function (team) {
+      if (!team || team.id !== LEGACY_TEAM_ID) return team;
+      changed = true;
+      return Object.assign({}, team, DEFAULT_SEAHAWKS_TEAM, {
+        createdAt: team.createdAt || DEFAULT_SEAHAWKS_TEAM.createdAt,
+        migratedFrom: LEGACY_TEAM_ID
+      });
+    });
+
+    var seen = {};
+    migrated = migrated.filter(function (team) {
+      if (!team || seen[team.id]) {
+        changed = true;
+        return false;
+      }
+      seen[team.id] = true;
+      return true;
+    });
+
+    if (localStorage.getItem(ACTIVE_TEAM_KEY) === LEGACY_TEAM_ID) {
+      localStorage.setItem(ACTIVE_TEAM_KEY, DEFAULT_TEAM_ID);
+      changed = true;
+    }
+    return { teams: migrated, changed: changed };
+  }
 
   function getTeams() {
     var stored = localStorage.getItem(TEAMS_META_KEY);
     if (!stored) {
-      var initial = [DEFAULT_LIONS_TEAM];
+      var initial = [DEFAULT_SEAHAWKS_TEAM];
       localStorage.setItem(TEAMS_META_KEY, JSON.stringify(initial));
       return initial;
     }
     try {
       var parsed = JSON.parse(stored);
       if (!Array.isArray(parsed) || parsed.length === 0) {
-        parsed = [DEFAULT_LIONS_TEAM];
+        parsed = [DEFAULT_SEAHAWKS_TEAM];
         localStorage.setItem(TEAMS_META_KEY, JSON.stringify(parsed));
       }
+      var migration = migrateFormerDefault(parsed);
+      parsed = migration.teams;
+      if (migration.changed) localStorage.setItem(TEAMS_META_KEY, JSON.stringify(parsed));
       return parsed;
     } catch (e) {
-      return [DEFAULT_LIONS_TEAM];
+      return [DEFAULT_SEAHAWKS_TEAM];
     }
   }
 
@@ -103,8 +137,9 @@
 
   function getTeamStorageKey(teamId, subKey) {
     teamId = teamId || getActiveTeamId();
-    // For default Lions team, preserve existing keys for 100% backward compatibility
-    if (teamId === "lions-k1-flag") {
+    // Keep the former browser keys as an internal compatibility layer so the
+    // owner's existing local data survives the team-name migration.
+    if (teamId === DEFAULT_TEAM_ID || teamId === LEGACY_TEAM_ID) {
       if (subKey === "roster") return "lions_team_roster_data";
       if (subKey === "notes") return "lions_coach_scratchpad_notes";
       if (subKey === "tracker") return "lions_flag_rep_tracker_data";
@@ -122,6 +157,7 @@
     setActiveTeam: setActiveTeam,
     createTeam: createTeam,
     deleteTeam: deleteTeam,
-    getTeamStorageKey: getTeamStorageKey
+    getTeamStorageKey: getTeamStorageKey,
+    getDefaultTeamId: function () { return DEFAULT_TEAM_ID; }
   };
 })(typeof window !== "undefined" ? window : globalThis);

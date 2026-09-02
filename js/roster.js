@@ -1,6 +1,7 @@
 /**
- * Cy-Fair K/1 Lions — Advanced Roster & Depth Chart Manager
- * Features: Visual 8-on-8 field formation depth chart, CFSA 50% fair play compliance engine, ball-carries tracker.
+ * Seahawks Coach — browser-local game rotation and position planner.
+ * League-specific participation rules are not encoded until Seth's current
+ * league packet is confirmed.
  */
 
 const ROSTER_STORAGE_KEY = "lions_team_roster_data";
@@ -9,15 +10,29 @@ const DEFAULT_ROSTER = [
   { id: 1, number: "2", name: "Player #2", offensePos: "Quarterback", defensePos: "Cornerback", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense", carries: 4 },
   { id: 2, number: "7", name: "Player #7", offensePos: "Right Wing", defensePos: "Front Mid (MLB)", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense", carries: 2 },
   { id: 3, number: "10", name: "Player #10", offensePos: "Center", defensePos: "Front Left", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Defense", carries: 0 },
-  { id: 4, number: "12", name: "Player #12", offensePos: "Left Guard", defensePos: "Front Right", q1: "Offense", q2: "Bench", q3: "Defense", q4: "Offense", carries: 1 },
-  { id: 5, number: "15", name: "Player #15", offensePos: "Right Guard", defensePos: "Cornerback", q1: "Offense", q2: "Defense", q3: "Bench", q4: "Offense", carries: 1 },
+  { id: 4, number: "12", name: "Player #12", offensePos: "Left Guard", defensePos: "Front Right", q1: "Offense", q2: "Next Rotation", q3: "Defense", q4: "Offense", carries: 1 },
+  { id: 5, number: "15", name: "Player #15", offensePos: "Right Guard", defensePos: "Cornerback", q1: "Offense", q2: "Defense", q3: "Next Rotation", q4: "Offense", carries: 1 },
   { id: 6, number: "21", name: "Player #21", offensePos: "Left Tackle", defensePos: "Front Mid", q1: "Offense", q2: "Offense", q3: "Defense", q4: "Defense", carries: 0 },
-  { id: 7, number: "24", name: "Player #24", offensePos: "Right Tackle", defensePos: "Front Left", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Bench", carries: 1 },
+  { id: 7, number: "24", name: "Player #24", offensePos: "Right Tackle", defensePos: "Front Left", q1: "Offense", q2: "Defense", q3: "Offense", q4: "Next Rotation", carries: 1 },
   { id: 8, number: "33", name: "Player #33", offensePos: "Left Wing", defensePos: "Safety", q1: "Offense", q2: "Offense", q3: "Defense", q4: "Defense", carries: 2 },
-  { id: 9, number: "44", name: "Player #44", offensePos: "Quarterback (2nd)", defensePos: "Cornerback", q1: "Bench", q2: "Offense", q3: "Defense", q4: "Offense", carries: 3 },
-  { id: 10, number: "55", name: "Player #55", offensePos: "Wing Back (2nd)", defensePos: "Front Right", q1: "Defense", q2: "Offense", q3: "Offense", q4: "Defense", carries: 1 },
-  { id: 11, number: "88", name: "Player #88", offensePos: "Guard (2nd)", defensePos: "Front Left", q1: "Defense", q2: "Bench", q3: "Offense", q4: "Defense", carries: 0 }
+  { id: 9, number: "44", name: "Player #44", offensePos: "Quarterback Rotation", defensePos: "Cornerback", q1: "Next Rotation", q2: "Offense", q3: "Defense", q4: "Offense", carries: 3 },
+  { id: 10, number: "55", name: "Player #55", offensePos: "Wing Back Rotation", defensePos: "Front Right", q1: "Defense", q2: "Offense", q3: "Offense", q4: "Defense", carries: 1 },
+  { id: 11, number: "88", name: "Player #88", offensePos: "Guard Rotation", defensePos: "Front Left", q1: "Defense", q2: "Next Rotation", q3: "Offense", q4: "Defense", carries: 0 }
 ];
+
+function normalizePlayer(player) {
+  const copy = Object.assign({}, player);
+  const roleMap = {
+    "Quarterback (2nd)": "Quarterback Rotation",
+    "Wing Back (2nd)": "Wing Back Rotation",
+    "Guard (2nd)": "Guard Rotation"
+  };
+  copy.offensePos = roleMap[copy.offensePos] || copy.offensePos;
+  ['q1', 'q2', 'q3', 'q4'].forEach(q => {
+    if (copy[q] === "Bench") copy[q] = "Next Rotation";
+  });
+  return copy;
+}
 
 class RosterManager {
   constructor() {
@@ -34,13 +49,16 @@ class RosterManager {
   loadRoster() {
     const key = this.getStorageKey();
     const saved = localStorage.getItem(key);
-    return saved ? JSON.parse(saved) : DEFAULT_ROSTER;
+    const players = saved ? JSON.parse(saved) : DEFAULT_ROSTER;
+    return players.map(normalizePlayer);
   }
 
-  saveRoster() {
+  saveRoster(render = true) {
     const key = this.getStorageKey();
     localStorage.setItem(key, JSON.stringify(this.players));
-    this.renderAll();
+    if (render) this.renderAll();
+    const status = document.getElementById("roster-save-status");
+    if (status) status.textContent = "Saved on this device at " + new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
   }
 
   addPlayer(number, name, offensePos, defensePos) {
@@ -71,7 +89,7 @@ class RosterManager {
     const p = this.players.find(pl => pl.id === id);
     if (p) {
       p[field] = value;
-      this.saveRoster();
+      this.saveRoster(false);
     }
   }
 
@@ -94,7 +112,7 @@ class RosterManager {
   checkCompliance() {
     let nonCompliantCount = 0;
     const playerReports = this.players.map(p => {
-      const activeQuarters = ['q1', 'q2', 'q3', 'q4'].filter(q => p[q] !== "Bench").length;
+      const activeQuarters = ['q1', 'q2', 'q3', 'q4'].filter(q => p[q] !== "Next Rotation" && p[q] !== "Bench").length;
       const isCompliant = activeQuarters >= 2;
       if (!isCompliant) nonCompliantCount++;
       return { id: p.id, name: p.name, number: p.number, activeQuarters, isCompliant };
@@ -127,9 +145,9 @@ class RosterManager {
             <option value="Right Guard" ${p.offensePos === 'Right Guard' ? 'selected' : ''}>Right Guard (RG)</option>
             <option value="Left Tackle" ${p.offensePos === 'Left Tackle' ? 'selected' : ''}>Left Tackle (LT)</option>
             <option value="Right Tackle" ${p.offensePos === 'Right Tackle' ? 'selected' : ''}>Right Tackle (RT)</option>
-            <option value="Quarterback (2nd)" ${p.offensePos === 'Quarterback (2nd)' ? 'selected' : ''}>Quarterback (2nd String)</option>
-            <option value="Wing Back (2nd)" ${p.offensePos === 'Wing Back (2nd)' ? 'selected' : ''}>Wing Back (2nd String)</option>
-            <option value="Guard (2nd)" ${p.offensePos === 'Guard (2nd)' ? 'selected' : ''}>Guard (2nd String)</option>
+            <option value="Quarterback Rotation" ${p.offensePos === 'Quarterback Rotation' ? 'selected' : ''}>Quarterback Rotation</option>
+            <option value="Wing Back Rotation" ${p.offensePos === 'Wing Back Rotation' ? 'selected' : ''}>Wing Back Rotation</option>
+            <option value="Guard Rotation" ${p.offensePos === 'Guard Rotation' ? 'selected' : ''}>Guard Rotation</option>
           </select>
         </td>
         <td>
@@ -163,14 +181,14 @@ class RosterManager {
     const compliance = this.checkCompliance();
     if (complianceBadge) {
       if (compliance.isAllCompliant) {
-        complianceBadge.innerHTML = `<span style="background:#dcfce7;color:#166534;padding:4px 10px;border-radius:999px;font-weight:800;font-size:0.85rem">✓ CFSA Compliant: All ${this.players.length} Lions Active 2+ Quarters</span>`;
+        complianceBadge.innerHTML = `<span style="display:inline-block;background:#dcfce7;color:#166534;padding:6px 10px;border-radius:10px;font-weight:800;font-size:0.82rem">✓ All ${this.players.length} players have 2+ active quarters</span>`;
       } else {
         complianceBadge.innerHTML = `<span style="background:#fee2e2;color:#991b1b;padding:4px 10px;border-radius:999px;font-weight:800;font-size:0.85rem">⚠️ ${compliance.nonCompliantCount} Player(s) Under 2 Quarters</span>`;
       }
     }
 
     tbody.innerHTML = this.players.map(p => {
-      const activeQtrs = ['q1', 'q2', 'q3', 'q4'].filter(q => p[q] !== "Bench").length;
+      const activeQtrs = ['q1', 'q2', 'q3', 'q4'].filter(q => p[q] !== "Next Rotation" && p[q] !== "Bench").length;
       return `
         <tr>
           <td style="font-weight:800">
@@ -180,11 +198,11 @@ class RosterManager {
             </small>
           </td>
           ${['q1', 'q2', 'q3', 'q4'].map(q => `
-            <td style="text-align:center">
-              <select class="editable-cell" onchange="rosterManager.updatePlayer(${p.id}, '${q}', this.value)" style="font-weight:750;background:${p[q] === 'Offense' ? '#eff6ff' : p[q] === 'Defense' ? '#f0fdf4' : '#fff7ed'}">
+            <td style="text-align:center" data-quarter="${q.replace('q', 'Q')}">
+              <select class="editable-cell rotation-select" aria-label="${p.name} ${q} assignment" onchange="rosterManager.updatePlayer(${p.id}, '${q}', this.value)" style="font-weight:750;color:#0a1628;background:${p[q] === 'Offense' ? '#dbeafe' : p[q] === 'Defense' ? '#dcfce7' : '#ffedd5'}">
                 <option value="Offense" ${p[q] === 'Offense' ? 'selected' : ''}>Offense</option>
                 <option value="Defense" ${p[q] === 'Defense' ? 'selected' : ''}>Defense</option>
-                <option value="Bench" ${p[q] === 'Bench' ? 'selected' : ''}>Bench (Rest)</option>
+                <option value="Next Rotation" ${p[q] === 'Next Rotation' || p[q] === 'Bench' ? 'selected' : ''}>Next Rotation</option>
               </select>
             </td>
           `).join("")}
@@ -210,9 +228,9 @@ class RosterManager {
     container.innerHTML = `
       <div class="grid-2">
         <div class="panel" style="border-left:5px solid var(--gold-bright)">
-          <h3 style="color:var(--navy);margin-bottom:10px">OFFENSE 8-ON-8 DEPTH</h3>
+          <h3 style="color:var(--navy);margin-bottom:10px">OFFENSE POSITION ROTATION</h3>
           <table style="font-size:0.88rem">
-            <thead><tr><th>Position</th><th>Active Starters & Rotation</th></tr></thead>
+            <thead><tr><th>Position</th><th>Players learning this role</th></tr></thead>
             <tbody>
               <tr><td><strong>Quarterback / Runner (QB)</strong></td><td><strong style="color:var(--red)">${findPos("Quarterback")}</strong></td></tr>
               <tr><td><strong>Left Wing (WING-L)</strong></td><td><strong style="color:var(--gold)">${findPos("Left Wing")}</strong></td></tr>
@@ -227,9 +245,9 @@ class RosterManager {
         </div>
 
         <div class="panel" style="border-left:5px solid var(--navy)">
-          <h3 style="color:var(--navy);margin-bottom:10px">DEFENSE LOOK TEAM DEPTH</h3>
+          <h3 style="color:var(--navy);margin-bottom:10px">DEFENSE POSITION ROTATION</h3>
           <table style="font-size:0.88rem">
-            <thead><tr><th>Position</th><th>Defensive Starters</th></tr></thead>
+            <thead><tr><th>Position</th><th>Players learning this role</th></tr></thead>
             <tbody>
               <tr><td><strong>Middle Linebacker (MLB)</strong></td><td><strong>${findDefPos("MLB")}</strong></td></tr>
               <tr><td><strong>Front Left (DL)</strong></td><td>${findDefPos("Front Left")}</td></tr>
@@ -257,17 +275,17 @@ document.addEventListener("DOMContentLoaded", () => {
   rosterManager.renderAll();
 
   document.getElementById("btn-add-player")?.addEventListener("click", () => {
-    const num = prompt("Enter Jersey Number (e.g. 10):");
+    const num = prompt("Enter jersey number (for example, 10):");
     if (num !== null && num.trim() !== "") {
-      const name = prompt("Enter Player Name / Initial:", `Player #${num.trim()}`);
+      const name = prompt("Enter an anonymous label—not a full name:", `Player #${num.trim()}`);
       rosterManager.addPlayer(num.trim(), name, "Line", "Front");
     }
   });
 
   document.getElementById("btn-reset-roster")?.addEventListener("click", () => {
-    if (confirm("Reset roster to default K/1 squad?")) {
-      localStorage.removeItem(ROSTER_STORAGE_KEY);
-      rosterManager.players = DEFAULT_ROSTER;
+    if (confirm("Reset this device to the anonymous example rotation?")) {
+      localStorage.removeItem(rosterManager.getStorageKey());
+      rosterManager.players = DEFAULT_ROSTER.map(normalizePlayer);
       rosterManager.saveRoster();
     }
   });
