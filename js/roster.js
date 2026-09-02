@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Cy-Fair K/1 Lions — Advanced Roster & Depth Chart Manager
  * Features: Visual 8-on-8 field formation depth chart, CFSA 50% fair play compliance engine, ball-carries tracker.
  */
@@ -24,13 +24,22 @@ class RosterManager {
     this.players = this.loadRoster();
   }
 
+  getStorageKey() {
+    if (window.TeamManager) {
+      return window.TeamManager.getTeamStorageKey(null, "roster");
+    }
+    return ROSTER_STORAGE_KEY;
+  }
+
   loadRoster() {
-    const saved = localStorage.getItem(ROSTER_STORAGE_KEY);
+    const key = this.getStorageKey();
+    const saved = localStorage.getItem(key);
     return saved ? JSON.parse(saved) : DEFAULT_ROSTER;
   }
 
   saveRoster() {
-    localStorage.setItem(ROSTER_STORAGE_KEY, JSON.stringify(this.players));
+    const key = this.getStorageKey();
+    localStorage.setItem(key, JSON.stringify(this.players));
     this.renderAll();
   }
 

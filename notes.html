@@ -77,6 +77,9 @@
           📥 Restore from Backup (.json)
           <input type="file" id="import-json-file" accept=".json" onchange="importTeamBackup(this)" style="display:none">
         </label>
+        <a href="invite.html" class="btn btn-secondary" style="text-decoration:none;display:inline-flex;align-items:center">
+          👥 Invite Coach / Share Link ➔
+        </a>
       </div>
       </section>
     </details>
@@ -121,6 +124,9 @@
     </div>
   </footer>
 
+  <script src="js/sports/sport-registry.js"></script>
+  <script src="js/engine/team-manager.js"></script>
+  <script src="js/engine/auth-guard.js"></script>
   <script src="js/timers.js"></script>
   <script src="js/tracker.js"></script>
   <script src="js/app.js?v=mobile-app-20260824"></script>
@@ -128,7 +134,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       const textarea = document.getElementById("coach-notes-area");
       const statusEl = document.getElementById("notes-save-status");
-      const STORAGE_KEY = "lions_coach_scratchpad_notes";
+      const STORAGE_KEY = (window.TeamManager && window.TeamManager.getTeamStorageKey(null, "notes")) || "lions_coach_scratchpad_notes";
 
       if (textarea) {
         textarea.value = localStorage.getItem(STORAGE_KEY) || "";

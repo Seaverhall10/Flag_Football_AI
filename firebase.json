@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "site": "coach-ai-assist",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      ".firebaserc",
+      "**/.*",
+      "**/node_modules/**",
+      "docs/**",
+      "scripts/**",
+      "*.md"
+    ],
+    "cleanUrls": false
+  }
+}

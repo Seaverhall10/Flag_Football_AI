@@ -317,6 +317,52 @@
         rte("rb-ball", [{ x: 530, y: 590 }, { x: 720, y: 540 }, { x: 880, y: 380 }, { x: 910, y: 80 }], "dashed", RED)
       ],
       ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 530, y: 575 }, { x: 720, y: 540 }, { x: 880, y: 380 }, { x: 910, y: 80 }] }
+    },
+
+    {
+      id: "play-13", name: "Play 13", call: "Wide Sweep Right", photo: "plays/play-13.jpg?v=flip1",
+      cue: "Split backs. Red RB takes the snap and wide sweeps right. Blue RB leads outside.",
+      offense: [
+        off("w", "W", GRY, 228, 468, "Block the left DE."),
+        off("lt", "T", BLU, 328, 452, "Climb to the left LB."),
+        off("lg", "G", BLU, 412, 452, "Block the left DT."),
+        off("c", "C", YEL, 500, 452, "Snap, then climb to the right LB.", { role: "SNAP" }),
+        off("rg", "G", GRY, 588, 452, "Block the right DT."),
+        off("rt", "T", GRY, 672, 452, "Block the right DE."),
+        off("rb-lead", "RB", BLU, 420, 538, "Lead wide right. Head out.", { role: "LEAD" }),
+        off("rb-ball", "RB", GOLD, 540, 590, "Catch it. Wide sweep right. North.", { role: "RUN", stroke: RED })
+      ],
+      defense: front(),
+      blocks: [blk("w","de-l"), blk("lt","lb-l"), blk("lg","dt-l"), blk("c","lb-r"), blk("rg","dt-r"), blk("rt","de-r")],
+      routes: [
+        rte("c", [{ x: 500, y: 452 }, { x: 600, y: 340 }, { x: 670, y: 240 }]),
+        rte("rb-lead", [{ x: 420, y: 538 }, { x: 640, y: 500 }, { x: 840, y: 360 }]),
+        rte("rb-ball", [{ x: 540, y: 590 }, { x: 740, y: 540 }, { x: 910, y: 380 }, { x: 930, y: 80 }], "dashed", RED)
+      ],
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 540, y: 575 }, { x: 740, y: 540 }, { x: 910, y: 380 }, { x: 930, y: 80 }] }
+    },
+
+    {
+      id: "play-14", name: "Play 14", call: "Wide Sweep Left", photo: "plays/play-14.jpg?v=flip1",
+      cue: "Split backs. Red RB takes the snap and wide sweeps left. Blue RB leads outside.",
+      offense: [
+        off("lt", "T", BLU, 328, 452, "Block the left DE."),
+        off("lg", "G", BLU, 412, 452, "Block the left DT."),
+        off("c", "C", YEL, 500, 452, "Snap, then climb to the left LB.", { role: "SNAP" }),
+        off("rg", "G", GRY, 588, 452, "Block the right DT."),
+        off("rt", "T", GRY, 672, 452, "Climb to the right LB."),
+        off("w", "W", GRY, 772, 468, "Block the right DE."),
+        off("rb-lead", "RB", BLU, 580, 538, "Lead wide left. Head out.", { role: "LEAD" }),
+        off("rb-ball", "RB", GOLD, 460, 590, "Catch it. Wide sweep left. North.", { role: "RUN", stroke: RED })
+      ],
+      defense: front(),
+      blocks: [blk("lt","de-l"), blk("lg","dt-l"), blk("c","lb-l"), blk("rg","dt-r"), blk("rt","lb-r"), blk("w","de-r")],
+      routes: [
+        rte("c", [{ x: 500, y: 452 }, { x: 400, y: 340 }, { x: 330, y: 240 }]),
+        rte("rb-lead", [{ x: 580, y: 538 }, { x: 380, y: 500 }, { x: 160, y: 360 }]),
+        rte("rb-ball", [{ x: 460, y: 590 }, { x: 240, y: 540 }, { x: 90, y: 380 }, { x: 70, y: 80 }], "dashed", RED)
+      ],
+      ball: { carrierId: "rb-ball", points: [{ x: 500, y: 468 }, { x: 460, y: 575 }, { x: 240, y: 540 }, { x: 90, y: 380 }, { x: 70, y: 80 }] }
     }
   ];
 

@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <script src="js/gate.js?v=flip-20260828"></script>
   <title>Plays — Cy-Fair K/1 Lions</title>
-  <meta name="description" content="Twelve coach-sheet plays for the Cy-Fair K/1 Lions.">
-  <link rel="stylesheet" href="css/styles.css?v=flip-20260828">
+  <meta name="description" content="Fourteen coach-sheet plays for the Cy-Fair K/1 Lions.">
+  <link rel="stylesheet" href="css/styles.css?v=motion-20260831">
 </head>
 <body class="playbook-page">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -27,8 +27,29 @@
         <button class="play-btn" type="button" data-run-key="play-10" aria-pressed="false" aria-label="Play 10 Handoff Weak Right Sweep"><span class="btn-num">10</span><span class="btn-call">Weak R</span></button>
         <button class="play-btn" type="button" data-run-key="play-11" aria-pressed="false" aria-label="Play 11 RB Left Sweep"><span class="btn-num">11</span><span class="btn-call">Sweep L</span></button>
         <button class="play-btn" type="button" data-run-key="play-12" aria-pressed="false" aria-label="Play 12 RB Right Sweep"><span class="btn-num">12</span><span class="btn-call">Sweep R</span></button>
+        <button class="play-btn" type="button" data-run-key="play-13" aria-pressed="false" aria-label="Play 13 Wide Sweep Right"><span class="btn-num">13</span><span class="btn-call">Wide R</span></button>
+        <button class="play-btn" type="button" data-run-key="play-14" aria-pressed="false" aria-label="Play 14 Wide Sweep Left"><span class="btn-num">14</span><span class="btn-call">Wide L</span></button>
       </div>
     </nav>
+
+    <details class="quick-squad-bar no-print" aria-label="Quick squad assignment">
+      <summary>
+        <span class="squad-label">Lineup</span>
+        <span class="quick-squad-summary">Squads, rotation, and assignments</span>
+      </summary>
+      <div class="quick-squad-panel">
+        <div class="squad-actions">
+          <button type="button" class="btn-squad is-active" id="squad-preset-a" onclick="if(window.LineupManager){window.LineupManager.applySquadPreset('A');}">Squad A</button>
+          <button type="button" class="btn-squad" id="squad-preset-b" onclick="if(window.LineupManager){window.LineupManager.applySquadPreset('B');}">Squad B</button>
+          <button type="button" class="btn-squad-rotate" id="squad-rotate-btn" onclick="if(window.LineupManager){window.LineupManager.rotateLineup();}">🔄 Rotate +1</button>
+          <a href="creator.html" class="btn-squad" style="text-decoration:none;background:rgba(47,111,224,0.25);border-color:#2f6fe0;color:#93c5fd">✨ Create / Ingest Play</a>
+          <button type="button" class="btn-squad" onclick="if(window.AiCoach){window.AiCoach.openAiCoachModal();}">🤖 AI Coach</button>
+        </div>
+        <div class="squad-starters-scroll" id="squad-starters-list">
+          <!-- Rendered dynamically by sim.js / LineupManager -->
+        </div>
+      </div>
+    </details>
 
     <section class="play-teacher">
       <figure class="proof-pane proof-live-pane">
@@ -37,10 +58,9 @@
         <p id="sim-cue" class="sim-cue" aria-live="polite">Find your circle. Two-point stance. Eyes up. Tap a player.</p>
         <div class="sim-controls">
           <button type="button" class="hud-ghost" id="sim-reset" aria-label="Reset">Reset</button>
+          <button type="button" class="hud-ghost" id="sim-back" aria-label="Back one beat">Back</button>
           <button type="button" class="hud-play" id="sim-play">Play</button>
-          <button type="button" class="hud-ghost" id="sim-gif">GIF</button>
-          <button type="button" id="sim-back" hidden>Back</button>
-          <button type="button" id="sim-next" hidden>Next</button>
+          <button type="button" class="hud-ghost" id="sim-next" aria-label="Next beat">Next</button>
         </div>
       </figure>
       <figure class="proof-pane proof-photo-pane" id="sheet-pane">
@@ -64,12 +84,38 @@
       <label class="tiny sim-scrub">Scrub
         <input id="sim-slider" type="range" min="0" max="6" value="0" step="0.02" aria-label="Scrub through play">
       </label>
+      <button type="button" class="btn btn-secondary" id="sim-gif">Export GIF</button>
+    </details>
+
+    <details class="playbook-more">
+      <summary>Assignments &amp; Blocking Rules</summary>
+      <div class="panel" style="margin-top:8px">
+        <p class="tiny">Linemen block their designated defender from the play sheet. Center snaps and climbs to Linebacker. Lead RB paves the lane.</p>
+      </div>
+    </details>
+
+    <details class="playbook-more">
+      <summary>Safety &amp; Execution Points</summary>
+      <div class="panel" style="margin-top:8px">
+        <p class="tiny">Two-point stance. Head out of contact. Open hands inside the chest frame. Controlled feet. Whistle immediately for unsafe technique.</p>
+      </div>
     </details>
   </main>
 
+  <script src="js/sports/sport-registry.js"></script>
+  <script src="js/sports/generic-plays.js"></script>
+  <script src="js/engine/team-manager.js"></script>
+  <script src="js/engine/auth-guard.js"></script>
+  <script src="js/engine/firebase-auth.js"></script>
+  <script src="js/engine/lineup-manager.js"></script>
+  <script src="js/engine/custom-playbook.js"></script>
+  <script src="js/engine/invite-manager.js"></script>
+  <script src="js/engine/ai-ingest.js"></script>
+  <script src="js/engine/ai-coach.js"></script>
+  <script src="js/engine/board-engine.js"></script>
   <script src="js/play-gif.js?v=flip-20260828"></script>
-  <script src="js/plays-data.js?v=flip-20260828"></script>
-  <script src="js/sim.js?v=flip-20260828"></script>
+  <script src="js/plays-data.js?v=motion-20260831"></script>
+  <script src="js/sim.js?v=motion-20260831"></script>
   <script src="js/app.js?v=flip-20260828"></script>
 </body>
 </html>

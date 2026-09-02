@@ -54,7 +54,7 @@ The public playbook is the 14 coach-sheet plays photographed by the owner. Do no
 - The other `RB` leads, fakes, or blocks as drawn.
 - `W` blocks or runs the route drawn on that sheet.
 - Assignments may include a CB when the photo points a lead arrow at that square.
-- Do not restore "QB catches the direct snap and is the Runner" as the public playbook rule.
+- Do not restore QB direct-snap keeper runs as the public playbook rule.
 
 ## Teaching defense
 
