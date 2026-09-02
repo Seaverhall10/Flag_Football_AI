@@ -44,11 +44,18 @@
 
     <section class="panel">
       <div class="panel-header">
-        <h2>Practice notes</h2>
+        <h2>Daily Practice Debrief &amp; Notes</h2>
         <span class="tiny" id="notes-save-status">Saved</span>
       </div>
-      <p class="tiny" style="margin-top:-6px">Saves automatically in this browser.</p>
-      <textarea id="coach-notes-area" rows="7" placeholder="What should we repeat, correct, or praise next practice?" style="width:100%;padding:12px;border:1px solid var(--line-strong);border-radius:8px;font-family:inherit;font-size:0.95rem;line-height:1.4;box-sizing:border-box"></textarea>
+      <p class="tiny" style="margin-top:-6px">Saves automatically on this device. Zero child data is shared or stored in the cloud.</p>
+      
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 12px;">
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-debrief-quick" style="font-size:0.8rem;padding:6px 10px;">+ Quick Debrief</button>
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-debrief-voice" style="font-size:0.8rem;padding:6px 10px;">+ Voice / Granola Summary</button>
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-debrief-skills" style="font-size:0.8rem;padding:6px 10px;">+ Skill Milestones</button>
+      </div>
+
+      <textarea id="coach-notes-area" rows="9" placeholder="What should we repeat, correct, or praise next practice?" style="width:100%;padding:12px;border:1px solid var(--line-strong);border-radius:8px;font-family:inherit;font-size:0.95rem;line-height:1.4;box-sizing:border-box"></textarea>
     </section>
 
     <details class="coach-more mobile-collapse">

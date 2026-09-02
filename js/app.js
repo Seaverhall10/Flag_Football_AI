@@ -132,7 +132,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 3. Persistent Checklist Items (Cart & Gear)
+  // 3. Daily Practice Debrief Actions
+  const notesArea = document.getElementById("coach-notes-area");
+  const saveStatus = document.getElementById("notes-save-status");
+  if (notesArea) {
+    const savedNotes = localStorage.getItem("lions_coach_scratchpad_notes") || "";
+    notesArea.value = savedNotes;
+
+    notesArea.addEventListener("input", () => {
+      localStorage.setItem("lions_coach_scratchpad_notes", notesArea.value);
+      if (saveStatus) {
+        saveStatus.textContent = "Saving...";
+        setTimeout(() => { saveStatus.textContent = "Saved"; }, 400);
+      }
+    });
+
+    const appendTemplate = (text) => {
+      const today = new Date().toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+      const entry = `\n--- Practice Debrief · ${today} ---\n${text}\n`;
+      notesArea.value = (notesArea.value.trim() ? notesArea.value.trim() + "\n" : "") + entry;
+      notesArea.scrollTop = notesArea.scrollHeight;
+      localStorage.setItem("lions_coach_scratchpad_notes", notesArea.value);
+      if (saveStatus) saveStatus.textContent = "Saved";
+    };
+
+    document.getElementById("btn-debrief-quick")?.addEventListener("click", () => {
+      appendTemplate("• What worked well:\n• Key cue to repeat (e.g. eyes up, head out):\n• Focus for next practice:");
+    });
+
+    document.getElementById("btn-debrief-voice")?.addEventListener("click", () => {
+      appendTemplate("🎯 KEY FOCUS: 5v4 Inside Run Fit\n⚡ TEAM ENERGY: High / Focused\n⭐ STANDOUT EXECUTION:\n🔧 ADJUSTMENTS: Center angle step to LB landmark\n📋 NEXT ACTION ITEMS:");
+    });
+
+    document.getElementById("btn-debrief-skills")?.addEventListener("click", () => {
+      appendTemplate("PLAYER PROGRESSION CHECKLIST:\n[ ] Two-point stance (knees bent, eyes up)\n[ ] Center direct snap accuracy\n[ ] Ballcarrier ball tuck & North finish\n[ ] Blocker hands inside legal torso\n[ ] Contain defender staying square");
+    });
+  }
+
+  // 4. Persistent Checklist Items (Cart & Gear)
   const checkboxes = document.querySelectorAll(".checklist-item input[type='checkbox']");
   if (checkboxes.length > 0) {
     const savedState = JSON.parse(localStorage.getItem("lions_checklist_state") || "{}");
@@ -145,6 +182,13 @@ document.addEventListener("DOMContentLoaded", () => {
         savedState[key] = cb.checked;
         localStorage.setItem("lions_checklist_state", JSON.stringify(savedState));
       });
+    });
+  }
+
+  // 5. Offline Sideline Service Worker Registration
+  if ("serviceWorker" in navigator && window.location.protocol.startsWith("http")) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => {});
     });
   }
 });
