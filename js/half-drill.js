@@ -39,7 +39,7 @@
   function visualFit(blocker, defender, kind) {
     const target = hipOf(defender, kind);
     const dx = blocker.x - target.x, dy = blocker.y - target.y, dist = Math.hypot(dx, dy) || 1;
-    const tokenContact = 62;
+    const tokenContact = 68; // 34 + 32 + 2px: authentic legal chest fit with zero clipping
     return { x: target.x + dx / dist * tokenContact, y: target.y + dy / dist * tokenContact };
   }
   function labels() {
@@ -132,19 +132,43 @@
   }
   function centerWaypoints() {
     const m = centerLandmarks();
-    return [m.h.C, { x: m.h.C.x, y: m.h.C.y + 12 }, m.angle, m.fit, m.pushedFit, m.pushedFit, m.pushedFit];
+    return [m.h.C, { x: m.h.C.x, y: m.h.C.y - 6 }, m.angle, m.fit, m.pushedFit, m.pushedFit, m.pushedFit];
   }
 
   function runnerPose(beat) {
     const h = homes().RUN, x = laneX(), finishX = state.lane === "outside" ? x : lerp(x, 500, .12);
-    return [h, { x: h.x, y: h.y - 6 }, { x: lerp(h.x, x, .22), y: 620 }, { x: lerp(h.x, x, .52), y: 500 }, { x, y: 380 }, { x, y: 270 }, { x: finishX, y: 64 }][beat];
+    return [
+      h,
+      { x: lerp(h.x, x, .08), y: h.y - 18 },
+      { x: lerp(h.x, x, .30), y: 590 },
+      { x: lerp(h.x, x, .65), y: 460 },
+      { x: x, y: 350 },
+      { x: x, y: 230 },
+      { x: finishX, y: 64 }
+    ][beat];
   }
   function leadPose(beat) {
     const h = homes().LEAD, x = laneX(), target = assignments().LEAD.point;
     if (state.front === "two-lb") {
-      return [h, { x: h.x, y: h.y - 6 }, mix(h, target, .3), mix(h, target, .62), target, target, target][beat];
+      return [
+        h,
+        { x: lerp(h.x, target.x, .08), y: h.y - 18 },
+        mix(h, target, .38),
+        mix(h, target, .72),
+        target,
+        { x: target.x, y: target.y - 40 },
+        { x: target.x, y: target.y - 80 }
+      ][beat];
     }
-    return [h, { x: h.x, y: h.y - 6 }, { x: lerp(h.x, x, .3), y: 560 }, { x: lerp(h.x, x, .68), y: 460 }, { x, y: 300 }, { x, y: 190 }, { x, y: 105 }][beat];
+    return [
+      h,
+      { x: lerp(h.x, x, .10), y: h.y - 18 },
+      { x: lerp(h.x, x, .36), y: 530 },
+      { x: lerp(h.x, x, .72), y: 420 },
+      { x, y: 290 },
+      { x, y: 170 },
+      { x, y: 80 }
+    ][beat];
   }
   function poseAtBeat(beat) {
     const h = homes(), out = basePoses();
@@ -247,29 +271,53 @@
       }));
     });
   }
-  function drawHips(poses) {
+  let hipElements = [];
+  function initHips() {
+    if (!hipLayer) return;
     hipLayer.innerHTML = "";
-    if (state.t < 2 || state.t > 5) return;
+    hipElements = [];
+    for (let i = 0; i < 4; i++) {
+      const g = el("g", { class: "half-hip-element", opacity: "0", "pointer-events": "none" });
+      const chev = el("path", {
+        d: "M -3,-9 L 11,0 L -3,9 L -1,0 Z",
+        fill: "#f6c344", stroke: "#071018", "stroke-width": "2", class: "half-hip-chevron"
+      });
+      const lab = el("text", {
+        x: "14", y: "-12", fill: "#f6c344", "font-size": "18", "font-weight": "900",
+        "paint-order": "stroke", stroke: "#071018", "stroke-width": "5", "pointer-events": "none"
+      });
+      g.appendChild(chev);
+      g.appendChild(lab);
+      hipLayer.appendChild(g);
+      hipElements.push({ g, chev, lab });
+    }
+  }
+
+  function drawHips(poses) {
+    if (state.t < 1.9 || state.t > 5.1 || !hipElements.length) {
+      hipElements.forEach(function (item) { item.g.setAttribute("opacity", "0"); });
+      return;
+    }
     const marks = state.front === "two-dl"
       ? [["G", "DL", gHipKind()], ["T", "FLEX", gHipKind()], ["C", "LB", "inside"]]
       : [["G", "DL", gHipKind()], ["T", "DL", "outside"], ["C", "LB", "inside"], ["LEAD", "FLEX", "inside"]];
-    marks.forEach(([ol, defId, kind]) => {
+    const opacityStr = state.t >= 2.1 && state.t <= 4.9 ? "1" : "0.7";
+    hipElements.forEach(function (item, idx) {
+      if (idx >= marks.length) {
+        item.g.setAttribute("opacity", "0");
+        return;
+      }
+      const mark = marks[idx];
+      const ol = mark[0], defId = mark[1], kind = mark[2];
       const hip = hipOf(poses[defId], kind);
       const dir = hipDx(kind) >= 0 ? 1 : -1;
-      const chev = el("path", {
-        d: `M ${hip.x - dir * 3},${hip.y - 9} L ${hip.x + dir * 11},${hip.y} L ${hip.x - dir * 3},${hip.y + 9} L ${hip.x - dir * 1},${hip.y} Z`,
-        fill: "#f6c344", stroke: "#071018", "stroke-width": "2", "data-half-owner": ol, class: "half-hip-chevron"
-      });
-      hipLayer.appendChild(chev);
-      const lab = el("text", {
-        x: String(hip.x + dir * 14), y: String(hip.y - 12),
-        fill: "#f6c344", "font-size": "18", "font-weight": "900",
-        "text-anchor": dir > 0 ? "start" : "end",
-        "paint-order": "stroke", stroke: "#071018", "stroke-width": "5",
-        "data-half-owner": ol, "pointer-events": "none"
-      });
-      lab.textContent = kind === "inside" ? "INSIDE" : "OUTSIDE";
-      hipLayer.appendChild(lab);
+      item.g.setAttribute("transform", "translate(" + hip.x + "," + hip.y + ")");
+      item.g.setAttribute("opacity", opacityStr);
+      item.g.setAttribute("data-half-owner", ol);
+      item.chev.setAttribute("d", "M " + (-dir * 3) + ",-9 L " + (dir * 11) + ",0 L " + (-dir * 3) + ",9 L " + (-dir * 1) + ",0 Z");
+      item.lab.setAttribute("x", String(dir * 14));
+      item.lab.setAttribute("text-anchor", dir > 0 ? "start" : "end");
+      item.lab.textContent = kind === "inside" ? "INSIDE" : "OUTSIDE";
     });
   }
   function token(id) {
@@ -325,7 +373,8 @@
       '<marker id="halfDecoyArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c084fc"/></marker>',
       '<marker id="halfBlockArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#67e8f9"/></marker>',
       '<marker id="halfDefenseArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f87171"/></marker>',
-      '<filter id="halfTokenShadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="3" stdDeviation="2.4" flood-color="#000000" flood-opacity="0.45"/></filter>'
+      '<filter id="halfTokenShadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="3" stdDeviation="2.4" flood-color="#000000" flood-opacity="0.45"/></filter>',
+      '<filter id="halfBallGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceAlpha" stdDeviation="3.5" result="blur"/><feFlood flood-color="#f59e0b" flood-opacity="0.8" result="color"/><feComposite in2="blur" operator="in" result="glow"/><feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>'
     ].join("");
     svg.appendChild(defs);
     const turf = el("g", { class: "half-turf" });
@@ -361,11 +410,15 @@
     svg.appendChild(defenseLayer);
     svg.appendChild(blockLayer);
     svg.appendChild(hipLayer);
+    initHips();
     DEFENSE.forEach(token);
     OFFENSE.forEach(token);
-    ball = el("g", {});
-    ball.appendChild(el("ellipse", { rx: "15", ry: "10", fill: "#f8fafc", stroke: "#3f2b1d", "stroke-width": "3" }));
-    ball.appendChild(el("line", { x1: "-10", y1: "0", x2: "10", y2: "0", stroke: "#9f1239", "stroke-width": "3" }));
+    ball = el("g", { class: "half-football", filter: "url(#halfBallGlow)" });
+    ball.appendChild(el("ellipse", { rx: "16", ry: "11", fill: "#b45309", stroke: "#fed7aa", "stroke-width": "2.5" }));
+    ball.appendChild(el("line", { x1: "-10", y1: "0", x2: "10", y2: "0", stroke: "#ffffff", "stroke-width": "2", "stroke-linecap": "round" }));
+    ball.appendChild(el("line", { x1: "-4", y1: "-4", x2: "-4", y2: "4", stroke: "#ffffff", "stroke-width": "1.5" }));
+    ball.appendChild(el("line", { x1: "0", y1: "-4", x2: "0", y2: "4", stroke: "#ffffff", "stroke-width": "1.5" }));
+    ball.appendChild(el("line", { x1: "4", y1: "-4", x2: "4", y2: "4", stroke: "#ffffff", "stroke-width": "1.5" }));
     svg.appendChild(ball);
     updateViewBox();
     return svg;
@@ -393,17 +446,24 @@
       player.selected.setAttribute("opacity", state.selected === id ? "1" : "0");
     });
     drawHips(poses);
-    const center = poses.C, runner = poses.RUN, amount = clamp(state.t, 0, 1);
-    const ballPos = state.t < 1
-      ? mix({ x: center.x, y: center.y + 16 }, { x: runner.x + 12, y: runner.y - 4 }, ease(amount))
-      : { x: runner.x + 12, y: runner.y - 4 };
-    ball.setAttribute("transform", `translate(${ballPos.x},${ballPos.y})`);
+    const center = poses.C, runner = poses.RUN;
+    let ballPos;
+    if (state.t < 1) {
+      const snapProgress = ease(clamp(state.t, 0, 1));
+      ballPos = mix({ x: center.x, y: center.y + 12 }, { x: runner.x + 8, y: runner.y - 8 }, snapProgress);
+      ball.setAttribute("transform", `translate(${ballPos.x},${ballPos.y}) scale(0.9)`);
+    } else {
+      ballPos = { x: runner.x + (state.side === "right" ? 14 : -14), y: runner.y - 2 };
+      ball.setAttribute("transform", `translate(${ballPos.x},${ballPos.y}) scale(1)`);
+    }
     const shown = clamp(Math.round(state.t), 0, 6);
-    beatEl.textContent = `${BEATS[shown].name} · ${shown + 1} OF 7`;
-    cueEl.textContent = BEATS[shown].cue;
+    if (state.shown !== shown) {
+      state.shown = shown;
+      beatEl.textContent = `${BEATS[shown].name} · ${shown + 1} OF 7`;
+      cueEl.textContent = BEATS[shown].cue;
+      document.querySelectorAll("[data-half-dot]").forEach((dot) => dot.classList.toggle("is-on", Number(dot.getAttribute("data-half-dot")) === shown));
+    }
     slider.value = String(state.t);
-    document.querySelectorAll("[data-half-dot]").forEach((dot) => dot.classList.toggle("is-on", Number(dot.getAttribute("data-half-dot")) === shown));
-    applyFocus();
   }
   function drillPlayerName(id) {
     if (!window.LineupManager) return "";
@@ -448,6 +508,7 @@
   function selectPlayer(id) {
     state.selected = state.selected === id ? null : id;
     applyPoses();
+    applyFocus();
     document.querySelectorAll("[data-half-job]").forEach((card) => card.classList.toggle("is-selected", card.getAttribute("data-half-job") === state.selected));
     if (!state.selected) {
       spotlightEl.classList.add("is-empty");
@@ -492,6 +553,7 @@
     updateJobs();
     applyTeachingView();
     applyPoses();
+    applyFocus();
   }
   function setT(value) { state.t = clamp(value, 0, 6); applyPoses(); }
   function pause() { state.playing = false; if (state.raf) cancelAnimationFrame(state.raf); if (playButton) playButton.textContent = "PLAY SLOW"; }
