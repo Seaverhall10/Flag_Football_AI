@@ -160,12 +160,12 @@
     const DEFAULT_SCHEDULE = [];
 
     function loadSchedule() {
-      const saved = localStorage.getItem("lions_season_schedule");
+      const saved = localStorage.getItem("coach_season_schedule") || localStorage.getItem("lions_season_schedule");
       return saved ? JSON.parse(saved) : DEFAULT_SCHEDULE;
     }
 
     function saveSchedule(events) {
-      localStorage.setItem("lions_season_schedule", JSON.stringify(events));
+      localStorage.setItem("coach_season_schedule", JSON.stringify(events));
       renderSchedule();
     }
 

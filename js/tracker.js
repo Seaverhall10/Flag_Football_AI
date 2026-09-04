@@ -6,7 +6,7 @@
 (function (root) {
   "use strict";
 
-  var TRACKER_STORAGE_KEY = "lions_flag_rep_tracker_data";
+  var TRACKER_STORAGE_KEY = "coach_flag_rep_tracker_data";
 
   var RUNS_DATA = [
     { id: "inside-right", name: "Inside Right", color: "Red Diamond", hole: "C-RG", colorClass: "run-red" },
@@ -28,7 +28,7 @@
 
     loadPracticeData() {
       try {
-        var raw = localStorage.getItem(TRACKER_STORAGE_KEY);
+        var raw = localStorage.getItem(TRACKER_STORAGE_KEY) || localStorage.getItem("lions_flag_rep_tracker_data");
         if (raw) return JSON.parse(raw);
       } catch (e) {}
       return {

@@ -3,6 +3,13 @@
  */
 (function () {
   const BACKUP_KEYS = [
+    "coach_team_roster_data",
+    "coach_season_schedule",
+    "coach_flag_rep_tracker_data",
+    "coach_player_carries",
+    "coach_minifield_spots",
+    "coach_ai_notes",
+    "coach_ai_checklist",
     "lions_team_roster_data_v8v8_rb",
     "lions_season_schedule",
     "lions_flag_rep_tracker_data",
@@ -49,7 +56,7 @@
     reader.readAsText(file);
   }
 
-  window.lionsBackup = { exportTeamBackup, importTeamBackup, BACKUP_KEYS };
+  window.coachBackup = window.lionsBackup = { exportTeamBackup, importTeamBackup, BACKUP_KEYS };
 
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("btn-export-backup")?.addEventListener("click", exportTeamBackup);
