@@ -137,10 +137,10 @@
     document.addEventListener("DOMContentLoaded", () => {
       const textarea = document.getElementById("coach-notes-area");
       const statusEl = document.getElementById("notes-save-status");
-      const STORAGE_KEY = (window.TeamManager && window.TeamManager.getTeamStorageKey(null, "notes")) || "lions_coach_scratchpad_notes";
+      const STORAGE_KEY = (window.TeamManager && window.TeamManager.getTeamStorageKey(null, "notes")) || "coach_ai_notes";
 
       if (textarea) {
-        textarea.value = localStorage.getItem(STORAGE_KEY) || "";
+        textarea.value = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("lions_coach_scratchpad_notes") || "";
 
         let timeout = null;
         textarea.addEventListener("input", () => {

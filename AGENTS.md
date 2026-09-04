@@ -1,5 +1,8 @@
 # Coaching AI App — Agent Rules
 
+> **Before you touch anything in this folder, read `.jarvis/BRIEF.md`.** Jarvis keeps it current: who else writes here, whether work is in flight right now, and the rules for this project.
+
+
 This repository is the one canonical Coaching AI product. Seth's Seahawks, ages 5–6, is the first active pilot workspace; it is not the product ceiling. Every AI, IDE agent, bot, and human contributor must follow these rules before changing files.
 
 ## Product boundary

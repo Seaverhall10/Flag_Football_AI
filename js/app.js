@@ -136,11 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const notesArea = document.getElementById("coach-notes-area");
   const saveStatus = document.getElementById("notes-save-status");
   if (notesArea) {
-    const savedNotes = localStorage.getItem("lions_coach_scratchpad_notes") || "";
+    const savedNotes = localStorage.getItem("coach_ai_notes") || localStorage.getItem("lions_coach_scratchpad_notes") || "";
     notesArea.value = savedNotes;
 
     notesArea.addEventListener("input", () => {
-      localStorage.setItem("lions_coach_scratchpad_notes", notesArea.value);
+      localStorage.setItem("coach_ai_notes", notesArea.value);
       if (saveStatus) {
         saveStatus.textContent = "Saving...";
         setTimeout(() => { saveStatus.textContent = "Saved"; }, 400);
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const entry = `\n--- Practice Debrief · ${today} ---\n${text}\n`;
       notesArea.value = (notesArea.value.trim() ? notesArea.value.trim() + "\n" : "") + entry;
       notesArea.scrollTop = notesArea.scrollHeight;
-      localStorage.setItem("lions_coach_scratchpad_notes", notesArea.value);
+      localStorage.setItem("coach_ai_notes", notesArea.value);
       if (saveStatus) saveStatus.textContent = "Saved";
     };
 
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 4. Persistent Checklist Items (Cart & Gear)
   const checkboxes = document.querySelectorAll(".checklist-item input[type='checkbox']");
   if (checkboxes.length > 0) {
-    const savedState = JSON.parse(localStorage.getItem("lions_checklist_state") || "{}");
+    const savedState = JSON.parse(localStorage.getItem("coach_ai_checklist") || localStorage.getItem("lions_checklist_state") || "{}");
     checkboxes.forEach((cb, idx) => {
       const key = `item_${idx}`;
       if (savedState[key] !== undefined) {
@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       cb.addEventListener("change", () => {
         savedState[key] = cb.checked;
-        localStorage.setItem("lions_checklist_state", JSON.stringify(savedState));
+        localStorage.setItem("coach_ai_checklist", JSON.stringify(savedState));
       });
     });
   }

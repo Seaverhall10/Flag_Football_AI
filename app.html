@@ -141,9 +141,9 @@
   <script src="js/app.js?v=seahawks-20260901b"></script>
   <script>
     (function () {
-      const KEY = "lions_sunlight_mode";
+      const KEY = "coach_sunlight_mode";
       function apply() {
-        if (localStorage.getItem(KEY) === "1") document.body.classList.add("sunlight-mode");
+        if (localStorage.getItem(KEY) === "1" || localStorage.getItem("lions_sunlight_mode") === "1") document.body.classList.add("sunlight-mode");
         else document.body.classList.remove("sunlight-mode");
       }
       function renderLineupChips() {

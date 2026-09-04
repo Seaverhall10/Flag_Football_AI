@@ -1845,7 +1845,7 @@ body.half-drill-page { padding-bottom: 16px; }
   .coach-page .sideline-plays .play-btn { flex: 0 0 150px; }
 }
 
-/* === lions-playbook-edge: start === */
+/* === coach-playbook-edge: start === */
 html:has(body.playbook-page),
 body.playbook-page { max-width: 100%; overflow-x: hidden; }
 body.playbook-page .wrap,
@@ -1910,7 +1910,7 @@ body.playbook-page .wrap,
     height: 78vh !important;
   }
 }
-/* === lions-playbook-edge: end === */
+/* === coach-playbook-edge: end === */
 
 /* === field-hud-controls: start === */
 .playbook-page .proof-live-pane {
@@ -1995,7 +1995,7 @@ body.playbook-page .wrap,
 /* === field-hud-readouts: end === */
 
 
-/* === lions-sideline-app: start === */
+/* === coach-sideline-app: start === */
 body.playbook-page {
   display: flex;
   flex-direction: column;
@@ -2636,4 +2636,4 @@ body.playbook-page .proof-live-pane .sim-controls { gap: 8px; }
   body.playbook-page .play-teacher { min-height: 620px; }
 }
 
-/* === lions-sideline-app: end === */
+/* === coach-sideline-app: end === */
